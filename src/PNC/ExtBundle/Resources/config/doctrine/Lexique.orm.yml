@@ -1,0 +1,14 @@
+PNC\ExtBundle\Entity\Lexique:
+    type: entity
+    table: ext.lexique
+    schema: ext
+    repositoryClass: PNC\ExtBundle\Repositories\LexiqueRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        value:
+            type: string

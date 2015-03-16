@@ -1,0 +1,39 @@
+PNC\BaseAppBundle\Entity\Observation:
+    type: entity
+    table: pnc.base_observation
+    schema: pnc
+    repositoryClass: PNC\BaseAppBundle\Repositories\ObservationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        obs_date:
+            type: date
+        obs_commentaire:
+            type: text
+        obs_id_table_src:
+            type: integer
+        obs_site_id:
+            type: integer
+    
+
+    manyToOne:
+        site:
+            targetEntity: Site
+            joinColumn: obs_site_id
+            referencedColumnName: id
+
+    manyToMany:
+        observateurs:
+            targetEntity: PNC\ExtBundle\Entity\Observateur
+            joinTable:
+                name: pnc.rel_obs_obr
+                joinColumns:
+                    obs_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    obr_id:
+                        referencedColumnName: id

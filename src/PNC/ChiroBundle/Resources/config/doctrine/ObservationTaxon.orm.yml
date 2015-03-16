@@ -1,0 +1,59 @@
+PNC\ChiroBundle\Entity\ObservationTaxon:
+    type: entity
+    table: chiro.chiro_observation_taxon
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\ObservationTaxonRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        obs_id:
+            type: integer
+        obs_tx_initial:
+            type: string
+            length: 250
+            nullable: true
+        obs_espece_incertaine:
+            type: boolean
+            options:
+                default: false
+        obs_effectif_abs:
+            type: integer
+            nullable: true
+        obs_nb_male_adulte:
+            type: integer
+            nullable: true
+        obs_nb_femelle_adulte:
+            type: integer
+            nullable: true
+        obs_nb_male_juvenile:
+            type: integer
+            nullable: true
+        obs_nb_femelle_juvenile:
+            type: integer
+            nullable: true
+        obs_nb_male_indetermine:
+            type: integer
+            nullable: true
+        obs_nb_femelle_indetermine:
+            type: integer
+            nullable: true
+        obs_nb_indetermine_indetermine:
+            type: integer
+            nullable: true
+        obs_obj_status_validation:
+            type: integer
+            nullable: true
+        obs_commentaire:
+            type: text
+
+    manyToOne:
+        observation:
+            targetEntity: PNC\BaseAppBundle\Entity\Observation
+            joinColumn:
+                name: obs_id
+                referencedColumnName: id
+

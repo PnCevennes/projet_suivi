@@ -1,0 +1,21 @@
+<?php
+
+namespace PNC\Utils;
+
+
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+
+
+class NormalizeService{
+    private $normalizer;
+
+    function __construct(){
+        $this->normalizer = new GetSetMethodNormalizer();
+    }
+
+    function normalize($obj, $ignores){
+        $this->normalizer->setIgnoredAttributes($ignores);
+        return $this->normalizer->normalize($obj);
+    }
+
+}

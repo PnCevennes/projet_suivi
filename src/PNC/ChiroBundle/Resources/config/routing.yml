@@ -1,0 +1,80 @@
+#pnc_base_app_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: PNCChiroBundle:Default:index }
+
+pnc_observation_taxon_list:
+    path:     /observation_taxon
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:list }
+    requirements:
+        _method: GET
+
+pnc_observation_taxon_detail:
+    path:     /observation_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:detail }
+    requirements:
+        _method: GET
+
+pnc_observation_taxon_save:
+    path:     /observation_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:save, id: null }
+    requirements:
+        _method: POST
+
+pnc_observation_taxon_suppr:
+    path:     /observation_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:delete }
+    requirements:
+        _method: DELETE
+
+
+
+pnc_biometrie_list:
+    path:     /biometrie
+    defaults: { _controller: PNCChiroBundle:Biometrie:list }
+    requirements:
+        _method: GET
+
+pnc_biometrie_detail:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:detail }
+    requirements:
+        _method: GET
+
+pnc_biometrie_save:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:save, id: null }
+    requirements:
+        _method: POST
+
+pnc_biometrie_suppr:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:delete }
+    requirements:
+        _method: DELETE
+
+
+
+
+pnc_chiro_site_list:
+    path:     /site
+    defaults: { _controller: PNCChiroBundle:Site:list }
+    requirements:
+        _method: GET
+
+pnc_chiro_site_detail:
+    path:     /site/{id}
+    defaults: { _controller: PNCChiroBundle:Site:detail }
+    requirements:
+        _method: GET
+
+pnc_chiro_site_save:
+    path:     /site/{id}
+    defaults: { _controller: PNCChiroBundle:Site:save, id: null }
+    requirements:
+        _method: POST
+
+pnc_chiro_site_suppr:
+    path:     /site/{id}
+    defaults: { _controller: PNCChiroBundle:Site:delete }
+    requirements:
+        _method: DELETE

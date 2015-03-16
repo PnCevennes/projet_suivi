@@ -1,0 +1,16 @@
+PNC\ExtBundle\Entity\Taxonomie:
+    type: entity
+    table: ext.taxonomie
+    schema: ext
+    repositoryClass: PNC\ExtBundle\Repositories\TaxonomieRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nom:
+            type: string
+
+

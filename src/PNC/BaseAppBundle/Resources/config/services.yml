@@ -1,0 +1,11 @@
+services:
+#    pnc_base_app.example:
+#        class: PNC\BaseAppBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    BaseSiteService:
+        class: PNC\BaseAppBundle\Services\SiteService
+        arguments: [@doctrine, @normalizer]
+    BaseObsService:
+        class: PNC\BaseAppBundle\Services\ObservationService
+        arguments: [@doctrine, @normalizer]
+

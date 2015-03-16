@@ -1,0 +1,55 @@
+PNC\BaseAppBundle\Entity\Site:
+    type: entity
+    table: pnc.base_site
+    schema: pnc
+    repositoryClass: PNC\BaseAppBundle\Repositories\SiteRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        site_nom:
+            type: string
+            length: 250
+        observateur_id:
+            type: integer
+        type_id:
+            type: integer
+        site_code:
+            type: string
+            length: 25
+            nullable: true
+        site_date:
+            type: date
+            nullable: true
+        site_description:
+            type: text
+            nullable: true
+        #geom:
+        #   type: geometry
+    manyToMany:
+        site_app:
+            targetEntity: PNC\ExtBundle\Entity\Application
+            joinTable:
+                name: pnc.rel_site_app
+                joinColumns: 
+                    site_id: 
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    app_id:
+                        referencedColumnName: id
+
+    manyToOne:
+        observateur:
+            targetEntity: PNC\ExtBundle\Entity\Observateur
+            joinColumn: 
+               name: observateur_id
+               referencedColumnName: id
+    
+        site_type:
+            targetEntity: PNC\ExtBundle\Entity\Lexique
+            joinColumn: 
+               name: type_id
+               referencedColumnName: id

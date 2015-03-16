@@ -1,0 +1,66 @@
+PNC\ChiroBundle\Entity\Biometrie:
+    type: entity
+    table: chiro.chiro_biometrie
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\BiometrieRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        obs_tx_id:
+            type: integer
+        age_id:
+            type: integer
+            nullable: true
+        sexe_id:
+            type: integer
+            nullable: true
+        biom_ab:
+            type: decimal
+            nullable: true
+        biom_poids:
+            type: decimal
+            nullable: true
+        biom_d3mf1:
+            type: decimal
+            nullable: true
+        biom_d3f2f3:
+            type: decimal
+            nullable: true
+        biom_d3total:
+            type: decimal
+            nullable: true
+        biom_d5:
+            type: decimal
+            nullable: true
+        biom_cm3sup:
+            type: decimal
+            nullable: true
+        biom_cm3inf:
+            type: decimal
+            nullable: true
+        biom_cb:
+            type: decimal
+            nullable: true
+        biom_lm:
+            type: decimal
+            nullable: true
+        biom_oreille:
+            type: decimal
+            nullable: true
+        biom_commentaire:
+            type: text 
+            nullable: true
+
+    manyToOne:
+        observation:
+            targetEntity: PNC\ChiroBundle\Entity\ObservationTaxon
+            joinColumn:
+                name: obs_tx_id
+                referencedColumnName: id
+
+
+

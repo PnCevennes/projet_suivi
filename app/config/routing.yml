@@ -1,0 +1,15 @@
+pnc_ext:
+    resource: "@PNCExtBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pnc_chiro:
+    resource: "@PNCChiroBundle/Resources/config/routing.yml"
+    prefix:   /chiro/
+
+pnc_base_app:
+    resource: "@PNCBaseAppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: @AppBundle/Controller/
+    type:     annotation

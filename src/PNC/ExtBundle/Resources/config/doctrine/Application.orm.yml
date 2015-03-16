@@ -1,0 +1,16 @@
+PNC\ExtBundle\Entity\Application:
+    type: entity
+    table: ext.base_application
+    schema: ext
+    repositoryClass: PNC\BaseAppBundle\Repositories\ApplicationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        app_nom:
+            type: string
+            length: 50
+

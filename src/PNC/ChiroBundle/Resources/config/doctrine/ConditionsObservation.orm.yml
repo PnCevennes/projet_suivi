@@ -1,0 +1,25 @@
+PNC\ChiroBundle\Entity\ConditionsObservation:
+    type: entity
+    table: chiro.chiro_conditions_observ
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\ConditionsObservationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        obs_id:
+            type: integer
+        obs_temperature:
+            type: decimal
+        obs_humidite:
+            type: decimal
+    
+    oneToOne:
+        parent_obs:
+            targetEntity: PNC\BaseAppBundle\Entity\Observation
+            joinColumn:
+                name: obs_id
+                referencedColumnName: id

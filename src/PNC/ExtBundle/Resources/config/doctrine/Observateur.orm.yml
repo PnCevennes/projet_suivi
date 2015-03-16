@@ -1,0 +1,15 @@
+PNC\ExtBundle\Entity\Observateur:
+    type: entity
+    table: ext.observateur
+    schema: ext
+    repositoryClass: PNC\ExtBundle\Repositories\ObservateurRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nom:
+            type: string
+
