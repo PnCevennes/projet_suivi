@@ -431,4 +431,60 @@ class Biometrie
     {
         return $this->id;
     }
+    /**
+     * @var integer
+     */
+    private $obs_tx_id;
+
+    /**
+     * @var \PNC\ChiroBundle\Entity\ObservationTaxon
+     */
+    private $observation;
+
+
+    /**
+     * Set obs_tx_id
+     *
+     * @param integer $obsTxId
+     * @return Biometrie
+     */
+    public function setObsTxId($obsTxId)
+    {
+        $this->obs_tx_id = $obsTxId;
+
+        return $this;
+    }
+
+    /**
+     * Get obs_tx_id
+     *
+     * @return integer 
+     */
+    public function getObsTxId()
+    {
+        return $this->obs_tx_id;
+    }
+
+    /**
+     * Set observation
+     *
+     * @param \PNC\ChiroBundle\Entity\ObservationTaxon $observation
+     * @return Biometrie
+     */
+    public function setObservation(\PNC\ChiroBundle\Entity\ObservationTaxon $observation = null)
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return \PNC\ChiroBundle\Entity\ObservationTaxon 
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
 }

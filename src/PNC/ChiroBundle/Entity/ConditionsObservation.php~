@@ -80,4 +80,60 @@ class ConditionsObservation
     {
         return $this->obs_humidite;
     }
+    /**
+     * @var integer
+     */
+    private $obs_id;
+
+    /**
+     * @var \PNC\BaseAppBundle\Entity\Observation
+     */
+    private $parent_obs;
+
+
+    /**
+     * Set obs_id
+     *
+     * @param integer $obsId
+     * @return ConditionsObservation
+     */
+    public function setObsId($obsId)
+    {
+        $this->obs_id = $obsId;
+
+        return $this;
+    }
+
+    /**
+     * Get obs_id
+     *
+     * @return integer 
+     */
+    public function getObsId()
+    {
+        return $this->obs_id;
+    }
+
+    /**
+     * Set parent_obs
+     *
+     * @param \PNC\BaseAppBundle\Entity\Observation $parentObs
+     * @return ConditionsObservation
+     */
+    public function setParentObs(\PNC\BaseAppBundle\Entity\Observation $parentObs = null)
+    {
+        $this->parent_obs = $parentObs;
+
+        return $this;
+    }
+
+    /**
+     * Get parent_obs
+     *
+     * @return \PNC\BaseAppBundle\Entity\Observation 
+     */
+    public function getParentObs()
+    {
+        return $this->parent_obs;
+    }
 }

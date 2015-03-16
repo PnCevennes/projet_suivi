@@ -10,60 +10,66 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SiteController extends Controller{
     
-    // path: /chiro/site
+    // path: GET /chiro/site
     public function listAction(){
         /*
          * retourne la liste des sites "chiro"
          */
-        $base = $this->get('BaseSiteService');
         $norm = $this->get('normalizer');
 
-        $out = $base->normalize($base->getListByApp(1));
-
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:SiteView');
         $infos = $repo->findAll();
+        $out = array();
+
         foreach($infos as $info){
-            $out[$info->getSiteId()]['infos'] = $norm->normalize($info, array('parentSite'));
+            $out_item = array('type'=>'Feature');
+            $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs'));
+            $out_item['properties']['siteDate'] = $info->getSiteDate()->format('d/m/Y');
+            $out_item['properties']['dernObservation'] = $info->getDernObs()->format('d/m/Y');
+            $out_item['geometry'] = $info->getGeom();
+            $out[] = $out_item;
         }
-        
-        return new JsonResponse(array('v'=>'liste sites', 'r'=>$out));
+
+        return new JsonResponse($out);
     }
 
 
-    // path: /chiro/site/detail/{id}
+    // path: GET /chiro/site/{id}
     public function detailAction($id){
         /*
          * retourne le détail d'un site chiro
          */
-        $base = $this->get('BaseSiteService');
         $norm = $this->get('normalizer');
 
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
-        $infos = $repo->findOneById($id);
-        if(!$infos){
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:SiteView');
+        $info = $repo->findOneById($id);
+        if(!$info){
             return new JsonResponse(array('v'=>'detail site', 'err'=>404));
         }
 
-        $out = $base->normalize($base->getById($infos->getSiteId()));
-        $out['site'] = $norm->normalize($infos, array('parentSite'));
+        $out_item = array('type'=>'Feature');
+        $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs'));
+        $out_item['properties']['siteDate'] = $info->getSiteDate()->format('d/m/Y');
+        $out_item['properties']['dernObservation'] = $info->getDernObs()->format('d/m/Y');
+        $out_item['geometry'] = $info->getGeom();
 
-        return new JsonResponse(array('v'=>'detail site', 'r'=>$out));
+        return new JsonResponse($out_item);
     }
 
 
-    // path: /chiro/site/editer/{id}
-    public function editAction($id=null){
+    // path: PUT /chiro/site
+    public function CreateAction($id=null){
         return new Response('formulaire site chiro');
     }
 
 
-    // path: /chiro/site/enreg
-    public function saveAction($id=null){
+    // path: POST/chiro/site/{id}
+    public function UpdateAction($id=null){
         return new Response('enregistrer site chiro');
     }
 
 
-    // path; /chiro/site/suppr/{id}
+    // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
         return new Response('supprimer site chiro');
     }

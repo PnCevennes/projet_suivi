@@ -5,9 +5,9 @@ namespace PNC\ChiroBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * InfoSite
+ * SiteView
  */
-class InfoSite
+class SiteView
 {
     /**
      * @var integer
@@ -15,9 +15,169 @@ class InfoSite
     private $id;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $site_id;
+    private $site_nom;
+
+    /**
+     * @var string
+     */
+    private $site_code;
+
+    /**
+     * @var \DateTime
+     */
+    private $site_date;
+
+    /**
+     * @var jsonArray
+     */
+    private $geom;
+
+    /**
+     * @var string
+     */
+    private $contact_nom;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set site_nom
+     *
+     * @param string $siteNom
+     * @return SiteView
+     */
+    public function setSiteNom($siteNom)
+    {
+        $this->site_nom = $siteNom;
+
+        return $this;
+    }
+
+    /**
+     * Get site_nom
+     *
+     * @return string 
+     */
+    public function getSiteNom()
+    {
+        return $this->site_nom;
+    }
+
+    /**
+     * Set site_code
+     *
+     * @param string $siteCode
+     * @return SiteView
+     */
+    public function setSiteCode($siteCode)
+    {
+        $this->site_code = $siteCode;
+
+        return $this;
+    }
+
+    /**
+     * Get site_code
+     *
+     * @return string 
+     */
+    public function getSiteCode()
+    {
+        return $this->site_code;
+    }
+
+    /**
+     * Set site_date
+     *
+     * @param \DateTime $siteDate
+     * @return SiteView
+     */
+    public function setSiteDate($siteDate)
+    {
+        $this->site_date = $siteDate;
+
+        return $this;
+    }
+
+    /**
+     * Get site_date
+     *
+     * @return \DateTime 
+     */
+    public function getSiteDate()
+    {
+        return $this->site_date;
+    }
+
+    /**
+     * Set geom
+     *
+     * @param \jsonArray $geom
+     * @return SiteView
+     */
+    public function setGeom(\jsonArray $geom)
+    {
+        $this->geom = $geom;
+
+        return $this;
+    }
+
+    /**
+     * Get geom
+     *
+     * @return \jsonArray 
+     */
+    public function getGeom()
+    {
+        return $this->geom;
+    }
+
+    /**
+     * Set contact_nom
+     *
+     * @param string $contactNom
+     * @return SiteView
+     */
+    public function setContactNom($contactNom)
+    {
+        $this->contact_nom = $contactNom;
+
+        return $this;
+    }
+
+    /**
+     * Get contact_nom
+     *
+     * @return string 
+     */
+    public function getContactNom()
+    {
+        return $this->contact_nom;
+    }
+    /**
+     * @var string
+     */
+    private $description_generale;
+
+    /**
+     * @var string
+     */
+    private $nom_observateur;
+
+    /**
+     * @var string
+     */
+    private $type_lieu;
 
     /**
      * @var string
@@ -48,11 +208,6 @@ class InfoSite
      * @var string
      */
     private $site_commentaire;
-
-    /**
-     * @var string
-     */
-    private $contact_nom;
 
     /**
      * @var string
@@ -91,43 +246,79 @@ class InfoSite
 
 
     /**
-     * Get id
+     * Set description_generale
      *
-     * @return integer 
+     * @param string $descriptionGenerale
+     * @return SiteView
      */
-    public function getId()
+    public function setDescriptionGenerale($descriptionGenerale)
     {
-        return $this->id;
-    }
-
-    /**
-     * Set site_id
-     *
-     * @param integer $siteId
-     * @return InfoSite
-     */
-    public function setSiteId($siteId)
-    {
-        $this->site_id = $siteId;
+        $this->description_generale = $descriptionGenerale;
 
         return $this;
     }
 
     /**
-     * Get site_id
+     * Get description_generale
      *
-     * @return integer 
+     * @return string 
      */
-    public function getSiteId()
+    public function getDescriptionGenerale()
     {
-        return $this->site_id;
+        return $this->description_generale;
+    }
+
+    /**
+     * Set nom_observateur
+     *
+     * @param string $nomObservateur
+     * @return SiteView
+     */
+    public function setNomObservateur($nomObservateur)
+    {
+        $this->nom_observateur = $nomObservateur;
+
+        return $this;
+    }
+
+    /**
+     * Get nom_observateur
+     *
+     * @return string 
+     */
+    public function getNomObservateur()
+    {
+        return $this->nom_observateur;
+    }
+
+    /**
+     * Set type_lieu
+     *
+     * @param string $typeLieu
+     * @return SiteView
+     */
+    public function setTypeLieu($typeLieu)
+    {
+        $this->type_lieu = $typeLieu;
+
+        return $this;
+    }
+
+    /**
+     * Get type_lieu
+     *
+     * @return string 
+     */
+    public function getTypeLieu()
+    {
+        return $this->type_lieu;
     }
 
     /**
      * Set site_description
      *
      * @param string $siteDescription
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteDescription($siteDescription)
     {
@@ -150,7 +341,7 @@ class InfoSite
      * Set site_schema
      *
      * @param string $siteSchema
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteSchema($siteSchema)
     {
@@ -173,7 +364,7 @@ class InfoSite
      * Set site_frequentation
      *
      * @param string $siteFrequentation
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteFrequentation($siteFrequentation)
     {
@@ -196,7 +387,7 @@ class InfoSite
      * Set site_menace
      *
      * @param string $siteMenace
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteMenace($siteMenace)
     {
@@ -219,7 +410,7 @@ class InfoSite
      * Set site_amenagement
      *
      * @param string $siteAmenagement
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteAmenagement($siteAmenagement)
     {
@@ -242,7 +433,7 @@ class InfoSite
      * Set site_commentaire
      *
      * @param string $siteCommentaire
-     * @return InfoSite
+     * @return SiteView
      */
     public function setSiteCommentaire($siteCommentaire)
     {
@@ -262,33 +453,10 @@ class InfoSite
     }
 
     /**
-     * Set contact_nom
-     *
-     * @param string $contactNom
-     * @return InfoSite
-     */
-    public function setContactNom($contactNom)
-    {
-        $this->contact_nom = $contactNom;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_nom
-     *
-     * @return string 
-     */
-    public function getContactNom()
-    {
-        return $this->contact_nom;
-    }
-
-    /**
      * Set contact_prenom
      *
      * @param string $contactPrenom
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactPrenom($contactPrenom)
     {
@@ -311,7 +479,7 @@ class InfoSite
      * Set contact_adresse
      *
      * @param string $contactAdresse
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactAdresse($contactAdresse)
     {
@@ -334,7 +502,7 @@ class InfoSite
      * Set contact_code_postal
      *
      * @param string $contactCodePostal
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactCodePostal($contactCodePostal)
     {
@@ -357,7 +525,7 @@ class InfoSite
      * Set contact_ville
      *
      * @param string $contactVille
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactVille($contactVille)
     {
@@ -380,7 +548,7 @@ class InfoSite
      * Set contact_telephone
      *
      * @param string $contactTelephone
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactTelephone($contactTelephone)
     {
@@ -403,7 +571,7 @@ class InfoSite
      * Set contact_portable
      *
      * @param string $contactPortable
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactPortable($contactPortable)
     {
@@ -426,7 +594,7 @@ class InfoSite
      * Set contact_commentaire
      *
      * @param string $contactCommentaire
-     * @return InfoSite
+     * @return SiteView
      */
     public function setContactCommentaire($contactCommentaire)
     {
@@ -444,32 +612,60 @@ class InfoSite
     {
         return $this->contact_commentaire;
     }
+
     /**
-     * @var \PNC\BaseAppBundle\Entity\Site
+     * @var integer
      */
-    private $parent_site;
-
+    private $nb_obs;
 
     /**
-     * Set parent_site
+     * Set nb_obs
      *
-     * @param \PNC\BaseAppBundle\Entity\Site $parentSite
-     * @return InfoSite
+     * @param integer $nbObs
+     * @return SiteView
      */
-    public function setParentSite(\PNC\BaseAppBundle\Entity\Site $parentSite = null)
+    public function setNbObs($nbObs)
     {
-        $this->parent_site = $parentSite;
+        $this->nb_obs = $nbObs;
 
         return $this;
     }
 
     /**
-     * Get parent_site
+     * Get nb_obs
      *
-     * @return \PNC\BaseAppBundle\Entity\Site 
+     * @return integer 
      */
-    public function getParentSite()
+    public function getNbObs()
     {
-        return $this->parent_site;
+        return $this->nb_obs;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $dern_obs;
+
+
+    /**
+     * Set dern_obs
+     *
+     * @param \DateTime $dernObs
+     * @return SiteView
+     */
+    public function setDernObs($dernObs)
+    {
+        $this->dern_obs = $dernObs;
+
+        return $this;
+    }
+
+    /**
+     * Get dern_obs
+     *
+     * @return \DateTime 
+     */
+    public function getDernObs()
+    {
+        return $this->dern_obs;
     }
 }

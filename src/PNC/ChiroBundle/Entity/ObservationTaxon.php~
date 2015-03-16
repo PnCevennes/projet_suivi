@@ -390,4 +390,60 @@ class ObservationTaxon
     {
         return $this->id;
     }
+    /**
+     * @var integer
+     */
+    private $obs_id;
+
+    /**
+     * @var \PNC\BaseAppBundle\Entity\Observation
+     */
+    private $observation;
+
+
+    /**
+     * Set obs_id
+     *
+     * @param integer $obsId
+     * @return ObservationTaxon
+     */
+    public function setObsId($obsId)
+    {
+        $this->obs_id = $obsId;
+
+        return $this;
+    }
+
+    /**
+     * Get obs_id
+     *
+     * @return integer 
+     */
+    public function getObsId()
+    {
+        return $this->obs_id;
+    }
+
+    /**
+     * Set observation
+     *
+     * @param \PNC\BaseAppBundle\Entity\Observation $observation
+     * @return ObservationTaxon
+     */
+    public function setObservation(\PNC\BaseAppBundle\Entity\Observation $observation = null)
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * Get observation
+     *
+     * @return \PNC\BaseAppBundle\Entity\Observation 
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
 }

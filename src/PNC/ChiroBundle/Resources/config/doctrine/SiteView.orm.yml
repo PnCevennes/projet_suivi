@@ -1,0 +1,63 @@
+PNC\ChiroBundle\Entity\SiteView:
+    type: entity
+    table: chiro.vue_chiro_site
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\SiteView
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        site_nom:
+            type: text
+        site_code:
+            type: text
+        site_date:
+            type: date
+        description_generale:
+            type: text
+        geom:
+            type: json_array
+        nom_observateur:
+            type: text
+        type_lieu:
+            type: text
+        contact_nom:
+            type: text
+        site_description:
+            type: text
+        site_schema:
+            type: text
+        site_frequentation:
+            type: text
+        site_menace:
+            type: text
+        site_amenagement:
+            type: text
+        site_commentaire:
+            type: text
+        contact_nom:
+            type: text
+        contact_prenom:
+            type: text
+        contact_adresse:
+            type: text
+        contact_code_postal:
+            type: text
+        contact_ville:
+            type: text
+        contact_telephone:
+            type: text
+        contact_portable:
+            type: text
+        contact_commentaire:
+            type: text
+        dern_obs:
+            type: date
+        nb_obs:
+            type: integer
+
+

@@ -68,8 +68,14 @@ pnc_chiro_site_detail:
         _method: GET
 
 pnc_chiro_site_save:
+    path:     /site
+    defaults: { _controller: PNCChiroBundle:Site:create, id: null }
+    requirements:
+        _method: PUT
+
+pnc_chiro_site_save:
     path:     /site/{id}
-    defaults: { _controller: PNCChiroBundle:Site:save, id: null }
+    defaults: { _controller: PNCChiroBundle:Site:update, id: null }
     requirements:
         _method: POST
 
