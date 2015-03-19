@@ -44,11 +44,12 @@ app.service('httpServ', function($http){
 
 
 app.service('mapService', function($rootScope){
-    var map = L.map('map').setView([44.34, 3.5858], 10);
+    this.map = L.map('map').setView([44.34, 3.5858], 10);
     var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
     var marks = [];
     this.marks = marks;
-    map.addLayer(tiles);
+    this.map.addLayer(tiles);
+    /*
     this.markLayer = new L.geoJson([], {
         onEachFeature: function(feature, layer){
             marks.push(layer);
@@ -61,7 +62,25 @@ app.service('mapService', function($rootScope){
                 });
             }
         });
-    map.addLayer(this.markLayer);
+        */
+    this.markLayer = new L.markerClusterGroup();
+
+    this.addPoint = function(point){
+        //ajoute un point à la carte
+        this.markLayer.addLayer(point);
+        this.marks.push(point);
+    };
+
+    this.filterMarks = function(ids){
+        this.markLayer.clearLayers();
+        angular.forEach(this.marks, function(mark){
+            if(ids.indexOf(mark.feature.properties.id)!=-1){
+                this.markLayer.addLayer(mark);
+            }
+        }, this);
+    };
+
+    this.map.addLayer(this.markLayer);
 });
 
 app.filter('datefr', function(){
@@ -71,13 +90,22 @@ app.filter('datefr', function(){
     }
 });
 
-app.controller('siteController', function($scope, $filter, httpServ, ngTableParams, mapService ){
+app.controller('siteController', function($scope, $rootScope, $filter, httpServ, ngTableParams, mapService){
 
     $scope.success = function(resp){
         var data=[];
         $scope.items = resp.data;
         angular.forEach(resp.data, function(item){
-            mapService.markLayer.addData(item);
+            //mapService.markLayer.addData(item);
+            var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));
+            mark.bindPopup('<h6>' + item.properties.siteNom + '</h6>');
+            mark.feature = item;
+            mark.on('click', function(e){
+                $rootScope.$apply(
+                    $rootScope.$broadcast('mapService:itemClick', mark)
+                    );
+                });
+            mapService.addPoint(mark);
             data.push(item.properties);
         }, $scope);
 
@@ -100,6 +128,11 @@ app.controller('siteController', function($scope, $filter, httpServ, ngTablePara
                 var orderedData = params.sorting() ?
                         $filter('orderBy')(filteredData, params.orderBy()) :
                         data;
+                var ids = [];
+                angular.forEach(orderedData, function(item){
+                    ids.push(item.id);
+                });
+                mapService.filterMarks(ids);
                 params.total(orderedData.length); // set total for recalc pagination
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
@@ -118,9 +151,11 @@ app.controller('siteController', function($scope, $filter, httpServ, ngTablePara
         $scope.changeIcon(item);
     });
 
-    $scope.doNothing = function(item){
+    $scope.selectPoint = function(item){
         var res = $filter('filter')(mapService.marks, {feature: {properties: {id: item.id}}}, function(act, exp){return act==exp;});
         res[0].togglePopup();
+        console.log(res[0]);
+        mapService.map.setView(res[0].getLatLng(), 14);
         $scope.changeIcon(res[0]);
     };
 
