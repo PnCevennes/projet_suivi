@@ -53,8 +53,9 @@ pnc_biometrie_suppr:
         _method: DELETE
 
 
-
-
+#
+# Vues site
+#
 pnc_chiro_site_list:
     path:     /site
     defaults: { _controller: PNCChiroBundle:Site:list }
@@ -84,3 +85,13 @@ pnc_chiro_site_suppr:
     defaults: { _controller: PNCChiroBundle:Site:delete }
     requirements:
         _method: DELETE
+
+
+#
+# Configuration client
+#
+pnc_chiro_config:
+    path: /config
+    defaults: { _controller: PNCChiroBundle:Config:getConf }
+    requirements:
+        _method: GET

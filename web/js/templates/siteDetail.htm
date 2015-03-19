@@ -1,8 +1,9 @@
 <div>
     <table border="1">
-        <tr ng-repeat="(key, val) in data.properties">
-            <td>{{key}}</td>
-            <td>{{val}}</td>
+        <tr ng-repeat="val in schema.formSite">
+            <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
+            <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
+            <td ng-if="val.type!='date'">{{data.properties[val.name]}}</td>
         </tr>
     </table>
 </div>
