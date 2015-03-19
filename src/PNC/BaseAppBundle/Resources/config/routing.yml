@@ -2,6 +2,14 @@
 #    path:     /hello/{name}
 #    defaults: { _controller: PNCBaseAppBundle:Default:index }
 
+
+pnc_config_getapps:
+    path: /config/apps
+    defaults: { _controller: PNCBaseAppBundle:Config:getApps }
+    requirements:
+        _method: GET
+
+
 pnc_observation_list:
     path:     /observation
     defaults: { _controller: PNCBaseAppBundle:Observation:list }

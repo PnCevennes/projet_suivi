@@ -1,0 +1,14 @@
+.block1{
+    width: 40%;
+    float: left;
+}
+
+.block2{
+    width: 50%;
+    float: left;
+}
+
+#map{
+    width: 800px;
+    height: 600px;
+}

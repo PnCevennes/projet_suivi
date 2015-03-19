@@ -1,0 +1,68 @@
+var app = angular.module('suiviProtocole', ['ngRoute', 'ngTable']);
+
+app.config(function($routeProvider){
+    $routeProvider
+        .when('/', {
+            controller: 'baseController',
+            templateUrl: 'js/templates/index.htm'
+        })
+        .when('/chiro/site', {
+            controller: 'siteController',
+            templateUrl: 'js/templates/siteList.htm'
+        })
+        .when('/chiro/site/:id', {
+            controller: 'siteDetailController',
+            templateUrl: 'js/templates/siteDetail.htm'
+        })
+        .otherwise({redirectTo: '/'});
+});
+
+app.service('httpServ', function($http){
+    this.get = function(url, success){
+        $http.get(url).then(success, function(err){});
+    };
+
+    this.post = function(url, success){};
+
+    this.put = function(url, success){};
+
+    this.delete = function(url, success){};
+});
+
+app.controller('siteController', function($scope, httpServ, ngTableParams){
+    $scope.success = function(resp){
+        $scope.data = resp.data;
+        $scope.items = [];
+        angular.forEach(resp.data, function(item){
+            $scope.items.push(item.properties);
+        }, $scope);
+    };
+
+    $scope.doNothing = function(item){
+        console.log(item);
+    };
+
+    $scope.tableParams = new ngTableParams({
+        page: 1,
+        count: 20,
+        sorting: {}
+    });
+
+    httpServ.get('chiro/site', $scope.success);
+});
+
+
+app.controller('siteDetailController', function($scope, $routeParams, httpServ){
+    $scope.success = function(resp){
+        $scope.data = resp.data;
+    };
+    httpServ.get('chiro/site/' + $routeParams.id, $scope.success);
+});
+
+app.controller('baseController', function($scope, httpServ){
+    $scope.success = function(resp){
+        $scope.data = resp.data;
+    };
+    httpServ.get('config/apps', $scope.success);
+});
+

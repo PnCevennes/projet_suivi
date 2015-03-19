@@ -1,0 +1,23 @@
+<div class="block1">
+    <table border="1" ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
+        <!--
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Nom Site</th>
+                <th>Date ajout</th>
+                <th>Dernière observation</th>
+            </tr>
+        </thead>
+        -->
+        <tbody>
+            <tr ng-repeat="item in $data" ng-click="doNothing(item)" ng-class="{'active': item.$selected}">
+                <td data-title="'Id'" sortable="'id'">{{item.id}}</td>
+                <td data-title="'Nom'" sortable="'siteNom'" filter="{'siteNom': 'text'}">{{item.siteNom}}</td>
+                <td data-title="'Date de création'" sortable="'siteDate'">{{item.siteDate|datefr}}</td>
+                <td data-title="'Dernière observation'" sortable="'dernObservation'">{{item.dernObservation|datefr}}</td>
+                <td><a ng-href="#/chiro/site/{{item.id}}">Voir</a></td>
+            </tr>
+        </tbody>
+    </table>
+<div>
