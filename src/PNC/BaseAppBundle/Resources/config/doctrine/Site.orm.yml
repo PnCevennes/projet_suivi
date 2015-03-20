@@ -27,8 +27,8 @@ PNC\BaseAppBundle\Entity\Site:
         site_description:
             type: text
             nullable: true
-        #geom:
-        #   type: geometry
+        geom:
+           type: geometry
     manyToMany:
         site_app:
             targetEntity: PNC\ExtBundle\Entity\Application

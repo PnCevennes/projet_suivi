@@ -14,6 +14,10 @@ app.config(function($routeProvider){
             controller: 'siteController',
             templateUrl: 'js/templates/siteList.htm'
         })
+        .when('/chiro/edit/site', {
+            controller: 'siteEditController',
+            templateUrl: 'js/templates/siteEdit.htm'
+        })
         .when('/chiro/edit/site/:id', {
             controller: 'siteEditController',
             templateUrl: 'js/templates/siteEdit.htm'
@@ -35,7 +39,6 @@ app.service('dataServ', function($http, $filter){
     this.get = function(url, success, force){
         // ne recharger les données du serveur que si le cache est vide ou 
         // si l'option force est true
-        console.log('GET ' + url);
         if(cache[url] == undefined || force){
             $http.get(url).then(function(data){
                 cache[url] = data.data;
@@ -48,9 +51,13 @@ app.service('dataServ', function($http, $filter){
         }
     };
 
-    this.post = function(url, data, success){};
+    this.post = function(url, data, success, error){
+        $http.post(url, data).success(success).error(error || function(err){});
+    };
 
-    this.put = function(url, data, success){};
+    this.put = function(url, data, success, error){
+        $http.put(url, data).success(success).error(error || function(err){});
+    };
 
     this.delete = function(url, success){};
         
@@ -61,19 +68,25 @@ app.service('dataServ', function($http, $filter){
 
     this.getFromCache = function(cacheName, path){
         var res = $filter('filter')(cache[cacheName], path, function(act, exp){return act==exp;});
-        console.log(res);
         if(res){
             return res[0];
         }
         return null;
-    }
+    };
+
+    this.getCacheLength = function(cachename){
+        if(cache[cachename]){
+            return cache[cachename].length;
+        }
+        return 0;
+    };
 });
 
 
 /*
  * Service de gestion de la carte leaflet
  */
-app.service('mapService', function($rootScope){
+app.service('mapService', function($rootScope, $filter){
     // conteneur pour les points de la carte
     this.marks = [];
 
@@ -108,6 +121,21 @@ app.service('mapService', function($rootScope){
         }, this);
     };
 
+    this.clear = function(){
+        this.marks = [];
+        this.markLayer.clearLayers();
+    }
+    
+    this.getMarker = function(_id){
+        var res = $filter('filter')(this.marks, {feature: {properties: {id: _id}}}, function(act, exp){return act==exp;});
+        try{
+            return res[0];
+        }
+        catch(e){
+            return null;
+        }
+    };
+
 });
 
 
@@ -131,12 +159,12 @@ app.filter('datefr', function(){
  */
 app.controller('siteController', function($scope, $rootScope, $filter, dataServ, ngTableParams, mapService){
 
+    mapService.clear();
     $scope.success = function(resp){
         var data=[];
         $scope.items = resp;
         mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
-            //mapService.markLayer.addData(item);
             var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));
             mark.bindPopup('<h6>' + item.properties.siteNom + '</h6>');
             mark.feature = item;
@@ -148,6 +176,7 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
             mapService.addPoint(mark);
             data.push(item.properties);
         }, $scope);
+
 
         /*
          *  initialisation des parametres du tableau
@@ -224,23 +253,29 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $routeParams, dataServ){
+app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ){
     // enregistrement des données <- dataServ.get(chiro/site/:id)
     $scope.setData = function(resp){
         $scope.data = {};
-        $scope.data.properties = resp.properties;
+        $scope.data.properties = angular.copy(resp.properties);
     };
 
     // enregisrement du schéma <- dataServ.get(chiro/config)
     $scope.setSchema = function(resp){
         $scope.schema = resp;
+        $scope.data = angular.copy(dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}}));
+        var field = $filter('filter')($scope.schema.formSite, {name: 'typeLieu'}, function(act, exp){return act==exp});
+        var label = $filter('filter')(field[0].options.choices, {id: $scope.data.properties.typeLieu}, function(act, exp){return act==exp});
+        $scope.data.properties.typeLieu = label[0].libelle;
     };
 
     // récupération de la configuration d'affichage
     dataServ.get('chiro/config', $scope.setSchema);
 
     // récupération des données à afficher
-    dataServ.get('chiro/site/' + $routeParams.id, $scope.setData);
+    //TODO decomment
+    //dataServ.get('chiro/site/' + $routeParams.id, $scope.setData);
+    //FIXME remove
 });
 
 
@@ -254,19 +289,30 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.schema = resp;
     };
 
+    // remplace les données de référence issues du cache
+    // par des données issues du serveur
+    $scope.setData = function(resp){
+        $scope.ref.properties = resp.properties;
+        $scope.ref.geometry = resp.geometry;
+    };
+    $scope.data = {};
+
 
     // récupération de la configuration d'affichage
     dataServ.get('chiro/config', $scope.setSchema);
 
-    // récupération des données à traiter
-    $scope.ref = dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}});
+    if($routeParams.id){
+        // récupération des données à traiter
+        $scope.ref = dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}});
+        dataServ.get('chiro/site/' + $routeParams.id, $scope.setData, true);
 
-    console.log($scope.ref);
-
-    //TODO faire une copie plus profonde
-    $scope.data = {};
-    $scope.data.properties = angular.copy($scope.ref.properties);
-    $scope.data.geometry = angular.copy($scope.ref.geometry);
+        $scope.data.properties = angular.copy($scope.ref.properties);
+        $scope.data.geometry = angular.copy($scope.ref.geometry);
+    }
+    else{
+        $scope.ref = {type: 'Feature', properties: {}, geometry: {type:'Point', coordinates: [3.593666, 44.323187]}};
+        $scope.data = angular.copy($scope.ref);
+    }
 
     var tmpLayer = L.layerGroup();
     var marker = L.marker(
@@ -291,25 +337,33 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
      */
     $scope.save = function(){
         if($scope.data.properties.id == undefined){
-            /*
-            dataServ.put('chiro/site', $scope.data, function(resp){
-                //TODO
+            dataServ.put('chiro/site', $scope.data, function(resp, status){
+                $scope.debug = {r: resp, s:status};  
+            }, function(resp, status){
+                $scope.debug = status;   
             });
-            */
         }
         else{
-            /*
-            dataServ.post('chiro/site/'+$scope.data.properties.id, $scope.data, function(resp){
+            //$scope.debug = $scope.data;
+            dataServ.post('chiro/site/'+$scope.data.properties.id, angular.copy($scope.data), function(resp, status){
                 //TODO
+                $scope.debug = {r: resp, s:status}  ;
+            }, function(resp, status){
+                $scope.debug = status;   
             });
-            */
+            var _mark = mapService.getMarker($scope.data.properties.id);
+            if(_mark){
+                $scope.ref.geometry= $scope.data.geometry;
+                _mark.setLatLng([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]]); 
+            }
+
         }
         $scope.ref.properties = $scope.data.properties;
         //$scope.ref.geometry = $scope.data.geometry;
         tmpLayer.removeLayer(marker);
         mapService.map.removeLayer(tmpLayer);
         
-        $location.path('/chiro/site');
+        //$location.path('/chiro/site');
     };
 
 });

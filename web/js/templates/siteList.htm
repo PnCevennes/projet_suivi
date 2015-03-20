@@ -1,15 +1,8 @@
 <div class="block1">
+    <p>
+        <a ng-href="#/chiro/edit/site">Nouveau site</a>
+    </p>
     <table border="1" ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
-        <!--
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>Nom Site</th>
-                <th>Date ajout</th>
-                <th>Dernière observation</th>
-            </tr>
-        </thead>
-        -->
         <tbody>
             <tr ng-repeat="item in $data" ng-click="selectPoint(item)" ng-class="{'active': item.$selected}">
                 <td data-title="'Id'" sortable="'id'">{{item.id}}</td>

@@ -74,7 +74,7 @@ pnc_chiro_site_save:
     requirements:
         _method: PUT
 
-pnc_chiro_site_save:
+pnc_chiro_site_update:
     path:     /site/{id}
     defaults: { _controller: PNCChiroBundle:Site:update, id: null }
     requirements:

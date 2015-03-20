@@ -21,7 +21,7 @@
                     <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data.properties[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
                     <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
                     <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
-                    <select name="{{val.name}}" ng-options="item.id as item.label for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
+                    <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
                     <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data.properties[val.name]"></textarea>
                 </td>
             </tr>
@@ -29,3 +29,4 @@
     </div>
     <button type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer</button>
 </form>
+<pre>{{debug|json}}</pre>

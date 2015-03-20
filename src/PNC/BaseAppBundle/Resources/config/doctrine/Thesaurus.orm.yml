@@ -1,0 +1,28 @@
+PNC\BaseAppBundle\Entity\Thesaurus:
+    type: entity
+    table: ext.t_thesaurus
+    schema: ext
+    repositoryClass: PNC\BaseAppBundle\Repositories\ThesaurusRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        id_type:
+            type: integer
+        code:
+            type: string
+            length: 250
+        libelle:
+            type: string
+            length: 500
+        description:
+            type: string
+        fk_parent:
+            type: integer
+        hierarchie:
+            type: string
+            length: 250
+

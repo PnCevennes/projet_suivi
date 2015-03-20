@@ -10,18 +10,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConfigController extends Controller{
     public function getConfAction(){
-        //TODO
-        $typesLieu = array(
-            array(
-                'id'=>1,
-                'label'=>'foo'), 
-            array(
-                'id'=>2,
-                'label'=>'bar'),
-            array(
-                'id'=>3,
-                'label'=>'baz'));
 
+        /*
+         * récupération du vocabulaire type lieu
+         */
+        $norm = $this->get('normalizer');
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
+        $types = $repo->findBy(array('id_type'=>7));
+        $typesLieu = array();
+        foreach($types as $tl){
+            if($tl->getFkParent() != 0){
+                $typesLieu[] = $norm->normalize($tl, array());
+            }
+        }
+
+        /*
+         * description du formulaire
+         */
         $out = array(
             'formSite'=>array(
                 array(
@@ -131,9 +136,9 @@ class ConfigController extends Controller{
                 ),
                 array(
                     'name'=>'contactCommentaire',
-                    'label'=>'Commentaires',
+                    'label'=>'Commentaires contact',
                     'type'=>'text',
-                    'help'=>"Tous les commentaires désobligeants à propos du contact",
+                    'help'=>"Insultes & commentaires désobligeants",
                     'options'=>array('maxLength'=>1000, 'minLength'=>0)
                 ),
             ),

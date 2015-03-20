@@ -5,7 +5,7 @@ namespace PNC\Utils;
 class GeometryService{
 
     public function pointJsonToWKT($json_point){
-        return sprintf('POINT(%d %d)', $json_point['coordinates'][0], $json_point['coordinates'][1]);
+        return sprintf('SRID=4326;POINT(%d %d)', $json_point['coordinates'][0], $json_point['coordinates'][1]);
     }
 
     public function lineStringJsonToWKT($json_line){

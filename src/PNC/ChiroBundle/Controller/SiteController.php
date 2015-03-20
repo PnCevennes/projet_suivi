@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use PNC\BaseAppBundle\Entity\Site;
+use PNC\ChiroBundle\Entity\InfoSite;
+
 class SiteController extends Controller{
     
     // path: GET /chiro/site
@@ -57,15 +60,71 @@ class SiteController extends Controller{
     }
 
 
-    // path: PUT /chiro/site
-    public function CreateAction($id=null){
-        return new Response('formulaire site chiro');
+    /*
+     * Peuple un objet Site avec les infos passées en POST
+     */
+    private function hydrateSite($site, $data, $geometry){
+        $gs = $this->get('geometry');
+        $geom = $gs->pointJsonToWKT($geometry);
+        $site->setSiteNom($data['siteNom']);
+        $site->setTypeId($data['typeLieu']);
+        $site->setSiteDate($data['siteDate']);
+        $site->setSiteDescription($data['siteDescription']);
+        $site->setSiteCode($data['siteCode']);
+        $site->setObservateurId($data['observateurId']);
+        $site->setGeom($geom);
+        if($site->errors()){
+            throw new Exception();
+        }
     }
 
 
-    // path: POST/chiro/site/{id}
-    public function UpdateAction($id=null){
-        return new Response('enregistrer site chiro');
+    /*
+     * Peuple un objet InfoSite avec les infos passées en POST
+     */
+    private function hydrateInfoSite($site, $data){
+        $site->setSiteAmenagement($data['siteAmenagement']);
+        $site->setSiteMenace($data['siteMenace']);
+        $site->setContactNom($data['contactNom']);
+        $site->setContactPrenom($data['contactPrenom']);
+        $site->setContactAdresse($data['contactAdresse']);
+        $site->setContactCodePostal($data['contactCodePostal');
+        $site->setContactVille($data['contactVille']);
+        $site->setContactTelephone($data['contactTelephone']);
+        $site->setContactPortable($data['contactPortable']);
+        $site->setContactCommentaire($data['contactCommentaire']);
+        if($site->errors()){
+            throw new Exception();
+        }
+    }
+
+
+    // path: PUT /chiro/site
+    public function createAction(Request $req){
+        $res = json_decode($req->getContent());
+        $props = $res['properties'];
+
+        $site = new Site();
+        $infoSite = new InfoSite();
+        try{
+            $this->populateSite($site, $props, $res['geometry']);
+            $this->populateInfoSite($infoSite, $props);
+        }
+        catch(Exception $e){
+            $errs = $site->errors() + $infoSite->errors();
+
+            return new JsonResponse($errs, 422);
+        }
+
+
+        return new JsonResponse(array('vue'=>'create', 'data'=>$res));
+    }
+
+
+    // path: POST /chiro/site/{id}
+    public function updateAction(Request $req, $id=null){
+        $res = json_decode($req->getContent());
+        return new JsonResponse(array('vue'=>'update', 'data'=>$res));
     }
 
 
