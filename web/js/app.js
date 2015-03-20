@@ -134,6 +134,7 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
     $scope.success = function(resp){
         var data=[];
         $scope.items = resp;
+        mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
             //mapService.markLayer.addData(item);
             var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));
@@ -224,10 +225,13 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
  * controleur pour l'affichage basique des détails d'un site
  */
 app.controller('siteDetailController', function($scope, $routeParams, dataServ){
+    // enregistrement des données <- dataServ.get(chiro/site/:id)
     $scope.setData = function(resp){
-        $scope.data = resp;
+        $scope.data = {};
+        $scope.data.properties = resp.properties;
     };
 
+    // enregisrement du schéma <- dataServ.get(chiro/config)
     $scope.setSchema = function(resp){
         $scope.schema = resp;
     };
@@ -245,6 +249,7 @@ app.controller('siteDetailController', function($scope, $routeParams, dataServ){
  */
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, dataServ, mapService){
 
+    // enregistrement du schéma <- dataServ.get(chiro/config)
     $scope.setSchema = function(resp){
         $scope.schema = resp;
     };
@@ -256,8 +261,12 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     // récupération des données à traiter
     $scope.ref = dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}});
 
+    console.log($scope.ref);
+
     //TODO faire une copie plus profonde
-    $scope.data = angular.copy($scope.ref);
+    $scope.data = {};
+    $scope.data.properties = angular.copy($scope.ref.properties);
+    $scope.data.geometry = angular.copy($scope.ref.geometry);
 
     var tmpLayer = L.layerGroup();
     var marker = L.marker(
@@ -299,6 +308,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         //$scope.ref.geometry = $scope.data.geometry;
         tmpLayer.removeLayer(marker);
         mapService.map.removeLayer(tmpLayer);
+        
         $location.path('/chiro/site');
     };
 
