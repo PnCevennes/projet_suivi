@@ -10,19 +10,19 @@ app.config(function($routeProvider){
             controller: 'baseController',
             templateUrl: 'js/templates/index.htm'
         })
-        .when('/chiro/site', {
+        .when('/:appName/site', {
             controller: 'siteController',
             templateUrl: 'js/templates/siteList.htm'
         })
-        .when('/chiro/edit/site', {
+        .when('/:appName/edit/site', {
             controller: 'siteEditController',
             templateUrl: 'js/templates/siteEdit.htm'
         })
-        .when('/chiro/edit/site/:id', {
+        .when('/:appName/edit/site/:id', {
             controller: 'siteEditController',
             templateUrl: 'js/templates/siteEdit.htm'
         })
-        .when('/chiro/site/:id', {
+        .when('/:appName/site/:id', {
             controller: 'siteDetailController',
             templateUrl: 'js/templates/siteDetail.htm'
         })
@@ -41,7 +41,9 @@ app.controller('baseController', function($scope, dataServ, mapService){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteController', function($scope, $rootScope, $filter, dataServ, ngTableParams, mapService){
+app.controller('siteController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService){
+    
+    $scope._appName = $routeParams.appName;
 
     mapService.clear();
     $scope.success = function(resp){
@@ -50,7 +52,7 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
         mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
             var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));
-            mark.bindPopup('<h5><a href="#/chiro/site/'+item.properties.id+'">' + item.properties.siteNom + '</a><h5>');
+            mark.bindPopup('<h5><a href="#/'+$scope._appName+'/site/'+item.properties.id+'">' + item.properties.siteNom + '</a><h5>');
             mark.feature = item;
             mark.on('click', function(e){
                 $rootScope.$apply(
@@ -95,8 +97,14 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
         $scope.tableParams.reload();
     };
 
+    $scope.setSchema = function(schema){
+        $scope.schema = schema.listSite;
+        console.log($scope.schema);
+        dataServ.get($scope._appName + '/site', $scope.success);
+    };
+
+    dataServ.get($scope._appName + '/siteForm', $scope.setSchema);
     
-    dataServ.get('chiro/site', $scope.success);
 
     /*
      * evenements
@@ -138,6 +146,9 @@ app.controller('siteController', function($scope, $rootScope, $filter, dataServ,
  * controleur pour l'affichage basique des détails d'un site
  */
 app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ){
+
+    $scope._appName = $routeParams.appName;
+
     // chargement des données <- dataServ.get(chiro/site/:id)
     $scope.setData = function(resp){
         $scope.data= angular.copy(resp);
@@ -154,11 +165,11 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         $scope.schema = angular.copy(resp);
 
         // récupération des données à afficher
-        dataServ.get('chiro/site/' + $routeParams.id, $scope.setData);
+        dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
     };
 
     // récupération de la configuration d'affichage
-    dataServ.get('chiro/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
+    dataServ.get($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
 
 
@@ -166,6 +177,8 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
  * controleur pour l'édition d'un site
  */
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService){
+
+    $scope._appName = $routeParams.appName;
 
     $scope.ref = {type: 'Feature', properties: {}, geometry: {type:'Point', coordinates: [3.593666, 44.323187]}};
     // enregistrement du schéma <- dataServ.get(chiro/siteForm)
@@ -193,8 +206,8 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope._init_interface = function(){
         if($routeParams.id){
             // récupération des données à traiter
-            $scope.ref = dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}});
-            dataServ.get('chiro/site/' + $routeParams.id, $scope.setData, function(err){console.log(err);}, true);
+            $scope.ref = dataServ.getFromCache($scope._appName + '/site', {properties: {id: $routeParams.id}});
+            dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData, function(err){console.log(err);}, true);
 
         }
 
@@ -223,7 +236,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
 
     
     $scope.removeSite = function(){
-        dataServ.delete('chiro/site/'+$routeParams.id, $scope.deleted);
+        dataServ.delete($scope._appName + '/site/'+$routeParams.id, $scope.deleted);
     };
 
     $scope.deleted = function(resp){
@@ -233,7 +246,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.clear();
 
         dataServ.forceReload = true;
-        $location.path('/chiro/site');
+        $location.path($scope._appName + '/site');
     }
 
     /*
@@ -241,7 +254,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
      */
     $scope.save = function(){
         if($scope.data.properties.id == ''){
-            dataServ.put('chiro/site', $scope.data, function(resp, status){
+            dataServ.put($scope._appName + '/site', $scope.data, function(resp, status){
                 $scope.updateClear();
                 $scope.debug = {r: resp, s:status};  
             }, function(resp, status){
@@ -250,7 +263,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         }
         else{
             //$scope.debug = $scope.data;
-            dataServ.post('chiro/site/'+$scope.data.properties.id, angular.copy($scope.data), function(resp, status){
+            dataServ.post($scope._appName + '/site/'+$scope.data.properties.id, angular.copy($scope.data), function(resp, status){
                 // succès de l'ajout/mise à jour
 
                 //TODO remplacer debug par un service de messagerie
@@ -266,7 +279,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
             });
         }
         dataServ.forceReload = true;
-        $location.path('/chiro/site');
+        $location.path($scope._appName + '/site');
     };
 
     /*
@@ -293,7 +306,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('$destroy', $scope.clear); 
 
     // initialisation du formulaire
-    dataServ.get('chiro/siteForm', $scope.setSchema);
+    dataServ.get($scope._appName + '/siteForm', $scope.setSchema);
 
 });
 

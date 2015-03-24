@@ -14,7 +14,7 @@ class ConfigController extends Controller{
     public function getAppsAction(){
         return new JsonResponse(array(
             array('id'=>'1', 'name'=>'chiro'),
-            //array('id'=>'2', 'name'=>'flore'),
+            //array('id'=>'2', 'name'=>'cheveche'),
         ));
     }
 }
