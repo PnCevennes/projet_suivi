@@ -289,6 +289,8 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.tmpLayer.removeLayer($scope.marker);
         mapService.map.removeLayer($scope.tmpLayer);
     }
+    
+    $scope.$on('$destroy', $scope.clear); 
 
     // initialisation du formulaire
     dataServ.get('chiro/config', $scope.setSchema);

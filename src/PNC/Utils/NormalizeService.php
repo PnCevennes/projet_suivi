@@ -13,7 +13,7 @@ class NormalizeService{
         $this->normalizer = new GetSetMethodNormalizer();
     }
 
-    function normalize($obj, $ignores){
+    function normalize($obj, $ignores=array()){
         $this->normalizer->setIgnoredAttributes($ignores);
         return $this->normalizer->normalize($obj);
     }
