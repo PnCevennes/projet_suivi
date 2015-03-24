@@ -11,16 +11,17 @@ app.service('dataServ', function($http, $filter){
     //flag ordonnant la recharge des données plutôt que l'utilisation du cache
     this.forceReload = false;
 
-    this.get = function(url, success, force){
+    this.get = function(url, success, error=function(err){console.log(err);}, force=false){
         // ne recharger les données du serveur que si le cache est vide ou 
         // si l'option force est true
         if(cache[url] == undefined || force || this.forceReload){
-            $http.get(url).then(function(data){
-                this.forceReload = false
-                cache[url] = data.data;
-                success(data.data);
-            }
-            , function(err){});
+            $http.get(url)
+                .then(function(data){
+                    this.forceReload = false;
+                    cache[url] = data.data;
+                    success(data.data);
+                },
+                error);
         }
         else{
             success(cache[url]);

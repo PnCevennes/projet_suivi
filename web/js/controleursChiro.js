@@ -149,7 +149,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         $scope.data.properties.typeId = label[0].libelle;
     };
 
-    // chargement du schéma <- dataServ.get(chiro/config)
+    // chargement du schéma <- dataServ.get(chiro/siteForm)
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
 
@@ -158,7 +158,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
     };
 
     // récupération de la configuration d'affichage
-    dataServ.get('chiro/config', $scope.setSchema, true);
+    dataServ.get('chiro/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
 
 
@@ -168,7 +168,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService){
 
     $scope.ref = {type: 'Feature', properties: {}, geometry: {type:'Point', coordinates: [3.593666, 44.323187]}};
-    // enregistrement du schéma <- dataServ.get(chiro/config)
+    // enregistrement du schéma <- dataServ.get(chiro/siteForm)
     $scope.setSchema = function(resp){
         $scope.schema = resp;
         $scope._init_interface();
@@ -194,7 +194,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         if($routeParams.id){
             // récupération des données à traiter
             $scope.ref = dataServ.getFromCache('chiro/site', {properties: {id: $routeParams.id}});
-            dataServ.get('chiro/site/' + $routeParams.id, $scope.setData, true);
+            dataServ.get('chiro/site/' + $routeParams.id, $scope.setData, function(err){console.log(err);}, true);
 
         }
 
@@ -293,7 +293,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('$destroy', $scope.clear); 
 
     // initialisation du formulaire
-    dataServ.get('chiro/config', $scope.setSchema);
+    dataServ.get('chiro/siteForm', $scope.setSchema);
 
 });
 
