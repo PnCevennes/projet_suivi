@@ -1,11 +1,13 @@
 <?php
 
 namespace PNC\Utils;
+use CrEOF\Spatial\PHP\Types\Geometry\Point;
 
 class GeometryService{
 
     public function pointJsonToWKT($json_point){
-        return sprintf('SRID=4326;POINT(%d %d)', $json_point['coordinates'][0], $json_point['coordinates'][1]);
+        return new Point($json_point['coordinates'][0], $json_point['coordinates'][1]);
+        //return sprintf('SRID=4326;POINT(%d %d)', $json_point['coordinates'][0], $json_point['coordinates'][1]);
     }
 
     public function lineStringJsonToWKT($json_line){

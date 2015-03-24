@@ -42,14 +42,14 @@ PNC\BaseAppBundle\Entity\Site:
                         referencedColumnName: id
 
     manyToOne:
-        observateur:
-            targetEntity: PNC\ExtBundle\Entity\Observateur
-            joinColumn: 
-               name: observateur_id
-               referencedColumnName: id
+        #observateur:
+        #    targetEntity: PNC\ExtBundle\Entity\Observateur
+        #    joinColumn: 
+        #       name: observateur_id
+        #       referencedColumnName: id
     
-        site_type:
-            targetEntity: PNC\ExtBundle\Entity\Lexique
-            joinColumn: 
-               name: type_id
-               referencedColumnName: id
+        #site_type:
+        #    targetEntity: PNC\ExtBundle\Entity\Lexique
+        #    joinColumn: 
+        #       name: type_id
+        #       referencedColumnName: id

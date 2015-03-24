@@ -51,6 +51,14 @@ class ConfigController extends Controller{
                     'options'=>array('maxLength'=>25, 'minLength'=>0)
                 ),
                 array(
+                    'name'=>'observateurId',
+                    'label'=>'ID observateur',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array(),
+                    'default'=>10000
+                ),
+                array(
                     'name'=>'siteDate',
                     'label'=>'Date créa.',
                     'type'=>'date',
@@ -72,6 +80,13 @@ class ConfigController extends Controller{
                     'options'=>array('maxLength'=>1000, 'minLength'=>0)
                 ),
                 array(
+                    'name'=>'siteFrequentation',
+                    'label'=>'Fréquentation',
+                    'type'=>'text',
+                    'help'=>'Fréquentation du site',
+                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                ),
+                array(
                     'name'=>'siteMenace',
                     'label'=>'Menaces',
                     'type'=>'text',
@@ -79,7 +94,7 @@ class ConfigController extends Controller{
                     'options'=>array('maxLength'=>1000, 'minLength'=>0)
                 ),
                 array(
-                    'name'=>'typeLieu',
+                    'name'=>'typeId',
                     'label'=>'Type',
                     'type'=>'select',
                     'help'=>'Type de lieu',

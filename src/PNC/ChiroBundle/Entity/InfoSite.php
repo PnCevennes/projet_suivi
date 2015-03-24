@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InfoSite
 {
+
+
+    private $errors = array();
     /**
      * @var integer
      */
@@ -89,6 +92,18 @@ class InfoSite
      */
     private $contact_commentaire;
 
+
+
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+    public function errors(){
+        if(empty($this->errors)){
+            return false;
+        }
+        return $this->errors;
+    }
 
     /**
      * Get id

@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Site
 {
 
+    private $errors = array();
 
     //geometrie geoJson
     public $geom;
@@ -68,6 +69,18 @@ class Site
     public function __construct()
     {
         $this->site_app = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+    public function errors(){
+        if(empty($this->errors)){
+            return false;
+        }
+        return $this->errors;
     }
 
     /**

@@ -668,4 +668,43 @@ class SiteView
     {
         return $this->dern_obs;
     }
+    /**
+     * @var integer
+     */
+    private $type_id;
+
+
+    /**
+     * Set type_id
+     *
+     * @param integer $typeId
+     * @return SiteView
+     */
+    public function setTypeId($typeId)
+    {
+        $this->type_id = $typeId;
+
+        return $this;
+    }
+
+    /**
+     * Get type_id
+     *
+     * @return integer 
+     */
+    public function getTypeId()
+    {
+        return $this->type_id;
+    }
+
+    private $observateur_id;
+
+    public function setObservateurId($observateurId){
+        $this->observateur_id = $observateurId;
+        return $this;
+    }
+
+    public function getObservateurId(){
+        return $this->observateur_id;
+    }
 }

@@ -17,12 +17,14 @@ PNC\ChiroBundle\Entity\SiteView:
             type: text
         site_date:
             type: date
-        description_generale:
-            type: text
         geom:
             type: json_array
         nom_observateur:
             type: text
+        observateur_id:
+            type: integer
+        type_id:
+            type: integer
         type_lieu:
             type: text
         contact_nom:

@@ -64,15 +64,22 @@ class SiteController extends Controller{
      * Peuple un objet Site avec les infos passées en POST
      */
     private function hydrateSite($site, $data, $geometry){
+        $logger = $this->get('logger');
+        $norm = $this->get('normalizer');
+
         $gs = $this->get('geometry');
         $geom = $gs->pointJsonToWKT($geometry);
         $site->setSiteNom($data['siteNom']);
-        $site->setTypeId($data['typeLieu']);
-        $site->setSiteDate($data['siteDate']);
+        $site->setTypeId($data['typeId']);
+        $site->setSiteDate(\DateTime::createFromFormat('d/m/Y', $data['siteDate']));
         $site->setSiteDescription($data['siteDescription']);
         $site->setSiteCode($data['siteCode']);
         $site->setObservateurId($data['observateurId']);
         $site->setGeom($geom);
+
+        $logger->info($site->getTypeId());
+
+
         if($site->errors()){
             throw new Exception();
         }
@@ -84,11 +91,12 @@ class SiteController extends Controller{
      */
     private function hydrateInfoSite($site, $data){
         $site->setSiteAmenagement($data['siteAmenagement']);
+        $site->setSiteFrequentation($data['siteFrequentation']);
         $site->setSiteMenace($data['siteMenace']);
         $site->setContactNom($data['contactNom']);
         $site->setContactPrenom($data['contactPrenom']);
         $site->setContactAdresse($data['contactAdresse']);
-        $site->setContactCodePostal($data['contactCodePostal');
+        $site->setContactCodePostal($data['contactCodePostal']);
         $site->setContactVille($data['contactVille']);
         $site->setContactTelephone($data['contactTelephone']);
         $site->setContactPortable($data['contactPortable']);
@@ -101,16 +109,34 @@ class SiteController extends Controller{
 
     // path: PUT /chiro/site
     public function createAction(Request $req){
-        $res = json_decode($req->getContent());
+        $res = json_decode($req->getContent(), true);
         $props = $res['properties'];
+
+        // manager de base de données
+        $manager = $this->getDoctrine()->getManager();
+        // initialisation transaction
+        $manager->getConnection()->beginTransaction();
 
         $site = new Site();
         $infoSite = new InfoSite();
         try{
-            $this->populateSite($site, $props, $res['geometry']);
-            $this->populateInfoSite($infoSite, $props);
+            $this->hydrateSite($site, $props, $res['geometry']);
+            $this->hydrateInfoSite($infoSite, $props);
+
+            // enregistrement pnc.base_site
+            $manager->persist($site);
+            $manager->flush();
+
+            // enregistrement chiro.chiro_infos_site
+            $infoSite->setParentSite($site);
+            $manager->persist($infoSite);
+            $manager->flush();
+
+            // validation transaction
+            $manager->getConnection()->commit();
         }
         catch(Exception $e){
+            $manager->getConnection()->rollback();
             $errs = $site->errors() + $infoSite->errors();
 
             return new JsonResponse($errs, 422);
@@ -123,13 +149,57 @@ class SiteController extends Controller{
 
     // path: POST /chiro/site/{id}
     public function updateAction(Request $req, $id=null){
-        $res = json_decode($req->getContent());
+        $res = json_decode($req->getContent(), true);
+        $props = $res['properties'];
+
+        $norm = $this->get('normalizer');
+        $em = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
+        $infoSite = $em->findOneBy(array('site_id'=>$id));
+        $site = $infoSite->getParentSite();
+
+        // manager de base de données
+        $manager = $this->getDoctrine()->getManager();
+        // initialisation transaction
+        $manager->getConnection()->beginTransaction();
+
+        try{
+            $this->hydrateSite($site, $props, $res['geometry']);
+            $this->hydrateInfoSite($infoSite, $props);
+
+            // enregistrement pnc.base_site
+            $manager->flush();
+
+            // enregistrement chiro.chiro_infos_site
+            $infoSite->setParentSite($site);
+            $manager->flush();
+
+            // validation transaction
+            $manager->getConnection()->commit();
+        }
+        catch(Exception $e){
+            $manager->getConnection()->rollback();
+            $errs = $site->errors() + $infoSite->errors();
+
+            return new JsonResponse($errs, 422);
+        }
+
         return new JsonResponse(array('vue'=>'update', 'data'=>$res));
     }
 
 
     // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
-        return new Response('supprimer site chiro');
+        $em = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
+        $infoSite = $em->findOneBy(array('site_id'=>$id));
+        $site = $infoSite->getParentSite();
+
+        $manager = $this->getDoctrine()->getManager();
+
+        // suppression des éléments
+        $manager->remove($site);
+        $manager->remove($infoSite);
+        $manager->flush();
+
+        return new JsonResponse(array('vue'=>'delete', 'id'=>$id));
     }
 }
