@@ -91,7 +91,7 @@ pnc_chiro_site_suppr:
 # Configuration client
 #
 pnc_chiro_config:
-    path: /config
-    defaults: { _controller: PNCChiroBundle:Config:getConf }
+    path: /siteForm
+    defaults: { _controller: PNCChiroBundle:Config:getSiteForm }
     requirements:
         _method: GET

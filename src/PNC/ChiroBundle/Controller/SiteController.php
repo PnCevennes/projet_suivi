@@ -68,7 +68,7 @@ class SiteController extends Controller{
         $norm = $this->get('normalizer');
 
         $gs = $this->get('geometry');
-        $geom = $gs->pointJsonToWKT($geometry);
+        $geom = $gs->geoJsonToPoint($geometry);
         $site->setSiteNom($data['siteNom']);
         $site->setTypeId($data['typeId']);
         $site->setSiteDate(\DateTime::createFromFormat('d/m/Y', $data['siteDate']));

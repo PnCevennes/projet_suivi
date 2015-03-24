@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigController extends Controller{
-    public function getConfAction(){
+    public function getSiteFormAction(){
 
         /*
          * récupération du vocabulaire type lieu
