@@ -31,7 +31,8 @@ app.config(function($routeProvider){
 
 
 
-app.controller('baseController', function($scope, dataServ, mapService){
+app.controller('baseController', function($scope, $routeParams, dataServ, mapService){
+    $scope._appName = 'chiro';
     $scope.success = function(resp){
         $scope.data = resp;
     };
@@ -149,14 +150,13 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon.png'}));
         }
     }
-
 });
 
 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ, configServ){
+app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ, configServ, mapService){
 
     $scope._appName = $routeParams.appName;
 
@@ -179,6 +179,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
     };
 
+    $scope.$on('$destroy', function(){mapService.map.setZoom(11)});
     // récupération de la configuration d'affichage
     configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
@@ -246,6 +247,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         });
         $scope.marker.addTo($scope.tmpLayer);
         mapService.map.addLayer($scope.tmpLayer);
+        mapService.map.setView($scope.marker.getLatLng(), 14);
     };
 
     
@@ -316,6 +318,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         // suppression du layer temporaire
         $scope.tmpLayer.removeLayer($scope.marker);
         mapService.map.removeLayer($scope.tmpLayer);
+        mapService.map.setZoom(11);
     }
     
     $scope.$on('$destroy', $scope.clear); 

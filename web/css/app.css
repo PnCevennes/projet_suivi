@@ -1,33 +1,65 @@
 .block1{
-    width: 45%;
+    width: 50%;
     float: left;
-    margin-left: 2%;
-    background-color: #EEEEFF;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: #FFDDFF;
 }
 
 .block2{
-    width: 45%;
+    width: 50%;
     float: left;
-    margin-left: 2%;
-    background-color: #EEFFEE;
+    background-color: #DDEEEE;
 }
 
 .appmenu{
-    background-color: #FFFFEE;
+    background-color: #EEEECC;
 }
 
 .appmenu li{
-    display: inline-block;
-    padding: 3px;
     list-style-type: none;
 }
 
-.appmenu li:hover{
+.appmenu li>a{
+    display: inline-block;
+    width: 8%;
+    padding: 3px;
+}
+
+.appmenu li>a:hover{
     background-color: #DDDDEE;
 }
 
-#map{
+.block2 nav{
+    width: 20%;
+    float: left;
+}
+
+.block2 nav li{
+    list-style-type: none;
+}
+
+.block2 nav li>a{
+    display: block;
     width: 100%;
+}
+
+.block2 nav li>a:hover{
+    background-color: #CCDDDD;
+}
+
+#map{
+    width: 80%;
     height: 600px;
     border: 2px solid black;
+}
+
+#col-select ul{
+    visibility: hidden;
+    height: 0;
+}
+
+#col-select:hover ul{
+    visibility: visible;
+    height: 100%;
 }

@@ -18,20 +18,23 @@
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
-        <header>
-            <div ng-controller="baseController">
+        <div ng-controller="baseController">
+            <div>
                 <ul class="appmenu">
                     <li ng-repeat="item in data"><a ng-href="#/{{item.name}}/site">{{item.name}}</a></li>
                 </ul>
             </div>
-        </header>
-        <!--TODO-->
-
-        <div class="block2">
-            <div id="map"></div>
+            <div class="block2">
+                <nav>
+                    <ul>
+                        <li><a ng-href="#{{_appName}}/site">Sites</a></li>
+                        <li><a ng-href="#{{_appName}}/observation">Observations</a></li>
+                    </ul>
+                </nav>
+                <div id="map"></div>
+            </div>      
         </div>
         <ng-view></ng-view>
-        <!--/TODO-->
         <script src="js/services.js"></script>
         <script src="js/controleursChiro.js"></script>
     </body>
