@@ -11,7 +11,7 @@ app.config(function($routeProvider){
             templateUrl: 'js/templates/index.htm'
         })
         .when('/:appName/site', {
-            controller: 'siteController',
+            controller: 'siteListController',
             templateUrl: 'js/templates/siteList.htm'
         })
         .when('/:appName/edit/site', {
@@ -41,7 +41,7 @@ app.controller('baseController', function($scope, dataServ, mapService){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService){
+app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ){
     
     $scope._appName = $routeParams.appName;
 
@@ -84,6 +84,8 @@ app.controller('siteController', function($scope, $rootScope, $routeParams, $fil
                         $filter('orderBy')(filteredData, params.orderBy()) :
                         data;
                 var ids = [];
+                configServ.put('ngTable:Filter', params.filter());
+                configServ.put('ngTable:Sorting', params.sorting());
                 angular.forEach(orderedData, function(item){
                     ids.push(item.id);
                 });
@@ -92,6 +94,12 @@ app.controller('siteController', function($scope, $rootScope, $routeParams, $fil
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         });
+        configServ.get('ngTable:Filter', function(filter){
+            $scope.tableParams.filter(filter);
+        });
+        configServ.get('ngTable:Sorting', function(sorting){
+            $scope.tableParams.sorting(sorting);
+        });
 
         $scope.data = data;
         $scope.tableParams.reload();
@@ -99,11 +107,10 @@ app.controller('siteController', function($scope, $rootScope, $routeParams, $fil
 
     $scope.setSchema = function(schema){
         $scope.schema = schema.listSite;
-        console.log($scope.schema);
         dataServ.get($scope._appName + '/site', $scope.success);
     };
 
-    dataServ.get($scope._appName + '/siteForm', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema);
     
 
     /*
@@ -118,6 +125,10 @@ app.controller('siteController', function($scope, $rootScope, $routeParams, $fil
      * repercute la sélection d'un point dans la liste
      */
     $scope.selectPoint = function(item){
+        var old = $filter('filter')(mapService.marks, {feature: {properties: {$selected: true}}}, function(act, exp){return act==exp;});
+        if(old[0]){
+            $scope.changeIcon(old[0]);
+        }
         var res = $filter('filter')(mapService.marks, {feature: {properties: {id: item.id}}}, function(act, exp){return act==exp;});
         res[0].togglePopup();
         mapService.map.setView(res[0].getLatLng(), 14);
@@ -145,7 +156,7 @@ app.controller('siteController', function($scope, $rootScope, $routeParams, $fil
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ){
+app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ, configServ){
 
     $scope._appName = $routeParams.appName;
 
@@ -169,14 +180,14 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
     };
 
     // récupération de la configuration d'affichage
-    dataServ.get($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
+    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
 
 
 /*
  * controleur pour l'édition d'un site
  */
-app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService){
+app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ){
 
     $scope._appName = $routeParams.appName;
 
@@ -217,6 +228,9 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
             var_ = $scope.schema.formSite[idx];
             if($scope.data.properties[var_.name] == undefined){
                 $scope.data.properties[var_.name] = var_.default || '';
+                if(var_.type=='date'){
+                    $scope.data.properties[var_.name] = new Date().toISOString().replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
+                }
             }
         }
 
@@ -256,9 +270,10 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         if($scope.data.properties.id == ''){
             dataServ.put($scope._appName + '/site', $scope.data, function(resp, status){
                 $scope.updateClear();
-                $scope.debug = {r: resp, s:status};  
+                dataServ.forceReload = true;
+                $location.path($scope._appName + '/site');
             }, function(resp, status){
-                $scope.debug = status;   
+                $scope.errors = resp;
             });
         }
         else{
@@ -267,10 +282,12 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
                 // succès de l'ajout/mise à jour
 
                 //TODO remplacer debug par un service de messagerie
-                $scope.debug = {r: resp, s:status};
+                $scope.errors = resp;
 
                 // Mise à jour des données de la liste
                 $scope.updateClear();
+                dataServ.forceReload = true;
+                $location.path($scope._appName + '/site');
 
             }, function(resp, status){
                 // échec de l'ajout/mise à jour
@@ -278,8 +295,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
                 $scope.debug = status;   
             });
         }
-        dataServ.forceReload = true;
-        $location.path($scope._appName + '/site');
     };
 
     /*
@@ -306,7 +321,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('$destroy', $scope.clear); 
 
     // initialisation du formulaire
-    dataServ.get($scope._appName + '/siteForm', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema);
 
 });
 

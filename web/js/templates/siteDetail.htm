@@ -1,7 +1,8 @@
-<div>
-    <a ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
-</div>
-<div>
+<div class="block1">
+    <h3>Détail du site {{data.properties.siteNom}}</h3>
+    <div>
+        <a ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
+    </div>
     <table border="1">
         <tr ng-repeat="val in schema.formSite">
             <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>

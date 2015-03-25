@@ -24,6 +24,7 @@ class ConfigController extends Controller{
             }
         }
 
+
         /*
          * description du formulaire
          */
@@ -63,7 +64,7 @@ class ConfigController extends Controller{
                     'label'=>'Date créa.',
                     'type'=>'date',
                     'help'=>"Date d'ajout du site à la base de données",
-                    'options'=>array()
+                    'options'=>array(),
                 ),
                 array(
                     'name'=>'siteDescription',
@@ -161,6 +162,7 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'id',
                     'label'=>'ID',
+                    'filter'=>array('id'=>'text'),
                     'options'=>array('visible'=>true)
                 ),
                 array(
@@ -193,100 +195,12 @@ class ConfigController extends Controller{
                     'filter'=>array('dernObs'=>'text'),
                     'options'=>array()
                 ),
-                /*
-                array(
-                    'name'=>'siteDescription',
-                    'label'=>'Description',
-                    'type'=>'text',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'siteAmenagement',
-                    'label'=>'Amenagement',
-                    'type'=>'text',
-                    'help'=>'Amenagement du site',
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'siteFrequentation',
-                    'label'=>'Fréquentation',
-                    'type'=>'text',
-                    'help'=>'Fréquentation du site',
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'siteMenace',
-                    'label'=>'Menaces',
-                    'type'=>'text',
-                    'help'=>'Menaces pesant sur le site',
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                 */
                 array(
                     'name'=>'typeLieu',
                     'label'=>'Type',
                     'filter'=>array('typeLieu'=>'text'),
                     'options'=>array('visible'=>true)
                 ),
-                /*
-                array(
-                    'name'=>'contactNom',
-                    'label'=>'Nom du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>25, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactPrenom',
-                    'label'=>'Prénom du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>25, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactAdresse',
-                    'label'=>'Adresse du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>150, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactCodePostal',
-                    'label'=>'Code postal',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>5, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactVille',
-                    'label'=>'Ville',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>100, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactTelephone',
-                    'label'=>'Telephone',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>15, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactPortable',
-                    'label'=>'Portable',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('maxLength'=>15, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'contactCommentaire',
-                    'label'=>'Commentaires contact',
-                    'type'=>'text',
-                    'help'=>"Insultes & commentaires désobligeants",
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                */
             ),
         );
         return new JsonResponse($out);

@@ -1,35 +1,40 @@
-<div ng-if="data.properties.id">
-    <button type="button" ng-click="removeSite(data.properties.id)">Supprimer</button>
-</div>
-<form name="EditionSite" style="float: left;">
-    <div>
-        <h3>Coordonnées</h3>
-        <table border="1">
-            <tr>
-                <th>Longitude</th>
-                <th>Latitude</th>
-            </tr>
-            <tr>
-                <td>{{data.geometry.coordinates[0]}}</td>
-                <td>{{data.geometry.coordinates[1]}}</td>
-            </tr>
-        </table>
+<div class="block1">
+    <div ng-if="data.properties.id">
+        <button type="button" ng-click="removeSite(data.properties.id)">Supprimer</button>
     </div>
-    <div>
-        <h3>Informations</h3>
-        <table border="1">
-            <tr ng-repeat="val in schema.formSite">
-                <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
-                <td>
-                    <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data.properties[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
-                    <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
-                    <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
-                    <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
-                    <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data.properties[val.name]"></textarea>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <button type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer</button>
-</form>
-<pre>{{debug|json}}</pre>
+    <form name="EditionSite" style="float: left;">
+        <div>
+            <h3>Coordonnées</h3>
+            <table border="1">
+                <tr>
+                    <th>Longitude</th>
+                    <th>Latitude</th>
+                </tr>
+                <tr>
+                    <td>{{data.geometry.coordinates[0]}}</td>
+                    <td>{{data.geometry.coordinates[1]}}</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h3>Informations</h3>
+            <table border="1">
+                <tr ng-repeat="val in schema.formSite">
+                    <td>
+                        <h4>{{val.label}}</h4>
+                        <p>{{val.help}}</p>
+                        <p style="color: red;" ng-show="errors[val.name]">{{errors[val.name]}}</p>
+                    </td>
+                    <td>
+                        <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data.properties[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
+                        <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
+                        <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
+                        <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
+                        <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data.properties[val.name]"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <button type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer</button>
+    </form>
+<div>

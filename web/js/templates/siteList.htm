@@ -1,4 +1,11 @@
 <div class="block1">
+    <div>
+        <h4>Sélection des colonnes</h4>
+        <ul>
+            <li ng-repeat="column in schema"><input type="checkbox" ng-model="column.options.visible" />{{column.label}}</li>
+        </ul>
+    </div>
+    <h4>Sites</h4>
     <p>
     <a ng-href="#/{{_appName}}/edit/site">Nouveau site</a>
     </p>
@@ -11,8 +18,9 @@
                     ng-class="
                         {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
                         'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
-                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc')"
-                    >{{column.label}}</th>
+                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc')">
+                    {{column.label}}
+                </th>
             </tr>
             <tr class="ng-table-filters" ng-init="tableParams">
                 <th ng-repeat="column in schema" ng-show="column.options.visible" class="filter">
@@ -32,8 +40,3 @@
         </tbody>
     </table>
 <div>
-<div>
-    <ul>
-        <li ng-repeat="column in schema"><input type="checkbox" ng-model="column.options.visible" />{{column.label}}</li>
-    </ul>
-</div>
