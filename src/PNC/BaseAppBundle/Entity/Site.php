@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Site
 {
 
-    private $errors = array();
+    private $_errors = array();
 
     //geometrie geoJson
     public $geom;
@@ -77,10 +77,10 @@ class Site
      * ou false si tout est OK
      */
     public function errors(){
-        if(empty($this->errors)){
+        /*if(empty($this->_errors)){
             return false;
-        }
-        return $this->errors;
+        }*/
+        return $this->_errors;
     }
 
     /**
@@ -160,6 +160,9 @@ class Site
      */
     public function setSiteCode($siteCode)
     {
+        if(strlen($siteCode)<5){
+            $this->_errors['siteCode'] = 'code trop court';
+        }
         $this->site_code = $siteCode;
 
         return $this;

@@ -11,7 +11,7 @@ class InfoSite
 {
 
 
-    private $errors = array();
+    private $_errors = array();
     /**
      * @var integer
      */
@@ -99,10 +99,7 @@ class InfoSite
      * ou false si tout est OK
      */
     public function errors(){
-        if(empty($this->errors)){
-            return false;
-        }
-        return $this->errors;
+        return $this->_errors;
     }
 
     /**

@@ -81,7 +81,7 @@ class SiteController extends Controller{
 
 
         if($site->errors()){
-            throw new Exception();
+            throw new \Exception();
         }
     }
 
@@ -102,7 +102,7 @@ class SiteController extends Controller{
         $site->setContactPortable($data['contactPortable']);
         $site->setContactCommentaire($data['contactCommentaire']);
         if($site->errors()){
-            throw new Exception();
+            throw new \Exception();
         }
     }
 
@@ -135,9 +135,9 @@ class SiteController extends Controller{
             // validation transaction
             $manager->getConnection()->commit();
         }
-        catch(Exception $e){
+        catch(\Exception $e){
             $manager->getConnection()->rollback();
-            $errs = $site->errors() + $infoSite->errors();
+            $errs = array_merge($site->errors(), $infoSite->errors());
 
             return new JsonResponse($errs, 422);
         }
@@ -176,9 +176,9 @@ class SiteController extends Controller{
             // validation transaction
             $manager->getConnection()->commit();
         }
-        catch(Exception $e){
+        catch(\Exception $e){
             $manager->getConnection()->rollback();
-            $errs = $site->errors() + $infoSite->errors();
+            $errs = array_merge($site->errors(), $infoSite->errors());
 
             return new JsonResponse($errs, 422);
         }
