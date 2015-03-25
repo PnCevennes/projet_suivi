@@ -43,6 +43,30 @@ exemple:
 ira chercher dans le cache "chiro/site" (la liste des sites) l'élément correspondant à l'id passé en parametre de la vue.
 
 
+
+###ConfigServ
+
+Service permettant de stocker les configurations ou n'importe quelle variable pour les réutiliser de page en page
+
+
+####ConfigServ.getUrl(url, success)
+
+Envoie une requete GET au serveur, stocke la réponse en cache et renvoie la réponse via la callback success
+Une fois chargées depuis le serveur, les données ne sont plus jamais rechargées et sont modifiables par référence.
+
+
+####ConfigServ.get(key, success)
+
+Retourne la valeur associée à 'key' via la callback success
+
+
+####ConfigServ.put(key, value)
+
+Stocke la valeur 'value' dans le cache
+
+
+
+
 ###mapService
 
 Service gerant la carte leaflet

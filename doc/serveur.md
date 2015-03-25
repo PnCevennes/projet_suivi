@@ -144,4 +144,12 @@ Supprime un site
 
 les fonctions *SiteController::hydrateSite()* et *SiteController::hydrateInfoSite()* permettent de "peupler" les objets "Site" et "InfoSite"
 
+###Récupération des données POST en provenance d'angular
 
+La fonction "vue" doit recevoir l'objet 'Request' -> *Symfony\Component\HttpFoundation\Request*
+
+    public function trucAction(Request $req){
+        $post_data = json_decode($req->getContent(), true);
+    }
+
+NB: penser a passer 'true' en deuxième parametre de json_decode pour récupérer un tableau associatif et non une StdClass

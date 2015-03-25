@@ -63,6 +63,34 @@ app.service('dataServ', function($http, $filter){
 
 
 /*
+ * Service de récupération et stockage des configurations
+ */
+app.service('configServ', function(dataServ){
+    var cache = {};
+
+    this.getUrl = function(serv, success){
+        if(cache[serv]){
+            success(cache[serv]);
+        }
+        else{
+            dataServ.get(serv, function(resp){
+                cache[serv] = resp;
+                success(cache[serv]);
+            });
+        }
+    };
+
+    this.get = function(key, success){
+        success(cache[key]);
+    };
+
+    this.put = function(key, data){
+        cache[key] = data;
+    };
+});
+
+
+/*
  * Service de gestion de la carte leaflet
  */
 app.service('mapService', function($rootScope, $filter){
@@ -127,7 +155,7 @@ app.filter('datefr', function(){
             return input.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
         }
         catch(e){
-            return '';
+            return input;
         }
     }
 });
