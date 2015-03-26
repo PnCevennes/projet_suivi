@@ -152,7 +152,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             var res = $filter('filter')(data, {id: item.feature.properties.id});
             var idx = data.indexOf(res[0]);
             var pg = idx / $scope.tableParams.count();
-            $scope.tableParams.page(Math.ceil(pg));
+            $scope.tableParams.page(Math.ceil(pg) || 1);
 
         });
         var old = $filter('filter')(mapService.marks, {feature: {properties: {$selected: true}}}, function(act, exp){return act==exp;});
