@@ -18,7 +18,7 @@
                     ng-class="
                         {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
                         'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
-                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc')">
+                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
                     {{column.label}}
                 </th>
             </tr>

@@ -95,6 +95,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                     ids.push(item.id);
                 });
                 mapService.filterMarks(ids);
+                configServ.put('ngTable:orderedData', orderedData);
                 params.total(orderedData.length); // set total for recalc pagination
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
@@ -142,10 +143,18 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     };
 
     /*
-     *
+     * repercute la selection d'un point sur la carte
      */
     $scope.selectPoint = function(item){
         // changement d'état du point précédemment sélectionné
+        configServ.get('ngTable:orderedData', function(data){
+            var cnt = data.length;
+            var res = $filter('filter')(data, {id: item.feature.properties.id});
+            var idx = data.indexOf(res[0]);
+            var pg = idx / $scope.tableParams.count();
+            $scope.tableParams.page(Math.ceil(pg));
+
+        });
         var old = $filter('filter')(mapService.marks, {feature: {properties: {$selected: true}}}, function(act, exp){return act==exp;});
         if(old[0]){
             $scope.changeIcon(old[0]);
