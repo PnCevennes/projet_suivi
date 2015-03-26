@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in $data" ng-click="selectPoint(item)" ng-class="{'active': item.$selected}">
+            <tr ng-repeat="item in $data" ng-click="selectSite(item)" ng-class="{'active': item.$selected}">
                 <td ng-repeat="column in schema" ng-show="column.options.visible" sortable="column.name">{{item[column.name]|datefr}}</td>
                 <td><a ng-href="#/{{_appName}}/site/{{item.id}}">Voir</a></td>
                 <td><a ng-href="#/{{_appName}}/edit/site/{{item.id}}">Editer</a></td>

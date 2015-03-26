@@ -30,7 +30,10 @@ app.config(function($routeProvider){
 });
 
 
-
+/*
+ * Controleur de base
+ * TODO authentification
+ */
 app.controller('baseController', function($scope, $routeParams, dataServ, mapService){
     $scope._appName = 'chiro';
     $scope.success = function(resp){
@@ -38,6 +41,7 @@ app.controller('baseController', function($scope, $routeParams, dataServ, mapSer
     };
     dataServ.get('config/apps', $scope.success);
 });
+
 
 /*
  * controleur pour la carte et la liste des sites
@@ -118,14 +122,15 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
      * evenements
      */
     $scope.$on('mapService:itemClick', function(ev, item){
-        $scope.changeIcon(item);
+        $scope.selectPoint(item);
     });
 
 
     /*
      * repercute la sélection d'un point dans la liste
      */
-    $scope.selectPoint = function(item){
+    $scope.selectSite = function(item){
+        // changement d'état du point précédemment sélectionné
         var old = $filter('filter')(mapService.marks, {feature: {properties: {$selected: true}}}, function(act, exp){return act==exp;});
         if(old[0]){
             $scope.changeIcon(old[0]);
@@ -135,6 +140,18 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         mapService.map.setView(res[0].getLatLng(), 14);
         $scope.changeIcon(res[0]);
     };
+
+    /*
+     *
+     */
+    $scope.selectPoint = function(item){
+        // changement d'état du point précédemment sélectionné
+        var old = $filter('filter')(mapService.marks, {feature: {properties: {$selected: true}}}, function(act, exp){return act==exp;});
+        if(old[0]){
+            $scope.changeIcon(old[0]);
+        }
+        $scope.changeIcon(item);
+    }
 
 
     /*
