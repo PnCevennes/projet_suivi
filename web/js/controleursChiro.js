@@ -49,8 +49,10 @@ app.controller('baseController', function($scope, $routeParams, dataServ, mapSer
 app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ){
     
     $scope._appName = $routeParams.appName;
+    $scope.nb_sites = {};
 
     mapService.clear();
+    mapService.map.setZoom(10);
     $scope.success = function(resp){
         var data=[];
         $scope.items = resp;
@@ -97,6 +99,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                 mapService.filterMarks(ids);
                 configServ.put('ngTable:orderedData', orderedData);
                 params.total(orderedData.length); // set total for recalc pagination
+                $scope.nb_sites = {total: data.length, current: orderedData.length};
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         });
@@ -207,7 +210,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
     };
 
-    $scope.$on('$destroy', function(){mapService.map.setZoom(11)});
+    $scope.$on('$destroy', function(){});
     // récupération de la configuration d'affichage
     configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
@@ -346,7 +349,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         // suppression du layer temporaire
         $scope.tmpLayer.removeLayer($scope.marker);
         mapService.map.removeLayer($scope.tmpLayer);
-        mapService.map.setZoom(11);
     }
     
     $scope.$on('$destroy', $scope.clear); 

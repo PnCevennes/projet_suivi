@@ -5,7 +5,7 @@
             <li ng-repeat="column in schema"><input type="checkbox" ng-model="column.options.visible" />{{column.label}}</li>
         </ul>
     </div>
-    <h4>Sites</h4>
+    <h4>Sites ({{nb_sites.current}}/{{nb_sites.total}})</h4>
     <p>
     <a ng-href="#/{{_appName}}/edit/site">Nouveau site</a>
     </p>
