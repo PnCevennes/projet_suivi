@@ -3,30 +3,31 @@
     <head>
         <meta charset="utf8">
 
-        <link rel="stylesheet" href="css/lib/leaflet.css">
-        <link rel="stylesheet" href="css/lib/bootstrap.min.css">
-        <link rel="stylesheet" href="css/lib/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/lib/ng-table.css"></script>
-        <link rel="stylesheet" href="css/lib/MarkerCluster.Default.css"></script>
-
+        <script src="js/lib/jquery/jquery.min.js"></script>
+        <script src="js/lib/bootstrap.min.js"></script>
         <script src="js/lib/angular-1.3.9/angular.js"></script>
         <script src="js/lib/angular-1.3.9/angular-route.js"></script>
         <script src="js/lib/leaflet/leaflet.js"></script>
         <script src="js/lib/ng-table.min.js"></script>
         <script src="js/lib/leaflet.markercluster.js"></script>
 
+        <link rel="stylesheet" href="css/lib/leaflet.css">
+        <link rel="stylesheet" href="css/lib/bootstrap.min.css">
+        <link rel="stylesheet" href="css/lib/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/lib/ng-table.css"></script>
+        <link rel="stylesheet" href="css/lib/MarkerCluster.Default.css"></script>
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
         <div ng-controller="baseController">
             <div>
-                <ul class="appmenu">
+                <ul class="nav nav-tabs">
                     <li ng-repeat="item in data"><a ng-href="#/{{item.name}}/site">{{item.name}}</a></li>
                 </ul>
             </div>
-            <div class="block2">
-                <nav>
-                    <ul>
+            <div class="col-lg-6">
+                <nav class="col-lg-2">
+                    <ul class="nav nav-stacked">
                         <li><a ng-href="#{{_appName}}/site">Sites</a></li>
                         <li><a ng-href="#{{_appName}}/observation">Observations</a></li>
                     </ul>

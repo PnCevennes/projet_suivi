@@ -1,14 +1,16 @@
-<div class="block1">
-    <div id="col-select">
-        <h4>Sélection des colonnes</h4>
-        <ul>
+<div class="col-lg-6">
+    <div class="btn-group row">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Colonnes<span class="caret"></span></button>
+        <ul class="dropdown-menu" role="menu">
             <li ng-repeat="column in schema"><input type="checkbox" ng-model="column.options.visible" />{{column.label}}</li>
         </ul>
     </div>
-    <h4>Sites ({{nb_sites.current}}/{{nb_sites.total}})</h4>
-    <p>
-    <a ng-href="#/{{_appName}}/edit/site">Nouveau site</a>
+    <div class="row">
+    <h4 class="col-lg-5">Sites <small>({{nb_sites.current}}/{{nb_sites.total}})</small></h4>
+    <p class="col-lg-1 col-lg-offset-5">
+    <a ng-href="#/{{_appName}}/edit/site" class="btn btn-success">Nouveau site</a>
     </p>
+    </div>
     <table border="1" ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
         <thead>
             <tr>

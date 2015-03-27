@@ -1,7 +1,4 @@
-<div class="block1">
-    <div ng-if="data.properties.id">
-        <button type="button" ng-click="removeSite(data.properties.id)">Supprimer</button>
-    </div>
+<div class="col-lg-6">
     <form name="EditionSite" style="float: left;">
         <div>
             <h3>Coordonnées</h3>
@@ -36,6 +33,7 @@
                 </tr>
             </table>
         </div>
-        <button type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer</button>
+        <button class="btn btn-success" type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer </button>
+        <button class="btn btn-danger" type="button" ng-if="data.properties.id" ng-click="removeSite(data.properties.id)">Supprimer</button>
     </form>
 <div>

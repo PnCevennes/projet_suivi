@@ -283,7 +283,9 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
 
     
     $scope.removeSite = function(){
-        dataServ.delete($scope._appName + '/site/'+$routeParams.id, $scope.deleted);
+        if(confirm('Attention, cette action supprimera ce site définitivement !\nPensez aux habitants avant de confirmer')){
+            dataServ.delete($scope._appName + '/site/'+$routeParams.id, $scope.deleted);
+        }
     };
 
     $scope.deleted = function(resp){
