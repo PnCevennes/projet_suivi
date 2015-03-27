@@ -74,7 +74,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
          */
         $scope.tableParams = new ngTableParams({
             page: 1,
-            count: 20,
+            count: 10,
             filter: {},
             sorting: {}
         },
@@ -190,11 +190,13 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
     $scope.setData = function(resp){
         $scope.data= angular.copy(resp);
 
+        //affichage du type de lieu en fonction de son type_id
         var field = $filter('filter')($scope.schema.formSite, {name: 'typeId'}, function(act, exp){return act==exp});
         var label = $filter('filter')(field[0].options.choices, {id: $scope.data.properties.typeId}, function(act, exp){
             return act==exp;
         });
         $scope.data.properties.typeId = label[0].libelle;
+        mapService.map.setView([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]], 14);
     };
 
     // chargement du schéma <- dataServ.get(chiro/siteForm)

@@ -3,11 +3,11 @@
     <div>
         <a ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
     </div>
-    <table border="1">
-        <tr ng-repeat="val in schema.formSite">
+    <table border="1" style="width: 100%">
+        <tr ng-repeat="val in schema.detailSite">
             <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
             <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
-            <td ng-if="val.type!='date'">{{data.properties[val.name]}}</td>
+            <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
         </tr>
     </table>
 </div>

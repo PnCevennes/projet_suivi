@@ -102,7 +102,7 @@ app.service('mapService', function($rootScope, $filter){
     var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
     this.map.addLayer(tiles);
 
-    this.markLayer = new L.markerClusterGroup();
+    this.markLayer = new L.markerClusterGroup({disableClusteringAtZoom: 13});
     this.map.addLayer(this.markLayer);
 
 
@@ -160,3 +160,34 @@ app.filter('datefr', function(){
     }
 });
 
+
+app.directive('xhrinput', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            url: '=',
+            initial: '=',
+            target: '='
+        },
+        templateUrl: 'js/templates/xhrinput.htm',
+        controller: function($scope, dataServ){
+            $scope.target = $scope.initial;
+            $scope.find = function(){
+                if($scope._input.length>1){
+                    $scope.show = true;
+                    dataServ.post($scope.url, {label: $scope._input}, function(resp){
+                        $scope.hints = resp;
+                    });
+                }
+            };
+            $scope.select = function(idx){
+                $scope.show = false;
+                $scope._input = $scope.hints[idx].label;
+                $scope.target = $scope.hints[idx].id;
+            };
+            dataServ.post($scope.url, {id: $scope.initial}, function(resp){
+                $scope._input = resp.label;
+            });
+        }
+    }
+});

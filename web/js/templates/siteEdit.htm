@@ -30,6 +30,7 @@
                         <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
                         <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
                         <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
+                        <xhrinput url="val.options.url" initial="data.properties[val.name]" target="data.properties[val.name]" ng-if="val.type=='xhr'"></xhrinput>
                         <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data.properties[val.name]"></textarea>
                     </td>
                 </tr>
