@@ -1,0 +1,18 @@
+PNC\BaseAppBundle\Entity\Observateurs:
+    type: entity
+    table: utilisateurs.t_roles
+    schema: utilisateurs
+    repositoryClass: PNC\BaseAppBundle\Repositories\ObservateursRepository
+    id:
+        id_role:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nom_role:
+            type: string
+            length: 250
+        prenom_role:
+            type: string
+            length: 250

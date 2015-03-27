@@ -52,8 +52,8 @@ class SiteController extends Controller{
 
         $out_item = array('type'=>'Feature');
         $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs'));
-            $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-            $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
+        $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
+        $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
         $out_item['geometry'] = $info->getGeom();
 
         return new JsonResponse($out_item);

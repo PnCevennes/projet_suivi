@@ -2,12 +2,23 @@
 #    path:     /hello/{name}
 #    defaults: { _controller: PNCBaseAppBundle:Default:index }
 
+pnc_suivi_index:
+    path: /
+    defaults: { _controller: PNCBaseAppBundle:Config:index }
+    requirements:
+        _method: GET
 
 pnc_config_getapps:
     path: /config/apps
     defaults: { _controller: PNCBaseAppBundle:Config:getApps }
     requirements:
         _method: GET
+
+pnc_config_getobservateurs:
+    path: /observateurs
+    defaults: {_controller: PNCBaseAppBundle:Config:getObservateurs }
+    requirements:
+        _method: POST 
 
 
 pnc_observation_list:
