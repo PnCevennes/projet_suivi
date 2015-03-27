@@ -79,6 +79,16 @@ Module servant de base aux autres modules.
 
 ##Routes
 
+**GET /**
+*ConfigController::indexAction*
+
+retourne la page suivi.html - base de l'application JS
+
+**POST /observateurs**
+*ConfigController::getObservateursAction*
+
+Retourne une liste d'objets {id, label} adaptée pour la directive JS xhrinput
+
 **GET /apps**
 *ConfigController::getAppsAction*
 
@@ -100,6 +110,7 @@ Module spécifique aux protocoles Chiro
 
 
 ##Routes
+
 
 
 **GET /chiro/siteForm**

@@ -86,7 +86,24 @@ Service gerant la carte leaflet
 **mapService.getMarker(id)** retourne le marker correspondant à l'id fourni
 
 
+##Filtres
+
 ###datefr
 
 Filtre d'affichage à appliquer sur une date format iso (YYYY-MM-DD...)
 retourne la date au format français (DD/MM/YYYY)
+
+
+
+##Directives
+
+###xhrinput
+
+input type texte dont le contenu est envoyé au serveur pour recherche
+
+valeur de retour attendue : dictionnaire : 
+
+    {
+    id: valeur effective
+    label: valeur de tri
+    }
