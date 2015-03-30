@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use PNC\BaseAppBundle\Entity\Site;
 use PNC\ChiroBundle\Entity\InfoSite;
+use PNC\ChiroBundle\Entity\SiteFichiers;
 
 class SiteController extends Controller{
     
@@ -26,7 +27,8 @@ class SiteController extends Controller{
 
         foreach($infos as $info){
             $out_item = array('type'=>'Feature');
-            $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs'));
+            $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
+            $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : '';
             $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
             $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
             $out_item['geometry'] = $info->getGeom();
@@ -51,7 +53,8 @@ class SiteController extends Controller{
         }
 
         $out_item = array('type'=>'Feature');
-        $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs'));
+        $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
+        $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : '';
         $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
         $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
         $out_item['geometry'] = $info->getGeom();
@@ -127,6 +130,15 @@ class SiteController extends Controller{
             $manager->persist($site);
             $manager->flush();
 
+            // enregistrement des fichiers liés
+            foreach($res['properties']['siteAmenagement'] as $fich_id){
+                $fichier = new SiteFichiers();
+                $fichier->setSiteId($site->getId());
+                $fichier->setFichierId($fich_id);
+                $manager->persist($fichier);
+                $manager->flush();
+            }
+
             // enregistrement chiro.chiro_infos_site
             $infoSite->setParentSite($site);
             $manager->persist($infoSite);
@@ -153,6 +165,7 @@ class SiteController extends Controller{
         $props = $res['properties'];
 
         $norm = $this->get('normalizer');
+        // entity manager sites
         $em = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
         $infoSite = $em->findOneBy(array('site_id'=>$id));
         $site = $infoSite->getParentSite();
@@ -168,6 +181,18 @@ class SiteController extends Controller{
 
             // enregistrement pnc.base_site
             $manager->flush();
+
+
+            // enregistrement des fichiers liés
+            foreach($res['properties']['siteAmenagement'] as $fich_id){
+                if(!strpos($fich_id, '_')){
+                    $fichier = new SiteFichiers();
+                    $fichier->setSiteId($site->getId());
+                    $fichier->setFichierId($fich_id);
+                    $manager->persist($fichier);
+                    $manager->flush();
+                }
+            }
 
             // enregistrement chiro.chiro_infos_site
             $infoSite->setParentSite($site);

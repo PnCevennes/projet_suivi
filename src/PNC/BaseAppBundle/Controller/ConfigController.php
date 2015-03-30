@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use PNC\BaseAppBundle\Entity\Fichiers;
+
 class ConfigController extends Controller{
     
 
@@ -45,5 +47,27 @@ class ConfigController extends Controller{
             }
         }
         return new JsonResponse($out);
+    }
+
+    public function uploadAction(Request $req){
+        $manager = $this->getDoctrine()->getManager();
+        $manager->getConnection()->beginTransaction();
+        print_r($req->files);
+        foreach($req->files as $file){
+            try{
+                $fichier = new Fichiers();
+                $fichier->setPath($file->getClientOriginalName());
+                $manager->persist($fichier);
+                $manager->flush();
+
+                $file->move('uploads', $fichier->getId() . '_' . $fichier->getPath());
+                $manager->getConnection()->commit();
+            }
+            catch(\Exception $e){
+                $manager->getConnection()->rollback();
+                return new JsonResponse(array('err'=>$e->getMessage()), 422);
+            }
+            return new JsonResponse(array('id'=>$fichier->getId()));
+        }
     }
 }

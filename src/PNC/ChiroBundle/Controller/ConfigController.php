@@ -75,9 +75,9 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'siteAmenagement',
                     'label'=>'Amenagement',
-                    'type'=>'text',
+                    'type'=>'file',
                     'help'=>'Amenagement du site',
-                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                    'options'=>array()
                 ),
                 array(
                     'name'=>'siteFrequentation',
@@ -254,7 +254,7 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'siteAmenagement',
                     'label'=>'Amenagement',
-                    'type'=>'string',
+                    'type'=>'file',
                     'help'=>'Amenagement du site',
                     'options'=>array()
                 ),

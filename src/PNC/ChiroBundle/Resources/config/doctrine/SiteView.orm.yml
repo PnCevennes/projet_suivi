@@ -38,7 +38,7 @@ PNC\ChiroBundle\Entity\SiteView:
         site_menace:
             type: text
         site_amenagement:
-            type: text
+            type: json_array
         site_commentaire:
             type: text
         contact_nom:

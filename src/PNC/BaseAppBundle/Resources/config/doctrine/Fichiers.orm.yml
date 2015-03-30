@@ -1,0 +1,15 @@
+PNC\BaseAppBundle\Entity\Fichiers:
+    type: entity
+    table: pnc.uploads
+    schema: pnc
+    repositoryClass: PNC\BaseAppBundle\Repositories\FichiersRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        path:
+            type: string
+            length: 250

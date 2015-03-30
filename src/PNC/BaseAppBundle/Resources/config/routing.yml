@@ -20,6 +20,10 @@ pnc_config_getobservateurs:
     requirements:
         _method: POST 
 
+pnc_config_upload:
+    path: /upload
+    defaults: {_controller: PNCBaseAppBundle:Config:upload }
+
 
 pnc_observation_list:
     path:     /observation
