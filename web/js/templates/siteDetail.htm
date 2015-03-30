@@ -8,6 +8,11 @@
             <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
             <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
             <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
+            <td ng-if="val.type=='file'">
+                <div ng-repeat="item in data.properties[val.name]">
+                    <a ng-href="upload/{{item}}">{{item.slice(item.indexOf('_')+1)}}</a>
+                </div>
+            </td>
         </tr>
     </table>
 </div>

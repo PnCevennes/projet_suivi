@@ -1,4 +1,4 @@
-var app = angular.module('suiviProtocole', ['ngRoute', 'ngTable']);
+var app = angular.module('suiviProtocole', ['ngRoute', 'ngTable', 'angularFileUpload']);
 
 
 /*
@@ -188,6 +188,62 @@ app.directive('xhrinput', function(){
             dataServ.post($scope.url, {id: $scope.initial}, function(resp){
                 $scope._input = resp.label;
             });
+        }
+    }
+});
+
+
+app.directive('multi', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            refer: '=',
+        },
+        templateUrl: 'js/templates/multi.htm',
+        controller: function($scope){
+            $scope.data = $scope.refer || [];
+            $scope.add_line = function(){
+                $scope.data.push(null);
+            };
+            $scope.remove_line = function(idx){
+                $scope.data.splice(idx, 1);
+            };
+        }
+    }
+});
+
+
+app.directive('fileinput', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            fileids: '='
+        },
+        templateUrl: 'js/templates/fileinput.htm',
+        controller: function($scope, $rootScope, $upload){
+            if($scope.fileids == undefined){
+                scope.fileids = [];
+            }
+            $scope.$watch('upload_file', function(){
+                $scope.upload($scope.upload_file);
+            });
+            $scope.upload = function(files){
+                console.log(files);
+                angular.forEach(files, function(item){
+                    $scope.lock = true;
+                    $upload.upload({
+                        url: '/upload',
+                        file: item,
+                        })
+                        .progress(function(evt){
+                            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
+                        })
+                        .success(function(data){
+                            $scope.fileids.push(data.file_id);
+                            $scope.lock = false;
+                        });
+                });
+            };
         }
     }
 });
