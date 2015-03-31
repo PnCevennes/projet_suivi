@@ -16,10 +16,4 @@ PNC\ChiroBundle\Entity\ConditionsObservation:
             type: decimal
         obs_humidite:
             type: decimal
-    
-    oneToOne:
-        parent_obs:
-            targetEntity: PNC\BaseAppBundle\Entity\Observation
-            joinColumn:
-                name: obs_id
-                referencedColumnName: id
+

@@ -1,0 +1,25 @@
+PNC\ChiroBundle\Entity\ObservationView:
+    type: entity
+    table: chiro.vue_chiro_obs
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\ObservationView
+    id:
+        id:
+            type: integer
+            id: true
+    fields:
+        site_id:
+            type: integer
+        obs_date:
+            type: date
+        obs_commentaire:
+            type: text
+        obs_id_table_src:
+            type: integer
+        obs_temperature:
+            type: decimal
+        obs_humidite:
+            type: decimal
+        nb_taxons:
+            type: integer
+

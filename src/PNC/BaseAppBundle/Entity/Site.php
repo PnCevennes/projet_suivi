@@ -160,8 +160,8 @@ class Site
      */
     public function setSiteCode($siteCode)
     {
-        if(strlen($siteCode)<5){
-            $this->_errors['siteCode'] = 'code trop court';
+        if(strlen($siteCode)<5 || strlen($siteCode)>25){
+            $this->_errors['siteCode'] = "le code doit faire entre 5 et 25 caractères";
         }
         $this->site_code = $siteCode;
 
@@ -255,6 +255,9 @@ class Site
      */
     public function setSiteType(\PNC\ExtBundle\Entity\Lexique $siteType = null)
     {
+        if($siteType == null){
+            $this->_errors['siteType'] = "Type de lieu indéfini";
+        }
         $this->site_type = $siteType;
 
         return $this;

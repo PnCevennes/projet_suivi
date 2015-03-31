@@ -45,11 +45,6 @@ class InfoSite
     /**
      * @var string
      */
-    private $site_amenagement;
-
-    /**
-     * @var string
-     */
     private $site_commentaire;
 
     /**
@@ -225,29 +220,6 @@ class InfoSite
     public function getSiteMenace()
     {
         return $this->site_menace;
-    }
-
-    /**
-     * Set site_amenagement
-     *
-     * @param string $siteAmenagement
-     * @return InfoSite
-     */
-    public function setSiteAmenagement($siteAmenagement)
-    {
-        $this->site_amenagement = $siteAmenagement;
-
-        return $this;
-    }
-
-    /**
-     * Get site_amenagement
-     *
-     * @return string 
-     */
-    public function getSiteAmenagement()
-    {
-        return $this->site_amenagement;
     }
 
     /**

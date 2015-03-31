@@ -49,12 +49,12 @@ class SiteController extends Controller{
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:SiteView');
         $info = $repo->findOneById($id);
         if(!$info){
-            return new JsonResponse(array('v'=>'detail site', 'err'=>404));
+            return new JsonResponse(array('v'=>'detail site', 'err'=>404), 404);
         }
 
         $out_item = array('type'=>'Feature');
         $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
-        $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : '';
+        $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : array();
         $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
         $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
         $out_item['geometry'] = $info->getGeom();
@@ -93,7 +93,6 @@ class SiteController extends Controller{
      * Peuple un objet InfoSite avec les infos passées en POST
      */
     private function hydrateInfoSite($site, $data){
-        $site->setSiteAmenagement($data['siteAmenagement']);
         $site->setSiteFrequentation($data['siteFrequentation']);
         $site->setSiteMenace($data['siteMenace']);
         $site->setContactNom($data['contactNom']);
@@ -129,16 +128,7 @@ class SiteController extends Controller{
             // enregistrement pnc.base_site
             $manager->persist($site);
             $manager->flush();
-
-            // enregistrement des fichiers liés
-            foreach($res['properties']['siteAmenagement'] as $fich_id){
-                $fichier = new SiteFichiers();
-                $fichier->setSiteId($site->getId());
-                $fichier->setFichierId($fich_id);
-                $manager->persist($fichier);
-                $manager->flush();
-            }
-
+            
             // enregistrement chiro.chiro_infos_site
             $infoSite->setParentSite($site);
             $manager->persist($infoSite);
@@ -152,6 +142,22 @@ class SiteController extends Controller{
             $errs = array_merge($site->errors(), $infoSite->errors());
 
             return new JsonResponse($errs, 422);
+        }
+
+        try{
+            // enregistrement des fichiers liés
+            foreach($res['properties']['siteAmenagement'] as $fich_id){
+                if(!strpos($fich_id, '_')){
+                    $fichier = new SiteFichiers();
+                    $fichier->setSiteId($site->getId());
+                    $fichier->setFichierId($fich_id);
+                    $manager->persist($fichier);
+                    $manager->flush();
+                }
+            }
+        }
+        catch(\Exception $e){
+            print_r($e);
         }
 
 
@@ -183,16 +189,7 @@ class SiteController extends Controller{
             $manager->flush();
 
 
-            // enregistrement des fichiers liés
-            foreach($res['properties']['siteAmenagement'] as $fich_id){
-                if(!strpos($fich_id, '_')){
-                    $fichier = new SiteFichiers();
-                    $fichier->setSiteId($site->getId());
-                    $fichier->setFichierId($fich_id);
-                    $manager->persist($fichier);
-                    $manager->flush();
-                }
-            }
+            
 
             // enregistrement chiro.chiro_infos_site
             $infoSite->setParentSite($site);
@@ -206,6 +203,21 @@ class SiteController extends Controller{
             $errs = array_merge($site->errors(), $infoSite->errors());
 
             return new JsonResponse($errs, 422);
+        }
+        try{
+            // enregistrement des fichiers liés
+            foreach($res['properties']['siteAmenagement'] as $fich_id){
+                if(!strpos($fich_id, '_')){
+                    $fichier = new SiteFichiers();
+                    $fichier->setSiteId($site->getId());
+                    $fichier->setFichierId($fich_id);
+                    $manager->persist($fichier);
+                    $manager->flush();
+                }
+            }
+        }
+        catch(\Exception $e){
+            print_r($e);
         }
 
         return new JsonResponse(array('vue'=>'update', 'data'=>$res));

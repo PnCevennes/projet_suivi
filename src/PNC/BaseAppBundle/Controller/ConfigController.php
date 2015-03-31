@@ -52,7 +52,6 @@ class ConfigController extends Controller{
     public function uploadAction(Request $req){
         $manager = $this->getDoctrine()->getManager();
         $manager->getConnection()->beginTransaction();
-        print_r($req->files);
         foreach($req->files as $file){
             try{
                 $fichier = new Fichiers();
@@ -62,12 +61,12 @@ class ConfigController extends Controller{
 
                 $file->move('uploads', $fichier->getId() . '_' . $fichier->getPath());
                 $manager->getConnection()->commit();
+                return new JsonResponse(array('id'=>$fichier->getId()));
             }
             catch(\Exception $e){
                 $manager->getConnection()->rollback();
                 return new JsonResponse(array('err'=>$e->getMessage()), 422);
             }
-            return new JsonResponse(array('id'=>$fichier->getId()));
         }
     }
 }

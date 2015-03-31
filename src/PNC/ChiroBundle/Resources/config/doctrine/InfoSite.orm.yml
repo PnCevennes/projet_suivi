@@ -25,9 +25,6 @@ PNC\ChiroBundle\Entity\InfoSite:
         site_menace:
             type: text
             nullable: true
-        site_amenagement:
-            type: text
-            nullable: true
         site_commentaire:
             type: text
             nullable: true

@@ -3,8 +3,7 @@ PNC\ChiroBundle\Entity\SiteFichiers:
     table: chiro.rel_chirosite_fichiers
     schema: chiro
     repositoryClass: PNC\ChiroBundle\Repositories\SiteFichiersRepository
-
-    fields:
+    id:
         site_id:
             type: integer
         fichier_id:

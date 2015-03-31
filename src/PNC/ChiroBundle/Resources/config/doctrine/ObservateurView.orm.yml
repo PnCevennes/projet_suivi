@@ -1,0 +1,20 @@
+PNC\ChiroBundle\Entity\ObservateurView:
+    type: entity
+    table: chiro.vue_observateurs_acteurs
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\ObservateurView
+    id:
+        obr_id:
+            type: integer
+        role:
+            type: text
+    fields:
+        obr_nom: 
+            type: text
+        obr_prenom:
+            type: text
+        nom_complet:
+            type: text
+        nom_complet_lower:
+            type: text
+

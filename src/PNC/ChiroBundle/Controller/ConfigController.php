@@ -77,6 +77,7 @@ class ConfigController extends Controller{
                     'label'=>'Amenagement',
                     'type'=>'file',
                     'help'=>'Amenagement du site',
+                    'default'=>array(),
                     'options'=>array()
                 ),
                 array(
@@ -98,7 +99,8 @@ class ConfigController extends Controller{
                     'label'=>'Type',
                     'type'=>'select',
                     'help'=>'Type de lieu',
-                    'options'=>array('choices'=>$typesLieu)
+                    'options'=>array('choices'=>$typesLieu),
+                    'default'=>37
                 ),
                 array(
                     'name'=>'contactNom',
@@ -202,138 +204,145 @@ class ConfigController extends Controller{
                 ),
             ),
             'detailSite'=>array(
-                array(
-                    'name'=>'id',
-                    'label'=>'id',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array('hidden'=>true)
+                'groups'=>array('Informations', 'Details', 'Contact'),
+                'Informations'=>array(
+                    array(
+                        'name'=>'siteNom',
+                        'label'=>'Nom',
+                        'type'=>'hidden',
+                        'help'=>'Nom du site',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'id',
+                        'label'=>'id',
+                        'type'=>'hidden',
+                        'help'=>'',
+                        'options'=>array('hidden'=>true)
+                    ),
+                    array(
+                        'name'=>'siteCode',
+                        'label'=>'Code site',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'nomObservateur',
+                        'label'=>'Observateur',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array(),
+                    ),
+                    array(
+                        'name'=>'dernObs',
+                        'label'=>'Dernière observation',
+                        'help'=>"Date de la dernière observation effectuée sur ce site",
+                        'type'=>'date',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'typeId',
+                        'label'=>'Type',
+                        'type'=>'string',
+                        'help'=>'Type de lieu',
+                        'options'=>array()
+                    )
                 ),
-                array(
-                    'name'=>'siteNom',
-                    'label'=>'Nom',
-                    'type'=>'string',
-                    'help'=>'Nom du site',
-                    'options'=>array()
+                "Details"=>array(
+                    array(
+                        'name'=>'siteDate',
+                        'label'=>'Date créa.',
+                        'type'=>'date',
+                        'help'=>"Date d'ajout du site à la base de données",
+                        'options'=>array(),
+                    ),
+                    array(
+                        'name'=>'siteDescription',
+                        'label'=>'Description',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'siteAmenagement',
+                        'label'=>'Amenagement',
+                        'type'=>'file',
+                        'help'=>'Amenagement du site',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'siteFrequentation',
+                        'label'=>'Fréquentation',
+                        'type'=>'string',
+                        'help'=>'Fréquentation du site',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'siteMenace',
+                        'label'=>'Menaces',
+                        'type'=>'string',
+                        'help'=>'Menaces pesant sur le site',
+                        'options'=>array()
+                    ),
                 ),
-                array(
-                    'name'=>'siteCode',
-                    'label'=>'Code site',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'nomObservateur',
-                    'label'=>'Observateur',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array(),
-                ),
-                array(
-                    'name'=>'siteDate',
-                    'label'=>'Date créa.',
-                    'type'=>'date',
-                    'help'=>"Date d'ajout du site à la base de données",
-                    'options'=>array(),
-                ),
-                array(
-                    'name'=>'dernObs',
-                    'label'=>'Dernière observation',
-                    'help'=>"Date de la dernière observation effectuée sur ce site",
-                    'type'=>'date',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'siteDescription',
-                    'label'=>'Description',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'siteAmenagement',
-                    'label'=>'Amenagement',
-                    'type'=>'file',
-                    'help'=>'Amenagement du site',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'siteFrequentation',
-                    'label'=>'Fréquentation',
-                    'type'=>'string',
-                    'help'=>'Fréquentation du site',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'siteMenace',
-                    'label'=>'Menaces',
-                    'type'=>'string',
-                    'help'=>'Menaces pesant sur le site',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'typeId',
-                    'label'=>'Type',
-                    'type'=>'string',
-                    'help'=>'Type de lieu',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactNom',
-                    'label'=>'Nom du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactPrenom',
-                    'label'=>'Prénom du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactAdresse',
-                    'label'=>'Adresse du contact',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactCodePostal',
-                    'label'=>'Code postal',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactVille',
-                    'label'=>'Ville',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactTelephone',
-                    'label'=>'Telephone',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactPortable',
-                    'label'=>'Portable',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'contactCommentaire',
-                    'label'=>'Commentaires contact',
-                    'type'=>'string',
-                    'help'=>"Insultes & commentaires désobligeants",
-                    'options'=>array()
+                "Contact"=>array(
+                    array(
+                        'name'=>'contactNom',
+                        'label'=>'Nom du contact',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactPrenom',
+                        'label'=>'Prénom du contact',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactAdresse',
+                        'label'=>'Adresse du contact',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactCodePostal',
+                        'label'=>'Code postal',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactVille',
+                        'label'=>'Ville',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactTelephone',
+                        'label'=>'Telephone',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactPortable',
+                        'label'=>'Portable',
+                        'type'=>'string',
+                        'help'=>'',
+                        'options'=>array()
+                    ),
+                    array(
+                        'name'=>'contactCommentaire',
+                        'label'=>'Commentaires contact',
+                        'type'=>'string',
+                        'help'=>"Insultes & commentaires désobligeants",
+                        'options'=>array()
+                    ),
                 ),
             ),
         );

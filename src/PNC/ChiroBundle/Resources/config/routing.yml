@@ -87,6 +87,41 @@ pnc_chiro_site_suppr:
         _method: DELETE
 
 
+
+
+#
+# Vues observation
+#
+pnc_chiro_observation_list:
+    path:   /observation
+    defaults: {_controller: PNCChiroBundle:Observation:list}
+    requirements:
+        _method: GET
+
+pnc_chiro_observation_detail:
+    path:     /observation/{id}
+    defaults: { _controller: PNCChiroBundle:Observation:detail }
+    requirements:
+        _method: GET
+
+pnc_chiro_observation_save:
+    path:     /observation
+    defaults: { _controller: PNCChiroBundle:Observation:create, id: null }
+    requirements:
+        _method: PUT
+
+pnc_chiro_observation_update:
+    path:     /observation/{id}
+    defaults: { _controller: PNCChiroBundle:Observation:update, id: null }
+    requirements:
+        _method: POST
+
+pnc_chiro_observation_suppr:
+    path:     /observation/{id}
+    defaults: { _controller: PNCChiroBundle:Observation:delete }
+    requirements:
+        _method: DELETE
+
 #
 # Configuration client
 #
