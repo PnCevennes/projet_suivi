@@ -224,11 +224,13 @@ app.directive('fileinput', function(){
             if($scope.fileids == undefined){
                 scope.fileids = [];
             }
+            $scope.delete_file = function(f_id){
+                alert('TODO');
+            };
             $scope.$watch('upload_file', function(){
                 $scope.upload($scope.upload_file);
             });
             $scope.upload = function(files){
-                console.log(files);
                 angular.forEach(files, function(item){
                     $scope.lock = true;
                     $upload.upload({
@@ -239,7 +241,7 @@ app.directive('fileinput', function(){
                             $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
                         })
                         .success(function(data){
-                            $scope.fileids.push(data.file_id);
+                            $scope.fileids.push(data.id);
                             $scope.lock = false;
                         });
                 });

@@ -205,15 +205,26 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
     // chargement du schéma <- dataServ.get(chiro/siteForm)
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
+        $scope.schema.detailSite.Informations.shown = true;
 
         // récupération des données à afficher
         dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
+    };
+
+    $scope.select_group = function(group){
+        angular.forEach($scope.schema.detailSite.groups, function(grp){
+            $scope.schema.detailSite[grp].shown = false;
+        });
+        $scope.schema.detailSite[group].shown = true;
     };
 
     $scope.$on('$destroy', function(){});
     // récupération de la configuration d'affichage
     configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
 });
+
+
+
 
 
 /*
@@ -259,7 +270,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         for(idx in $scope.schema.formSite){
             var_ = $scope.schema.formSite[idx];
             if($scope.data.properties[var_.name] == undefined){
-                $scope.data.properties[var_.name] = var_.default || '';
+                $scope.data.properties[var_.name] = var_.default != undefined ? var_.default: '';
                 if(var_.type=='date'){
                     $scope.data.properties[var_.name] = new Date().toISOString().replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
                 }

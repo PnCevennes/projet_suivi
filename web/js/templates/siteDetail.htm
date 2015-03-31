@@ -3,16 +3,21 @@
     <div>
         <a ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
     </div>
-    <table border="1" style="width: 100%">
-        <tr ng-repeat="val in schema.detailSite">
-            <td><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
-            <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
-            <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
-            <td ng-if="val.type=='file'">
-                <div ng-repeat="item in data.properties[val.name]">
-                    <a ng-href="upload/{{item}}">{{item.slice(item.indexOf('_')+1)}}</a>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <ul class="nav nav-tabs nav-justified">
+        <li ng-repeat="group in schema.detailSite.groups" ng-class="active: schema.detailSite[group].shown, "><a ng-click="select_group(group)">{{group}}</a></li>
+    </ul>
+    <div ng-repeat="group in schema.detailSite.groups" ng-show="schema.detailSite[group].shown" class="col-lg-6">
+        <table style="witdh: 100%">
+            <tr ng-repeat="val in schema.detailSite[group]">
+                <td ng-if="val.type!='hidden'" style="padding-right: 3em;"><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
+                <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
+                <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
+                <td ng-if="val.type=='file'">
+                    <div ng-repeat="item in data.properties[val.name]">
+                        <a ng-href="uploads/{{item}}">{{item.slice(item.indexOf('_')+1)}}</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div> 
 </div>
