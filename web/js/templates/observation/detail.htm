@@ -1,1 +1,9 @@
-detail obs
+<div class="col-lg-6">
+    <table class="table">
+        <tr ng-repeat="field in schema.detailObs">
+            <td>{{field.label}}</td>
+            <td ng-if="field.type=='date'">{{data[field.name]|datefr}}</td>
+            <td ng-if="field.type!='date'">{{data[field.name]}}</td>
+        </tr>
+    </table>
+</div>
