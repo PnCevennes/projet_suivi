@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigController extends Controller{
-    public function getSiteFormAction(){
+    public function getSiteConfigAction(){
 
         /*
          * récupération du vocabulaire type lieu
@@ -33,9 +33,9 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'id',
                     'label'=>'id',
-                    'type'=>'num',
+                    'type'=>'hidden',
                     'help'=>'',
-                    'options'=>array('hidden'=>true)
+                    'options'=>array()
                 ),
                 array(
                     'name'=>'siteNom',
@@ -346,6 +346,112 @@ class ConfigController extends Controller{
                 ),
             ),
         );
+        return new JsonResponse($out);
+    }
+
+    public function getObservationConfigAction(){
+
+        $out = array(
+            'detailObs'=>array(
+                array(
+                    'name'=>'siteNom',
+                    'label'=>'Site',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsDate',
+                    'label'=>'Date',
+                    'type'=>'date',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsCommentaire',
+                    'label'=>'Commentaires',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsTemperature',
+                    'label'=>'Température',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsHumidite',
+                    'label'=>'Humidité',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+            ),
+            'listObs'=>array(
+            ),
+            'formObs'=>array(
+                array(
+                    'name'=>'id',
+                    'label'=>'Id',
+                    'type'=>'hidden',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'siteId',
+                    'label'=>'Site',
+                    'type'=>'hidden',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'observateurs',
+                    'label'=>'Observateurs',
+                    'type'=>'multi_xhr',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'validateur',
+                    'label'=>'Validateur',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsDate',
+                    'label'=>'Date',
+                    'type'=>'date',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsCommentaire',
+                    'label'=>'Commentaires',
+                    'type'=>'text',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsTemperature',
+                    'label'=>'Température',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsHumidite',
+                    'label'=>'Humidité',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+
+            ),
+        );
+
         return new JsonResponse($out);
     }
 }
