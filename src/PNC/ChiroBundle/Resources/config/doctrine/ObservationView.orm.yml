@@ -23,3 +23,15 @@ PNC\ChiroBundle\Entity\ObservationView:
         nb_taxons:
             type: integer
 
+    manyToMany:
+        observateurs:
+            targetEntity: PNC\ChiroBundle\Entity\ObservateurView
+            joinTable:
+                name: pnc.rel_obs_obr
+                joinColumns:
+                    obs_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    obr_id:
+                        referencedColumnName: obr_id
+

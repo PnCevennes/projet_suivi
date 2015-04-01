@@ -1,6 +1,6 @@
 PNC\ChiroBundle\Entity\ObservateurView:
     type: entity
-    table: chiro.vue_observateurs_acteurs
+    table: chiro.vue_utilisateurs_acteurs
     schema: chiro
     repositoryClass: PNC\ChiroBundle\Repositories\ObservateurView
     id:
