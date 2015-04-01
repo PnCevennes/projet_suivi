@@ -1,10 +1,12 @@
-<div class="col-lg-6">
-    <h3>Détail du site {{data.properties.siteNom}}</h3>
-    <div>
-        <a ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
+<div class="row col-lg-6">
+    <h3 class="col-lg-5">Détail du site {{data.properties.siteNom}}</h3>
+    <div class="col-lg-1 col-lg-offset-5">
+        <a class="btn btn-warning" ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Editer</a>
     </div>
+</div>
+<div class="row col-lg-6">
     <ul class="nav nav-tabs nav-justified">
-        <li ng-repeat="group in schema.detailSite.groups" ng-class="active: schema.detailSite[group].shown, "><a ng-click="select_group(group)">{{group}}</a></li>
+        <li ng-repeat="group in schema.detailSite.groups" ><a ng-click="select_group(group)">{{group}} <span class="glyphicon glyphicon-ok" ng-if="schema.detailSite[group].shown"</span></a></li>
     </ul>
     <div ng-repeat="group in schema.detailSite.groups" ng-show="schema.detailSite[group].shown" class="col-lg-6">
         <table style="witdh: 100%">
@@ -14,10 +16,30 @@
                 <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
                 <td ng-if="val.type=='file'">
                     <div ng-repeat="item in data.properties[val.name]">
-                        <a ng-href="uploads/{{item}}">{{item.slice(item.indexOf('_')+1)}}</a>
+                        <a ng-href="uploads/{{item}}" target="blank">{{item.slice(item.indexOf('_')+1)}}</a>
                     </div>
                 </td>
             </tr>
         </table>
     </div> 
+</div>
+<div class="row col-lg-6">
+    <h3 class="col-lg-5">Observations</h3>
+    <div class="col-lg-1 col-lg-offset-5">
+        <a class="btn btn-success" ng-href="#/{{_appName}}/edit/observation/site/{{data.properties.id}}">Nouvelle obs.</a>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Date</th>
+            <th>Observateur(s)</th>
+        </tr>
+        <tr ng-repeat="obs in observations">
+            <td class="col-lg-2"><a ng-href="#/{{_appName}}/observation/{{obs.id}}">Observation du {{obs.obsDate|datefr}}</a></td>
+            <td class="col-lg-4">
+                <ul class="list-unstyled">
+                    <li ng-repeat="obr in obs.observateurs">{{obr.nomComplet}}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
 </div>

@@ -1,8 +1,8 @@
 <div class="col-lg-6">
-    <form name="EditionSite" style="float: left;">
-        <div>
+    <form name="EditionSite">
+        <div class="row col-lg-12">
             <h3>Coordonnées</h3>
-            <table border="1">
+            <table class="table table-bordered">
                 <tr>
                     <th>Longitude</th>
                     <th>Latitude</th>
@@ -13,16 +13,17 @@
                 </tr>
             </table>
         </div>
-        <div>
+        <div class="row col-lg-12">
             <h3>Informations</h3>
-            <table border="1">
+            <table class="table table-bordered">
                 <tr ng-repeat="val in schema.formSite">
-                    <td>
+                    <td class="col-lg-3">
                         <h4>{{val.label}}</h4>
                         <p>{{val.help}}</p>
                         <p style="color: red;" ng-show="errors[val.name]">{{errors[val.name]}}</p>
                     </td>
                     <td>
+                        <input name="{{val.name}}" type="hidden" ng-if="val.type=='hidden'" ng-model="data.properties[val.name]"><span ng-if="val.type=='hidden'">{{data.properties[val.name]}}</span>
                         <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data.properties[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
                         <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
                         <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
