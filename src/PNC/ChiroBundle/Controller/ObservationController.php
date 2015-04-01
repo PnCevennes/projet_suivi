@@ -19,8 +19,12 @@ class ObservationController extends Controller{
         $out = array();
 
         foreach($infos as $info){
-            $out_item = $norm->normalize($info, array('obsDate'));
+            $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
             $out_item['obsDate'] = !empty($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+            $out_item['observateurs'] = array();
+            foreach($info->getObservateurs() as $obr){
+                $out_item['observateurs'][] = $norm->normalize($obr);
+            }
             $out[] = $out_item;
         }
 
