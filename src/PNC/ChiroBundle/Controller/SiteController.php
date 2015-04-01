@@ -30,7 +30,7 @@ class SiteController extends Controller{
             $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
             $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : '';
             $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-            $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
+            $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
             $out_item['geometry'] = $info->getGeom();
             $out[] = $out_item;
         }
@@ -56,7 +56,7 @@ class SiteController extends Controller{
         $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
         $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : array();
         $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-        $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDerObs()->format('Y-m-d'): '';
+        $out_item['properties']['dernObservation'] = !empty($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
         $out_item['geometry'] = $info->getGeom();
 
         return new JsonResponse($out_item);

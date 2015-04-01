@@ -98,6 +98,12 @@ pnc_chiro_observation_list:
     requirements:
         _method: GET
 
+pnc_chiro_observation_list_site:
+    path:   /observation/site/{id}
+    defaults: {_controller: PNCChiroBundle:Observation:listSite}
+    requirements:
+        _method: GET
+
 pnc_chiro_observation_detail:
     path:     /observation/{id}
     defaults: { _controller: PNCChiroBundle:Observation:detail }
@@ -106,7 +112,7 @@ pnc_chiro_observation_detail:
 
 pnc_chiro_observation_save:
     path:     /observation
-    defaults: { _controller: PNCChiroBundle:Observation:create, id: null }
+    defaults: { _controller: PNCChiroBundle:Observation:create }
     requirements:
         _method: PUT
 
