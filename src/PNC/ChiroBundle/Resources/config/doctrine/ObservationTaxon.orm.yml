@@ -15,39 +15,33 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
         obs_tx_initial:
             type: string
             length: 250
-            nullable: true
         obs_espece_incertaine:
             type: boolean
             options:
                 default: false
         obs_effectif_abs:
             type: integer
-            nullable: true
         obs_nb_male_adulte:
             type: integer
-            nullable: true
         obs_nb_femelle_adulte:
             type: integer
-            nullable: true
         obs_nb_male_juvenile:
             type: integer
-            nullable: true
         obs_nb_femelle_juvenile:
             type: integer
-            nullable: true
         obs_nb_male_indetermine:
             type: integer
-            nullable: true
         obs_nb_femelle_indetermine:
             type: integer
-            nullable: true
         obs_nb_indetermine_indetermine:
             type: integer
-            nullable: true
         obs_obj_status_validation:
             type: integer
-            nullable: true
         obs_commentaire:
+            type: text
+        cd_nom:
+            type: integer
+        nom_complet:
             type: text
 
     manyToOne:

@@ -10,6 +10,8 @@ PNC\ChiroBundle\Entity\ObservationView:
     fields:
         site_id:
             type: integer
+        site_nom:
+            type: text
         obs_date:
             type: date
         obs_commentaire:

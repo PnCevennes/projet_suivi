@@ -278,4 +278,32 @@ class ObservationView
     {
         return $this->observateurs;
     }
+    /**
+     * @var string
+     */
+    private $site_nom;
+
+
+    /**
+     * Set site_nom
+     *
+     * @param string $siteNom
+     * @return ObservationView
+     */
+    public function setSiteNom($siteNom)
+    {
+        $this->site_nom = $siteNom;
+
+        return $this;
+    }
+
+    /**
+     * Get site_nom
+     *
+     * @return string 
+     */
+    public function getSiteNom()
+    {
+        return $this->site_nom;
+    }
 }
