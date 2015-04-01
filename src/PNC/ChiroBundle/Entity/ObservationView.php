@@ -233,4 +233,49 @@ class ObservationView
     {
         return $this->nb_taxons;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $observateurs;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->observateurs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add observateurs
+     *
+     * @param \PNC\ChiroBundle\Entity\ObservateurView $observateurs
+     * @return ObservationView
+     */
+    public function addObservateur(\PNC\ChiroBundle\Entity\ObservateurView $observateurs)
+    {
+        $this->observateurs[] = $observateurs;
+
+        return $this;
+    }
+
+    /**
+     * Remove observateurs
+     *
+     * @param \PNC\ChiroBundle\Entity\ObservateurView $observateurs
+     */
+    public function removeObservateur(\PNC\ChiroBundle\Entity\ObservateurView $observateurs)
+    {
+        $this->observateurs->removeElement($observateurs);
+    }
+
+    /**
+     * Get observateurs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObservateurs()
+    {
+        return $this->observateurs;
+    }
 }
