@@ -18,6 +18,10 @@ app.config(function($routeProvider){
             controller: 'observationEditController',
             templateUrl: 'js/templates/observation/edit.htm'
         })
+        .when('/:appName/edit/observation/site/:id', {
+            controller: 'observationEditController',
+            templateUrl: 'js/templates/observation/edit.htm'
+        })
         .when('/:appName/edit/observation/:id', {
             controller: 'observationEditController',
             templateUrl: 'js/templates/observation/edit.htm'
@@ -42,6 +46,16 @@ app.controller('observationEditController', function($scope, $routeParams){
     $scope._appName = $routeParams.appName;
 });
 
-app.controller('observationDetailController', function($scope, $routeParams){
+app.controller('observationDetailController', function($scope, $routeParams, dataServ, configServ){
     $scope._appName = $routeParams.appName;
+
+    $scope.setSchema = function(resp){
+        $scope.schema = angular.copy(resp);
+        dataServ.get($scope._appName + '/observation/' + $routeParams.id, $scope.setData);
+    };
+
+    $scope.setData = function(resp){
+        $scope.data = angular.copy(resp);
+    }
+    configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
 });

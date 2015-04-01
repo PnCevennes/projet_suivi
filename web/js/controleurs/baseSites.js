@@ -101,7 +101,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         dataServ.get($scope._appName + '/site', $scope.success);
     };
 
-    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);
     
 
     /*
@@ -171,8 +171,8 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
 
     $scope._appName = $routeParams.appName;
 
-    // chargement des données <- dataServ.get(chiro/site/:id)
-    $scope.setData = function(resp){
+    // chargement des données sites <- dataServ.get(chiro/site/:id)
+    $scope.setSites = function(resp){
         $scope.data= angular.copy(resp);
 
         //affichage du type de lieu en fonction de son type_id
@@ -182,7 +182,12 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         });
         $scope.data.properties.typeId = label[0].libelle;
         mapService.map.setView([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]], 14);
+        dataServ.get($scope._appName + '/observation/site/' + $routeParams.id, $scope.setObs);
     };
+
+    $scope.setObs = function(resp){
+        $scope.observations = angular.copy(resp);
+    }
 
     // chargement du schéma <- dataServ.get(chiro/siteForm)
     $scope.setSchema = function(resp){
@@ -190,7 +195,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
         $scope.schema.detailSite.Informations.shown = true;
 
         // récupération des données à afficher
-        dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
+        dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setSites);
     };
 
     $scope.select_group = function(group){
@@ -202,7 +207,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
 
     $scope.$on('$destroy', function(){});
     // récupération de la configuration d'affichage
-    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema, function(err){console.log(err);}, true);
+    configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema, function(err){console.log(err);}, true);
 });
 
 
@@ -349,7 +354,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('$destroy', $scope.clear); 
 
     // initialisation du formulaire
-    configServ.getUrl($scope._appName + '/siteForm', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);
 
 });
 
