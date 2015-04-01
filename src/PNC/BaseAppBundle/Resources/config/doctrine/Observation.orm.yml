@@ -19,15 +19,3 @@ PNC\BaseAppBundle\Entity\Observation:
         obs_site_id:
             type: integer
 
-    manyToMany:
-        observateurs:
-            targetEntity: PNC\ExtBundle\Entity\Observateur
-            joinTable:
-                name: pnc.rel_obs_obr
-                joinColumns:
-                    obs_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    obr_id:
-                        referencedColumnName: id
-
