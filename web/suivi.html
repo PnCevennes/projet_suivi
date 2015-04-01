@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" ng-app="chiro">
+<html lang="fr" ng-app="appSuiviProtocoles">
     <head>
         <meta charset="utf8">
 
@@ -15,8 +15,8 @@
         <link rel="stylesheet" href="css/lib/leaflet.css">
         <link rel="stylesheet" href="css/lib/bootstrap.min.css">
         <link rel="stylesheet" href="css/lib/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/lib/ng-table.css"></script>
-        <link rel="stylesheet" href="css/lib/MarkerCluster.Default.css"></script>
+        <link rel="stylesheet" href="css/lib/ng-table.css">
+        <link rel="stylesheet" href="css/lib/MarkerCluster.Default.css">
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
@@ -37,7 +37,9 @@
             </div>      
         </div>
         <ng-view></ng-view>
+        <script src="js/app.js"></script>
         <script src="js/services.js"></script>
-        <script src="js/controleursChiro.js"></script>
+        <script src="js/controleurs/baseSites.js"></script>
+        <script src="js/controleurs/baseObservations.js"></script>
     </body>
 </html>

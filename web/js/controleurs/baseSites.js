@@ -1,45 +1,27 @@
-var app = angular.module('chiro', ['suiviProtocole', 'ngRoute', 'ngTable']);
+var app = angular.module('baseSites');
 
 
 /*
- * Configuration des routes
+ * configuration des routes
  */
 app.config(function($routeProvider){
     $routeProvider
-        .when('/', {
-            controller: 'baseController',
-            templateUrl: 'js/templates/index.htm'
-        })
         .when('/:appName/site', {
             controller: 'siteListController',
-            templateUrl: 'js/templates/siteList.htm'
+            templateUrl: 'js/templates/site/list.htm'
         })
         .when('/:appName/edit/site', {
             controller: 'siteEditController',
-            templateUrl: 'js/templates/siteEdit.htm'
+            templateUrl: 'js/templates/site/edit.htm'
         })
         .when('/:appName/edit/site/:id', {
             controller: 'siteEditController',
-            templateUrl: 'js/templates/siteEdit.htm'
+            templateUrl: 'js/templates/site/edit.htm'
         })
         .when('/:appName/site/:id', {
             controller: 'siteDetailController',
-            templateUrl: 'js/templates/siteDetail.htm'
-        })
-        .otherwise({redirectTo: '/'});
-});
-
-
-/*
- * Controleur de base
- * TODO authentification
- */
-app.controller('baseController', function($scope, $routeParams, dataServ, mapService){
-    $scope._appName = 'chiro';
-    $scope.success = function(resp){
-        $scope.data = resp;
-    };
-    dataServ.get('config/apps', $scope.success);
+            templateUrl: 'js/templates/site/detail.htm'
+        });
 });
 
 

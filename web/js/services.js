@@ -1,5 +1,4 @@
-var app = angular.module('suiviProtocole', ['ngRoute', 'ngTable', 'angularFileUpload']);
-
+var app = angular.module('suiviProtocoleServices');
 
 /*
  * Service de gestion des communications avec le serveur
