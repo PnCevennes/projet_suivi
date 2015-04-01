@@ -1,9 +1,15 @@
+<h3>Observation n°{{data.id}}</h3>
 <div class="col-lg-6">
     <table class="table">
         <tr ng-repeat="field in schema.detailObs">
             <td>{{field.label}}</td>
             <td ng-if="field.type=='date'">{{data[field.name]|datefr}}</td>
-            <td ng-if="field.type!='date'">{{data[field.name]}}</td>
+            <td ng-if="field.type=='string'">{{data[field.name]}}</td>
+            <td ng-if="field.type=='multi'">
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in data[field.name]"><span ng-repeat="opt in field.options">{{item[opt]}}</span></li>
+                </ul>
+            </td>
         </tr>
     </table>
 </div>

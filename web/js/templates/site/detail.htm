@@ -28,7 +28,8 @@
     <div class="col-lg-1 col-lg-offset-5">
         <a class="btn btn-success" ng-href="#/{{_appName}}/edit/observation/site/{{data.properties.id}}">Nouvelle obs.</a>
     </div>
-    <table class="table table-bordered">
+    <p class="row col-lg-12 text-info" ng-if="observations.length==0">Aucune observation à l'heure actuelle</p>
+    <table class="table table-bordered" ng-if="observations.length>0">
         <tr>
             <th>Date</th>
             <th>Observateur(s)</th>

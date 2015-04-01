@@ -368,6 +368,13 @@ class ConfigController extends Controller{
                     'options'=>array()
                 ),
                 array(
+                    'name'=>'observateurs',
+                    'label'=>'Observateurs',
+                    'type'=>'multi',
+                    'help'=>'',
+                    'options'=>array('nomComplet')
+                ),
+                array(
                     'name'=>'obsCommentaire',
                     'label'=>'Commentaires',
                     'type'=>'string',

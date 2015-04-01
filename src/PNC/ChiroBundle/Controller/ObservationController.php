@@ -77,7 +77,9 @@ class ObservationController extends Controller{
         $out_item['obsDate'] = !empty($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
-            $out_item['observateurs'][] = $norm->normalize($observateur);
+            if($observateur->getRole() == 'observateur'){
+                $out_item['observateurs'][] = $norm->normalize($observateur);
+            }
         }
 
         //TODO ajouter liste des obs taxons + biometries
