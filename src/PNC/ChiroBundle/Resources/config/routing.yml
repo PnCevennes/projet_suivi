@@ -131,8 +131,15 @@ pnc_chiro_observation_suppr:
 #
 # Configuration client
 #
-pnc_chiro_config:
-    path: /siteForm
-    defaults: { _controller: PNCChiroBundle:Config:getSiteForm }
+pnc_chiro_config_site:
+    path: /siteConfig
+    defaults: { _controller: PNCChiroBundle:Config:getSiteConfig }
     requirements:
         _method: GET
+
+pnc_chiro_config_obs:
+    path: /obsConfig
+    defaults: { _controller: PNCChiroBundle:Config:getObservationConfig }
+    requirements:
+        _method: GET
+
