@@ -14,21 +14,23 @@ class ConfigController extends Controller{
     // path: POST chiro/observateurs
     public function getObservateursAction(Request $req){
         $input = json_decode($req->getContent(), true);
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
-        if(isset($input['id'])){
-            $resp = $repo->findOneBy(array('id_role'=>$input['id']));
+        $out = array();
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
+        if(isset($input['id']) && $input['id']){
+            $resp = $repo->findOneBy(array('obr_id'=>$input['id']));
                 $out = array(
-                    'label'=>$resp->getNomRole() . ' ' . $resp->getPrenomRole(), 
-                    'id'=>$resp->getIdRole());
+                    'label'=>$resp->getNomComplet(),
+                    'id'=>$resp->getObrId());
             return new JsonResponse($out);
         }
         else{
-            $resp = $repo->getLike($input['label']);
-            $out = array();
-            foreach($resp as $item){
-                $out[] = array(
-                    'label'=>$item->getNomRole() . ' ' . $item->getPrenomRole(), 
-                    'id'=>$item->getIdRole());
+            if(isset($input['label']) && $input['label']){
+                $resp = $repo->getLike($input['label']);
+                foreach($resp as $item){
+                    $out[] = array(
+                        'label'=>$item->getNomComplet(),
+                        'id'=>$item->getObrId());
+                }
             }
         }
         return new JsonResponse($out);

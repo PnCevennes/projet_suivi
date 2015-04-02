@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObservateurView extends EntityRepository
 {
+    public function getLike($like){
+        $mgr = $this->getEntityManager();
+        $like = '%' . strtolower(str_replace(' ', '% ', $like)) . '%';
+        $qr = $mgr->createQuery("SELECT o FROM PNCChiroBundle:ObservateurView o WHERE o.nom_complet_lower LIKE ?1");
+        $qr->setParameter(1, $like);
+        return $qr->getResult();
+    }
 }
