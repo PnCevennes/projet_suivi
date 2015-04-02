@@ -14,6 +14,10 @@ PNC\ChiroBundle\Entity\ObservationView:
             type: text
         obs_date:
             type: date
+        numerisateur_id:
+            type: integer
+        numerisateur:
+            type: text
         obs_commentaire:
             type: text
         obs_id_table_src:

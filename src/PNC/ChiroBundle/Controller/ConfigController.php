@@ -368,6 +368,13 @@ class ConfigController extends Controller{
                     'options'=>array()
                 ),
                 array(
+                    'name'=>'numerisateur',
+                    'label'=>'Numerisateur',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
                     'name'=>'observateurs',
                     'label'=>'Observateurs',
                     'type'=>'multi',
@@ -421,13 +428,6 @@ class ConfigController extends Controller{
                     'options'=>array()
                 ),
                 array(
-                    'name'=>'validateur',
-                    'label'=>'Validateur',
-                    'type'=>'xhr',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
                     'name'=>'obsDate',
                     'label'=>'Date',
                     'type'=>'date',
@@ -444,14 +444,14 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'obsTemperature',
                     'label'=>'Température',
-                    'type'=>'num',
+                    'type'=>'text',
                     'help'=>'',
                     'options'=>array()
                 ),
                 array(
                     'name'=>'obsHumidite',
                     'label'=>'Humidité',
-                    'type'=>'num',
+                    'type'=>'text',
                     'help'=>'',
                     'options'=>array()
                 ),

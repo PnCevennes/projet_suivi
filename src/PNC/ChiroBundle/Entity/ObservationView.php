@@ -306,4 +306,60 @@ class ObservationView
     {
         return $this->site_nom;
     }
+    /**
+     * @var integer
+     */
+    private $numerisateur_id;
+
+    /**
+     * @var string
+     */
+    private $numerisateur;
+
+
+    /**
+     * Set numerisateur_id
+     *
+     * @param integer $numerisateurId
+     * @return ObservationView
+     */
+    public function setNumerisateurId($numerisateurId)
+    {
+        $this->numerisateur_id = $numerisateurId;
+
+        return $this;
+    }
+
+    /**
+     * Get numerisateur_id
+     *
+     * @return integer 
+     */
+    public function getNumerisateurId()
+    {
+        return $this->numerisateur_id;
+    }
+
+    /**
+     * Set numerisateur
+     *
+     * @param string $numerisateur
+     * @return ObservationView
+     */
+    public function setNumerisateur($numerisateur)
+    {
+        $this->numerisateur = $numerisateur;
+
+        return $this;
+    }
+
+    /**
+     * Get numerisateur
+     *
+     * @return string 
+     */
+    public function getNumerisateur()
+    {
+        return $this->numerisateur;
+    }
 }
