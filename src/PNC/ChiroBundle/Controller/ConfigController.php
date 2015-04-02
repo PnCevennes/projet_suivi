@@ -423,9 +423,9 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'observateurs',
                     'label'=>'Observateurs',
-                    'type'=>'multi_xhr',
+                    'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('multi'=>true, 'url'=>'/observateurs', 'ref'=>'nomComplet')
                 ),
                 array(
                     'name'=>'obsDate',
