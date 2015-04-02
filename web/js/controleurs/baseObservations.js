@@ -88,6 +88,14 @@ app.controller('observationSiteEditController', function($scope, $routeParams, c
 
     };
 
+    $scope.save = function(){
+
+    };
+
+    $scope.remove = function(){
+
+    };
+
     configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
 
 });

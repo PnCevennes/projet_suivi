@@ -199,7 +199,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
     };
 
     $scope.select_group = function(group){
-        angular.forEach($scope.schema.detailSite.groups, function(grp){
+        angular.forEach($scope.schema.detailSite.__groups__, function(grp){
             $scope.schema.detailSite[grp].shown = false;
         });
         $scope.schema.detailSite[group].shown = true;
@@ -280,7 +280,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     };
 
     
-    $scope.removeSite = function(){
+    $scope.remove = function(){
         if(confirm('Attention, cette action supprimera ce site définitivement !\nPensez aux habitants avant de confirmer')){
             dataServ.delete($scope._appName + '/site/'+$routeParams.id, $scope.deleted);
         }
