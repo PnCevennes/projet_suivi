@@ -112,11 +112,12 @@ Module spécifique aux protocoles Chiro
 ##Routes
 
 
+**GET /chiro/siteConfig**
+*ConfigController::getSiteConfigAction*
 
-**GET /chiro/siteForm**
-*ConfigController::getSiteFormAction*
+retourne les différents schémas de configuration des vues *Site*
+[définition des schémas](schemas.md)
 
-retourne le schéma du formulaire de création/édition de site
 
 
 **GET /chiro/site**
