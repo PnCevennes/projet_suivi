@@ -1,4 +1,11 @@
 <div ng-repeat="item in data">
-    <input type="text" ng-model="item" />
-    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+    <input type="text" ng-if="schema.type=='string'" ng-model="data[$index]" ng-minlength="schema.options.minLength" ng-maxlength="schema.options.maxLength" ng-required="schema.options.minLength>0">
+    <input type="number" ng-if="schema.type=='num'" ng-model="data[$index]">
+    <input type="text" ng-if="schema.type=='date'" ng-model="data[$index]">
+    <select ng-options="item.id as item.libelle for item in schema.options.choices" ng-model="data[$index]" ng-if="schema.type=='select'"></select>
+    <textarea ng-if="schema.type=='text'" ng-model="data[$index]"></textarea>
+    <xhrinput url="schema.options.url" initial="data[$index]" target="data[$index]" ng-if="schema.type=='xhr'"></xhrinput>
+    <button type="button" class="btn btn-danger" ng-click="remove($index)" ng-if="$index>0"><span class="glyphicon glyphicon-minus"></span></button>
 </div>
+<button type="button" class="btn btn-success" ng-click="add()"><span class="glyphicon glyphicon-plus"></span></button>
+<pre>{{data}}</pre>

@@ -192,19 +192,33 @@ app.directive('xhrinput', function(){
 });
 
 
+app.directive('dynform', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            schema: '=',
+            data: '=',
+        },
+        templateUrl: 'js/templates/dynform.htm',
+        controller: function($scope){},
+    };
+});
+
 app.directive('multi', function(){
     return {
         restrict: 'E',
         scope: {
             refer: '=',
+            schema: '=',
         },
         templateUrl: 'js/templates/multi.htm',
         controller: function($scope){
-            $scope.data = $scope.refer || [];
-            $scope.add_line = function(){
+            $scope.data = $scope.refer || [null];
+
+            $scope.add = function(){
                 $scope.data.push(null);
             };
-            $scope.remove_line = function(idx){
+            $scope.remove = function(idx){
                 $scope.data.splice(idx, 1);
             };
         }
