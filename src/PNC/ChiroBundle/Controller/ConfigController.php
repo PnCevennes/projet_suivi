@@ -9,6 +9,33 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConfigController extends Controller{
+
+
+    // path: POST chiro/observateurs
+    public function getObservateursAction(Request $req){
+        $input = json_decode($req->getContent(), true);
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
+        if(isset($input['id'])){
+            $resp = $repo->findOneBy(array('id_role'=>$input['id']));
+                $out = array(
+                    'label'=>$resp->getNomRole() . ' ' . $resp->getPrenomRole(), 
+                    'id'=>$resp->getIdRole());
+            return new JsonResponse($out);
+        }
+        else{
+            $resp = $repo->getLike($input['label']);
+            $out = array();
+            foreach($resp as $item){
+                $out[] = array(
+                    'label'=>$item->getNomRole() . ' ' . $item->getPrenomRole(), 
+                    'id'=>$item->getIdRole());
+            }
+        }
+        return new JsonResponse($out);
+    }
+
+
+
     public function getSiteConfigAction(){
 
         /*
@@ -56,7 +83,7 @@ class ConfigController extends Controller{
                     'label'=>'Observateur',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('url'=>'/observateurs'),
+                    'options'=>array('url'=>'/chiro/observateurs'),
                 ),
                 array(
                     'name'=>'siteDate',
@@ -204,7 +231,7 @@ class ConfigController extends Controller{
                 ),
             ),
             'detailSite'=>array(
-                'groups'=>array('Informations', 'Details', 'Contact'),
+                '__groups__'=>array('Informations', 'Details', 'Contact'),
                 'Informations'=>array(
                     array(
                         'name'=>'siteNom',
@@ -235,11 +262,11 @@ class ConfigController extends Controller{
                         'options'=>array(),
                     ),
                     array(
-                        'name'=>'dernObs',
-                        'label'=>'Dernière observation',
-                        'help'=>"Date de la dernière observation effectuée sur ce site",
+                        'name'=>'siteDate',
+                        'label'=>'Date de création',
                         'type'=>'date',
-                        'options'=>array()
+                        'help'=>"Date d'ajout du site à la base de données",
+                        'options'=>array(),
                     ),
                     array(
                         'name'=>'typeId',
@@ -250,13 +277,6 @@ class ConfigController extends Controller{
                     )
                 ),
                 "Details"=>array(
-                    array(
-                        'name'=>'siteDate',
-                        'label'=>'Date créa.',
-                        'type'=>'date',
-                        'help'=>"Date d'ajout du site à la base de données",
-                        'options'=>array(),
-                    ),
                     array(
                         'name'=>'siteDescription',
                         'label'=>'Description',
@@ -425,7 +445,7 @@ class ConfigController extends Controller{
                     'label'=>'Observateurs',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('multi'=>true, 'url'=>'/observateurs', 'ref'=>'nomComplet')
+                    'options'=>array('multi'=>true, 'url'=>'/chiro/observateurs', 'ref'=>'nomComplet')
                 ),
                 array(
                     'name'=>'obsDate',

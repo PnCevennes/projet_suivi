@@ -143,3 +143,8 @@ pnc_chiro_config_obs:
     requirements:
         _method: GET
 
+pnc_chiro_config_observateurs:
+    path: /observateurs
+    defaults: { _controller: PNCChiroBundle:Config:getObservateurs }
+    requirements:
+        _method: POST
