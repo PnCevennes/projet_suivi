@@ -1,41 +1,19 @@
 <div class="col-lg-6">
-    <form name="EditionSite">
-        <div class="row col-lg-12">
-            <h3>Coordonnées</h3>
-            <table class="table table-bordered">
-                <tr>
-                    <th>Longitude</th>
-                    <th>Latitude</th>
-                </tr>
-                <tr>
-                    <td>{{data.geometry.coordinates[0]}}</td>
-                    <td>{{data.geometry.coordinates[1]}}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="row col-lg-12">
-            <h3>Informations</h3>
-            <table class="table table-bordered">
-                <tr ng-repeat="val in schema.formSite">
-                    <td class="col-lg-3">
-                        <h4>{{val.label}}</h4>
-                        <p>{{val.help}}</p>
-                        <p style="color: red;" ng-show="errors[val.name]">{{errors[val.name]}}</p>
-                    </td>
-                    <td>
-                        <input name="{{val.name}}" type="hidden" ng-if="val.type=='hidden'" ng-model="data.properties[val.name]"><span ng-if="val.type=='hidden'">{{data.properties[val.name]}}</span>
-                        <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data.properties[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
-                        <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data.properties[val.name]">
-                        <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data.properties[val.name]">
-                        <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data.properties[val.name]" ng-if="val.type=='select'"></select>
-                        <xhrinput url="val.options.url" initial="data.properties[val.name]" target="data.properties[val.name]" ng-if="val.type=='xhr'"></xhrinput>
-                        <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data.properties[val.name]"></textarea>
-                        <fileinput ng-if="val.type=='file'" fileids="data.properties[val.name]"></fileinput>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <button class="btn btn-success" type="button" ng-disabled="EditionSite.$valid==false" ng-click="save()">Enregistrer </button>
-        <button class="btn btn-danger" type="button" ng-if="data.properties.id" ng-click="removeSite(data.properties.id)">Supprimer</button>
-    </form>
+    <div class="row col-lg-12">
+        <h3>Coordonnées</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>Longitude</th>
+                <th>Latitude</th>
+            </tr>
+            <tr>
+                <td>{{data.geometry.coordinates[0]}}</td>
+                <td>{{data.geometry.coordinates[1]}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="row col-lg-12">
+        <h3>Informations</h3>
+        <dynform schema="schema.formSite" data="data.properties"></dynform>
+    </div>
 </div>

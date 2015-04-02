@@ -1,4 +1,7 @@
-<h3>Observation n°{{data.id}}</h3>
+<div class="row col-lg-6">
+    <h3 class="col-lg-5">Observation n°{{data.id}}</h3>
+    <a class="btn btn-warning col-lg-1" ng-href="#/{{_appName}}/edit/observation/{{data.id}}">Modifier</a>
+</div>
 <div class="col-lg-6">
     <table class="table">
         <tr ng-repeat="field in schema.detailObs">
