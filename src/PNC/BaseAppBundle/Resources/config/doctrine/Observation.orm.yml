@@ -16,7 +16,7 @@ PNC\BaseAppBundle\Entity\Observation:
             type: text
         obs_id_table_src:
             type: integer
-        obs_site_id:
+        site_id:
             type: integer
 
     manyToMany:
@@ -29,5 +29,5 @@ PNC\BaseAppBundle\Entity\Observation:
                         referencedColumnName: id
                 inverseJoinColumns:
                     obr_id:
-                        referencedColumnName: obr_id
+                        referencedColumnName: id_role
 
