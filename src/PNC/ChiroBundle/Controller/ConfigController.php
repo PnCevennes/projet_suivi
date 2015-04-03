@@ -25,12 +25,15 @@ class ConfigController extends Controller{
         }
         else{
             if(isset($input['label']) && $input['label']){
-                $resp = $repo->getLike($input['label']);
+                $resp = $repo->getLike($input['label'], 'observateur');
                 foreach($resp as $item){
                     $out[] = array(
                         'label'=>$item->getNomComplet(),
                         'id'=>$item->getObrId());
                 }
+            }
+            else{
+                $out = array();
             }
         }
         return new JsonResponse($out);
