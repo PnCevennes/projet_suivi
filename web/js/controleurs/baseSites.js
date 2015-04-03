@@ -73,22 +73,22 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                         $filter('orderBy')(filteredData, params.orderBy()) :
                         data;
                 var ids = [];
-                configServ.put('ngTable:Filter', params.filter());
-                configServ.put('ngTable:Sorting', params.sorting());
+                configServ.put('listSite:ngTable:Filter', params.filter());
+                configServ.put('listSite:ngTable:Sorting', params.sorting());
                 angular.forEach(orderedData, function(item){
                     ids.push(item.id);
                 });
                 mapService.filterMarks(ids);
-                configServ.put('ngTable:orderedData', orderedData);
+                configServ.put('listSite:ngTable:orderedData', orderedData);
                 params.total(orderedData.length); // set total for recalc pagination
                 $scope.nb_sites = {total: data.length, current: orderedData.length};
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         });
-        configServ.get('ngTable:Filter', function(filter){
+        configServ.get('listSite:ngTable:Filter', function(filter){
             $scope.tableParams.filter(filter);
         });
-        configServ.get('ngTable:Sorting', function(sorting){
+        configServ.get('listSite:ngTable:Sorting', function(sorting){
             $scope.tableParams.sorting(sorting);
         });
 
@@ -132,7 +132,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
      */
     $scope.selectPoint = function(item){
         // changement d'état du point précédemment sélectionné
-        configServ.get('ngTable:orderedData', function(data){
+        configServ.get('listSite:ngTable:orderedData', function(data){
             var cnt = data.length;
             var res = $filter('filter')(data, {id: item.feature.properties.id});
             var idx = data.indexOf(res[0]);
