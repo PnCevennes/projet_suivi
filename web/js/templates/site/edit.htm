@@ -1,3 +1,6 @@
+<div class="row col-lg-6">
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site/{{data.properties.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour</a>
+</div>
 <div class="col-lg-6">
     <div class="row col-lg-12">
         <h3>Coordonnées</h3>
@@ -14,6 +17,6 @@
     </div>
     <div class="row col-lg-12">
         <h3>Informations</h3>
-        <dynform schema="schema.formSite" data="data.properties"></dynform>
+        <dynform schema="schema.formSite" data="data.properties" onsave="save" onremove="remove"></dynform>
     </div>
 </div>

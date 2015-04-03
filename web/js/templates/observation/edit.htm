@@ -1,5 +1,10 @@
 <div class="row col-lg-6">
-    <dynform schema="schema.formObs" data="data"></dynform>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>sites</a>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site/{{data.siteId}}"><span class="glyphicon glyphicon-chevron-left"></span>{{site.properties.siteNom}}</a>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/observation/{{data.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour obs</a>
+</div>
+<div class="row col-lg-6">
+    <dynform schema="schema.formObs" data="data" onsave="save" onremove="remove"></dynform>
 </div>
 <div class="row col-lg-6">
     <pre>{{data|json}}</pre>

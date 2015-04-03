@@ -1,4 +1,8 @@
 <div class="row col-lg-6">
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>Sites</a>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site/{{data.siteId}}"><span class="glyphicon glyphicon-chevron-left"></span>{{data.siteNom}}</a>
+</div>
+<div class="row col-lg-6">
     <h3 class="col-lg-5">Observation n°{{data.id}}</h3>
     <a class="btn btn-warning col-lg-1" ng-href="#/{{_appName}}/edit/observation/{{data.id}}">Modifier</a>
 </div>
