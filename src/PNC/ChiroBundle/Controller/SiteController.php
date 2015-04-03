@@ -189,8 +189,6 @@ class SiteController extends Controller{
             $manager->flush();
 
 
-            
-
             // enregistrement chiro.chiro_infos_site
             $infoSite->setParentSite($site);
             $manager->flush();
