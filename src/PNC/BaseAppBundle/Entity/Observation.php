@@ -10,6 +10,20 @@ use Doctrine\ORM\Mapping as ORM;
 class Observation
 {
 
+    private $_errors = array();
+    
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+
+    public function errors(){
+        /*if(empty($this->_errors)){
+            return false;
+        }*/
+        return $this->_errors;
+    }
+
     //geometrie geoJson
     public $geom;
     /**
@@ -35,7 +49,7 @@ class Observation
     /**
      * @var integer
      */
-    private $obs_site_id;
+    private $site_id;
 
 
     /**
@@ -123,9 +137,9 @@ class Observation
      * @param integer $obsSiteId
      * @return Observation
      */
-    public function setObsSiteId($obsSiteId)
+    public function setSiteId($obsSiteId)
     {
-        $this->obs_site_id = $obsSiteId;
+        $this->site_id = $obsSiteId;
 
         return $this;
     }
@@ -135,9 +149,9 @@ class Observation
      *
      * @return integer 
      */
-    public function getObsSiteId()
+    public function getSiteId()
     {
-        return $this->obs_site_id;
+        return $this->site_id;
     }
     /**
      * @var \PNC\BaseAppBundle\Entity\Site
@@ -186,7 +200,7 @@ class Observation
      * @param \PNC\ExtBundle\Entity\Observateur $observateurs
      * @return Observation
      */
-    public function addObservateur(\PNC\ExtBundle\Entity\Observateur $observateurs)
+    public function addObservateur(\PNC\BaseAppBundle\Entity\Observateurs $observateurs)
     {
         $this->observateurs[] = $observateurs;
 
@@ -198,7 +212,7 @@ class Observation
      *
      * @param \PNC\ExtBundle\Entity\Observateur $observateurs
      */
-    public function removeObservateur(\PNC\ExtBundle\Entity\Observateur $observateurs)
+    public function removeObservateur(\PNC\BaseAppBundle\Entity\Observateurs $observateurs)
     {
         $this->observateurs->removeElement($observateurs);
     }
