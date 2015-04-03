@@ -178,6 +178,9 @@ app.directive('xhrinput', function(){
                         $scope.hints = resp;
                     });
                 }
+                else{
+                    $scope.show = false;
+                }
             };
             $scope.select = function(idx){
                 $scope.show = false;
@@ -198,9 +201,19 @@ app.directive('dynform', function(){
         scope: {
             schema: '=',
             data: '=',
+            onsave: '=',
+            onremove: '=',
         },
         templateUrl: 'js/templates/dynform.htm',
-        controller: function($scope){},
+        controller: function($scope){
+            $scope.save = function(){
+                $scope.onsave();
+            };
+
+            $scope.remove = function(){
+                $scope.onremove();
+            }
+        },
     };
 });
 
