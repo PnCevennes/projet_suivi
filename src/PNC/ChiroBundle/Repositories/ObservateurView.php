@@ -12,11 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObservateurView extends EntityRepository
 {
-    public function getLike($like){
+    public function getLike($like, $role){
         $mgr = $this->getEntityManager();
         $like = '%' . strtolower(str_replace(' ', '% ', $like)) . '%';
-        $qr = $mgr->createQuery("SELECT o FROM PNCChiroBundle:ObservateurView o WHERE o.nom_complet_lower LIKE ?1");
+        $qr = $mgr->createQuery("SELECT DISTINCT o FROM PNCChiroBundle:ObservateurView o WHERE o.nom_complet_lower LIKE ?1 AND o.role=?2");
         $qr->setParameter(1, $like);
+        $qr->setParameter(2, $role);
         return $qr->getResult();
     }
 }

@@ -9,6 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConditionsObservation
 {
+
+    private $_errors = array();
+    
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+
+    public function errors(){
+        /*if(empty($this->_errors)){
+            return false;
+        }*/
+        return $this->_errors;
+    }
+
     /**
      * @var integer
      */
@@ -80,15 +95,11 @@ class ConditionsObservation
     {
         return $this->obs_humidite;
     }
+
     /**
      * @var integer
      */
     private $obs_id;
-
-    /**
-     * @var \PNC\BaseAppBundle\Entity\Observation
-     */
-    private $parent_obs;
 
 
     /**
@@ -114,26 +125,4 @@ class ConditionsObservation
         return $this->obs_id;
     }
 
-    /**
-     * Set parent_obs
-     *
-     * @param \PNC\BaseAppBundle\Entity\Observation $parentObs
-     * @return ConditionsObservation
-     */
-    public function setParentObs(\PNC\BaseAppBundle\Entity\Observation $parentObs = null)
-    {
-        $this->parent_obs = $parentObs;
-
-        return $this;
-    }
-
-    /**
-     * Get parent_obs
-     *
-     * @return \PNC\BaseAppBundle\Entity\Observation 
-     */
-    public function getParentObs()
-    {
-        return $this->parent_obs;
-    }
-}
+} 
