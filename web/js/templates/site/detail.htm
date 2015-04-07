@@ -36,6 +36,7 @@
         <tr>
             <th>Date</th>
             <th>Observateur(s)</th>
+            <th>Taxons</th>
         </tr>
         <tr ng-repeat="obs in observations">
             <td class="col-lg-2"><a ng-href="#/{{_appName}}/observation/{{obs.id}}">Observation du {{obs.obsDate|datefr}}</a></td>
@@ -43,6 +44,9 @@
                 <ul class="list-unstyled">
                     <li ng-repeat="obr in obs.observateurs">{{obr.nomComplet}}</li>
                 </ul>
+            </td>
+            <td>
+                {{obs.nbTaxons}}
             </td>
         </tr>
     </table>

@@ -2,7 +2,7 @@
     <div class="btn-group row">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Colonnes<span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
-            <li ng-repeat="column in schema"><input type="checkbox" ng-model="column.options.visible" />{{column.label}}</li>
+            <li ng-repeat="column in schema"><input id="sel[{{$index}}]" type="checkbox" ng-model="column.options.visible" /><label for="sel[{{$index}}]">{{column.label}}</label></li>
         </ul>
     </div>
     <div class="row">

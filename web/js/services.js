@@ -170,7 +170,8 @@ app.directive('xhrinput', function(){
         },
         templateUrl: 'js/templates/xhrinput.htm',
         controller: function($scope, dataServ){
-            $scope.target = $scope.initial;
+            //FIXME
+            $scope.target = angular.copy($scope.initial);
             $scope.find = function(){
                 if($scope._input.length>1){
                     $scope.show = true;
@@ -203,6 +204,7 @@ app.directive('dynform', function(){
             data: '=',
             onsave: '=',
             onremove: '=',
+            errors: '=',
         },
         templateUrl: 'js/templates/dynform.htm',
         controller: function($scope){
@@ -226,7 +228,7 @@ app.directive('multi', function(){
         },
         templateUrl: 'js/templates/multi.htm',
         controller: function($scope){
-            $scope.data = $scope.refer || [null];
+            $scope.data = $scope.refer;
 
             $scope.add = function(){
                 $scope.data.push(null);

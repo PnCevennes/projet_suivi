@@ -24,9 +24,9 @@
             </tr>
         </table>
     </div>
-    <div>
-        <button class="btn btn-success" type="button" ng-disabled="dynForm.$valid==false" ng-click="save()">Enregistrer </button>
-        <button class="btn btn-danger" type="button" ng-if="data.id" ng-click="remove()">Supprimer</button>
+    <div class="row">
+        <button class="btn btn-success col-lg-1" type="button" ng-disabled="dynForm.$valid==false" ng-click="save()">Enregistrer</button>
+        <button class="btn btn-danger col-lg-offset-11" type="button" ng-if="data.id" ng-click="remove()">Supprimer</button>
     </div>    
 </form>
 

@@ -4,7 +4,7 @@
     <a class="btn btn-xs" ng-href="#/{{_appName}}/observation/{{data.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour obs</a>
 </div>
 <div class="row col-lg-6">
-    <dynform schema="schema.formObs" data="data" onsave="save" onremove="remove"></dynform>
+    <dynform schema="schema.formObs" data="data" onsave="save" onremove="remove" errors="errors"></dynform>
 </div>
 <div class="row col-lg-6">
     <pre>{{data|json}}</pre>

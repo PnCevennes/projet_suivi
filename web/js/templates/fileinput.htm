@@ -1,8 +1,13 @@
-<div ng-repeat="fich in fileids">{{fich}} 
-    <button type="button" class="btn btn-danger btn-xs" ng-click="delete_file(fich)">
-        <span class="glyphicon glyphicon-minus"></span>
-    </button>
-</div>
+<table class="table">
+    <tr ng-repeat="fich in fileids">
+        <td>{{fich}}</td>
+        <td>
+            <button type="button" class="btn btn-danger btn-xs" ng-click="delete_file(fich)">
+                <span class="glyphicon glyphicon-minus"></span>
+            </button>
+        </td>
+    </tr>
+</table>
 <button type="button" ng-file-select ng-model="upload_file" class="btn btn-success btn-xs" ng-disable="lock">Sélectionner un fichier</button>
 <span ng-show="lock" class="glyphicon glyphicon-send">Téléchargement: {{progress}}%</span>
 
