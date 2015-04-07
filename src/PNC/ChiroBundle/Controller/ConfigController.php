@@ -77,6 +77,14 @@ class ConfigController extends Controller{
                     'options'=>array('minLength'=>5, 'maxLength'=>250)
                 ),
                 array(
+                    'name'=>'typeId',
+                    'label'=>'Type',
+                    'type'=>'select',
+                    'help'=>'Type de lieu',
+                    'options'=>array('choices'=>$typesLieu),
+                    'default'=>37
+                ),
+                array(
                     'name'=>'siteCode',
                     'label'=>'Code site',
                     'type'=>'string',
@@ -125,14 +133,6 @@ class ConfigController extends Controller{
                     'type'=>'text',
                     'help'=>'Menaces pesant sur le site',
                     'options'=>array('maxLength'=>1000, 'minLength'=>0)
-                ),
-                array(
-                    'name'=>'typeId',
-                    'label'=>'Type',
-                    'type'=>'select',
-                    'help'=>'Type de lieu',
-                    'options'=>array('choices'=>$typesLieu),
-                    'default'=>37
                 ),
                 array(
                     'name'=>'contactNom',
@@ -486,4 +486,141 @@ class ConfigController extends Controller{
 
         return new JsonResponse($out);
     }
+
+    public function getObservationTaxonConfigAction(){
+        $out = array(
+            'detailObsTx'=>array(
+                array(
+                    'name'=>'cdNom',
+                    'label'=>'Cd nom',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'nomComplet',
+                    'label'=>'Nom taxon',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsTxInitial',
+                    'label'=>'Taxon initial',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsValidateur',
+                    'label'=>'Validateur',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsEspeceIncertaine',
+                    'label'=>'Espece incertaine',
+                    'type'=>'bool',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsEffectifAbs',
+                    'label'=>'Effectif total',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleAdulte',
+                    'label'=>'Mâles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleAdulte',
+                    'label'=>'Femelles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleJuvenile',
+                    'label'=>'Mâles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleJuvenile',
+                    'label'=>'Femelles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleIndetermine',
+                    'label'=>'Mâles indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleIndetermine',
+                    'label'=>'Femelles indeterminées',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbIndetermineIndetermine',
+                    'label'=>'Indetermines indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age et sexe indéterminés',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsObjStatusValidation',
+                    'label'=>'Statut validation',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+
+            ),
+            'listObsTx'=>array(
+                array(
+                    'name'=>'nomComplet',
+                    'label'=>'Nom taxon',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsEffectifAbs',
+                    'label'=>'Effectif total',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsObjStatusValidation',
+                    'label'=>'Statut validation',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+
+            ),
+            'formObsTx'=>array(
+
+            ),
+
+        );
+    }
 }
+
+
+
