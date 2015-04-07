@@ -10,24 +10,110 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ObservationTaxonController extends Controller
 {
-    public function listAction(){
-        return new Response('liste observations taxon');
+    // path: GET chiro/obs_taxon/observation/{obs_id}
+    public function listAction($obs_id){
+        /*
+         * retourne la liste des observations taxon associées à une obs
+         */
+        $norm = $this->get('normalizer');
+
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationTaxon');
+        $data = $repo->findBy(array('obs_id'=>$obs_id));
+        $out = array();
+        foreach($data as $item){
+            $out[] = $norm->normalize($item);
+        }
+        return new JsonResponse($out);
     }
 
+    // path: GET chiro/obs_taxon/{id}
     public function detailAction($id){
-        return new Response('detail observation taxon');
+        /*
+         * retourne une observation taxon identifiée par ID
+         */
+        $norm = $this->get('normalizer');
+
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationTaxon');
+        $data = $repo->findOneBy(array('id'=>$id));
+        if($data){
+            $out = $norm->normalize($data);
+            return new JsonResponse($out);
+        }
+        return new JsonResponse(array('id'=>$id), 404);
     }
 
-    public function editAction($id=null){
-        return new Response('formulaire observation taxon');
+
+    private function hydrateObsTaxon($obj, $data){
+        $obj->setObsId($data['obsId']);
+        $obj->setObsTxInitial($data['obsTxInitial']);
+        $obj->setObsEspeceIncertaine($data['obsEspeceIncertaine']);
+        $obj->setObsEffectifAbs($data['obsEffectifAbs']);
+        $obj->setObsNbMaleAdulte($data['obsNbMaleAdulte']);
+        $obj->setObsNbFemelleAdulte($data['obsNbFemelleAdulte']);
+        $obj->setObsNbMaleJuvenile($data['obsNbMaleJuvenile']);
+        $obj->setObsNbFemelleJuvenile($data['obsNbFemelleJuvenile']);
+        $obj->setObsNbMaleIndetermine($data['obsNbMaleIndetermine']);
+        $obj->setObsNbFemelleIndetermine($data['obsNbFemelleIndetermine']);
+        $obj->setObsNbIndetermineIndetermine($data['obsNbIndetermineIndetermine']);
+        $obj->setObsObjStatusValidation($data['obsObjStatusValidation']);
+        $obj->setObsCommentaire($data['obsCommentaire']);
+        $obj->setCdNom($data['cdNom']);
+        $obj->setNomComplet($data['nomComplet']);
+        if($obj->errors()){
+            throw new \Exception(); //TODO lever exception explicite
+        }
     }
 
-    public function saveAction($id=null){
-        return new Response('enregistrer observation taxon');
+    // path: PUT chiro/obs_taxon
+    public function createAction(Request $req){
+        $data = json_decode($req->getContent(), true);
+
+        $manager = $this->getDoctrine()->getManager();
+        $obsTx = new ObservationTaxon();
+        try{
+            $this->hydrateObsTaxon($obsTx, $data);
+            $manager->persist($obsTx);
+            $manager->flush();
+            return new JsonResponse(array('id'=>$obsTx->getId()));
+        }
+        catch(\Exception $e){
+            $errs = $obsTx->errors();
+            return new JsonResponse($errs, 400);
+        }
     }
 
+    // path: POST chiro/obs_taxon/{id}
+    public function updateAction(Request $req, $id=null){
+        $data = json_decode($req->getContent(), true);
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationTaxon');
+
+        $manager = $this->getDoctrine()->getManager();
+        $obsTx = $repo->findOneBy(array('id'=>$id));
+        if(!$obsTx){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
+        try{
+            $this->hydrateObsTaxon($obsTx, $data);
+            $manager->flush();
+            return new JsonResponse(array('id'=>$obsTx->getId()));
+        }
+        catch(\Exception $e){
+            $errs = $obsTx->errors();
+            return new JsonResponse($errs, 400);
+        }
+    }
+
+    // path: DELETE chiro/obs_taxon/{id}
     public function deleteAction($id){
-        return new Response('supprimer observation taxon');
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationTaxon');
+        $obsTx = $repo->findOneBy(array('id'=>$id));
+        if(!$obsTx){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($obsTx);
+
+        return new JsonResponse(array('id'=>$id));
     }
 }
 

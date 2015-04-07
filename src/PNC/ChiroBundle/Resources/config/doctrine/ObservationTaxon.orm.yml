@@ -43,11 +43,6 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         nom_complet:
             type: text
-
-    manyToOne:
-        observation:
-            targetEntity: PNC\BaseAppBundle\Entity\Observation
-            joinColumn:
-                name: obs_id
-                referencedColumnName: id
+        obs_validateur:
+            type: integer
 

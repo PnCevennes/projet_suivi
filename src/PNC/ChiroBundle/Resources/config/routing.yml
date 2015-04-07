@@ -2,26 +2,37 @@
 #    path:     /hello/{name}
 #    defaults: { _controller: PNCChiroBundle:Default:index }
 
+
+
+#
+# vues observation taxon
+#
 pnc_observation_taxon_list:
-    path:     /observation_taxon
+    path:     /obs_taxon
     defaults: { _controller: PNCChiroBundle:ObservationTaxon:list }
     requirements:
         _method: GET
 
 pnc_observation_taxon_detail:
-    path:     /observation_taxon/{id}
+    path:     /obs_taxon/{id}
     defaults: { _controller: PNCChiroBundle:ObservationTaxon:detail }
     requirements:
         _method: GET
 
-pnc_observation_taxon_save:
-    path:     /observation_taxon/{id}
+pnc_observation_taxon_create:
+    path:     /obs_taxon
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:save }
+    requirements:
+        _method: PUT
+
+pnc_observation_taxon_update:
+    path:     /obs_taxon/{id}
     defaults: { _controller: PNCChiroBundle:ObservationTaxon:save, id: null }
     requirements:
         _method: POST
 
 pnc_observation_taxon_suppr:
-    path:     /observation_taxon/{id}
+    path:     /obs_taxon/{id}
     defaults: { _controller: PNCChiroBundle:ObservationTaxon:delete }
     requirements:
         _method: DELETE
@@ -140,6 +151,12 @@ pnc_chiro_config_site:
 pnc_chiro_config_obs:
     path: /obsConfig
     defaults: { _controller: PNCChiroBundle:Config:getObservationConfig }
+    requirements:
+        _method: GET
+
+pnc_chiro_config_obs:
+    path: /obsTxConfig
+    defaults: { _controller: PNCChiroBundle:Config:getObservationTaxonConfig }
     requirements:
         _method: GET
 
