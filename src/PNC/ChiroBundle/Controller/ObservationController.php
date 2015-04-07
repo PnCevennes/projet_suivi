@@ -97,11 +97,17 @@ class ObservationController extends Controller{
         $obs->setObsCommentaire($data['obsCommentaire']);
         //$obs->setObsIdTableSrc($data['obsIdTableSrc']);
         $obs->setSiteId($data['siteId']);
+        if($obs->errors()){
+            throw new \Exception(); //TODO lever une exception explicite
+        }
     }
 
     private function hydrateConditionsObservation($cobs, $data){
         $cobs->setObsTemperature($data['obsTemperature']);
         $cobs->setObsHumidite($data['obsHumidite']);
+        if($cobs->errors()){
+            throw new \Exception(); //TODO lever une exception explicite
+        }
     }
 
 
@@ -140,7 +146,7 @@ class ObservationController extends Controller{
         catch(\Exception $e){
             $manager->getConnection()->rollback();
             $errs = array_merge($obs->errors(), $cobs->errors());
-            return new JsonResponse($errs, 422);
+            return new JsonResponse($errs, 400);
         }
     }
 
@@ -180,8 +186,7 @@ class ObservationController extends Controller{
             $manager->getConnection()->rollback();
             $errs = array_merge($obs->errors(), $cobs->errors());
 
-            return new Response(print_r($e, true), 422);
-            //return new JsonResponse($errs, 422);
+            return new JsonResponse($errs, 400);
         }
     }
 

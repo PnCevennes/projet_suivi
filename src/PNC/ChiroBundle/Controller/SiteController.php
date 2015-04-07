@@ -84,7 +84,7 @@ class SiteController extends Controller{
 
 
         if($site->errors()){
-            throw new \Exception();
+            throw new \Exception(); //TODO lever une exception explicite
         }
     }
 
@@ -104,7 +104,7 @@ class SiteController extends Controller{
         $site->setContactPortable($data['contactPortable']);
         $site->setContactCommentaire($data['contactCommentaire']);
         if($site->errors()){
-            throw new \Exception();
+            throw new \Exception(); //TODO lever une exception explicite
         }
     }
 
@@ -141,7 +141,7 @@ class SiteController extends Controller{
             $manager->getConnection()->rollback();
             $errs = array_merge($site->errors(), $infoSite->errors());
 
-            return new JsonResponse($errs, 422);
+            return new JsonResponse($errs, 400);
         }
 
         try{
@@ -200,7 +200,7 @@ class SiteController extends Controller{
             $manager->getConnection()->rollback();
             $errs = array_merge($site->errors(), $infoSite->errors());
 
-            return new JsonResponse($errs, 422);
+            return new JsonResponse($errs, 400);
         }
         try{
             // enregistrement des fichiers liés
