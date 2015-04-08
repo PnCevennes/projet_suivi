@@ -1,0 +1,22 @@
+PNC\BaseAppBundle\Entity\Taxons:
+    type: entity
+    table: taxonomie.taxref
+    schema: taxonomie
+    repositoryClass: PNC\BaseAppBundle\Repositories\TaxonsRepository
+    id:
+        cd_nom:
+            type: integer
+            id: true
+    fields:
+        ordre:
+            type: string
+            length: 50
+        nom_complet:
+            type: string
+            length: 255
+        nom_valide:
+            type: string
+            length: 255
+        nom_vern:
+            type: string
+            length: 255

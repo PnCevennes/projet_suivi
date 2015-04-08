@@ -1,0 +1,17 @@
+PNC\ChiroBundle\Entity\Taxons:
+    type: entity
+    table: chiro.vue_chiro_taxref
+    schema: chiro
+    repositoryClass: PNC\ChiroBundle\Repositories\TaxonsRepository
+    id:
+        cd_nom:
+            type: integer
+            id: true
+    fields:
+        ordre:
+            type: string
+            length: 50
+        nom_complet:
+            type: string
+            length: 255
+

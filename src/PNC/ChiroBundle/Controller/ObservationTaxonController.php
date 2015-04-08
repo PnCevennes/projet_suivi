@@ -8,10 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use PNC\ChiroBundle\Entity\ObservationTaxon;
+
 class ObservationTaxonController extends Controller
 {
     // path: GET chiro/obs_taxon/observation/{obs_id}
-    public function listAction($obs_id){
+    public function listAction($obs_id=null){
         /*
          * retourne la liste des observations taxon associées à une obs
          */
@@ -44,6 +46,8 @@ class ObservationTaxonController extends Controller
 
 
     private function hydrateObsTaxon($obj, $data){
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Taxons');
+        $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
         $obj->setObsId($data['obsId']);
         $obj->setObsTxInitial($data['obsTxInitial']);
         $obj->setObsEspeceIncertaine($data['obsEspeceIncertaine']);
@@ -58,7 +62,8 @@ class ObservationTaxonController extends Controller
         $obj->setObsObjStatusValidation($data['obsObjStatusValidation']);
         $obj->setObsCommentaire($data['obsCommentaire']);
         $obj->setCdNom($data['cdNom']);
-        $obj->setNomComplet($data['nomComplet']);
+        $obj->setNomComplet($tx->getNomComplet());
+        $obj->setObsValidateur($data['obsValidateur']);
         if($obj->errors()){
             throw new \Exception(); //TODO lever exception explicite
         }

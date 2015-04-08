@@ -39,6 +39,34 @@ class ConfigController extends Controller{
         return new JsonResponse($out);
     }
 
+    // path: POST chiro/taxons
+    public function getTaxonsAction(Request $req){
+        $input = json_decode($req->getContent(), true);
+        $out = array();
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Taxons');
+        if(isset($input['id']) && $input['id']){
+            $resp = $repo->findOneBy(array('cd_nom'=>$input['id']));
+                $out = array(
+                    'label'=>$resp->getNomComplet(),
+                    'id'=>$resp->getCdNom());
+            return new JsonResponse($out);
+        }
+        else{
+            if(isset($input['label']) && $input['label']){
+                $resp = $repo->getLike($input['label']);
+                foreach($resp as $item){
+                    $out[] = array(
+                        'label'=>$item->getNomComplet(),
+                        'id'=>$item->getCdNom());
+                }
+            }
+            else{
+                $out = array();
+            }
+        }
+        return new JsonResponse($out);
+    }
+
 
 
     public function getSiteConfigAction(){
@@ -429,6 +457,7 @@ class ConfigController extends Controller{
                 ),
             ),
             'listObs'=>array(
+
             ),
             'formObs'=>array(
                 array(
@@ -486,8 +515,19 @@ class ConfigController extends Controller{
 
         return new JsonResponse($out);
     }
-
+    
+    // path: GET /chiro/obsTxConfig
     public function getObservationTaxonConfigAction(){
+        $norm = $this->get('normalizer');
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
+        $types = $repo->findBy(array('id_type'=>9));
+        $typesVal = array();
+        foreach($types as $tl){
+            if($tl->getFkParent() != 0){
+                $typesVal[] = $norm->normalize($tl, array());
+            }
+        }
+
         $out = array(
             'detailObsTx'=>array(
                 array(
@@ -615,10 +655,103 @@ class ConfigController extends Controller{
 
             ),
             'formObsTx'=>array(
+                array(
+                    'name'=>'cdNom',
+                    'label'=>'Nom taxon',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array('url'=>'chiro/taxons', 'ref'=>'cdNom')
+                ),
+                array(
+                    'name'=>'obsTxInitial',
+                    'label'=>'Taxon initial',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsValidateur',
+                    'label'=>'Validateur',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array('url'=>'chiro/observateurs', 'ref'=>'obsValidateur')
+                ),
+                array(
+                    'name'=>'obsEspeceIncertaine',
+                    'label'=>'Espece incertaine',
+                    'type'=>'bool',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsEffectifAbs',
+                    'label'=>'Effectif total',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleAdulte',
+                    'label'=>'Mâles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleAdulte',
+                    'label'=>'Femelles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleJuvenile',
+                    'label'=>'Mâles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleJuvenile',
+                    'label'=>'Femelles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleIndetermine',
+                    'label'=>'Mâles indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleIndetermine',
+                    'label'=>'Femelles indeterminées',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbIndetermineIndetermine',
+                    'label'=>'Indetermines indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age et sexe indéterminés',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsObjStatusValidation',
+                    'label'=>'Statut validation',
+                    'type'=>'select',
+                    'help'=>'',
+                    'options'=>array('choices'=> $typesVal),
+                    'default'=>56
+                ),
 
             ),
 
         );
+        return new JsonResponse($out);
     }
 }
 

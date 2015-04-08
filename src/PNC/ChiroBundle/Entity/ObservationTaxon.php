@@ -9,6 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ObservationTaxon
 {
+
+    private $_errors = array();
+
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+
+    public function errors(){
+        /*if(empty($this->_errors)){
+            return false;
+        }*/
+        return $this->_errors;
+    }
+
     /**
      * @var integer
      */
@@ -73,6 +88,11 @@ class ObservationTaxon
      * @var string
      */
     private $obs_commentaire;
+
+    /**
+     * @var integer
+     */
+    private $obs_validateur;
 
 
     /**
@@ -501,5 +521,14 @@ class ObservationTaxon
     public function getNomComplet()
     {
         return $this->nom_complet;
+    }
+
+    public function setObsValidateur($validateur){
+        $this->obs_validateur = $validateur;
+        return $this;
+    }
+
+    public function getObsValidateur(){
+        return $this->obs_validateur;
     }
 }
