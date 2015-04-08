@@ -1,10 +1,13 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'suiviProtocoleServices']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'suiviProtocoleServices']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
 
 // module de gestion des observations
 angular.module('baseObservations', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
+
+// module de gestion des taxons
+angular.module('baseTaxons', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
 
 // services de l'application
 angular.module('suiviProtocoleServices', ['angularFileUpload']);

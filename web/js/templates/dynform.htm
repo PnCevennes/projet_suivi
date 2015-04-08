@@ -14,6 +14,7 @@
                         <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
                         <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data[val.name]">
                         <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data[val.name]">
+                        <input name="{{val.name}}" type="checkbox" ng-if="val.type=='bool'" ng-model="data[val.name]">
                         <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data[val.name]" ng-if="val.type=='select'"></select>
                         <xhrinput url="val.options.url" initial="data[val.name]" target="data[val.name]" ng-if="val.type=='xhr'"></xhrinput>
                         <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data[val.name]"></textarea>

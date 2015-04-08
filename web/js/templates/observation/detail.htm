@@ -4,9 +4,11 @@
 </div>
 <div class="row col-lg-6">
     <h3 class="col-lg-5">Observation n°{{data.id}}</h3>
-    <a class="btn btn-warning col-lg-1" ng-href="#/{{_appName}}/edit/observation/{{data.id}}">Modifier</a>
+    <div class="col-lg-1 col-lg-offset-5">
+        <a class="btn btn-warning" ng-href="#/{{_appName}}/edit/observation/{{data.id}}">Modifier</a>
+    </div>
 </div>
-<div class="col-lg-6">
+<div class="row col-lg-6">
     <table class="table">
         <tr ng-repeat="field in schema.detailObs">
             <td>{{field.label}}</td>
@@ -17,6 +19,22 @@
                     <li ng-repeat="item in data[field.name]"><span ng-repeat="opt in field.options">{{item[opt]}}</span></li>
                 </ul>
             </td>
+        </tr>
+    </table>
+</div>
+<div class="row col-lg-6" ng-if="taxons.length>0">
+    <h3 class="col-lg-5">Taxons</h3>
+    <div class="col-lg-1 col-lg-offset-5">
+        <a class="btn btn-success" ng-href="#/{{_appName}}/edit/taxons">Nouveau</a>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Nom complet</th>
+            <th>Nombre total</th>
+        </tr>
+        <tr ng-repeat="tx in taxons">
+            <td><a ng-href="#/{{_appName}}/taxons/{{tx.id}}">{{tx.nomComplet}}</a></td>
+            <td>{{tx.obsEffectifAbs}}</td>
         </tr>
     </table>
 </div>

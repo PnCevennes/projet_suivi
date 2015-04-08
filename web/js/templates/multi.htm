@@ -2,6 +2,7 @@
     <input class="row col-lg-11" type="text" ng-if="schema.type=='string'" ng-model="data[$index]" ng-minlength="schema.options.minLength" ng-maxlength="schema.options.maxLength" ng-required="schema.options.minLength>0">
     <input class="row col-lg-11" type="number" ng-if="schema.type=='num'" ng-model="data[$index]">
     <input class="row col-lg-11" type="text" ng-if="schema.type=='date'" ng-model="data[$index]">
+    <input type="checkbox" ng-if="val.type=='bool'" ng-model="data[$index]">
     <select class="row col-lg-11" ng-options="item.id as item.libelle for item in schema.options.choices" ng-model="data[$index]" ng-if="schema.type=='select'"></select>
     <textarea class="row col-lg-11" ng-if="schema.type=='text'" ng-model="data[$index]"></textarea>
     <xhrinput class="row col-lg-11" url="schema.options.url" initial="data[$index]" target="data[$index]" ng-if="schema.type=='xhr'"></xhrinput>

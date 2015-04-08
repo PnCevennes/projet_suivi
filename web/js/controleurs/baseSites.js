@@ -63,6 +63,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             sorting: {}
         },
         {
+            counts: [],
             total: data.length, // length of data
             getData: function ($defer, params) {
                 // use build-in angular filter

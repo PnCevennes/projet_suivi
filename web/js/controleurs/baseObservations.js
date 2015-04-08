@@ -67,13 +67,13 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
                 }
             }
         }, $scope);
-        $scope.obrs = [];
+        var obrs = [];
         if($scope.data.observateurs){
             angular.forEach($scope.data.observateurs, function(obr){
-                $scope.obrs.push(obr.obrId);
+                obrs.push(obr.obrId);
             }, $scope);
         }
-        $scope.data.observateurs = angular.copy($scope.obrs);
+        $scope.data.observateurs = angular.copy(obrs);
         dataServ.get($scope._appName + '/site/' + $scope.data.siteId, $scope.setSite);
     };
 
@@ -165,6 +165,12 @@ app.controller('observationDetailController', function($scope, $routeParams, dat
 
     $scope.setData = function(resp){
         $scope.data = angular.copy(resp);
+        dataServ.get($scope._appName + '/obs_taxon/observation/' + $routeParams.id, $scope.setTaxons);
     }
+
+    $scope.setTaxons = function(resp){
+        $scope.taxons = angular.copy(resp);
+    }
+
     configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
 });

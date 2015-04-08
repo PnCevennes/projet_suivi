@@ -10,9 +10,12 @@ app.service('dataServ', function($http, $filter){
     //flag ordonnant la recharge des données plutôt que l'utilisation du cache
     this.forceReload = false;
 
-    this.get = function(url, success, error=function(err){console.log(err);}, force=false){
+    this.get = function(url, success, error, force){
         // ne recharger les données du serveur que si le cache est vide ou 
         // si l'option force est true
+        if(!error){
+            error = function(err){console.log(err);}
+        }
         if(cache[url] == undefined || force || this.forceReload){
             $http.get(url)
                 .then(function(data){
@@ -173,7 +176,7 @@ app.directive('xhrinput', function(){
             //FIXME
             $scope.target = angular.copy($scope.initial);
             $scope.find = function(){
-                if($scope._input.length>1){
+                if($scope._input.length){
                     $scope.show = true;
                     dataServ.post($scope.url, {label: $scope._input}, function(resp){
                         $scope.hints = resp;

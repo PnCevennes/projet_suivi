@@ -1,0 +1,24 @@
+<div class="row col-lg-6">
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>Sites</a>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/observation/{{data.obsId}}"><span class="glyphicon glyphicon-chevron-left"></span>Obs n°{{data.obsId}}</a>
+</div>
+<div class="row col-lg-6">
+    <h3 class="col-lg-5">Relevé lors de l'observation n°{{data.obsId}}</h3>
+    <div class="col-lg-1 col-lg-offset-5"><a class="btn btn-warning" ng-href="#/{{_appName}}/edit/taxons/{{data.id}}">Modifier</a></div>
+</div>
+<div class="row col-lg-6">
+    <table class="table">
+        <tr ng-repeat="field in schema.detailObsTx">
+            <td>{{field.label}}</td>
+            <td ng-if="field.type=='date'">{{data[field.name]|datefr}}</td>
+            <td ng-if="field.type=='string'||field.type=='num'">{{data[field.name]}}</td>
+            <td ng-if="field.type=='bool'">{{data[field.name] ? 'Oui': 'Non'}}</td>
+            <td ng-if="field.type=='multi'">
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in data[field.name]"><span ng-repeat="opt in field.options">{{item[opt]}}</span></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+
