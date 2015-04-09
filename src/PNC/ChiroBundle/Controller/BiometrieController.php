@@ -57,40 +57,42 @@ class BiometrieController extends Controller
         $obj->setBiomOreille($data['biomOreille']);
         $obj->setBiomCommentaire($data['biomCommentaire']);
         if($obj->errors()){
-            throw new \Exception() //TODO utiliser une exception plus précise
+            throw new \Exception(); //TODO utiliser une exception plus précise
         }
     }
 
     // path: PUT chiro/biometrie
-    public function createAction($id=null){
+    public function createAction(Request $req, $id=null){
+        $data = json_decode($req->getContent(), true);
         $manager = $this->getDoctrine()->getManager();
         $biom = new Biometrie();
         try{
-            $this->hydrateBiometrie($biom);
+            $this->hydrateBiometrie($biom, $data);
             $manager->persist($biom);
             $manager->flush();
             return new JsonResponse(array('id'=>$biom->getId()));
         }
         catch(\Exception $e){
-            $errs = $obj->errors();
+            $errs = $biom->errors();
             return new JsonResponse($errs, 400);
         }
     }
 
     // path: POST chiro/biometrie/{id}
-    public function updateAction($id=null){
+    public function updateAction(Request $req, $id=null){
+        $data = json_decode($req->getContent(), true);
         $manager = $this->getDoctrine()->getManager();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->getOneBy(array('id'=>$id));
+        $biom = $repo->findOneBy(array('id'=>$id));
 
-        return new Response('enregistrer biometrie');
         try{
-            $this->hydrateBiometrie($biom);
+            $this->hydrateBiometrie($biom, $data);
             $manager->flush();
             return new JsonResponse(array('id'=>$biom->getId()));
         }
         catch(\Exception $e){
-            $errs = $obj->errors();
+            print_r($e->getMessage());
+            $errs = $biom->errors();
             return new JsonResponse($errs, 400);
         }
     }
@@ -99,7 +101,7 @@ class BiometrieController extends Controller
     public function deleteAction($id){
         $manager = $this->getDoctrine()->getManager();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->getOneBy(array('id'=>$id));
+        $biom = $repo->findOneBy(array('id'=>$id));
         if($biom){
             $manager->remove($biom);
             $manager->flush();

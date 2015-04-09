@@ -166,6 +166,12 @@ pnc_chiro_config_tx_obs:
     requirements:
         _method: GET
 
+pnc_chiro_config_biom:
+    path: /biomConfig
+    defaults: { _controller: PNCChiroBundle:Config:getBiometrieConfig }
+    requirements:
+        _method: GET
+
 pnc_chiro_config_observateurs:
     path: /observateurs
     defaults: { _controller: PNCChiroBundle:Config:getObservateurs }

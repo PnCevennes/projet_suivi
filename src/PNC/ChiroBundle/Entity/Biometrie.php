@@ -9,6 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Biometrie
 {
+
+    private $_errors = array();
+
+    /*
+     * Retourne la liste des champs invalides s'il y en a
+     * ou false si tout est OK
+     */
+
+    public function errors(){
+        /*if(empty($this->_errors)){
+            return false;
+        }*/
+        return $this->_errors;
+    }
+
     /**
      * @var integer
      */
@@ -149,7 +164,10 @@ class Biometrie
      */
     public function setBiomAb($biomAb)
     {
-        $this->biom_ab = $biomAb;
+        if($biomAb && !is_numeric($biomAb)){
+            $this->_errors['biomAb'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_ab = $biomAb;
 
         return $this;
     }
@@ -172,7 +190,10 @@ class Biometrie
      */
     public function setBiomPoids($biomPoids)
     {
-        $this->biom_poids = $biomPoids;
+        if($biomPoids && !is_numeric($biomPoids)){
+            $this->_errors['biomPoids'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_poids = $biomPoids;
 
         return $this;
     }
@@ -195,7 +216,10 @@ class Biometrie
      */
     public function setBiomD3mf1($biomD3mf1)
     {
-        $this->biom_d3mf1 = $biomD3mf1;
+        if($biomD3mf1 && !is_numeric($biomD3mf1)){
+            $this->_errors['biomD3mf1'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_d3mf1 = $biomD3mf1;
 
         return $this;
     }
@@ -218,7 +242,10 @@ class Biometrie
      */
     public function setBiomD3f2f3($biomD3f2f3)
     {
-        $this->biom_d3f2f3 = $biomD3f2f3;
+        if($biomD3f2f3 && !is_numeric($biomD3f2f3)){
+            $this->_errors['biomD3f2f3'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_d3f2f3 = $biomD3f2f3;
 
         return $this;
     }
@@ -241,7 +268,10 @@ class Biometrie
      */
     public function setBiomD3total($biomD3total)
     {
-        $this->biom_d3total = $biomD3total;
+        if($biomD3total && !is_numeric($biomD3total)){
+            $this->_errors['biomD3total'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_d3total = $biomD3total;
 
         return $this;
     }
@@ -264,7 +294,10 @@ class Biometrie
      */
     public function setBiomD5($biomD5)
     {
-        $this->biom_d5 = $biomD5;
+        if($biomD5 && !is_numeric($biomD5)){
+            $this->_errors['biomD5'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_d5 = $biomD5;
 
         return $this;
     }
@@ -287,7 +320,10 @@ class Biometrie
      */
     public function setBiomCm3sup($biomCm3sup)
     {
-        $this->biom_cm3sup = $biomCm3sup;
+        if($biomCm3sup && !is_numeric($biomCm3sup)){
+            $this->_errors['biomCm3sup'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_cm3sup = $biomCm3sup;
 
         return $this;
     }
@@ -310,7 +346,10 @@ class Biometrie
      */
     public function setBiomCm3inf($biomCm3inf)
     {
-        $this->biom_cm3inf = $biomCm3inf;
+        if($biomCm3inf && !is_numeric($biomCm3inf)){
+            $this->_errors['biomCm3inf'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_cm3inf = $biomCm3inf;
 
         return $this;
     }
@@ -333,7 +372,10 @@ class Biometrie
      */
     public function setBiomCb($biomCb)
     {
-        $this->biom_cb = $biomCb;
+        if($biomCb && !is_numeric($biomCb)){
+            $this->_errors['biomCb'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_cb = $biomCb;
 
         return $this;
     }
@@ -356,7 +398,10 @@ class Biometrie
      */
     public function setBiomLm($biomLm)
     {
-        $this->biom_lm = $biomLm;
+        if($biomLm && !is_numeric($biomLm)){
+            $this->_errors['biomLm'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_lm = $biomLm;
 
         return $this;
     }
@@ -379,7 +424,10 @@ class Biometrie
      */
     public function setBiomOreille($biomOreille)
     {
-        $this->biom_oreille = $biomOreille;
+        if($biomOreille && !is_numeric($biomOreille)){
+            $this->_errors['biomOreille'] = "Cette valeur est numérique !";
+        }
+        else $this->biom_oreille = $biomOreille;
 
         return $this;
     }
