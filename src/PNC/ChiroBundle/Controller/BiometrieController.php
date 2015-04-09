@@ -10,22 +10,44 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BiometrieController extends Controller
 {
-    public function listAction(){
-        return new Response('liste biometries');
+    // path: GET chiro/biometrie/taxon/{otx_id}
+    public function listAction($otx_id=null){
+        $norm = $this->get('normalizer');
+
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
+        $data = $repo->findBy(array('obs_tx_id'=>$otx_id));
+
+        $out = array();
+        foreach($data as $item){
+            $out[] = $norm->normalize($item);
+        }
+        return new JsonResponse($out);
     }
 
+    // path: GET chiro/biometrie/{id}
     public function detailAction($id){
-        return new Response('detail biometrie');
+        $norm = $this->get('normalizer');
+
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
+        $data = $repo->findOneBy(array('id'=>$id));
+        if($data){
+            $out = $norm->normalize($data);
+            return new JsonResponse($out);
+        }
+        return new JsonResponse(array('id'=>$id), 404);
     }
 
-    public function editAction($id=null){
+    // path: PUT chiro/biometrie
+    public function createAction($id=null){
         return new Response('formulaire biometrie');
     }
 
-    public function saveAction($id=null){
+    // path: POST chiro/biometrie/{id}
+    public function updateAction($id=null){
         return new Response('enregistrer biometrie');
     }
 
+    // path: DELETE chiro/biometrie/{id}
     public function deleteAction($id){
         return new Response('supprimer biometrie');
     }
