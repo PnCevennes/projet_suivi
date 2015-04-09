@@ -12,7 +12,7 @@
         <li ng-repeat="group in schema.detailSite.__groups__" ><a ng-click="select_group(group)">{{group}} <span class="glyphicon glyphicon-ok" ng-if="schema.detailSite[group].shown"</span></a></li>
     </ul>
     <div ng-repeat="group in schema.detailSite.__groups__" ng-show="schema.detailSite[group].shown" class="col-lg-6">
-        <table style="witdh: 100%">
+        <table> 
             <tr ng-repeat="val in schema.detailSite[group]">
                 <td ng-if="val.type!='hidden'" style="padding-right: 3em;"><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
                 <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>

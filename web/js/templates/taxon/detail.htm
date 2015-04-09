@@ -7,17 +7,41 @@
     <div class="col-lg-1 col-lg-offset-5"><a class="btn btn-warning" ng-href="#/{{_appName}}/edit/taxons/{{data.id}}">Modifier</a></div>
 </div>
 <div class="row col-lg-6">
+    <ul class="nav nav-tabs nav-justified">
+        <li ng-repeat="group in schema.detailObsTx.__groups__" ><a ng-click="select_group(group)">{{group}} <span class="glyphicon glyphicon-ok" ng-if="schema.detailObsTx[group].shown"</span></a></li>
+    </ul>
+    <div ng-repeat="group in schema.detailObsTx.__groups__" ng-show="schema.detailObsTx[group].shown" class="col-lg-6">
+        <table class="table col-lg-5">
+            <tr ng-repeat="field in schema.detailObsTx[group]">
+                <td>{{field.label}}</td>
+                <td ng-if="field.type=='date'">{{data[field.name]|datefr}}</td>
+                <td ng-if="field.type=='string'||field.type=='num'">{{data[field.name]}}</td>
+                <td ng-if="field.type=='bool'">{{data[field.name] ? 'Oui': 'Non'}}</td>
+                <td ng-if="field.type=='multi'">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="item in data[field.name]"><span ng-repeat="opt in field.options">{{item[opt]}}</span></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row col-lg-6" ng-if="biometries.length>0">
+    <h3 class="col-lg-5">Biometries</h3>
+    <div class="col-lg-1 col-lg-offset-5">
+        <a class="btn btn-success" ng-href="#/{{_appName}}/edit/biometrie/taxon/{{data.id}}">Nouveau</a>
+    </div>
     <table class="table">
-        <tr ng-repeat="field in schema.detailObsTx">
-            <td>{{field.label}}</td>
-            <td ng-if="field.type=='date'">{{data[field.name]|datefr}}</td>
-            <td ng-if="field.type=='string'||field.type=='num'">{{data[field.name]}}</td>
-            <td ng-if="field.type=='bool'">{{data[field.name] ? 'Oui': 'Non'}}</td>
-            <td ng-if="field.type=='multi'">
-                <ul class="list-unstyled">
-                    <li ng-repeat="item in data[field.name]"><span ng-repeat="opt in field.options">{{item[opt]}}</span></li>
-                </ul>
-            </td>
+        <tr>
+            <th>Age</th>
+            <th>Sexe</th>
+            <th>Poids</th>
+        </tr>
+        <tr ng-repeat="biom in biometries">
+            <td>{{biom.ageId}}</td>
+            <td>{{biom.sexeId}}</td>
+            <td>{{biom.biomPoids}}</td>
+            <td><a ng-href="#/{{_appName}}/biometrie/{{biom.id}}">Voir</a></td>
         </tr>
     </table>
 </div>

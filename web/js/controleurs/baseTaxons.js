@@ -30,21 +30,34 @@ app.config(function($routeProvider){
 
 app.controller('taxonDetailController', function($scope, $routeParams, configServ, dataServ){
     $scope._appName = $routeParams.appName;
-    $scope.errors = [];
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
         dataServ.get($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.setData);
     };
 
     $scope.setData = function(resp){
-        $scope.data = angular.copy(resp)
-
+        $scope.data = angular.copy(resp);
+        $scope.select_group('Général');
+        dataServ.get($scope._appName + '/biometrie/taxon/' + $routeParams.id, $scope.setBiometries);
     };
+
+    $scope.setBiometries = function(resp){
+        $scope.biometries = angular.copy(resp);
+    };
+
+    $scope.select_group = function(group){
+        angular.forEach($scope.schema.detailObsTx.__groups__, function(grp){
+            $scope.schema.detailObsTx[grp].shown = false;
+        });
+        $scope.schema.detailObsTx[group].shown = true;
+    };
+
     configServ.getUrl($scope._appName + '/obsTxConfig', $scope.setSchema);
 });
 
 app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ){
     $scope._appName = $routeParams.appName;
+    $scope.errors = [];
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp.formObsTx);
         if($routeParams.id){
