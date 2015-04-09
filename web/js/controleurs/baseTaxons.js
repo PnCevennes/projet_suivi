@@ -18,6 +18,10 @@ app.config(function($routeProvider){
             controller: 'taxonEditController',
             templateUrl: 'js/templates/taxon/edit.htm'
         })
+        .when('/:appName/edit/taxons/observation/:obs_id', {
+            controller: 'taxonEditController',
+            templateUrl: 'js/templates/taxon/edit.htm'
+        })
         .when('/:appName/edit/taxons/:id', {
             controller: 'taxonEditController',
             templateUrl: 'js/templates/taxon/edit.htm'
@@ -47,7 +51,7 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
             dataServ.get($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.setData);
         }
         else{
-            $scope.tmp = {};
+            $scope.tmp = {obsId: $routeParams.obs_id};
             angular.forEach($scope.schema, function(item){
                 $scope.tmp[item.name] = item.default || null;
             }, $scope);
@@ -56,26 +60,40 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
     };
 
     $scope.setData = function(resp){
-        $scope.data = angular.copy(resp)
+        $scope.data = angular.copy(resp);
 
     };
 
     $scope.save = function(){
         if($routeParams.id){
-            dataServ.post($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.data, $scope.saved, $scope.unsaved);
+            dataServ.post(
+                $scope._appName + '/obs_taxon/' + $routeParams.id, 
+                $scope.data, 
+                function(resp){
+                    dataServ.forceReload = true;
+                    $location.path($scope._appName + '/taxons/' + resp.id);
+                }, 
+                function(resp){
+                    $scope.errors = resp;
+                });
         }
         else{
-            dataServ.put($scope._appName + '/obs_taxon', $scope.data, $scope.saved, $scope.unsaved);
+            dataServ.put(
+                $scope._appName + '/obs_taxon', 
+                $scope.data, 
+                function(resp){
+                    dataServ.forceReload = true;
+                    $location.path($scope._appName + '/taxons/' + resp.id);
+                }, 
+                function(resp){
+                    $scope.errors = resp;
+                });
         }
     };
 
-    $scope.saved = function(resp){
+    $scope.removed = function(resp){
         dataServ.forceReload = true;
-        $location.path($scope._appName + '/taxons/' + $resp.id);
-    };
-
-    $scope.unsaved = function(resp){
-        $scope.errors = resp;
+        $location.path($scope._appName + '/observation/' + $scope.data.obsId);
     }
 
     $scope.remove = function(){
@@ -83,11 +101,6 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
             dataServ.delete($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.removed);
         }
     };
-
-    $scope.removed = function(resp){
-        dataServ.forceReload = true;
-        $location.path($scope._appName + '/taxons/' + $scope.data.obsId);
-    }
 
     configServ.getUrl($scope._appName + '/obsTxConfig', $scope.setSchema);
 });
