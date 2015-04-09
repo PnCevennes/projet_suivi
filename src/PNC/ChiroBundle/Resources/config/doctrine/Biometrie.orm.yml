@@ -55,12 +55,3 @@ PNC\ChiroBundle\Entity\Biometrie:
             type: text 
             nullable: true
 
-    manyToOne:
-        observation:
-            targetEntity: PNC\ChiroBundle\Entity\ObservationTaxon
-            joinColumn:
-                name: obs_tx_id
-                referencedColumnName: id
-
-
-
