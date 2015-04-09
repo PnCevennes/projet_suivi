@@ -552,6 +552,13 @@ class ConfigController extends Controller{
                     'options'=>array()
                 ),
                 array(
+                    'name'=>'obsCommentaire',
+                    'label'=>'Commentaire',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
                     'name'=>'obsValidateur',
                     'label'=>'Validateur',
                     'type'=>'string',
@@ -684,11 +691,18 @@ class ConfigController extends Controller{
                     'options'=>array()
                 ),
                 array(
+                    'name'=>'obsCommentaire',
+                    'label'=>'Commentaire',
+                    'type'=>'text',
+                    'help'=>"Informations complémentaires sur l'observation",
+                    'options'=>array()
+                ),
+                array(
                     'name'=>'obsEffectifAbs',
                     'label'=>'Effectif total',
-                    'type'=>'num',
+                    'type'=>'sum',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'))
                 ),
                 array(
                     'name'=>'obsNbMaleAdulte',

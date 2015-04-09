@@ -117,6 +117,7 @@ class ObservationTaxonController extends Controller
         }
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($obsTx);
+        $manager->flush();
 
         return new JsonResponse(array('id'=>$id));
     }
