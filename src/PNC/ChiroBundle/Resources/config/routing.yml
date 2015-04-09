@@ -40,26 +40,32 @@ pnc_observation_taxon_suppr:
 
 
 pnc_biometrie_list:
-    path:     /biometrie
-    defaults: { _controller: PNCChiroBundle:Biometrie:list }
+    path:     /biometrie/taxon/{otx_id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:list, otx_id: null }
     requirements:
         _method: GET
 
 pnc_biometrie_detail:
     path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:detail }
+    defaults: { _controller: PNCChiroBundle:Biometrie:detail, id: null }
     requirements:
         _method: GET
 
-pnc_biometrie_save:
+pnc_biometrie_create:
+    path:     /biometrie
+    defaults: { _controller: PNCChiroBundle:Biometrie:create }
+    requirements:
+        _method: PUT
+
+pnc_biometrie_update:
     path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:save, id: null }
+    defaults: { _controller: PNCChiroBundle:Biometrie:update, id: null }
     requirements:
         _method: POST
 
 pnc_biometrie_suppr:
     path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:delete }
+    defaults: { _controller: PNCChiroBundle:Biometrie:delete, id: null }
     requirements:
         _method: DELETE
 
