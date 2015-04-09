@@ -18,6 +18,7 @@
                         <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data[val.name]" ng-if="val.type=='select'"></select>
                         <xhrinput url="val.options.url" initial="data[val.name]" target="data[val.name]" ng-if="val.type=='xhr'"></xhrinput>
                         <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data[val.name]"></textarea>
+                        <calculated ng-if="val.type=='sum'" refs="val.options.ref" data="data" model="data[val.name]"></calculated>
                     </div>
                     <fileinput ng-if="val.type=='file'" fileids="data[val.name]"></fileinput>
 

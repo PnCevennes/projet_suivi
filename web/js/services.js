@@ -280,3 +280,30 @@ app.directive('fileinput', function(){
         }
     }
 });
+
+app.directive('calculated', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            data: '=',
+            refs: '=',
+            model: '=',
+        },
+        template: '<input type="number" ng-model="model"/>',
+        controller: function($scope){
+            console.log($scope.data);
+            angular.forEach($scope.refs, function(elem){
+                $scope.$watch(function(){
+                    return $scope.data[elem];
+                }, function(newval, oldval){
+                    //$scope.model += newval-oldval;
+                    //if($scope.model<0) $scope.model=0;
+                    $scope.model = 0;
+                    angular.forEach($scope.refs, function(elem){
+                        $scope.model += $scope.data[elem];
+                    }, $scope);
+                });
+            }, $scope);
+        }
+    }
+});
