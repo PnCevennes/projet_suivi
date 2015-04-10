@@ -28,7 +28,7 @@ class SiteController extends Controller{
         foreach($infos as $info){
             $out_item = array('type'=>'Feature');
             $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
-            $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : '';
+            $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement();
             $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
             $out_item['properties']['dernObs'] = !empty($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
             $out_item['geometry'] = $info->getGeom();
@@ -54,7 +54,7 @@ class SiteController extends Controller{
 
         $out_item = array('type'=>'Feature');
         $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
-        $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement()[0] != "" ? $info->getSiteAmenagement() : array();
+        $out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement();
         $out_item['properties']['siteDate'] = !empty($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
         $out_item['properties']['dernObs'] = !empty($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
         $out_item['geometry'] = $info->getGeom();

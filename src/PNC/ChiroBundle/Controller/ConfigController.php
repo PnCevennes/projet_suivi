@@ -563,9 +563,9 @@ class ConfigController extends Controller{
                     array(
                         'name'=>'obsValidateur',
                         'label'=>'Validateur',
-                        'type'=>'string',
+                        'type'=>'xhr',
                         'help'=>'',
-                        'options'=>array()
+                        'options'=>array('url'=>'chiro/observateurs')
                     ),
                     array(
                         'name'=>'obsEspeceIncertaine',
