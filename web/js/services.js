@@ -66,6 +66,7 @@ app.service('dataServ', function($http, $filter){
 
 /*
  * Service de récupération et stockage des configurations
+ * Utiliser pour stocker les variables globales ou les éléments de configuation de l'application
  */
 app.service('configServ', function(dataServ){
     var cache = {};
@@ -150,6 +151,7 @@ app.service('mapService', function($rootScope, $filter){
 
 /*
  * filtre basique - transforme une date yyyy-mm-dd en dd/mm/yyyy pour l'affichage
+ * Utilisé comme un formateur de date
  */
 app.filter('datefr', function(){
     return function(input){
@@ -162,6 +164,10 @@ app.filter('datefr', function(){
     }
 });
 
+/*
+ *
+ * Affichage du label d'une liste déroulante à partir de son identifiant
+ */
 
 app.filter('tselect', function($filter){
     return function(input, param){
@@ -171,12 +177,46 @@ app.filter('tselect', function($filter){
             return res[0].libelle;
         }
         catch(e){
-            return 'krkrkr..';
+            return 'krkrkr..'; //FIXME
         }
     }
 });
 
+/**
+ *fonction qui renvoie le label associé à un identifiant
+ * paramètres : 
+ *  xhrurl ->url du  service web
+ *  inputid -> identifiant de l'élément
+ * return : label
+ */
 
+app.directive('xhrdisplay', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            inputid: '=',
+            xhrurl: '=',
+        },
+        template: '{{value}}',
+        controller: function($scope, dataServ){
+            $scope.setResult = function(resp){
+                $scope.value = resp.label;
+            };
+            $scope.$watch(function(){return $scope.inputid}, function(newval, oldval){
+                dataServ.post($scope.xhrurl, {id: newval}, $scope.setResult);
+            });
+        }
+    };
+});
+
+
+/***
+ * directive de type champ input qui permet à l'utilisateur de selectionné un élément à partir d'une recherche textuelle (autocompletion)
+ * fonctions : 
+ *  find : interrogation du serveur 
+ *      return liste identifiant
+ *  select : selection d'un item dans la liste renvoyée par le serveur. Stocke cette valeur dans la propriété target
+ */
 app.directive('xhrinput', function(){
     return {
         restrict: 'E',
@@ -212,7 +252,10 @@ app.directive('xhrinput', function(){
     }
 });
 
-
+/***
+ * génération automatique de formulaire à partir d'un json qui représente le schéma du formulaire
+ *
+ */
 app.directive('dynform', function(){
     return {
         restrict: 'E',
@@ -236,6 +279,10 @@ app.directive('dynform', function(){
     };
 });
 
+/***
+ *génération d'un champ formulaire de type multivalué
+ *
+ */
 app.directive('multi', function(){
     return {
         restrict: 'E',
@@ -245,8 +292,9 @@ app.directive('multi', function(){
         },
         templateUrl: 'js/templates/multi.htm',
         controller: function($scope){
-            $scope.data = $scope.refer;
-
+            $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
+                $scope.data = $scope.refer;
+            });
             $scope.add = function(){
                 $scope.data.push(null);
             };
@@ -257,7 +305,9 @@ app.directive('multi', function(){
     }
 });
 
-
+/*
+ * Directive qui permet d'avoir un champ de formulaire de type fichier et qui l'envoie au serveur
+ */
 app.directive('fileinput', function(){
     return {
         restrict: 'E',
@@ -295,6 +345,10 @@ app.directive('fileinput', function(){
     }
 });
 
+/**
+ * Directive qui permet d'avoir un champ de formulaire de type valeur calculée modifiable
+ * @TODO : ajouter un paramètre modifiable oui/non
+ */
 app.directive('calculated', function(){
     return {
         restrict: 'E',

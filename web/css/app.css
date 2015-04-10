@@ -3,3 +3,13 @@
     height: 600px;
     border: 2px solid black;
 }
+
+.sxhrinput li{
+    list-style-type: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sxhrinput li:hover{
+    background-color: #AAAAFF;
+}

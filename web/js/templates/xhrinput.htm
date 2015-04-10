@@ -1,6 +1,6 @@
 <div>
     <input type="text" ng-model="_input" ng-keyup="find()">
-    <ul ng-if="hints && show">
+    <ul ng-if="hints && show" class="sxhrinput">
         <li ng-repeat="item in hints" ng-click="select($index)">{{item.label}}</li>
     </ul>
     <input type="hidden" ng-model="target"> 
