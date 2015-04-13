@@ -140,7 +140,6 @@ class SiteController extends Controller{
         catch(\Exception $e){
             $manager->getConnection()->rollback();
             $errs = array_merge($site->errors(), $infoSite->errors());
-
             return new JsonResponse($errs, 400);
         }
 
@@ -157,7 +156,7 @@ class SiteController extends Controller{
             }
         }
         catch(\Exception $e){
-            print_r($e);
+            print_r($e->getMessage());
         }
 
 

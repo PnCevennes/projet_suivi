@@ -222,137 +222,116 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
 
     $scope._appName = $routeParams.appName;
 
-    $scope.ref = {type: 'Feature', properties: {}, geometry: {type:'Point', coordinates: [3.593666, 44.323187]}};
-    // enregistrement du schéma <- dataServ.get(chiro/siteForm)
     $scope.setSchema = function(resp){
         $scope.schema = resp;
-        $scope._init_interface();
-    };
-
-    // remplace les données de référence issues du cache
-    // par des données issues du serveur
-    $scope.setData = function(resp){
-        $scope.data.properties = resp.properties;
-        $scope.data.properties.siteDate = $scope.data.properties.siteDate.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
-        $scope.data.geometry = resp.geometry;
-    };
-
-    // met à jour les coordonnées affichées en fonction du déplacement du point sur la carte
-    $scope.updatePos = function(mark){
-        $scope.data.geometry.coordinates[0] = mark.getLatLng().lng;
-        $scope.data.geometry.coordinates[1] = mark.getLatLng().lat;
-    };
-
-
-    // initialisation de l'interface
-    $scope._init_interface = function(){
         if($routeParams.id){
-            // récupération des données à traiter
-            $scope.ref = dataServ.getFromCache($scope._appName + '/site', {properties: {id: $routeParams.id}});
-            dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData, function(err){console.log(err);}, true);
-
-        }
-
-        // initialisation du formulaire
-        $scope.data = angular.copy($scope.ref);
-        for(idx in $scope.schema.formSite){
-            var_ = $scope.schema.formSite[idx];
-            if($scope.data.properties[var_.name] == undefined){
-                $scope.data.properties[var_.name] = var_.default != undefined ? var_.default: '';
-                if(var_.type=='date'){
-                    $scope.data.properties[var_.name] = new Date().toISOString().replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
-                }
-            }
-        }
-
-        $scope.tmpLayer = L.layerGroup();
-        $scope.marker = L.marker(
-            L.latLng(
-                $scope.ref.geometry.coordinates[1],
-                $scope.ref.geometry.coordinates[0]), {draggable: true});
-
-        $scope.marker.on('dragend', function(ev){
-            // evenement lancé lorsque le point est déplacé et relaché
-            $rootScope.$apply($scope.updatePos(ev.target));
-        });
-        $scope.marker.addTo($scope.tmpLayer);
-        mapService.map.addLayer($scope.tmpLayer);
-        mapService.map.setView($scope.marker.getLatLng(), 14);
-    };
-
-    
-    $scope.remove = function(){
-        if(confirm('Attention, cette action supprimera ce site définitivement !\nPensez aux habitants avant de confirmer')){
-            dataServ.delete($scope._appName + '/site/'+$routeParams.id, $scope.deleted);
-        }
-    };
-
-    $scope.deleted = function(resp){
-        //TODO remplacer debug par un service de messagerie
-        $scope.debug = resp;
-
-        $scope.clear();
-
-        dataServ.forceReload = true;
-        $location.path($scope._appName + '/site');
-    }
-
-    /*
-     * enregistrement des données
-     */
-    $scope.save = function(){
-        if($scope.data.properties.id == ''){
-            dataServ.put($scope._appName + '/site', $scope.data, function(resp, status){
-                $scope.updateClear();
-                dataServ.forceReload = true;
-                $location.path($scope._appName + '/site');
-            }, function(resp, status){
-                $scope.errors = resp;
-            });
+            dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setData);
         }
         else{
-            //$scope.debug = $scope.data;
-            dataServ.post($scope._appName + '/site/'+$scope.data.properties.id, angular.copy($scope.data), function(resp, status){
-                // succès de l'ajout/mise à jour
-
-                //TODO remplacer debug par un service de messagerie
-                $scope.errors = resp;
-
-                // Mise à jour des données de la liste
-                $scope.updateClear();
-                dataServ.forceReload = true;
-                $location.path($scope._appName + '/site');
-
-            }, function(resp, status){
-                // échec de l'ajout/mise à jour
-                //TODO remplacer debug par un service de messagerie
-                $scope.debug = status;   
+            props = {};
+            $scope.schema.formSite.forEach(function(elem){
+                props[elem.name] = elem.default || null;
             });
+            $scope.setData({properties: props, geometry: {coordinates: []}});
         }
     };
 
-    /*
-     * mise à jour des données et nettoyage
-     */
-    $scope.updateClear = function(){
-        // mise à jour des données de référence
-        $scope.ref.properties = $scope.data.properties;
-        // Mise à jour du point sur la carte
-        var _mark = mapService.getMarker($scope.data.properties.id);
-        if(_mark){
-            $scope.ref.geometry= $scope.data.geometry;
-            _mark.setLatLng([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]]); 
-        }
-        $scope.clear();
-    };
+    $scope.setData = function(resp){
+        $scope.data = angular.copy(resp);
+        //FIXME rustine
+        $scope.data.properties.siteDate = $scope.data.properties.siteDate.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
 
-    $scope.clear = function(){
-        // suppression du layer temporaire
-        $scope.tmpLayer.removeLayer($scope.marker);
-        mapService.map.removeLayer($scope.tmpLayer);
-    }
+        var editLayer = new L.FeatureGroup();
+        $scope.editLayer = editLayer;
+
+        mapService.map.addLayer(editLayer);
+        
+        if($scope.data.properties.id){
+            var marker = mapService.getMarker($scope.data.properties.id);
+            editLayer.addLayer(marker);
+        }
+        else{
+            var marker = null;
+        }
+        
+        $scope.controls = new L.Control.Draw({
+            edit: {featureGroup: editLayer},
+            draw: {
+                circle: false,
+                rectangle: false,
+            },
+        });
+
+        mapService.map.addControl($scope.controls);
+
+        mapService.map.on('draw:created', function(e){
+            //console.log(e.layer);
+            if(marker == null){
+                editLayer.addLayer(e.layer);
+                marker = e.layer;
+                var coords = e.layer.getLatLng();
+                $rootScope.$apply($rootScope.$broadcast('edit:coords', coords));
+            }
+            
+        });
+
+        mapService.map.on('draw:edited', function(e){
+            //console.log(e.layers.getLayers()[0].getLatLng());
+            var coords = e.layers.getLayers()[0].getLatLng();
+            $rootScope.$apply($rootScope.$broadcast('edit:coords', coords));
+        });
+
+        mapService.map.on('draw:deleted', function(e){
+            marker = null;
+            $rootScope.$apply($rootScope.$broadcast('edit:coords', {lat: null, lng: null}));
+        });
+    };
     
-    $scope.$on('$destroy', $scope.clear); 
+    $scope.$on('edit:coords', function(ev, coords){
+        $scope.data.geometry.coordinates[0] = coords.lng;
+        $scope.data.geometry.coordinates[1] = coords.lat;
+    });
+
+    $scope.$on('$destroy', function(ev){
+        mapService.map.removeControl($scope.controls);
+        mapService.map.removeLayer($scope.editLayer);
+        $scope.controls = null;
+    });
+
+    $scope.save = function(){
+        if($routeParams.id){
+            dataServ.post($scope._appName + '/site/' + $routeParams.id, $scope.data, $scope.updated, $scope.handleErrors);
+        }
+        else{
+            dataServ.put($scope._appName + '/site', $scope.data, $scope.created, $scope.handleErrors);
+        }
+    };
+
+    $scope.handleErrors = function(resp){
+        $scope.errors = resp;
+    };
+
+    $scope.updated = function(resp){
+        //TODO message
+        dataServ.forceReload = true;
+        $location.path($scope._appName + '/site');
+    };
+
+    $scope.created = function(resp){
+        //TODO message
+        dataServ.forceReload = true;
+        $location.path($scope._appName + '/site');
+    };
+
+    $scope.remove = function(){
+        dataServ.delete($scope._appName + '/site/' + $routeParams.id, $scope.removed);
+    };
+
+    $scope.removed = function(){
+        //TODO message
+        dataServ.forceReload = true;
+        $location.path($scope._appName + '/site');
+    };
 
     // initialisation du formulaire
     configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);

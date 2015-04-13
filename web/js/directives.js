@@ -152,7 +152,7 @@ app.directive('fileinput', function(){
         templateUrl: 'js/templates/fileinput.htm',
         controller: function($scope, $rootScope, $upload){
             if($scope.fileids == undefined){
-                scope.fileids = [];
+                $scope.fileids = [];
             }
             $scope.delete_file = function(f_id){
                 alert('TODO');
