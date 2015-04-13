@@ -1,4 +1,4 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'suiviProtocoleDirectives']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
@@ -13,7 +13,10 @@ angular.module('baseTaxons', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
 angular.module('biometrie', ['suiviProtocoleServices', 'ngRoute']);
 
 // services de l'application
-angular.module('suiviProtocoleServices', ['angularFileUpload']);
+angular.module('suiviProtocoleServices', []);
+
+// directives
+angular.module('suiviProtocoleDirectives', ['angularFileUpload']);
 
 
 /*
