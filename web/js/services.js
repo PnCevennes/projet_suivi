@@ -164,11 +164,10 @@ app.filter('datefr', function(){
     }
 });
 
+
 /*
- *
  * Affichage du label d'une liste déroulante à partir de son identifiant
  */
-
 app.filter('tselect', function($filter){
     return function(input, param){
         var res = $filter('filter')(input, {id: param}, function(act, exp){return act==exp;});
@@ -177,19 +176,19 @@ app.filter('tselect', function($filter){
             return res[0].libelle;
         }
         catch(e){
-            return 'krkrkr..'; //FIXME
+            return 'Erreur : Valeur incompatible'; //Erreur censée ne jamais arriver.
         }
     }
 });
 
+
 /**
- *fonction qui renvoie le label associé à un identifiant
+ * fonction qui renvoie le label associé à un identifiant
  * paramètres : 
  *  xhrurl ->url du  service web
  *  inputid -> identifiant de l'élément
  * return : label
  */
-
 app.directive('xhrdisplay', function(){
     return {
         restrict: 'E',
@@ -211,8 +210,12 @@ app.directive('xhrdisplay', function(){
 
 
 /***
- * directive de type champ input qui permet à l'utilisateur de selectionné un élément à partir d'une recherche textuelle (autocompletion)
+ * directive de type champ input qui permet à l'utilisateur de selectionner un élément à partir d'une recherche textuelle (autocompletion)
  * fonctions : 
+ *  params :
+ *      url : l'url à contacter pour obtenir les données (doit renvoyer une liste de dictionnaires {id: ?, label: ?})
+ *      initial : la valeur d'initialisation (un ID)
+ *      target : la donnée cible de la directive (eq. ng-model)
  *  find : interrogation du serveur 
  *      return liste identifiant
  *  select : selection d'un item dans la liste renvoyée par le serveur. Stocke cette valeur dans la propriété target
@@ -254,7 +257,12 @@ app.directive('xhrinput', function(){
 
 /***
  * génération automatique de formulaire à partir d'un json qui représente le schéma du formulaire
- *
+ * params:
+ *  schema: le squelette du formulaire (cf. doc schémas)
+ *  data: le dictionnaire de données source/cible
+ *  onsave: la callback de sauvegarde du controleur
+ *  onremove: la callback de suppression du controleur
+ *  errors: liste d'erreurs de saisie (dictionnaire {nomChamp: errMessage})
  */
 app.directive('dynform', function(){
     return {
@@ -280,8 +288,10 @@ app.directive('dynform', function(){
 });
 
 /***
- *génération d'un champ formulaire de type multivalué
- *
+ * génération d'un champ formulaire de type multivalué
+ * params:
+ *  refer: la valeur source/cible du champ (une liste)
+ *  schema: le schema descripteur du champ (cf. doc schemas)
  */
 app.directive('multi', function(){
     return {
@@ -307,6 +317,9 @@ app.directive('multi', function(){
 
 /*
  * Directive qui permet d'avoir un champ de formulaire de type fichier et qui l'envoie au serveur
+ * envoie un fichier au serveur qui renvoie un identifiant de création.
+ * params:
+ *  fileids: la valeur source/cible du champ (liste d'identifiants)
  */
 app.directive('fileinput', function(){
     return {
@@ -347,7 +360,11 @@ app.directive('fileinput', function(){
 
 /**
  * Directive qui permet d'avoir un champ de formulaire de type valeur calculée modifiable
- * @TODO : ajouter un paramètre modifiable oui/non
+ * params: 
+ *  data: la source de données du champ (une liste de références aux champs servant au calcul)
+ *  refs: une liste du nom des champs à surveiller
+ *  model: la source/cible du champ (eq. ng-model)
+ *  modifiable: bool -> indique si le champ est modifiable ou en lecture seule
  */
 app.directive('calculated', function(){
     return {
@@ -356,10 +373,10 @@ app.directive('calculated', function(){
             data: '=',
             refs: '=',
             model: '=',
+            modifiable: '=',
         },
-        template: '<input type="number" ng-model="model"/>',
+        template: '<input type="number" ng-model="model" ng-disabled="!modifiable"/>',
         controller: function($scope){
-            console.log($scope.data);
             angular.forEach($scope.refs, function(elem){
                 $scope.$watch(function(){
                     return $scope.data[elem];
