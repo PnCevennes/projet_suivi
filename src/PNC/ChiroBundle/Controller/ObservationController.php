@@ -27,7 +27,7 @@ class ObservationController extends Controller{
 
         foreach($infos as $info){
             $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-            $out_item['obsDate'] = !empty($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+            $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
             $out_item['observateurs'] = array();
             foreach($info->getObservateurs() as $obr){
                 if($obr->getRole() == 'observateur'){
@@ -53,7 +53,7 @@ class ObservationController extends Controller{
 
         foreach($infos as $info){
             $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-            $out_item['obsDate'] = !empty($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+            $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
             $out_item['observateurs'] = array();
             foreach($info->getObservateurs() as $obr){
                 if($obr->getRole() == 'observateur'){
@@ -78,7 +78,7 @@ class ObservationController extends Controller{
             return new JsonResponse(array('v'=>'detail obs', 'err'=>404), 404);
         }
         $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-        $out_item['obsDate'] = !empty($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+        $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
             if($observateur->getRole() == 'observateur'){
