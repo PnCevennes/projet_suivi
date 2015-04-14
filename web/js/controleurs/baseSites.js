@@ -301,6 +301,9 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.save = function(){
+        if($scope.data.observateurId){
+            $scope.data.observateurId = $scope.data.observateurId.originalObject.id;
+        }
         if($routeParams.id){
             dataServ.post($scope._appName + '/site/' + $routeParams.id, $scope.data, $scope.updated, $scope.handleErrors);
         }

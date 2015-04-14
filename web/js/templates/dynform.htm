@@ -16,7 +16,7 @@
                         <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data[val.name]">
                         <input name="{{val.name}}" type="checkbox" ng-if="val.type=='bool'" ng-model="data[val.name]">
                         <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data[val.name]" ng-if="val.type=='select'"></select>
-                        <xhrinput url="val.options.url" initial="data[val.name]" target="data[val.name]" ng-if="val.type=='xhr'"></xhrinput>
+                        <angucompletewrapper id="{{val.name}}" pause="100" selectedobject="data[val.name]" url="{{val.options.url}}/" reverseurl="{{val.options.reverseurl}}" titlefield="label" ng-if="val.type=='xhr'" initial="data[val.name]"></angucompletewrapper>
                         <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data[val.name]"></textarea>
                         <calculated ng-if="val.type=='sum'" refs="val.options.ref" data="data" model="data[val.name]"></calculated>
                     </div>
@@ -31,4 +31,3 @@
         <button class="btn btn-danger col-lg-offset-11" type="button" ng-if="data.id" ng-click="remove()">Supprimer</button>
     </div>    
 </form>
-

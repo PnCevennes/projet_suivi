@@ -6,7 +6,6 @@ var app = angular.module('suiviProtocoleDirectives');
  * paramètres : 
  *  xhrurl ->url du  service web
  *  inputid -> identifiant de l'élément
- * return : label
  */
 app.directive('xhrdisplay', function(){
     return {
@@ -21,7 +20,9 @@ app.directive('xhrdisplay', function(){
                 $scope.value = resp.label;
             };
             $scope.$watch(function(){return $scope.inputid}, function(newval, oldval){
-                dataServ.post($scope.xhrurl, {id: newval}, $scope.setResult);
+                if(newval){
+                    dataServ.get($scope.xhrurl + '/' + newval, $scope.setResult);
+                }
             });
         }
     };
@@ -29,49 +30,40 @@ app.directive('xhrdisplay', function(){
 
 
 /**
- * directive de type champ input qui permet à l'utilisateur de selectionner un élément à partir d'une recherche textuelle (autocompletion)
- * fonctions : 
- *  params :
- *      url : l'url à contacter pour obtenir les données (doit renvoyer une liste de dictionnaires {id: ?, label: ?})
- *      initial : la valeur d'initialisation (un ID)
- *      target : la donnée cible de la directive (eq. ng-model)
- *  find : interrogation du serveur 
- *      return liste identifiant
- *  select : selection d'un item dans la liste renvoyée par le serveur. Stocke cette valeur dans la propriété target
+ * wrapper pour la directive angucomplete permettant de l'utiliser en édition
+ * requete inverse au serveur pour obtenir un label lié à l'ID fourni et passage
+ * label à la directive pour affichage
+ * params supplémentaires:
+ *  initial -> l'ID fourni
+ *  reverseurl -> l'url permettant d'obtenir le label correspondant à l'ID
  */
-app.directive('xhrinput', function(){
+app.directive('angucompletewrapper', function(dataServ){
     return {
         restrict: 'E',
         scope: {
-            url: '=',
+            id: '@',
+            selectedobject: '=',
+            url: '@',
             initial: '=',
-            target: '='
+            reverseurl: '@'
         },
-        templateUrl: 'js/templates/xhrinput.htm',
-        controller: function($scope, dataServ){
-            //FIXME
-            $scope.target = angular.copy($scope.initial);
-            $scope.find = function(){
-                if($scope._input.length){
-                    $scope.show = true;
-                    dataServ.post($scope.url, {label: $scope._input}, function(resp){
-                        $scope.hints = resp;
+        template: '<angucomplete id="{{id}}" pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial">',
+        controller: function($scope){
+            $scope.localselectedobject = {};
+            $scope.$watch('initial', function(newval){
+                if(newval){
+                    dataServ.get($scope.reverseurl + '/' + newval, function(resp){
+                        $scope.localInitial = resp.label;
                     });
                 }
-                else{
-                    $scope.show = false;
+            });
+            $scope.$watch('localselectedobject', function(newval){
+                if(newval){
+                    $scope.selectedobject = newval.originalObject.id;
                 }
-            };
-            $scope.select = function(idx){
-                $scope.show = false;
-                $scope._input = $scope.hints[idx].label;
-                $scope.target = $scope.hints[idx].id;
-            };
-            dataServ.post($scope.url, {id: $scope.initial}, function(resp){
-                $scope._input = resp.label;
             });
         }
-    }
+    };
 });
 
 
