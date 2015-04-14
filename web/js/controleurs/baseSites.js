@@ -239,7 +239,9 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.setData = function(resp){
         $scope.data = angular.copy(resp);
         //FIXME rustine
-        $scope.data.properties.siteDate = $scope.data.properties.siteDate.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
+        if($scope.data.properties.siteDate){
+            $scope.data.properties.siteDate = $scope.data.properties.siteDate.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
+        }
 
         var editLayer = new L.FeatureGroup();
         $scope.editLayer = editLayer;
