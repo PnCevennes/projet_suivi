@@ -58,7 +58,7 @@ app.directive('angucompletewrapper', function(dataServ){
                 }
             });
             $scope.$watch('localselectedobject', function(newval){
-                if(newval){
+                if(newval && newval.originalObject){
                     $scope.selectedobject = newval.originalObject.id;
                 }
             });
