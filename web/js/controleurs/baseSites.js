@@ -156,10 +156,10 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $scope.changeIcon = function(item){
         item.feature.properties.$selected = !item.feature.properties.$selected;
         if(item.feature.properties.$selected){
-            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png'}));
+            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', iconSize: [25, 41], iconAnchor: [13, 41]}));
         }
         else{
-            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon.png'}));
+            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon.png', iconSize: [25, 41], iconAnchor: [13, 41]}));
         }
     }
 });
@@ -301,9 +301,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.save = function(){
-        if($scope.data.observateurId){
-            $scope.data.observateurId = $scope.data.observateurId.originalObject.id;
-        }
         if($routeParams.id){
             dataServ.post($scope._appName + '/site/' + $routeParams.id, $scope.data, $scope.updated, $scope.handleErrors);
         }
