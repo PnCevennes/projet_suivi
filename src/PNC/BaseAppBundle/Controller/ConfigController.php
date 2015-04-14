@@ -26,26 +26,18 @@ class ConfigController extends Controller{
         ));
     }
 
-    // path: POST /observateurs
-    public function getObservateursAction(Request $req){
+    // path: GET /observateurs
+    public function getObservateursAction($q){
         $input = json_decode($req->getContent(), true);
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
-        if(isset($input['id'])){
-            $resp = $repo->findOneBy(array('id_role'=>$input['id']));
-                $out = array(
-                    'label'=>$resp->getNomRole() . ' ' . $resp->getPrenomRole(), 
-                    'id'=>$resp->getIdRole());
-            return new JsonResponse($out);
+        $resp = $repo->getLike($q);
+        $out = array();
+        foreach($resp as $item){
+            $out[] = array(
+                'label'=>$item->getNomRole() . ' ' . $item->getPrenomRole(), 
+                'id'=>$item->getIdRole());
         }
-        else{
-            $resp = $repo->getLike($input['label']);
-            $out = array();
-            foreach($resp as $item){
-                $out[] = array(
-                    'label'=>$item->getNomRole() . ' ' . $item->getPrenomRole(), 
-                    'id'=>$item->getIdRole());
-            }
-        }
+        
         return new JsonResponse($out);
     }
 

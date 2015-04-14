@@ -172,14 +172,26 @@ pnc_chiro_config_biom:
     requirements:
         _method: GET
 
-pnc_chiro_config_observateurs:
-    path: /observateurs
-    defaults: { _controller: PNCChiroBundle:Config:getObservateurs }
+pnc_chiro_config_observateurs_id:
+    path: /observateurs/id/{q}
+    defaults: { _controller: PNCChiroBundle:Config:getObservateursId, q: null }
     requirements:
-        _method: POST
+        _method: GET
+
+pnc_chiro_config_observateurs:
+    path: /observateurs/{q}
+    defaults: { _controller: PNCChiroBundle:Config:getObservateurs, q: null }
+    requirements:
+        _method: GET
+
+pnc_chiro_config_taxons_id:
+    path: /taxons/id/{q}
+    defaults: { _controller: PNCChiroBundle:Config:getTaxonsId, q: null }
+    requirements:
+        _method: GET
 
 pnc_chiro_config_taxons:
-    path: /taxons
-    defaults: { _controller: PNCChiroBundle:Config:getTaxons }
+    path: /taxons/{q}
+    defaults: { _controller: PNCChiroBundle:Config:getTaxons, q: null }
     requirements:
-        _method: POST
+        _method: GET

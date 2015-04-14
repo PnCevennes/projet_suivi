@@ -15,10 +15,10 @@ pnc_config_getapps:
         _method: GET
 
 pnc_config_getobservateurs:
-    path: /observateurs
-    defaults: {_controller: PNCBaseAppBundle:Config:getObservateurs }
+    path: /observateurs/{q}
+    defaults: {_controller: PNCBaseAppBundle:Config:getObservateurs, q: null }
     requirements:
-        _method: POST 
+        _method: GET 
 
 pnc_config_upload:
     path: /upload

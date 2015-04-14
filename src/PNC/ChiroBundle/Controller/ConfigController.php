@@ -11,63 +11,46 @@ use Symfony\Component\HttpFoundation\Request;
 class ConfigController extends Controller{
 
 
-    // path: POST chiro/observateurs
-    public function getObservateursAction(Request $req){
-        $input = json_decode($req->getContent(), true);
+    // path: GET chiro/observateurs/{q}
+    public function getObservateursAction($q){
         $out = array();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
-        if(isset($input['id']) && $input['id']){
-            $resp = $repo->findOneBy(array('obr_id'=>$input['id']));
-                $out = array(
-                    'label'=>$resp->getNomComplet(),
-                    'id'=>$resp->getObrId());
-            return new JsonResponse($out);
+        $resp = $repo->getLike($q, 'observateur');
+        foreach($resp as $item){
+            $out[] = array(
+                'label'=>$item->getNomComplet(),
+                'id'=>$item->getObrId());
         }
-        else{
-            if(isset($input['label']) && $input['label']){
-                $resp = $repo->getLike($input['label'], 'observateur');
-                foreach($resp as $item){
-                    $out[] = array(
-                        'label'=>$item->getNomComplet(),
-                        'id'=>$item->getObrId());
-                }
-            }
-            else{
-                $out = array();
-            }
-        }
+        
         return new JsonResponse($out);
     }
 
-    // path: POST chiro/taxons
-    public function getTaxonsAction(Request $req){
-        $input = json_decode($req->getContent(), true);
+    // path: GET chiro/observateurs/id/{q}
+    public function getObservateursIdAction($q){
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
+        $out = $repo->findOneBy(array('obr_id'=>$q));
+        return new JsonResponse(array('id'=>$q, 'label'=>$out->getNomComplet()));
+    }
+
+    // path: GET chiro/taxons/{q}
+    public function getTaxonsAction($q){
         $out = array();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Taxons');
-        if(isset($input['id']) && $input['id']){
-            $resp = $repo->findOneBy(array('cd_nom'=>$input['id']));
-                $out = array(
-                    'label'=>$resp->getNomComplet(),
-                    'id'=>$resp->getCdNom());
-            return new JsonResponse($out);
-        }
-        else{
-            if(isset($input['label']) && $input['label']){
-                $resp = $repo->getLike($input['label']);
-                foreach($resp as $item){
-                    $out[] = array(
-                        'label'=>$item->getNomComplet(),
-                        'id'=>$item->getCdNom());
-                }
-            }
-            else{
-                $out = array();
-            }
+        $resp = $repo->getLike($q);
+        foreach($resp as $item){
+            $out[] = array(
+                'label'=>$item->getNomComplet(),
+                'id'=>$item->getCdNom());
         }
         return new JsonResponse($out);
     }
 
-
+    // path: GET chiro/taxons/{q}
+    public function getTaxonsIdAction($q){
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Taxons');
+        $out = $repo->findOneBy(array('cd_nom'=>$q));
+        return new JsonResponse(array('id'=>$q, 'label'=>$out->getNomComplet()));
+    }
 
     public function getSiteConfigAction(){
 
@@ -124,7 +107,10 @@ class ConfigController extends Controller{
                     'label'=>'Observateur',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('url'=>'/chiro/observateurs'),
+                    'options'=>array(
+                        'url'=>'/chiro/observateurs', 
+                        'reverseurl'=>'/chiro/observateurs/id'
+                    ),
                 ),
                 array(
                     'name'=>'siteDate',
@@ -479,7 +465,7 @@ class ConfigController extends Controller{
                     'label'=>'Observateurs',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('multi'=>true, 'url'=>'/chiro/observateurs', 'ref'=>'nomComplet')
+                    'options'=>array('multi'=>true, 'url'=>'/chiro/observateurs', 'reverseurl'=>'/chiro/observateurs/id', 'ref'=>'nomComplet')
                 ),
                 array(
                     'name'=>'obsDate',
@@ -565,7 +551,7 @@ class ConfigController extends Controller{
                         'label'=>'Validateur',
                         'type'=>'xhr',
                         'help'=>'',
-                        'options'=>array('url'=>'chiro/observateurs')
+                        'options'=>array('url'=>'chiro/observateurs/id')
                     ),
                     array(
                         'name'=>'obsEspeceIncertaine',
@@ -671,7 +657,7 @@ class ConfigController extends Controller{
                     'label'=>'Nom taxon',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('url'=>'chiro/taxons', 'ref'=>'cdNom')
+                    'options'=>array('url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
                 ),
                 array(
                     'name'=>'obsTxInitial',
@@ -685,7 +671,7 @@ class ConfigController extends Controller{
                     'label'=>'Validateur',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('url'=>'chiro/observateurs', 'ref'=>'obsValidateur')
+                    'options'=>array('url'=>'chiro/observateurs', 'reverseurl'=>'chiro/observateurs/id', 'ref'=>'obsValidateur')
                 ),
                 array(
                     'name'=>'obsEspeceIncertaine',
