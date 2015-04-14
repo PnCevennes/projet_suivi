@@ -206,6 +206,10 @@ app.service('mapService', function($rootScope, $filter){
 
 });
 
+app.service('userMessages', function(){
+    this.infoMessage = '';
+});
+
 
 /**
  * filtre basique - transforme une date yyyy-mm-dd en dd/mm/yyyy pour l'affichage

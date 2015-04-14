@@ -1,75 +1,3 @@
-#pnc_base_app_homepage:
-#    path:     /hello/{name}
-#    defaults: { _controller: PNCChiroBundle:Default:index }
-
-
-
-#
-# vues observation taxon
-#
-pnc_observation_taxon_list:
-    path:     /obs_taxon/observation/{obs_id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:list, obs_id: null }
-    requirements:
-        _method: GET
-
-pnc_observation_taxon_detail:
-    path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:detail }
-    requirements:
-        _method: GET
-
-pnc_observation_taxon_create:
-    path:     /obs_taxon
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:create }
-    requirements:
-        _method: PUT
-
-pnc_observation_taxon_update:
-    path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:update, id: null }
-    requirements:
-        _method: POST
-
-pnc_observation_taxon_suppr:
-    path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:delete }
-    requirements:
-        _method: DELETE
-
-
-
-pnc_biometrie_list:
-    path:     /biometrie/taxon/{otx_id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:list, otx_id: null }
-    requirements:
-        _method: GET
-
-pnc_biometrie_detail:
-    path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:detail, id: null }
-    requirements:
-        _method: GET
-
-pnc_biometrie_create:
-    path:     /biometrie
-    defaults: { _controller: PNCChiroBundle:Biometrie:create }
-    requirements:
-        _method: PUT
-
-pnc_biometrie_update:
-    path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:update, id: null }
-    requirements:
-        _method: POST
-
-pnc_biometrie_suppr:
-    path:     /biometrie/{id}
-    defaults: { _controller: PNCChiroBundle:Biometrie:delete, id: null }
-    requirements:
-        _method: DELETE
-
-
 #
 # Vues site
 #
@@ -102,8 +30,6 @@ pnc_chiro_site_suppr:
     defaults: { _controller: PNCChiroBundle:Site:delete }
     requirements:
         _method: DELETE
-
-
 
 
 #
@@ -145,6 +71,77 @@ pnc_chiro_observation_suppr:
     requirements:
         _method: DELETE
 
+
+#
+# vues observation taxon
+#
+pnc_observation_taxon_list:
+    path:     /obs_taxon/observation/{obs_id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:list, obs_id: null }
+    requirements:
+        _method: GET
+
+pnc_observation_taxon_detail:
+    path:     /obs_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:detail }
+    requirements:
+        _method: GET
+
+pnc_observation_taxon_create:
+    path:     /obs_taxon
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:create }
+    requirements:
+        _method: PUT
+
+pnc_observation_taxon_update:
+    path:     /obs_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:update, id: null }
+    requirements:
+        _method: POST
+
+pnc_observation_taxon_suppr:
+    path:     /obs_taxon/{id}
+    defaults: { _controller: PNCChiroBundle:ObservationTaxon:delete }
+    requirements:
+        _method: DELETE
+
+
+#
+# Vues biometrie
+#
+pnc_biometrie_list:
+    path:     /biometrie/taxon/{otx_id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:list, otx_id: null }
+    requirements:
+        _method: GET
+
+pnc_biometrie_detail:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:detail, id: null }
+    requirements:
+        _method: GET
+
+pnc_biometrie_create:
+    path:     /biometrie
+    defaults: { _controller: PNCChiroBundle:Biometrie:create }
+    requirements:
+        _method: PUT
+
+pnc_biometrie_update:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:update, id: null }
+    requirements:
+        _method: POST
+
+pnc_biometrie_suppr:
+    path:     /biometrie/{id}
+    defaults: { _controller: PNCChiroBundle:Biometrie:delete, id: null }
+    requirements:
+        _method: DELETE
+
+
+
+
 #
 # Configuration client
 #
@@ -172,6 +169,10 @@ pnc_chiro_config_biom:
     requirements:
         _method: GET
 
+
+#
+# Vues autocomplete
+#
 pnc_chiro_config_observateurs_id:
     path: /observateurs/id/{q}
     defaults: { _controller: PNCChiroBundle:Config:getObservateursId, q: null }

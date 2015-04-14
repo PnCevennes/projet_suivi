@@ -28,7 +28,7 @@ app.config(function($routeProvider){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ){
+app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages){
     
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
@@ -228,7 +228,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
 /*
  * controleur pour l'édition d'un site
  */
-app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ){
+app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
 
     $scope._appName = $routeParams.appName;
 
@@ -326,11 +326,13 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.updated = function(resp){
         //TODO message
         dataServ.forceReload = true;
+        userMessages.infoMessage = "Site \"" + $scope.data.properties.siteNom + "\" mis à jour !";
         $location.path($scope._appName + '/site');
     };
 
     $scope.created = function(resp){
         //TODO message
+        userMessages.infoMessage = "Site \"" + $scope.data.properties.siteNom + "\" créé !";
         dataServ.forceReload = true;
         $location.path($scope._appName + '/site');
     };

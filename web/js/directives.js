@@ -208,3 +208,25 @@ app.directive('calculated', function(){
     }
 });
 
+
+app.directive('modalmsg', function(userMessages, $timeout){
+    return {
+        restrict: 'E',
+        templateUrl: 'js/templates/modalMsg.htm',
+        link: function($scope, elem){
+            $scope.$watch(
+                function(){return userMessages.infoMessage},
+                function(newval){
+                    console.log(newval);
+                    $scope.userMessage = newval;
+                    if(newval){
+                        $('#userMsg').modal('show');
+                        $timeout(function(){
+                            $('#userMsg').modal('hide');
+                        }, 3500);
+                    }
+                }
+            );
+        }
+    };
+});
