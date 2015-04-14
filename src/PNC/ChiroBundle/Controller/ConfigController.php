@@ -484,14 +484,14 @@ class ConfigController extends Controller{
                 array(
                     'name'=>'obsTemperature',
                     'label'=>'Température',
-                    'type'=>'text',
+                    'type'=>'string',
                     'help'=>'',
                     'options'=>array()
                 ),
                 array(
                     'name'=>'obsHumidite',
                     'label'=>'Humidité',
-                    'type'=>'text',
+                    'type'=>'string',
                     'help'=>'',
                     'options'=>array()
                 ),
