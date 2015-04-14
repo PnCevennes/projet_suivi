@@ -124,7 +124,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         }
         var res = $filter('filter')(mapService.marks, {feature: {properties: {id: item.id}}}, function(act, exp){return act==exp;});
         res[0].togglePopup();
-        mapService.map.setView(res[0].getLatLng(), 14);
+        mapService.map.setView(res[0].getLatLng(), Math.max(14, mapService.map.getZoom()));
         $scope.changeIcon(res[0]);
     };
 
@@ -156,10 +156,20 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $scope.changeIcon = function(item){
         item.feature.properties.$selected = !item.feature.properties.$selected;
         if(item.feature.properties.$selected){
-            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', iconSize: [25, 41], iconAnchor: [13, 41]}));
+            item.setIcon(L.icon({
+                iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', 
+                iconSize: [25, 41], 
+                iconAnchor: [13, 41],
+                popupAnchor: [0, -41],
+            }));
         }
         else{
-            item.setIcon(L.icon({iconUrl: 'js/lib/leaflet/images/marker-icon.png', iconSize: [25, 41], iconAnchor: [13, 41]}));
+            item.setIcon(L.icon({
+                iconUrl: 'js/lib/leaflet/images/marker-icon.png', 
+                iconSize: [25, 41], 
+                iconAnchor: [13, 41],
+                popupAnchor: [0, -41],
+            }));
         }
     }
 });
@@ -182,7 +192,7 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
             return act==exp;
         });
         $scope.data.properties.typeId = label[0].libelle;
-        mapService.map.setView([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]], 14);
+        mapService.map.setView([$scope.data.geometry.coordinates[1], $scope.data.geometry.coordinates[0]], Math.max(mapService.map.getZoom(), 14));
         dataServ.get($scope._appName + '/observation/site/' + $routeParams.id, $scope.setObs);
     };
 
