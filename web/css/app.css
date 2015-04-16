@@ -13,3 +13,49 @@
 .sxhrinput li:hover{
     background-color: #AAAAFF;
 }
+
+
+.suivi-popover{
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    background-color: #301010;
+    color: white;
+    padding: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    border-radius: 5px;
+}
+
+.spreadsheet-container{
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+    background-color: #EEE;
+}
+.spreadsheet-container table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}   
+.spreadsheet-container th{
+    border-radius: 05em;
+    background-color: blue;
+    color: white;
+}
+.spreadsheet{
+    padding: 0;
+    background-color: white;
+    border: 1px inset #CCC;
+    max-height: 20em;
+    overflow: scroll;
+}
+
+.spreadsheet td{
+    border: 1px dotted #CCC;
+}
+
+.spreadsheet input{
+    border: none;
+    width: 100%;
+}

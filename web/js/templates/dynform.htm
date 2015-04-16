@@ -2,12 +2,15 @@
     <div class="row col-lg-12">
         <table class="table table-bordered">
             <tr ng-repeat="val in schema">
-                <td class="col-lg-3">
+                <td colspan="2" ng-if="val.type=='spread'">
+                    <spread data="data[val.name]" schema="val">
+                </td>
+                <td class="col-lg-3" ng-if="val.type!='spread'">
                     <h4>{{val.label}}</h4>
                     <p>{{val.help}}</p>
                     <p style="color: red;" ng-show="errors[val.name]">{{errors[val.name]}}</p>
                 </td>
-                <td>
+                <td ng-if="val.type!='spread'">
                     <multi refer="data[val.name]" schema="val" ng-if="val.options.multi"></multi>
                     <div ng-if="!val.options.multi">
                         <input name="{{val.name}}" type="hidden" ng-if="val.type=='hidden'" ng-model="data[val.name]"><span ng-if="val.type=='hidden'">{{data[val.name]}}</span>

@@ -1,0 +1,24 @@
+<div class="spreadsheet-container">
+    <div>
+        <table>
+            <tr>
+                <th ng-repeat="field in schema.fields">{{field.name}}</th>
+            </tr>
+        </table>
+    </div>
+    <div class="spreadsheet">
+        <table>
+            <tr ng-repeat="line in data">
+                <td ng-repeat="field in schema.fields">
+                    <input type="text" ng-if="field.type=='string'" ng-model="line[field.name]" />
+                    <input type="number" ng-if="field.type=='int'" ng-model="line[field.name]" />
+                    <input type="text" ng-if="field.type=='date'" ng-model="line[field.name]">
+                    <input type="checkbox" ng-if="field.type=='bool'" ng-model="line[field.name]">
+                    <select ng-options="item.id as item.libelle for item in schema.options.choices" ng-model="line[field.name]" ng-if="field.type=='select'"></select>
+                    <angucompletewrapper id="{{field.name}}{{$parent.$index}}" selectedobject="line[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="schema.type=='xhr'" initial=""></angucompletewrapper>
+                </td>
+            </tr>
+        </table>
+        <button type="button" ng-click="save">Enregistrer</button>
+    </div>
+</div>

@@ -208,25 +208,145 @@ app.directive('calculated', function(){
     }
 });
 
-
-app.directive('modalmsg', function(userMessages, $timeout){
+/**
+ * Directive pour l'affichage des messages utilisateur en popover
+ */
+app.directive('usermsg', function(userMessages, $timeout){
     return {
-        restrict: 'E',
+        restrict: 'A',
         templateUrl: 'js/templates/modalMsg.htm',
-        link: function($scope, elem){
+        controller: function($scope){
+            $scope.hideMsg=true;
             $scope.$watch(
                 function(){return userMessages.infoMessage},
                 function(newval){
                     console.log(newval);
                     $scope.userMessage = newval;
                     if(newval){
-                        $('#userMsg').modal('show');
+                        $scope.hideMsg=false;
                         $timeout(function(){
-                            $('#userMsg').modal('hide');
+                            $scope.hideMsg=true;
                         }, 3500);
                     }
                 }
             );
         }
     };
+});
+
+
+/**
+ * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
+ * params : 
+ *  schema -> le schema descripteur du tableau
+ *  data -> la destination des données (ng-model)
+ */
+app.directive('spread', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            schema: '=',
+            data: '='
+        },
+        templateUrl: 'js/templates/spreadsheet.htm',
+        controller: function($scope){
+            var defaultLine = {};
+            $scope.schema.fields.forEach(function(item){
+                defaultLine[item.name] = null;
+            });
+            $scope.onkeyup = function(ev){
+
+            }
+            if($scope.data.length == 0){
+                var lines = [];
+                for(i=0; i<20; i++){
+                    lines.push(angular.copy(defaultLine));
+                }
+                $scope.data = lines;
+            }
+        }
+    };
+});
+
+
+/**
+ * Directive pour l'affichage d'un element dans une fenetre modale 
+ */
+app.directive('modalform', function(){
+    return {
+        restrict: 'E',
+        transclude: true,
+        templateUrl: 'modalForm.htm',
+        link: function($scope, elem){
+
+        }
+    }
+    
+});
+
+
+app.directive('simpleform', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            saveUrl: '=saveurl',
+            schemaUrl: '=schemaurl',
+            redirectTo: '@redirectto',
+            dataUrl: '=dataurl',
+            data: '='
+        },
+        transclude: true,
+        templateUrl: 'js/templates/simpleForm.htm',
+        controller: function($scope, $location, configServ, dataServ, userMessages){
+            console.log($scope.schemaUrl);
+            $scope.errors = {};
+            $scope.setSchema = function(resp){
+                $scope.schema = angular.copy(resp);
+                if($scope.dataUrl){
+                    dataServ.get($scope.dataUrl, $scope.setData);
+                }
+                else{
+                    var tmp = {};
+                    $scope.schema.forEach(function(field){
+                        tmp[field.name] = field.default || null
+                    });
+                    $scope.setData(tmp);
+                }
+            };
+
+            $scope.setData = function(resp){
+                angular.forEach(resp, function(elem, key){
+                    $scope.data[key]=elem;
+                });
+            };
+
+            $scope.save = function(){
+                if($scope.dataUrl){
+                    dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
+                }
+                else{
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.created, $scope.error);
+                }
+            };
+
+            $scope.updated = function(resp){
+                userMessages.infoMessage = 'Mise à jour effectuée';
+                dataServ.forceReload = true;
+                $location.path($scope.redirectTo + resp.id);
+            }
+
+            $scope.created = function(resp){
+                userMessages.infoMessage = 'Création effectuée';
+                dataServ.forceReload = true;
+                $location.path($scope.redirectTo + resp.id);
+            }
+
+            $scope.error = function(resp){
+                $scope.errors = angular.copy(resp);
+            }
+
+            
+            configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+        }
+    }
 });
