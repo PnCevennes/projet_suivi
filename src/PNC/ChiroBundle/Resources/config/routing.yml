@@ -72,39 +72,39 @@ pnc_chiro_observation_suppr:
         _method: DELETE
 
 
+
 #
 # vues observation taxon
 #
 pnc_observation_taxon_list:
     path:     /obs_taxon/observation/{obs_id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:list, obs_id: null }
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:list, obs_id: null }
     requirements:
         _method: GET
 
 pnc_observation_taxon_detail:
     path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:detail }
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:detail }
     requirements:
         _method: GET
 
 pnc_observation_taxon_create:
     path:     /obs_taxon
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:create }
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:create }
     requirements:
         _method: PUT
 
 pnc_observation_taxon_update:
     path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:update, id: null }
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:update, id: null }
     requirements:
         _method: POST
 
 pnc_observation_taxon_suppr:
     path:     /obs_taxon/{id}
-    defaults: { _controller: PNCChiroBundle:ObservationTaxon:delete }
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:delete }
     requirements:
         _method: DELETE
-
 
 #
 # Vues biometrie
@@ -141,9 +141,9 @@ pnc_biometrie_suppr:
 
 
 
-
 #
 # Configuration client
+# TODO a supprimer
 #
 pnc_chiro_config_site:
     path: /siteConfig
@@ -168,8 +168,8 @@ pnc_chiro_config_biom:
     defaults: { _controller: PNCChiroBundle:Config:getBiometrieConfig }
     requirements:
         _method: GET
-
-
+            
+            
 #
 # Vues autocomplete
 #

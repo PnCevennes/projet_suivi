@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use PNC\ChiroBundle\Entity\ObservationTaxon;
 
-class ObservationTaxonController extends Controller
+class ObsTaxonController extends Controller
 {
     // path: GET chiro/obs_taxon/observation/{obs_id}
     public function listAction($obs_id=null){

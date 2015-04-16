@@ -1,0 +1,110 @@
+#
+# configurations site
+#
+suivi_chiro_config_site_form:
+    path: config/site/form
+    defaults: { _controller: PNCChiroBundle:SiteConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_site_detail:
+    path: config/site/detail
+    defaults: { _controller: PNCChiroBundle:SiteConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_site_list:
+    path: config/site/list
+    defaults: { _controller: PNCChiroBundle:SiteConfig:getList }
+    requirements:
+        _method: GET
+
+#
+# configurations observation
+#
+suivi_chiro_config_observation_form:
+    path: config/observation/form
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_detail:
+    path: config/observation/detail
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_list:
+    path: config/observation/list
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getList }
+    requirements:
+        _method: GET
+
+
+
+#
+# configurations observation
+#
+suivi_chiro_config_observation_form:
+    path: config/observation/form
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_detail:
+    path: config/observation/detail
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_list:
+    path: config/observation/list
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getList }
+    requirements:
+        _method: GET
+
+
+#
+# configurations obs taxon
+#
+suivi_chiro_config_obstaxon_form:
+    path: obstaxon/form
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_obstaxon_detail:
+    path: obstaxon/detail
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_obstaxon_list:
+    path: obstaxon/list
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getList }
+    requirements:
+        _method: GET
+
+
+#
+# Configurations Biometrie
+#
+suivi_chiro_config_biometrie_form:
+    path: biometrie/form
+    defaults: { _controller: PNCChiroBundle:BiometrieConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_biometrie_detail:
+    path: biometrie/detail
+    defaults: { _controller: PNCChiroBundle:BiometrieConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_biometrie_list:
+    path: biometrie/list
+    defaults: { _controller: PNCChiroBundle:BiometrieConfig:getList }
+    requirements:
+        _method: GET
+
+

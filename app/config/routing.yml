@@ -6,6 +6,10 @@ pnc_chiro:
     resource: "@PNCChiroBundle/Resources/config/routing.yml"
     prefix:   /chiro/
 
+pnc_chiro_config:
+    resource: "@PNCChiroBundle/Resources/config/routing_config.yml"
+    prefix:   /chiro/config/
+
 pnc_base_app:
     resource: "@PNCBaseAppBundle/Resources/config/routing.yml"
     prefix:   /
