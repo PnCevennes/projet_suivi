@@ -37,6 +37,7 @@ app.controller('biometrieEditController', function($scope, $routeParams, $locati
     if($routeParams.id){
         $scope.saveUrl = $scope._appName + '/biometrie/' + $routeParams.id;
         $scope.dataUrl = $scope._appName + '/biometrie/' + $routeParams.id;
+        $scope.data = {};
     }
     else{
         $scope.saveUrl = $scope._appName + '/biometrie'
