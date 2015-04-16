@@ -1,11 +1,7 @@
-<div class="row col-lg-6">
+<div class="col-lg-6" simpleform saveurl="saveUrl" schemaurl="configUrl" redirectto="#/{{_appName}}/taxons/" dataurl="dataUrl" data="data">
+<div class="row">
     <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>sites</a>
-    <a class="btn btn-xs" ng-href="#/{{_appName}}/observation/{{data.obsId}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour obs</a>
+    <a class="btn btn-xs" ng-href="#/{{_appName}}/observation/{{data.obsId}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour observation n°{{data.obsId}}</a>
     <a ng-if="data.id" class="btn btn-xs" ng-href="#/{{_appName}}/taxons/{{data.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour taxon</a>
 </div>
-<div class="row col-lg-6">
-    <dynform schema="schema" data="data" onsave="save" onremove="remove" errors="errors"></dynform>
-</div>
-<div class="row col-lg-6">
-    <pre>{{data|json}}</pre>
 </div>
