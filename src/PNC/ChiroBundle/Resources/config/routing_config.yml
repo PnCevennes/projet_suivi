@@ -2,19 +2,19 @@
 # configurations site
 #
 suivi_chiro_config_site_form:
-    path: config/site/form
+    path: site/form
     defaults: { _controller: PNCChiroBundle:SiteConfig:getForm }
     requirements:
         _method: GET
 
 suivi_chiro_config_site_detail:
-    path: config/site/detail
+    path: site/detail
     defaults: { _controller: PNCChiroBundle:SiteConfig:getDetail }
     requirements:
         _method: GET
 
 suivi_chiro_config_site_list:
-    path: config/site/list
+    path: site/list
     defaults: { _controller: PNCChiroBundle:SiteConfig:getList }
     requirements:
         _method: GET
@@ -23,42 +23,19 @@ suivi_chiro_config_site_list:
 # configurations observation
 #
 suivi_chiro_config_observation_form:
-    path: config/observation/form
+    path: observation/form
     defaults: { _controller: PNCChiroBundle:ObservationConfig:getForm }
     requirements:
         _method: GET
 
 suivi_chiro_config_observation_detail:
-    path: config/observation/detail
+    path: observation/detail
     defaults: { _controller: PNCChiroBundle:ObservationConfig:getDetail }
     requirements:
         _method: GET
 
 suivi_chiro_config_observation_list:
-    path: config/observation/list
-    defaults: { _controller: PNCChiroBundle:ObservationConfig:getList }
-    requirements:
-        _method: GET
-
-
-
-#
-# configurations observation
-#
-suivi_chiro_config_observation_form:
-    path: config/observation/form
-    defaults: { _controller: PNCChiroBundle:ObservationConfig:getForm }
-    requirements:
-        _method: GET
-
-suivi_chiro_config_observation_detail:
-    path: config/observation/detail
-    defaults: { _controller: PNCChiroBundle:ObservationConfig:getDetail }
-    requirements:
-        _method: GET
-
-suivi_chiro_config_observation_list:
-    path: config/observation/list
+    path: observation/list
     defaults: { _controller: PNCChiroBundle:ObservationConfig:getList }
     requirements:
         _method: GET
