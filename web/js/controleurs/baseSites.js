@@ -231,7 +231,20 @@ app.controller('siteDetailController', function($scope, $filter, $routeParams, d
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
 
     $scope._appName = $routeParams.appName;
+    $scope.configUrl = $scope._appName + '/config/site/form';
 
+    if($routeParams.id){
+        $scope.saveUrl = $scope._appName + '/site/' + $routeParams.id;
+        $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
+        var marker = mapService.getMarker($routeParams.id);
+        $scope.data = {__origin__: {geom: $routeParams.id}};
+    }
+    else{
+        $scope.saveUrl = $scope._appName + '/site';
+        $scope.data = {}
+    }
+
+    /*
     $scope.setSchema = function(resp){
         $scope.schema = resp;
         if($routeParams.id){
@@ -349,6 +362,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
 
     // initialisation du formulaire
     configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);
-
+    */
 });
 

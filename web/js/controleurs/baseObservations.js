@@ -18,8 +18,8 @@ app.config(function($routeProvider){
             controller: 'observationEditController',
             templateUrl: 'js/templates/observation/edit.htm'
         })
-        .when('/:appName/edit/observation/site/:id', {
-            controller: 'observationSiteEditController',
+        .when('/:appName/edit/observation/site/:site_id', {
+            controller: 'observationEditController',
             templateUrl: 'js/templates/observation/edit.htm'
         })
         .when('/:appName/edit/observation/:id', {
@@ -43,6 +43,18 @@ app.controller('observationSiteListController', function($scope, $routeParams){
 });
 
 app.controller('observationEditController', function($scope, $routeParams, $location, configServ, dataServ){
+    $scope._appName = $routeParams.appName;
+    $scope.configUrl = $scope._appName + '/config/observation/form';
+    if($routeParams.id){
+        $scope.saveUrl = $scope._appName + '/observation/' + $routeParams.id;
+        $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+        $scope.data = {};
+    }
+    else{
+        $scope.saveUrl = $scope._appName + '/observation';
+        $scope.data = {siteId: $routeParams.site_id};
+    }
+    /*
     $scope._appName = $routeParams.appName;
 
     $scope.setSchema = function(resp){
@@ -112,6 +124,7 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
     }
 
     configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
+    */
 });
 
 

@@ -88,6 +88,24 @@ app.directive('dynform', function(){
         },
         templateUrl: 'js/templates/dynform.htm',
         controller: function($scope){
+            $scope.currentPage = 0;
+            $scope.$watch('schema', function(newval){
+                if(newval){
+                    $scope.nbPages = newval.__groups__.length;
+                }
+            });
+
+            $scope.next = function(){
+                if($scope.currentPage < $scope.nbPages - 1){
+                    $scope.currentPage++;
+                }
+            }
+
+            $scope.prev = function(){
+                if($scope.currentPage > 0){
+                    $scope.currentPage--;
+                }
+            }
             $scope.save = function(){
                 $scope.onsave();
             };
@@ -116,7 +134,12 @@ app.directive('multi', function(){
         templateUrl: 'js/templates/multi.htm',
         controller: function($scope){
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
-                $scope.data = $scope.refer;
+                if(newval){
+                    $scope.data = newval;
+                    if(newval.length == 0){
+                        $scope.data.push(null);
+                    }
+                }
             });
             $scope.add = function(){
                 $scope.data.push(null);
@@ -156,7 +179,7 @@ app.directive('fileinput', function(){
                 angular.forEach(files, function(item){
                     $scope.lock = true;
                     $upload.upload({
-                        url: '/upload',
+                        url: 'upload',
                         file: item,
                         })
                         .progress(function(evt){
@@ -285,6 +308,14 @@ app.directive('modalform', function(){
 });
 
 
+/*
+ * directive pour l'affichage simple d'un formulaire
+ * params: 
+ *  saveurl : l'url à laquelle seront envoyées les données
+ *  schemaUrl : l'url du schéma descripteur du formulaire
+ *  dataurl : url pour récupérer les données en édition
+ *  data : conteneur de données (complété par les données obtenues par l'url *
+ */
 app.directive('simpleform', function(){
     return {
         restrict: 'A',
@@ -298,7 +329,6 @@ app.directive('simpleform', function(){
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
         controller: function($scope, $location, configServ, dataServ, userMessages){
-            console.log($scope.schemaUrl);
             $scope.errors = {};
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
@@ -306,17 +336,15 @@ app.directive('simpleform', function(){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }
                 else{
-                    var tmp = {};
-                    $scope.schema.forEach(function(field){
-                        tmp[field.name] = field.default || null
-                    });
-                    $scope.setData(tmp);
+                    $scope.setData($scope.data || {});
                 }
             };
 
             $scope.setData = function(resp){
-                angular.forEach(resp, function(elem, key){
-                    $scope.data[key]=elem;
+                $scope.schema.__groups__.forEach(function(group){
+                    $scope.schema[group].forEach(function(field){
+                        $scope.data[field.name] = resp[field.name] || field.default || null;
+                    });
                 });
             };
 
@@ -349,4 +377,100 @@ app.directive('simpleform', function(){
             configServ.getUrl($scope.schemaUrl, $scope.setSchema);
         }
     }
+});
+
+
+/*
+ *  
+ */
+app.directive('geometry', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            geom: '=',
+            options: '=',
+            origin: '=',
+        },
+        templateUrl:  'js/templates/geometry.htm',
+        controller: function($scope, $rootScope, mapService){
+            var editLayer = new L.FeatureGroup();
+
+            $scope.geom = $scope.geom || [];
+            var current = null;
+
+            $scope.editLayer = editLayer;
+            mapService.map.addLayer(editLayer);
+ 
+            $scope.updateCoords = function(layer){
+                $scope.geom.splice(0);
+                if(layer){
+                    getCoordsFromLayer(layer).forEach(function(point){
+                        $scope.geom.push(point);
+                    });
+                }
+            }
+
+            $scope.$on('$destroy', function(ev){
+                mapService.map.removeControl($scope.controls);
+                mapService.map.removeLayer($scope.editLayer);
+                $scope.controls = null;
+            });
+
+
+            var getCoordsFromLayer = function(layer){
+                var coords = [];
+                try{
+                    layer.getLatLngs().forEach(function(point){
+                        coords.push([point.lng, point.lat])
+                    });
+                }
+                catch(e){
+                    point = layer.getLatLng();
+                    coords.push([point.lng, point.lat]);
+                }
+                return coords;
+            };
+
+            
+
+
+            $scope.controls = new L.Control.Draw({
+                edit: {featureGroup: editLayer},
+                draw: {
+                    circle: false,
+                    rectangle: false,
+                    marker: $scope.options.geometryType == 'point',
+                    polyline: $scope.options.geometryType == 'linestring',
+                    polygon: $scope.options.geometryType == 'polygon',
+                },
+            });
+
+            mapService.map.addControl($scope.controls);
+
+
+            mapService.map.on('draw:created', function(e){
+                if(!current){
+                    editLayer.addLayer(e.layer);
+                    current = e.layer;
+                    $rootScope.$apply($scope.updateCoords(current));
+                }
+            });
+
+            mapService.map.on('draw:edited', function(e){
+                $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
+            });
+
+            mapService.map.on('draw:deleted', function(e){
+                current = null;
+                $rootScope.$apply($scope.updateCoords(current));
+            });
+
+            if($scope.origin){
+                var layer = mapService.getMarker($scope.origin);
+                $scope.editLayer.addLayer(layer);
+                current = layer;
+                $scope.updateCoords(layer);
+            }
+        },
+    };
 });

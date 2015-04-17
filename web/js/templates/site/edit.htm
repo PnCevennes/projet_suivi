@@ -1,22 +1,3 @@
-<div class="row col-lg-6">
+<div simpleform saveurl="saveUrl" schemaurl="configUrl" redirectto="#/{{_appName}}/site/" dataurl="dataUrl" data="data">
     <a class="btn btn-xs" ng-href="#/{{_appName}}/site/{{data.properties.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour</a>
-</div>
-<div class="col-lg-6">
-    <div class="row col-lg-12">
-        <h3>Coordonnées</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th>Longitude</th>
-                <th>Latitude</th>
-            </tr>
-            <tr>
-                <td>{{data.geometry.coordinates[0]}}</td>
-                <td>{{data.geometry.coordinates[1]}}</td>
-            </tr>
-        </table>
-    </div>
-    <div class="row col-lg-12">
-        <h3>Informations</h3>
-        <dynform schema="schema.formSite" data="data.properties" onsave="save" onremove="remove" errors="errors"></dynform>
-    </div>
 </div>
