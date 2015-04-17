@@ -24,136 +24,154 @@ class SiteConfigController extends Controller{
         }
 
         $out = array(
-            array(
-                'name'=>'id',
-                'label'=>'id',
-                'type'=>'hidden',
-                'help'=>'',
-                'options'=>array()
+            '__groups__'=>array('Geometrie', 'Site', 'Etat', 'Contact'),
+            'Geometrie'=>array(
+                array(
+                    'name'=>'geom',
+                    'label'=>'Coordonnées GPS',
+                    'type'=>'geom',
+                    'help'=>'',
+                    'options'=>array('geometryType'=>'point'),
+                    'default'=>array(),
+                ),
+
             ),
-            array(
-                'name'=>'siteNom',
-                'label'=>'Nom',
-                'type'=>'string',
-                'help'=>'Nom du site',
-                'options'=>array('minLength'=>5, 'maxLength'=>250)
-            ),
-            array(
-                'name'=>'typeId',
-                'label'=>'Type',
-                'type'=>'select',
-                'help'=>'Type de lieu',
-                'options'=>array('choices'=>$typesLieu),
-                'default'=>37
-            ),
-            array(
-                'name'=>'siteCode',
-                'label'=>'Code site',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>25, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'observateurId',
-                'label'=>'Observateur',
-                'type'=>'xhr',
-                'help'=>'',
-                'options'=>array(
-                    'url'=>'/chiro/observateurs', 
-                    'reverseurl'=>'/chiro/observateurs/id'
+            'Site'=>array(
+                array(
+                    'name'=>'id',
+                    'label'=>'id',
+                    'type'=>'hidden',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'siteNom',
+                    'label'=>'Nom',
+                    'type'=>'string',
+                    'help'=>'Nom du site',
+                    'options'=>array('minLength'=>5, 'maxLength'=>250)
+                ),
+                array(
+                    'name'=>'typeId',
+                    'label'=>'Type',
+                    'type'=>'select',
+                    'help'=>'Type de lieu',
+                    'options'=>array('choices'=>$typesLieu),
+                    'default'=>37
+                ),
+                array(
+                    'name'=>'siteCode',
+                    'label'=>'Code site',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>25, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'observateurId',
+                    'label'=>'Observateur',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array(
+                        'url'=>'chiro/observateurs', 
+                        'reverseurl'=>'chiro/observateurs/id'
+                    ),
+                ),
+                array(
+                    'name'=>'siteDate',
+                    'label'=>'Date créa.',
+                    'type'=>'date',
+                    'help'=>"Date d'ajout du site à la base de données",
+                    'options'=>array(),
+                ),
+                array(
+                    'name'=>'siteDescription',
+                    'label'=>'Description',
+                    'type'=>'text',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
                 ),
             ),
-            array(
-                'name'=>'siteDate',
-                'label'=>'Date créa.',
-                'type'=>'date',
-                'help'=>"Date d'ajout du site à la base de données",
-                'options'=>array(),
+            'Etat'=>array(
+                array(
+                    'name'=>'siteAmenagement',
+                    'label'=>'Amenagement',
+                    'type'=>'file',
+                    'help'=>'Amenagement du site',
+                    'default'=>array(),
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'siteFrequentation',
+                    'label'=>'Fréquentation',
+                    'type'=>'text',
+                    'help'=>'Fréquentation du site',
+                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'siteMenace',
+                    'label'=>'Menaces',
+                    'type'=>'text',
+                    'help'=>'Menaces pesant sur le site',
+                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                ),
             ),
-            array(
-                'name'=>'siteDescription',
-                'label'=>'Description',
-                'type'=>'text',
-                'help'=>'',
-                'options'=>array('maxLength'=>1000, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'siteAmenagement',
-                'label'=>'Amenagement',
-                'type'=>'file',
-                'help'=>'Amenagement du site',
-                'default'=>array(),
-                'options'=>array()
-            ),
-            array(
-                'name'=>'siteFrequentation',
-                'label'=>'Fréquentation',
-                'type'=>'text',
-                'help'=>'Fréquentation du site',
-                'options'=>array('maxLength'=>1000, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'siteMenace',
-                'label'=>'Menaces',
-                'type'=>'text',
-                'help'=>'Menaces pesant sur le site',
-                'options'=>array('maxLength'=>1000, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactNom',
-                'label'=>'Nom du contact',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>25, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactPrenom',
-                'label'=>'Prénom du contact',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>25, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactAdresse',
-                'label'=>'Adresse du contact',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>150, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactCodePostal',
-                'label'=>'Code postal',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>5, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactVille',
-                'label'=>'Ville',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>100, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactTelephone',
-                'label'=>'Telephone',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>15, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactPortable',
-                'label'=>'Portable',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array('maxLength'=>15, 'minLength'=>0)
-            ),
-            array(
-                'name'=>'contactCommentaire',
-                'label'=>'Commentaires contact',
-                'type'=>'text',
-                'help'=>"Insultes & commentaires désobligeants",
-                'options'=>array('maxLength'=>1000, 'minLength'=>0)
+            'Contact'=>array(
+                array(
+                    'name'=>'contactNom',
+                    'label'=>'Nom du contact',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>25, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactPrenom',
+                    'label'=>'Prénom du contact',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>25, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactAdresse',
+                    'label'=>'Adresse du contact',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>150, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactCodePostal',
+                    'label'=>'Code postal',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>5, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactVille',
+                    'label'=>'Ville',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>100, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactTelephone',
+                    'label'=>'Telephone',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>15, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactPortable',
+                    'label'=>'Portable',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array('maxLength'=>15, 'minLength'=>0)
+                ),
+                array(
+                    'name'=>'contactCommentaire',
+                    'label'=>'Commentaires contact',
+                    'type'=>'text',
+                    'help'=>"Insultes & commentaires désobligeants",
+                    'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                ),
             ),
         );
 

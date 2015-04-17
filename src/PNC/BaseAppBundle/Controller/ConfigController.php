@@ -26,9 +26,9 @@ class ConfigController extends Controller{
         ));
     }
 
+    /*
     // path: GET /observateurs
     public function getObservateursAction($q){
-        $input = json_decode($req->getContent(), true);
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
         $resp = $repo->getLike($q);
         $out = array();
@@ -40,6 +40,7 @@ class ConfigController extends Controller{
         
         return new JsonResponse($out);
     }
+    */
 
     public function uploadAction(Request $req){
         $manager = $this->getDoctrine()->getManager();

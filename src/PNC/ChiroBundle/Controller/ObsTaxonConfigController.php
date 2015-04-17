@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ObsTaxonConfigController extends Controller{
+
     // path : GET chiro/config/obstaxon/form
     public function getFormAction(){
         $norm = $this->get('normalizer');
@@ -20,106 +21,110 @@ class ObsTaxonConfigController extends Controller{
         }
 
         $out = array(
-            array(
-                'name'=>'cdNom',
-                'label'=>'Nom taxon',
-                'type'=>'xhr',
-                'help'=>'',
-                'options'=>array('url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
+            '__groups__'=>array('Informations', 'Enumeration'),
+            'Informations'=>array(
+                array(
+                    'name'=>'cdNom',
+                    'label'=>'Nom taxon',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array('url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
+                ),
+                array(
+                    'name'=>'obsTxInitial',
+                    'label'=>'Taxon initial',
+                    'type'=>'string',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsObjStatusValidation',
+                    'label'=>'Statut validation',
+                    'type'=>'select',
+                    'help'=>'',
+                    'options'=>array('choices'=> $typesVal),
+                    'default'=>56
+                ),
+                array(
+                    'name'=>'obsValidateur',
+                    'label'=>'Validateur',
+                    'type'=>'xhr',
+                    'help'=>'',
+                    'options'=>array('url'=>'chiro/observateurs', 'reverseurl'=>'chiro/observateurs/id', 'ref'=>'obsValidateur')
+                ),
+                array(
+                    'name'=>'obsEspeceIncertaine',
+                    'label'=>'Espece incertaine',
+                    'type'=>'bool',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsCommentaire',
+                    'label'=>'Commentaire',
+                    'type'=>'text',
+                    'help'=>"Informations complémentaires sur l'observation",
+                    'options'=>array()
+                ),
             ),
-            array(
-                'name'=>'obsTxInitial',
-                'label'=>'Taxon initial',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
+            'Enumeration'=>array(
+                array(
+                    'name'=>'obsEffectifAbs',
+                    'label'=>'Effectif total',
+                    'type'=>'sum',
+                    'help'=>'',
+                    'options'=>array('ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'))
+                ),
+                array(
+                    'name'=>'obsNbMaleAdulte',
+                    'label'=>'Mâles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleAdulte',
+                    'label'=>'Femelles adultes',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleJuvenile',
+                    'label'=>'Mâles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleJuvenile',
+                    'label'=>'Femelles juveniles',
+                    'type'=>'num',
+                    'help'=>'',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbMaleIndetermine',
+                    'label'=>'Mâles indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbFemelleIndetermine',
+                    'label'=>'Femelles indeterminées',
+                    'type'=>'num',
+                    'help'=>'Age indéterminé',
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'obsNbIndetermineIndetermine',
+                    'label'=>'Indetermines indeterminés',
+                    'type'=>'num',
+                    'help'=>'Age et sexe indéterminés',
+                    'options'=>array()
+                ),
             ),
-            array(
-                'name'=>'obsValidateur',
-                'label'=>'Validateur',
-                'type'=>'xhr',
-                'help'=>'',
-                'options'=>array('url'=>'chiro/observateurs', 'reverseurl'=>'chiro/observateurs/id', 'ref'=>'obsValidateur')
-            ),
-            array(
-                'name'=>'obsEspeceIncertaine',
-                'label'=>'Espece incertaine',
-                'type'=>'bool',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsCommentaire',
-                'label'=>'Commentaire',
-                'type'=>'text',
-                'help'=>"Informations complémentaires sur l'observation",
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsEffectifAbs',
-                'label'=>'Effectif total',
-                'type'=>'sum',
-                'help'=>'',
-                'options'=>array('ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'))
-            ),
-            array(
-                'name'=>'obsNbMaleAdulte',
-                'label'=>'Mâles adultes',
-                'type'=>'num',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbFemelleAdulte',
-                'label'=>'Femelles adultes',
-                'type'=>'num',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbMaleJuvenile',
-                'label'=>'Mâles juveniles',
-                'type'=>'num',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbFemelleJuvenile',
-                'label'=>'Femelles juveniles',
-                'type'=>'num',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbMaleIndetermine',
-                'label'=>'Mâles indeterminés',
-                'type'=>'num',
-                'help'=>'Age indéterminé',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbFemelleIndetermine',
-                'label'=>'Femelles indeterminées',
-                'type'=>'num',
-                'help'=>'Age indéterminé',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsNbIndetermineIndetermine',
-                'label'=>'Indetermines indeterminés',
-                'type'=>'num',
-                'help'=>'Age et sexe indéterminés',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsObjStatusValidation',
-                'label'=>'Statut validation',
-                'type'=>'select',
-                'help'=>'',
-                'options'=>array('choices'=> $typesVal),
-                'default'=>56
-            ),
-
         );
 
         return new JsonResponse($out);

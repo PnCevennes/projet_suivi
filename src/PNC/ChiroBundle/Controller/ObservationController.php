@@ -82,7 +82,8 @@ class ObservationController extends Controller{
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
             if($observateur->getRole() == 'observateur'){
-                $out_item['observateurs'][] = $norm->normalize($observateur);
+                //$out_item['observateurs'][] = $norm->normalize($observateur);
+                $out_item['observateurs'][] = $observateur->getObrId();
             }
         }
 
