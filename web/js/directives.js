@@ -381,7 +381,11 @@ app.directive('simpleform', function(){
 
 
 /*
- *  
+ * directive pour la gestion des données spatiales
+ * params:
+ *  geom -> eq. ng-model
+ *  options: options à passer tel que le type de géométrie editer
+ *  origin: identifiant du point à éditer
  */
 app.directive('geometry', function(){
     return {
@@ -404,9 +408,15 @@ app.directive('geometry', function(){
             $scope.updateCoords = function(layer){
                 $scope.geom.splice(0);
                 if(layer){
-                    getCoordsFromLayer(layer).forEach(function(point){
-                        $scope.geom.push(point);
-                    });
+                    try{
+                        layer.getLatLngs().forEach(function(point){
+                            $scope.geom.push([point.lng, point.lat])
+                        });
+                    }
+                    catch(e){
+                        point = layer.getLatLng();
+                        $scope.geom.push([point.lng, point.lat]);
+                    }
                 }
             }
 
@@ -416,24 +426,7 @@ app.directive('geometry', function(){
                 $scope.controls = null;
             });
 
-
-            var getCoordsFromLayer = function(layer){
-                var coords = [];
-                try{
-                    layer.getLatLngs().forEach(function(point){
-                        coords.push([point.lng, point.lat])
-                    });
-                }
-                catch(e){
-                    point = layer.getLatLng();
-                    coords.push([point.lng, point.lat]);
-                }
-                return coords;
-            };
-
-            
-
-
+           
             $scope.controls = new L.Control.Draw({
                 edit: {featureGroup: editLayer},
                 draw: {
