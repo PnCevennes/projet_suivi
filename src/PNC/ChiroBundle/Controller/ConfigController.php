@@ -29,6 +29,9 @@ class ConfigController extends Controller{
     public function getObservateursIdAction($q){
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
         $out = $repo->findOneBy(array('obr_id'=>$q));
+        if(!$out){
+            return new JsonResponse(array('id'=>$q, 'label'=>null), 404);
+        }
         return new JsonResponse(array('id'=>$q, 'label'=>$out->getNomComplet()));
     }
 
