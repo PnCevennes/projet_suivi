@@ -42,12 +42,13 @@ app.directive('angucompletewrapper', function(dataServ){
         restrict: 'E',
         scope: {
             id: '@',
+            inputclass: '@',
             selectedobject: '=',
             url: '@',
             initial: '=',
             reverseurl: '@'
         },
-        template: '<angucomplete id="{{id}}" pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial">',
+        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}} pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial">',
         controller: function($scope){
             $scope.localselectedobject = {};
             $scope.$watch('initial', function(newval){
@@ -80,40 +81,12 @@ app.directive('dynform', function(){
     return {
         restrict: 'E',
         scope: {
-            schema: '=',
+            group: '=',
             data: '=',
-            onsave: '=',
-            onremove: '=',
             errors: '=',
         },
         templateUrl: 'js/templates/dynform.htm',
-        controller: function($scope){
-            $scope.currentPage = 0;
-            $scope.$watch('schema', function(newval){
-                if(newval){
-                    $scope.nbPages = newval.__groups__.length;
-                }
-            });
-
-            $scope.next = function(){
-                if($scope.currentPage < $scope.nbPages - 1){
-                    $scope.currentPage++;
-                }
-            }
-
-            $scope.prev = function(){
-                if($scope.currentPage > 0){
-                    $scope.currentPage--;
-                }
-            }
-            $scope.save = function(){
-                $scope.onsave();
-            };
-
-            $scope.remove = function(){
-                $scope.onremove();
-            }
-        },
+        controller: function($scope){},
     };
 });
 
@@ -208,12 +181,14 @@ app.directive('calculated', function(){
     return {
         restrict: 'E',
         scope: {
+            id: "@",
+            class: "@",
             data: '=',
             refs: '=',
             model: '=',
             modifiable: '=',
         },
-        template: '<input type="number" ng-model="model" ng-disabled="!modifiable"/>',
+        template: '<input id="{{id}}" class="{{class}}" type="number" ng-model="model" ng-disabled="!modifiable"/>',
         controller: function($scope){
             angular.forEach($scope.refs, function(elem){
                 $scope.$watch(function(){
@@ -341,8 +316,8 @@ app.directive('simpleform', function(){
             };
 
             $scope.setData = function(resp){
-                $scope.schema.__groups__.forEach(function(group){
-                    $scope.schema[group].forEach(function(field){
+                $scope.schema.groups.forEach(function(group){
+                    group.fields.forEach(function(field){
                         $scope.data[field.name] = resp[field.name] || field.default || null;
                     });
                 });
@@ -397,13 +372,18 @@ app.directive('geometry', function(){
         },
         templateUrl:  'js/templates/geometry.htm',
         controller: function($scope, $rootScope, mapService){
-            var editLayer = new L.FeatureGroup();
-
-            $scope.geom = $scope.geom || [];
+            $scope.editLayer = new L.FeatureGroup();
             var current = null;
 
-            $scope.editLayer = editLayer;
-            mapService.map.addLayer(editLayer);
+            $scope.geom = $scope.geom || [];
+            /*
+            $scope.$watch('geom', function(newval){
+                $scope.geom.splice(0);
+                $scope.geom.push(newval);
+            });
+            */
+
+            mapService.map.addLayer($scope.editLayer);
  
             $scope.updateCoords = function(layer){
                 $scope.geom.splice(0);
@@ -428,7 +408,7 @@ app.directive('geometry', function(){
 
            
             $scope.controls = new L.Control.Draw({
-                edit: {featureGroup: editLayer},
+                edit: {featureGroup: $scope.editLayer},
                 draw: {
                     circle: false,
                     rectangle: false,
@@ -443,7 +423,7 @@ app.directive('geometry', function(){
 
             mapService.map.on('draw:created', function(e){
                 if(!current){
-                    editLayer.addLayer(e.layer);
+                    $scope.editLayer.addLayer(e.layer);
                     current = e.layer;
                     $rootScope.$apply($scope.updateCoords(current));
                 }
@@ -466,4 +446,23 @@ app.directive('geometry', function(){
             }
         },
     };
+});
+
+app.directive('datepick', function(){
+    return{
+        restrict:'A',
+        scope: {
+            uid: '@',
+            date: '=',
+        },
+        templateUrl: 'js/templates/datepick.htm',
+        controller: function($scope){
+            $scope.opened = false;
+            $scope.toggle = function($event){
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.opened = !$scope.opened;
+            }   
+        }
+    }
 });

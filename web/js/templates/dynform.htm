@@ -1,40 +1,20 @@
-<form name="dynForm">
-    <div class="row">
-        <div ng-repeat="group in schema.__groups__">
-            <h4>{{group}}</h4>
-            <table class="table table-bordered">
-                <tr ng-repeat="val in schema[group]">
-                    <td colspan="2" ng-if="val.type=='spread'">
-                        <spread data="data[val.name]" schema="val">
-                    </td>
-                    <td class="col-lg-3" ng-if="val.type!='spread'">
-                        <h4>{{val.label}}</h4>
-                        <p>{{val.help}}</p>
-                        <p style="color: red;" ng-show="errors[val.name]">{{errors[val.name]}}</p>
-                    </td>
-                    <td ng-if="val.type!='spread'">
-                        <multi refer="data[val.name]" schema="val" ng-if="val.options.multi"></multi>
-                        <div ng-if="!val.options.multi">
-                            <input name="{{val.name}}" type="hidden" ng-if="val.type=='hidden'" ng-model="data[val.name]"><span ng-if="val.type=='hidden'">{{data[val.name]}}</span>
-                            <input name="{{val.name}}" type="text" ng-if="val.type=='string'" ng-model="data[val.name]" ng-minlength="val.options.minLength" ng-maxlength="val.options.maxLength" ng-required="val.options.minLength>0">
-                            <input name="{{val.name}}" type="number" ng-if="val.type=='num'" ng-model="data[val.name]">
-                            <input name="{{val.name}}" type="text" ng-if="val.type=='date'" ng-model="data[val.name]">
-                            <input name="{{val.name}}" type="checkbox" ng-if="val.type=='bool'" ng-model="data[val.name]">
-                            <select name="{{val.name}}" ng-options="item.id as item.libelle for item in val.options.choices" ng-model="data[val.name]" ng-if="val.type=='select'"></select>
-                            <angucompletewrapper id="{{val.name}}" pause="100" selectedobject="data[val.name]" url="{{val.options.url}}/" reverseurl="{{val.options.reverseurl}}" titlefield="label" ng-if="val.type=='xhr'" initial="data[val.name]"></angucompletewrapper>
-                            <textarea name="{{val.name}}" ng-if="val.type=='text'" ng-model="data[val.name]"></textarea>
-                            <calculated ng-if="val.type=='sum'" refs="val.options.ref" data="data" model="data[val.name]"></calculated>
-                        </div>
-                        <fileinput ng-if="val.type=='file'" fileids="data[val.name]"></fileinput>
-                        <geometry ng-if="val.type=='geom'" origin="data['__origin__'][val.name]" geom="data[val.name]" options="val.options"></geometry>
-
-                    </td>
-                </tr>
-            </table>
-        </div>
+<fieldset>
+    <legend>{{group.name}}</legend>
+    <div ng-repeat="field in group.fields">
+        <label for="{{field.name}}" ng-if="field.type!='hidden'" tooltip="{{field.help}}">{{field.label}}</label>
+        <p style="color: red;" ng-show="errors[field.name]">{{errors[field.name]}}</p>
+        <multi refer="data[field.name]" schema="field" ng-if="field.options.multi"></multi>
+        <input id="{{field.name}}" type="hidden" ng-if="field.type=='hidden' && !field.options.multi" ng-model="data[field.name]">
+        <input id="{{field.name}}" class="form-control" type="text" ng-if="field.type=='string' && !field.options.multi" ng-model="data[field.name]" ng-minlength="field.options.minLength" ng-maxlength="field.options.maxLength" ng-required="field.options.minLength>0">
+        <input id="{{field.name}}" class="form-control" type="number" ng-if="field.type=='num' && !field.options.multi" ng-model="data[field.name]">
+        <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="data[field.name]"></div>
+        <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="data[field.name]">
+        <select ng-options="item.id as item.libelle for item in field.options.choices" ng-model="data[field.name]" ng-if="field.type=='select' && !field.options.multi"></select>
+        <angucompletewrapper inputclass="form-control" id="{{field.name}}" pause="100" selectedobject="data[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="data[field.name]"></angucompletewrapper>
+        <textarea class="form-control" id="{{field.name}}" ng-if="field.type=='text' && !field.options.multi" ng-model="data[field.name]"></textarea>
+        <calculated class="form-control" id="{{field.name}}" ng-if="field.type=='sum' && !field.options.multi" refs="field.options.ref" data="data" model="data[field.name]"></calculated>
+        <fileinput ng-if="field.type=='file' && !field.options.multi" fileids="data[field.name]"></fileinput>
+        <geometry ng-if="field.type=='geom' && !field.options.multi" origin="data['__origin__'][field.name]" geom="data[field.name]" options="field.options"></geometry>
     </div>
-    <div class="row">
-        <button class="btn btn-success col-lg-1" type="button" ng-disabled="dynForm.$valid==false" ng-click="save()">Enregistrer</button>
-        <button class="btn btn-danger col-lg-offset-11" type="button" ng-if="data.id" ng-click="remove()">Supprimer</button>
-    </div>    
-</form>
+</fieldset>
+

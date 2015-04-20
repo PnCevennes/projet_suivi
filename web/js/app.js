@@ -1,4 +1,4 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'suiviProtocoleDirectives', 'angucomplete']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'suiviProtocoleDirectives', 'angucomplete', 'ui.bootstrap']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
