@@ -28,7 +28,7 @@ app.config(function($routeProvider){
         })
         .when('/:appName/observation/:id', {
             controller: 'observationDetailController',
-            templateUrl: 'js/templates/observation/detail.htm'
+            templateUrl: 'js/templates/detail.htm'
         });
 
 });
@@ -171,6 +171,11 @@ app.controller('observationSiteEditController', function($scope, $routeParams, $
 app.controller('observationDetailController', function($scope, $routeParams, dataServ, configServ){
     $scope._appName = $routeParams.appName;
 
+    $scope.schemaUrl = $scope._appName + '/config/observation/detail';
+    $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+    $scope.dataId = $routeParams.id;
+
+    /*
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
         dataServ.get($scope._appName + '/observation/' + $routeParams.id, $scope.setData);
@@ -186,4 +191,5 @@ app.controller('observationDetailController', function($scope, $routeParams, dat
     }
 
     configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
+    */
 });

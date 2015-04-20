@@ -75,9 +75,35 @@ class ObservationConfigController extends Controller{
 
     // path : GET chiro/config/observation/list
     public function getListAction(){
-
-        //TODO
-        $out = array();
+        $out = array(
+            'title'=>'Observations',
+            'emptyMsg'=>'Aucune observation pour le moment',
+            'createBtnLabel'=>'Nouvelle obs.',
+            'createUrl'=>'#/chiro/edit/observation/site/',
+            'fields'=>array(
+                array(
+                    'name'=>'id',
+                    'type'=>'hidden',
+                ),
+                array(
+                    'name'=>'obsDate',
+                    'label'=>"Date d'observation",
+                    'type'=>'link',
+                    'url'=>'#/chiro/observation/',
+                    'ref'=>'id',
+                ),
+                array(
+                    'name'=>'observateurs',
+                    'label'=>'Observateurs',
+                    'type'=>'list',
+                ),
+                array(
+                    'name'=>'nbTaxons',
+                    'label'=>'Taxons',
+                    'type'=>'string',
+                ),
+            ),
+        );
 
         return new JsonResponse($out);
     }
@@ -86,54 +112,61 @@ class ObservationConfigController extends Controller{
     public function getDetailAction(){
 
         $out = array(
-            array(
-                'name'=>'siteNom',
-                'label'=>'Site',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsDate',
-                'label'=>'Date',
-                'type'=>'date',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'numerisateur',
-                'label'=>'Numerisateur',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'observateurs',
-                'label'=>'Observateurs',
-                'type'=>'multi',
-                'help'=>'',
-                'options'=>array('nomComplet')
-            ),
-            array(
-                'name'=>'obsCommentaire',
-                'label'=>'Commentaires',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsTemperature',
-                'label'=>'Température',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
-            ),
-            array(
-                'name'=>'obsHumidite',
-                'label'=>'Humidité',
-                'type'=>'string',
-                'help'=>'',
-                'options'=>array()
+            'groups'=>array(
+                array(
+                    'name'=>'Observation',
+                    'fields'=>array(
+                        array(
+                            'name'=>'siteNom',
+                            'label'=>'Site',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'obsDate',
+                            'label'=>'Date',
+                            'type'=>'date',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'numerisateur',
+                            'label'=>'Numerisateur',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'observateurs',
+                            'label'=>'Observateurs',
+                            'type'=>'multi',
+                            'help'=>'',
+                            'options'=>array('nomComplet')
+                        ),
+                        array(
+                            'name'=>'obsCommentaire',
+                            'label'=>'Commentaires',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'obsTemperature',
+                            'label'=>'Température',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'obsHumidite',
+                            'label'=>'Humidité',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                    ),
+                ),
             ),
         );
 

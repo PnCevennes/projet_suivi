@@ -1,32 +1,4 @@
-var app = angular.module('suiviProtocoleDirectives');
-
-
-/**
- * fonction qui renvoie le label associé à un identifiant
- * paramètres : 
- *  xhrurl ->url du  service web
- *  inputid -> identifiant de l'élément
- */
-app.directive('xhrdisplay', function(){
-    return {
-        restrict: 'E',
-        scope: {
-            inputid: '=',
-            xhrurl: '=',
-        },
-        template: '{{value}}',
-        controller: function($scope, dataServ){
-            $scope.setResult = function(resp){
-                $scope.value = resp.label;
-            };
-            $scope.$watch(function(){return $scope.inputid}, function(newval, oldval){
-                if(newval){
-                    dataServ.get($scope.xhrurl + '/' + newval, $scope.setResult);
-                }
-            });
-        }
-    };
-});
+var app = angular.module('FormDirectives');
 
 
 /**
@@ -85,7 +57,7 @@ app.directive('dynform', function(){
             data: '=',
             errors: '=',
         },
-        templateUrl: 'js/templates/dynform.htm',
+        templateUrl: 'js/templates/form/dynform.htm',
         controller: function($scope){},
     };
 });
@@ -104,7 +76,7 @@ app.directive('multi', function(){
             refer: '=',
             schema: '=',
         },
-        templateUrl: 'js/templates/multi.htm',
+        templateUrl: 'js/templates/form/multi.htm',
         controller: function($scope){
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
                 if(newval){
@@ -137,7 +109,7 @@ app.directive('fileinput', function(){
         scope: {
             fileids: '='
         },
-        templateUrl: 'js/templates/fileinput.htm',
+        templateUrl: 'js/templates/form/fileinput.htm',
         controller: function($scope, $rootScope, $upload){
             if($scope.fileids == undefined){
                 $scope.fileids = [];
@@ -206,32 +178,6 @@ app.directive('calculated', function(){
     }
 });
 
-/**
- * Directive pour l'affichage des messages utilisateur en popover
- */
-app.directive('usermsg', function(userMessages, $timeout){
-    return {
-        restrict: 'A',
-        templateUrl: 'js/templates/modalMsg.htm',
-        controller: function($scope){
-            $scope.hideMsg=true;
-            $scope.$watch(
-                function(){return userMessages.infoMessage},
-                function(newval){
-                    console.log(newval);
-                    $scope.userMessage = newval;
-                    if(newval){
-                        $scope.hideMsg=false;
-                        $timeout(function(){
-                            $scope.hideMsg=true;
-                        }, 3500);
-                    }
-                }
-            );
-        }
-    };
-});
-
 
 /**
  * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
@@ -246,7 +192,7 @@ app.directive('spread', function(){
             schema: '=',
             data: '='
         },
-        templateUrl: 'js/templates/spreadsheet.htm',
+        templateUrl: 'js/templates/form/spreadsheet.htm',
         controller: function($scope){
             var defaultLine = {};
             $scope.schema.fields.forEach(function(item){
@@ -264,22 +210,6 @@ app.directive('spread', function(){
             }
         }
     };
-});
-
-
-/**
- * Directive pour l'affichage d'un element dans une fenetre modale 
- */
-app.directive('modalform', function(){
-    return {
-        restrict: 'E',
-        transclude: true,
-        templateUrl: 'modalForm.htm',
-        link: function($scope, elem){
-
-        }
-    }
-    
 });
 
 
@@ -370,7 +300,7 @@ app.directive('geometry', function(){
             options: '=',
             origin: '=',
         },
-        templateUrl:  'js/templates/geometry.htm',
+        templateUrl:  'js/templates/form/geometry.htm',
         controller: function($scope, $rootScope, mapService){
             $scope.editLayer = new L.FeatureGroup();
             var current = null;
@@ -448,6 +378,12 @@ app.directive('geometry', function(){
     };
 });
 
+/*
+ * datepicker
+ * params:
+ *  uid: id du champ
+ *  date: valeur initiale format yyyy-MM-dd
+ */
 app.directive('datepick', function(){
     return{
         restrict:'A',
@@ -455,7 +391,7 @@ app.directive('datepick', function(){
             uid: '@',
             date: '=',
         },
-        templateUrl: 'js/templates/datepick.htm',
+        templateUrl: 'js/templates/form/datepick.htm',
         controller: function($scope){
             $scope.opened = false;
             $scope.toggle = function($event){

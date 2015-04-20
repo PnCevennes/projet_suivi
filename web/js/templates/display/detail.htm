@@ -1,0 +1,39 @@
+<div class="col-lg-6">
+    <tabset justified="true">
+        <tab ng-repeat="group in schema.groups" heading="{{group.name}}">
+            <div ng-repeat="field in group.fields">
+                <div ng-if="field.type != 'hidden'">
+                    <div>{{field.label}}</div>
+                    <div ng-if="field.type=='string'">{{data[field.name]}}</div>
+                    <div ng-if="field.type=='date'">{{data[field.name]|datefr}}</div>
+                    <div ng-if="field.type=='select'">{{field.options.choices|tselect:data[field.name]}}</div>
+                    <div xhrdisplay ng-if="field.type=='xhr'" inputid="data[field.name]" xhrurl="field.url"></div>
+                    <ul ng-if="field.type=='multi'" class="list-unstyled">
+                        <li ng-repeat="item in data[field.name]">{{item}}</li>
+                    </ul>
+                    <ul ng-if="field.type=='file'" class="list-unstyled">
+                        <li ng-repeat="item in data[field.name]"><a ng-href="uploads/{{item}}" target="blank">{{item.slice(item.indexOf('_')+1)}}</a>
+                    </ul>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+<div>
+<div ng-if="subSchema">
+    <h2>{{subSchema.title}}</h2>
+    <a class="btn btn-success" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
+    <table class="table" ng-if="subData.length>0">
+        <tr>
+            <th ng-repeat="subf in subSchema.fields">{{subf.label}}</th>
+        </tr>
+        <tr ng-repeat="line in subData">
+            <td ng-repeat="subf in subSchema.fields">
+                <div ng-if="subf.type=='string'">{{line[subf.name]}}</div>
+                <div ng-if="subf.type=='dict'">{{line[subf.name][subf.field]}}</div>
+                <div ng-if="subf.type=='list'">{{line[subf.name].join(', ')}}</div>
+                <a ng-if="subf.type=='link'" ng-href="{{subf.url}}{{line[subf.ref]}}">{{line[subf.name]}}</a></div>
+            </td>
+        </tr>
+    </table>
+    <div ng-if="subData.length==0">{{subSchema.emptyMsg}}</div>
+</div>

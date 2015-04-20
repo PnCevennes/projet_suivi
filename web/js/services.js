@@ -233,7 +233,6 @@ app.filter('datefr', function(){
 app.filter('tselect', function($filter){
     return function(input, param){
         var res = $filter('filter')(input, {id: param}, function(act, exp){return act==exp;});
-        console.log(res);
         try{
             return res[0].libelle;
         }

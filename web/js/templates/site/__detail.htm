@@ -2,9 +2,9 @@
     <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>Sites</a>
 </div>
 <div class="row col-lg-6">
-    <h3 class="col-lg-5">Détail du site {{data.properties.siteNom}}</h3>
+    <h3 class="col-lg-5">Détail du site {{data.siteNom}}</h3>
     <div class="col-lg-1 col-lg-offset-5">
-        <a class="btn btn-warning" ng-href="#/{{_appName}}/edit/site/{{data.properties.id}}">Modifier</a>
+        <a class="btn btn-warning" ng-href="#/{{_appName}}/edit/site/{{data.id}}">Modifier</a>
     </div>
 </div>
 <div class="row col-lg-6">
@@ -15,10 +15,10 @@
         <table> 
             <tr ng-repeat="val in schema.detailSite[group]">
                 <td ng-if="val.type!='hidden'" style="padding-right: 3em;"><h4>{{val.label}}</h4><h6>{{val.help}}</h6></td>
-                <td ng-if="val.type=='date'">{{data.properties[val.name]|datefr}}</td>
-                <td ng-if="val.type=='string' || val.type=='num'">{{data.properties[val.name]}}</td>
+                <td ng-if="val.type=='date'">{{data[val.name]|datefr}}</td>
+                <td ng-if="val.type=='string' || val.type=='num'">{{data[val.name]}}</td>
                 <td ng-if="val.type=='file'">
-                    <div ng-repeat="item in data.properties[val.name]">
+                    <div ng-repeat="item in data[val.name]">
                         <a ng-href="uploads/{{item}}" target="blank">{{item.slice(item.indexOf('_')+1)}}</a>
                     </div>
                 </td>
@@ -29,7 +29,7 @@
 <div class="row col-lg-6">
     <h3 class="col-lg-5">Observations</h3>
     <div class="col-lg-1 col-lg-offset-5">
-        <a class="btn btn-success" ng-href="#/{{_appName}}/edit/observation/site/{{data.properties.id}}">Nouvelle obs.</a>
+        <a class="btn btn-success" ng-href="#/{{_appName}}/edit/observation/site/{{data.id}}">Nouvelle obs.</a>
     </div>
     <p class="row col-lg-12 text-info" ng-if="observations.length==0">Aucune observation à l'heure actuelle</p>
     <table class="table table-bordered" ng-if="observations.length>0">
