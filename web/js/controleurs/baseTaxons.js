@@ -30,6 +30,12 @@ app.config(function($routeProvider){
 
 app.controller('taxonDetailController', function($scope, $routeParams, configServ, dataServ){
     $scope._appName = $routeParams.appName;
+
+    $scope.schemaUrl = $scope._appName + '/config/obstaxon/detail';
+    $scope.dataUrl = $scope._appName + '/obs_taxon/' + $routeParams.id;
+    $scope.dataId = $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/taxons/' + $routeParams.id;
+    /*
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
         dataServ.get($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.setData);
@@ -53,6 +59,7 @@ app.controller('taxonDetailController', function($scope, $routeParams, configSer
     };
 
     configServ.getUrl($scope._appName + '/obsTxConfig', $scope.setSchema);
+    */
 });
 
 app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ){

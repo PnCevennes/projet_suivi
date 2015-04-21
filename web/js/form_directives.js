@@ -227,13 +227,12 @@ app.directive('simpleform', function(){
         scope: {
             saveUrl: '=saveurl',
             schemaUrl: '=schemaurl',
-            redirectTo: '@redirectto',
             dataUrl: '=dataurl',
             data: '='
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $location, configServ, dataServ, userMessages){
+        controller: function($scope, $rootScope, configServ, dataServ){
             $scope.errors = {};
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
@@ -251,6 +250,7 @@ app.directive('simpleform', function(){
                         $scope.data[field.name] = resp[field.name] || field.default || null;
                     });
                 });
+                $rootScope.$broadcast('form:init', $scope.data);
             };
 
             $scope.save = function(){
@@ -263,22 +263,21 @@ app.directive('simpleform', function(){
             };
 
             $scope.updated = function(resp){
-                userMessages.infoMessage = 'Mise à jour effectuée';
                 dataServ.forceReload = true;
-                $location.path($scope.redirectTo + resp.id);
+                $scope.data.id = resp.id;
+                $rootScope.$broadcast('form:update', $scope.data);
             }
 
             $scope.created = function(resp){
-                userMessages.infoMessage = 'Création effectuée';
                 dataServ.forceReload = true;
-                $location.path($scope.redirectTo + resp.id);
+                $scope.data.id = resp.id;
+                $rootScope.$broadcast('form:create', $scope.data);
             }
 
             $scope.error = function(resp){
                 $scope.errors = angular.copy(resp);
             }
 
-            
             configServ.getUrl($scope.schemaUrl, $scope.setSchema);
         }
     }
@@ -320,7 +319,7 @@ app.directive('geometry', function(){
                 if(layer){
                     try{
                         layer.getLatLngs().forEach(function(point){
-                            $scope.geom.push([point.lng, point.lat])
+                            $scope.geom.push([point.lng, point.lat]);
                         });
                     }
                     catch(e){
@@ -328,7 +327,7 @@ app.directive('geometry', function(){
                         $scope.geom.push([point.lng, point.lat]);
                     }
                 }
-            }
+            };
 
             $scope.$on('$destroy', function(ev){
                 mapService.map.removeControl($scope.controls);
@@ -370,9 +369,9 @@ app.directive('geometry', function(){
 
             if($scope.origin){
                 var layer = mapService.getMarker($scope.origin);
+                $scope.updateCoords(layer);
                 $scope.editLayer.addLayer(layer);
                 current = layer;
-                $scope.updateCoords(layer);
             }
         },
     };
@@ -398,7 +397,17 @@ app.directive('datepick', function(){
                 $event.preventDefault();
                 $event.stopPropagation();
                 $scope.opened = !$scope.opened;
-            }   
+            };
+
+            $scope.$watch('date', function(newval){
+                try{
+                    newval.setHours(12);
+                    $scope.date = newval;
+                }
+                catch(e){
+                    //console.log(e);
+                }
+            });
         }
     }
 });

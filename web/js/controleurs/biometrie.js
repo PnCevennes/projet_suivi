@@ -18,6 +18,13 @@ app.config(function($routeProvider){
 
 app.controller('biometrieDetailController', function($scope, $routeParams, configServ, dataServ){
     $scope._appName = $routeParams.appName;
+
+    $scope.schemaUrl = $scope._appName + '/config/biometrie/detail';
+    $scope.dataUrl = $scope._appName + '/biometrie/' + $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/biometrie/' + $routeParams.id;
+
+    $scope.dataId = $routeParams.id;
+    /*
     $scope.setSchema = function(resp){
         $scope.schema = angular.copy(resp);
         dataServ.get($scope._appName + '/biometrie/' + $routeParams.id, $scope.setData);
@@ -29,6 +36,7 @@ app.controller('biometrieDetailController', function($scope, $routeParams, confi
     }
 
     configServ.getUrl($scope._appName + '/biomConfig', $scope.setSchema);
+    */
 });
 
 app.controller('biometrieEditController', function($scope, $routeParams, $location, configServ, dataServ){

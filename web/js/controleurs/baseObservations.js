@@ -28,7 +28,7 @@ app.config(function($routeProvider){
         })
         .when('/:appName/observation/:id', {
             controller: 'observationDetailController',
-            templateUrl: 'js/templates/detail.htm'
+            templateUrl: 'js/templates/observation/detail.htm'
         });
 
 });
@@ -54,77 +54,27 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
         $scope.saveUrl = $scope._appName + '/observation';
         $scope.data = {siteId: $routeParams.site_id};
     }
-    /*
-    $scope._appName = $routeParams.appName;
 
-    $scope.setSchema = function(resp){
-        $scope.schema = angular.copy(resp);
-        if($routeParams.id){
-            dataServ.get($scope._appName + '/observation/' + $routeParams.id, $scope.setData, function(resp){}, true);
+
+    $scope.$on('form:init', function(ev, data){
+        if(data.obsDate){
+            $scope.title = "Modification de l'observation du " + data.obsDate;
         }
         else{
-            $scope.setData({});
+            $scope.title = 'Nouvelle observation';
         }
-    };
+    });
 
-    $scope.setData = function(resp){
-        $scope.data = angular.copy(resp);
-        if($scope.data.obsDate){
-            $scope.data.obsDate = $scope.data.obsDate.replace(/^(\d+)-(\d+)-(\d+).*$/i, "$3/$2/$1");
-        }
-        angular.forEach($scope.schema.formObs, function(value){
-            if(value.name!='observateurs'){
-                if($scope.data[value.name] == undefined){
-                    $scope.data[value.name] = null;
-                }
-            }
-        }, $scope);
-        var obrs = [];
-        if($scope.data.observateurs){
-            angular.forEach($scope.data.observateurs, function(obr){
-                obrs.push(obr.obrId);
-            }, $scope);
-        }
-        $scope.data.observateurs = angular.copy(obrs);
-        dataServ.get($scope._appName + '/site/' + $scope.data.siteId, $scope.setSite);
-    };
+    $scope.$on('form:create', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/observation/' + data.id);
+    });
 
-    $scope.setSite = function(resp){
-        $scope.site = resp;
-    };
+    $scope.$on('form:update', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/observation/' + data.id);
+    });
 
-
-    $scope.save = function(){
-        if($routeParams.id){
-            dataServ.post($scope._appName + '/observation/' + $routeParams.id, $scope.data, $scope.saved, $scope.unsaved);
-        }
-        else{
-            dataServ.put($scope._appName + '/observation', $scope.data, $scope.saved, $scope.unsaved);
-        }
-    };
-
-    $scope.saved = function(resp){
-        dataServ.forceReload = true;
-        $location.path($scope._appName + '/observation/' + resp.id);
-    };
-
-    $scope.unsaved = function(resp){
-        $scope.errors = resp;
-    };
-
-    $scope.remove = function(){
-        if(confirm('Effacement observation')){
-            dataServ.delete($scope._appName + '/observation/' + $routeParams.id, $scope.removed);
-        }
-    };
-
-    $scope.removed = function(resp){
-        dataServ.forceReload = true;
-        $location.path($scope._appName + '/site/' + $scope.data.siteId);
-    }
-
-    configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
-    */
 });
 
 
@@ -173,23 +123,7 @@ app.controller('observationDetailController', function($scope, $routeParams, dat
 
     $scope.schemaUrl = $scope._appName + '/config/observation/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
 
-    /*
-    $scope.setSchema = function(resp){
-        $scope.schema = angular.copy(resp);
-        dataServ.get($scope._appName + '/observation/' + $routeParams.id, $scope.setData);
-    };
-
-    $scope.setData = function(resp){
-        $scope.data = angular.copy(resp);
-        dataServ.get($scope._appName + '/obs_taxon/observation/' + $routeParams.id, $scope.setTaxons);
-    }
-
-    $scope.setTaxons = function(resp){
-        $scope.taxons = angular.copy(resp);
-    }
-
-    configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
-    */
 });

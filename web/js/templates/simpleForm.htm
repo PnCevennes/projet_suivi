@@ -1,14 +1,15 @@
-<div>
-    <form name="{{formname}}">
-    <div class="row">
-        <div ng-repeat="group in schema.groups">
+<div class="col-lg-6">
+    <form name="Simpleform">
+    <tabset justified="true">
+        <tab ng-repeat="group in schema.groups" heading="{{group.name}}">
             <dynform group="group" data="data" errors="errors"></dynform>
-        </div>
-    </div>
+        </tab>
+    </tabset>
     <div class="row">
         <button class="btn btn-danger" type="button" ng-if="data.id" ng-click="remove()">Supprimer</button>
-        <button class="btn btn-success" type="button" ng-disabled="formname.$fieldid==false" ng-click="save()">Enregistrer</button>
+        <button class="btn btn-success" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()">Enregistrer</button>
     </div>    
 </form>
 </div>
-<pre>{{data|json}}</pre>
+<pre>{{Simpleform|json}}</pre>
+

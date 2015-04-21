@@ -62,6 +62,7 @@ app.directive('detailDisplay', function(){
         scope: {
             schemaUrl: '@schemaurl',
             dataUrl: '@dataurl',
+            updateUrl: '@updateurl',
             dataId: '@dataid'
         },
         templateUrl: 'js/templates/display/detail.htm',
@@ -97,3 +98,15 @@ app.directive('detailDisplay', function(){
     }
 });
 
+
+app.directive('fieldDisplay', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            field: '=',
+            data: '=',
+        },
+        templateUrl: 'js/templates/display/field.htm',
+        controller: function(){}
+    };
+});

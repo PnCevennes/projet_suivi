@@ -63,7 +63,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             sorting: {}
         },
         {
-            counts: [],
+            counts: [10, 25, 50],
             total: data.length, // length of data
             getData: function ($defer, params) {
                 // use build-in angular filter
@@ -178,12 +178,14 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $filter, $routeParams, dataServ, configServ, mapService){
+app.controller('siteDetailController', function($scope, $routeParams){
 
     $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/site/detail';
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
+
 });
 
 
@@ -208,5 +210,23 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.saveUrl = $scope._appName + '/site';
         $scope.data = {}
     }
+    $scope.$on('form:init', function(ev, data){
+        if(data.siteNom){
+            $scope.title = 'Modification du site ' + data.siteNom;
+        }
+        else{
+            $scope.title = 'Nouveau site';
+        }
+    });
+
+    $scope.$on('form:create', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/site/' + data.id);
+    });
+
+    $scope.$on('form:update', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/site/' + data.id);
+    });
 });
 

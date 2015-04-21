@@ -2,22 +2,12 @@
     <tabset justified="true">
         <tab ng-repeat="group in schema.groups" heading="{{group.name}}">
             <div ng-repeat="field in group.fields">
-                <div ng-if="field.type != 'hidden'">
-                    <div>{{field.label}}</div>
-                    <div ng-if="field.type=='string'">{{data[field.name]}}</div>
-                    <div ng-if="field.type=='date'">{{data[field.name]|datefr}}</div>
-                    <div ng-if="field.type=='select'">{{field.options.choices|tselect:data[field.name]}}</div>
-                    <div xhrdisplay ng-if="field.type=='xhr'" inputid="data[field.name]" xhrurl="field.url"></div>
-                    <ul ng-if="field.type=='multi'" class="list-unstyled">
-                        <li ng-repeat="item in data[field.name]">{{item}}</li>
-                    </ul>
-                    <ul ng-if="field.type=='file'" class="list-unstyled">
-                        <li ng-repeat="item in data[field.name]"><a ng-href="uploads/{{item}}" target="blank">{{item.slice(item.indexOf('_')+1)}}</a>
-                    </ul>
-                </div>
+                <div ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></div>
+                <div ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></div>
             </div>
         </tab>
     </tabset>
+    <a class="btn btn-warning" ng-if="updateUrl" ng-href="{{updateUrl}}">Modifier</a>
 <div>
 <div ng-if="subSchema">
     <h2>{{subSchema.title}}</h2>
@@ -31,6 +21,7 @@
                 <div ng-if="subf.type=='string'">{{line[subf.name]}}</div>
                 <div ng-if="subf.type=='dict'">{{line[subf.name][subf.field]}}</div>
                 <div ng-if="subf.type=='list'">{{line[subf.name].join(', ')}}</div>
+                <div ng-if="subf.type=='select'">{{subf.options.choices|tselect:line[subf.name]}}</div>
                 <a ng-if="subf.type=='link'" ng-href="{{subf.url}}{{line[subf.ref]}}">{{line[subf.name]}}</a></div>
             </td>
         </tr>
