@@ -112,6 +112,8 @@ class ObservationConfigController extends Controller{
     public function getDetailAction(){
 
         $out = array(
+            'subSchemaUrl'=>'chiro/config/obstaxon/list',
+            'subDataUrl'=>'chiro/obs_taxon/observation/',
             'groups'=>array(
                 array(
                     'name'=>'Observation',
@@ -133,16 +135,16 @@ class ObservationConfigController extends Controller{
                         array(
                             'name'=>'numerisateur',
                             'label'=>'Numerisateur',
-                            'type'=>'string',
+                            'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array()
+                            'options'=>array('url'=>'chiro/observateurs/id')
                         ),
                         array(
                             'name'=>'observateurs',
                             'label'=>'Observateurs',
-                            'type'=>'multi',
+                            'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array('nomComplet')
+                            'options'=>array('multi'=>true, 'url'=>'chiro/observateurs/id')
                         ),
                         array(
                             'name'=>'obsCommentaire',

@@ -56,7 +56,7 @@ class SiteController extends Controller{
         $out_item['siteAmenagement'] = $info->getSiteAmenagement();
         $out_item['siteDate'] = !is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
         $out_item['dernObs'] = !is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
-        $out_item['geom'] = $info->getGeom()['coordinates'];
+        $out_item['geom'] = array($info->getGeom()['coordinates']);
 
         return new JsonResponse($out_item);
     }
@@ -65,15 +65,15 @@ class SiteController extends Controller{
     /*
      * Peuple un objet Site avec les infos passées en POST
      */
-    private function hydrateSite($site, $data, $geometry){
+    private function hydrateSite($site, $data){
         $logger = $this->get('logger');
         $norm = $this->get('normalizer');
 
         $gs = $this->get('geometry');
-        $geom = $gs->geoJsonToPoint($geometry);
+        $geom = $gs->getPoint($data['geom']);
         $site->setSiteNom($data['siteNom']);
         $site->setTypeId($data['typeId']);
-        $site->setSiteDate(\DateTime::createFromFormat('d/m/Y', $data['siteDate']));
+        $site->setSiteDate(\DateTime::createFromFormat('Y-m-d', substr($data['siteDate'], 0, 10)));
         $site->setSiteDescription($data['siteDescription']);
         $site->setSiteCode($data['siteCode']);
         $site->setObservateurId($data['observateurId']);
@@ -110,9 +110,9 @@ class SiteController extends Controller{
 
     // path: PUT /chiro/site
     public function createAction(Request $req){
-        $res = json_decode($req->getContent(), true);
-        $props = $res['properties'];
+        $props = json_decode($req->getContent(), true);
 
+        $logger = $this->get('logger');
         // manager de base de données
         $manager = $this->getDoctrine()->getManager();
         // initialisation transaction
@@ -121,7 +121,7 @@ class SiteController extends Controller{
         $site = new Site();
         $infoSite = new InfoSite();
         try{
-            $this->hydrateSite($site, $props, $res['geometry']);
+            $this->hydrateSite($site, $props);
             $this->hydrateInfoSite($infoSite, $props);
 
             // enregistrement pnc.base_site
@@ -138,13 +138,14 @@ class SiteController extends Controller{
         }
         catch(\Exception $e){
             $manager->getConnection()->rollback();
+            $logger->info($e);
             $errs = array_merge($site->errors(), $infoSite->errors());
             return new JsonResponse($errs, 400);
         }
 
         try{
             // enregistrement des fichiers liés
-            foreach($res['properties']['siteAmenagement'] as $fich_id){
+            foreach($props['siteAmenagement'] as $fich_id){
                 if(!strpos($fich_id, '_')){
                     $fichier = new SiteFichiers();
                     $fichier->setSiteId($site->getId());
@@ -159,14 +160,15 @@ class SiteController extends Controller{
         }
 
 
-        return new JsonResponse(array('vue'=>'create', 'data'=>$res));
+        return new JsonResponse(array('id'=>$site->getId()));
     }
 
 
     // path: POST /chiro/site/{id}
     public function updateAction(Request $req, $id=null){
-        $res = json_decode($req->getContent(), true);
-        $props = $res['properties'];
+        $props = json_decode($req->getContent(), true);
+        $logger = $this->get('logger');
+        $logger->info(json_encode($props));
 
         $norm = $this->get('normalizer');
         // entity manager sites
@@ -180,7 +182,7 @@ class SiteController extends Controller{
         $manager->getConnection()->beginTransaction();
 
         try{
-            $this->hydrateSite($site, $props, $res['geometry']);
+            $this->hydrateSite($site, $props);
             $this->hydrateInfoSite($infoSite, $props);
 
             // enregistrement pnc.base_site
@@ -195,6 +197,7 @@ class SiteController extends Controller{
             $manager->getConnection()->commit();
         }
         catch(\Exception $e){
+            $logger->info($e);
             $manager->getConnection()->rollback();
             $errs = array_merge($site->errors(), $infoSite->errors());
 
@@ -202,7 +205,7 @@ class SiteController extends Controller{
         }
         try{
             // enregistrement des fichiers liés
-            foreach($res['properties']['siteAmenagement'] as $fich_id){
+            foreach($props['siteAmenagement'] as $fich_id){
                 if(!strpos($fich_id, '_')){
                     $fichier = new SiteFichiers();
                     $fichier->setSiteId($site->getId());
@@ -216,7 +219,7 @@ class SiteController extends Controller{
             print_r($e);
         }
 
-        return new JsonResponse(array('vue'=>'update', 'data'=>$res));
+        return new JsonResponse(array('id'=>$site->getId()));
     }
 
 

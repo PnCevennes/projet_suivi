@@ -5,11 +5,11 @@ use CrEOF\Spatial\PHP\Types\Geometry\Point;
 
 class GeometryService{
 
-    public function geoJsonToPoint($json_point){
-        return new Point($json_point['coordinates'][0], $json_point['coordinates'][1]);
-        //return sprintf('SRID=4326;POINT(%d %d)', $json_point['coordinates'][0], $json_point['coordinates'][1]);
+    public function getPoint($coords){
+        return new Point($coords[0][0], $coords[0][1]);
     }
 
+    /*
     public function lineStringJsonToWKT($json_line){
         $coords_line = array();
         foreach($json_line['coordinates'] as $coords){
@@ -29,4 +29,5 @@ class GeometryService{
         }
         return 'POLYGON(' . implode(', ', $sub_polys) . ')';
     }
+     */
 }

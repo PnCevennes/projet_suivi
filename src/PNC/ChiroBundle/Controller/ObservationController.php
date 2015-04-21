@@ -95,7 +95,7 @@ class ObservationController extends Controller{
     }
 
     private function hydrateObservation($obs, $data){
-        $obs->setObsDate(\DateTime::createFromFormat('d/m/Y', $data['obsDate']));
+        $obs->setObsDate(\DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10)));
         $obs->setObsCommentaire($data['obsCommentaire']);
         //$obs->setObsIdTableSrc($data['obsIdTableSrc']);
         $obs->setSiteId($data['siteId']);
@@ -182,7 +182,7 @@ class ObservationController extends Controller{
             $manager->flush();
 
             $manager->getConnection()->commit();
-            return new JsonResponse(array('id', $data['id']));
+            return new JsonResponse(array('id'=>$data['id']));
         }
         catch(\Exception $e){
             $manager->getConnection()->rollback();

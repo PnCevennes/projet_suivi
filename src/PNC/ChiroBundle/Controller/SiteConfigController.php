@@ -124,8 +124,6 @@ class SiteConfigController extends Controller{
                         ),
                     ),
                 ),
-            ),
-            array(
                 array(
                     'name'=>'Contact',
                     'fields'=>array(
