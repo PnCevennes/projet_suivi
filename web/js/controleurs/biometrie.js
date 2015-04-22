@@ -4,15 +4,15 @@ app.config(function($routeProvider){
     $routeProvider
         .when('/:appName/biometrie/:id', {
             controller: 'biometrieDetailController',
-            templateUrl: 'js/templates/biometrie/detail.htm'
+            templateUrl: 'js/views/biometrie/detail.htm'
         })
         .when('/:appName/edit/biometrie/taxon/:otx_id', {
             controller: 'biometrieEditController',
-            templateUrl: 'js/templates/biometrie/edit.htm'
+            templateUrl: 'js/views/biometrie/edit.htm'
         })
         .when('/:appName/edit/biometrie/:id', {
             controller: 'biometrieEditController',
-            templateUrl: 'js/templates/biometrie/edit.htm'
+            templateUrl: 'js/views/biometrie/edit.htm'
         })
 });
 

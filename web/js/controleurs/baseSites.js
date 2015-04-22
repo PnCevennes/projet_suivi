@@ -8,19 +8,19 @@ app.config(function($routeProvider){
     $routeProvider
         .when('/:appName/site', {
             controller: 'siteListController',
-            templateUrl: 'js/templates/site/list.htm'
+            templateUrl: 'js/views/site/list.htm'
         })
         .when('/:appName/edit/site', {
             controller: 'siteEditController',
-            templateUrl: 'js/templates/site/edit.htm'
+            templateUrl: 'js/views/site/edit.htm'
         })
         .when('/:appName/edit/site/:id', {
             controller: 'siteEditController',
-            templateUrl: 'js/templates/site/edit.htm'
+            templateUrl: 'js/views/site/edit.htm'
         })
         .when('/:appName/site/:id', {
             controller: 'siteDetailController',
-            templateUrl: 'js/templates/detail.htm'
+            templateUrl: 'js/views/site/detail.htm'
         });
 });
 

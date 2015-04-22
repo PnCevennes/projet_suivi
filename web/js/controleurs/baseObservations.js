@@ -8,27 +8,27 @@ app.config(function($routeProvider){
     $routeProvider
         .when('/:appName/observation', {
             controller: 'observationListController',
-            templateUrl: 'js/templates/observation/list.htm'
+            templateUrl: 'js/views/observation/list.htm'
         })
         .when('/:appName/observation/site/:id', {
             controller: 'observationSiteListController',
-            templateUrl: 'js/templates/observation/list.htm'
+            templateUrl: 'js/views/observation/list.htm'
         })
         .when('/:appName/edit/observation', {
             controller: 'observationEditController',
-            templateUrl: 'js/templates/observation/edit.htm'
+            templateUrl: 'js/views/observation/edit.htm'
         })
         .when('/:appName/edit/observation/site/:site_id', {
             controller: 'observationEditController',
-            templateUrl: 'js/templates/observation/edit.htm'
+            templateUrl: 'js/views/observation/edit.htm'
         })
         .when('/:appName/edit/observation/:id', {
             controller: 'observationEditController',
-            templateUrl: 'js/templates/observation/edit.htm'
+            templateUrl: 'js/views/observation/edit.htm'
         })
         .when('/:appName/observation/:id', {
             controller: 'observationDetailController',
-            templateUrl: 'js/templates/observation/detail.htm'
+            templateUrl: 'js/views/observation/detail.htm'
         });
 
 });
