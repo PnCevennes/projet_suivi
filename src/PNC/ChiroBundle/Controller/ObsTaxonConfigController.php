@@ -26,6 +26,13 @@ class ObsTaxonConfigController extends Controller{
                     'name'=>'Informations',
                     'fields'=>array(
                         array(
+                            'name'=>'obsId',
+                            'label'=>'Id observation',
+                            'type'=>'hidden',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
                             'name'=>'cdNom',
                             'label'=>'Nom taxon',
                             'type'=>'xhr',
