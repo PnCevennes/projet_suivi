@@ -73,7 +73,13 @@ class SiteController extends Controller{
         $geom = $gs->getPoint($data['geom']);
         $site->setSiteNom($data['siteNom']);
         $site->setTypeId($data['typeId']);
-        $site->setSiteDate(\DateTime::createFromFormat('Y-m-d', substr($data['siteDate'], 0, 10)));
+        if(strpos($data['siteDate'], '/')!==false){
+            $date = \DateTime::createFromFormat('d/m/Y', $data['siteDate']);
+        }
+        else{
+            $date = \DateTime::createFromFormat('Y-m-d', substr($data['siteDate'], 0, 10));
+        }
+        $site->setSiteDate($date);
         $site->setSiteDescription($data['siteDescription']);
         $site->setSiteCode($data['siteCode']);
         $site->setObservateurId($data['observateurId']);

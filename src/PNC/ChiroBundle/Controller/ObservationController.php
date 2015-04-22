@@ -95,7 +95,13 @@ class ObservationController extends Controller{
     }
 
     private function hydrateObservation($obs, $data){
-        $obs->setObsDate(\DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10)));
+        if(strpos($data['obsDate'], '/')!==false){
+            $date = \DateTime::createFromFormat('d/m/Y', $data['obsDate']);
+        }
+        else{
+            $date = \DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10));
+        }
+        $obs->setObsDate($date);
         $obs->setObsCommentaire($data['obsCommentaire']);
         //$obs->setObsIdTableSrc($data['obsIdTableSrc']);
         $obs->setSiteId($data['siteId']);
