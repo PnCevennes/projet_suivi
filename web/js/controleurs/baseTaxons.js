@@ -35,31 +35,13 @@ app.controller('taxonDetailController', function($scope, $routeParams, configSer
     $scope.dataUrl = $scope._appName + '/obs_taxon/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/taxons/' + $routeParams.id;
-    /*
-    $scope.setSchema = function(resp){
-        $scope.schema = angular.copy(resp);
-        dataServ.get($scope._appName + '/obs_taxon/' + $routeParams.id, $scope.setData);
-    };
+    
+    configServ.bc.splice(2, configServ.bc.length);
 
-    $scope.setData = function(resp){
-        $scope.data = angular.copy(resp);
-        $scope.select_group('Général');
-        dataServ.get($scope._appName + '/biometrie/taxon/' + $routeParams.id, $scope.setBiometries);
-    };
-
-    $scope.setBiometries = function(resp){
-        $scope.biometries = angular.copy(resp);
-    };
-
-    $scope.select_group = function(group){
-        angular.forEach($scope.schema.detailObsTx.__groups__, function(grp){
-            $scope.schema.detailObsTx[grp].shown = false;
-        });
-        $scope.schema.detailObsTx[group].shown = true;
-    };
-
-    configServ.getUrl($scope._appName + '/obsTxConfig', $scope.setSchema);
-    */
+    $scope.$on('display:init', function(ev, data){
+        $scope.title = 'Observation du taxon "' + data.nomComplet + '"';
+        configServ.bc.push({label: 'Observation', url: '#/' + $scope._appName + '/observation/' + data.obsId});
+    });
 });
 
 app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ){
@@ -75,6 +57,18 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
         $scope.saveUrl = $scope._appName + '/obs_taxon';
         $scope.data = {obsId: $routeParams.obs_id};
     }
+    configServ.bc.splice(3, configServ.bc.length);
+
+    $scope.$on('form:init', function(ev, data){
+        if(data.cdNom){
+            $scope.title = "Modification de l'observation du taxon";
+            // breadcrumbs
+            configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + $routeParams.id});
+        }
+        else{
+            $scope.title = 'Nouveau taxon';
+        }
+    });
 });
 
 app.controller('taxonListController', function(){

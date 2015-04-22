@@ -66,7 +66,7 @@ app.directive('detailDisplay', function(){
             dataId: '@dataid'
         },
         templateUrl: 'js/templates/display/detail.htm',
-        controller: function($scope, dataServ, configServ){
+        controller: function($scope, $rootScope, dataServ, configServ){
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
                 //récupération des données
@@ -75,6 +75,10 @@ app.directive('detailDisplay', function(){
 
             $scope.setData = function(resp){
                 $scope.data = angular.copy(resp);
+
+                // envoi des données vers le controleur
+                $rootScope.$broadcast('display:init', $scope.data);
+
                 // si le schema a un sous-schema (sous-protocole)
                 // récupération du sous-schema
                 if($scope.schema.subSchemaUrl){
@@ -108,5 +112,17 @@ app.directive('fieldDisplay', function(){
         },
         templateUrl: 'js/templates/display/field.htm',
         controller: function(){}
+    };
+});
+
+
+app.directive('breadcrumbs', function(){
+    return {
+        restrict: 'A',
+        templateUrl: 'js/templates/display/breadcrumbs.htm',
+        controller: function($scope, configServ){
+            console.log(configServ.bc);
+            $scope.data = configServ.bc;
+        },
     };
 });

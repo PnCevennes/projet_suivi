@@ -108,6 +108,7 @@ app.service('dataServ', function($http, $filter){
 app.service('configServ', function(dataServ){
     var cache = {};
 
+    this.bc = [];
     /*
      * charge des informations depuis une url si elles ne sont pas déja en cache
      * et les retourne via une callback. Si les variables sont déjà en cache, les 

@@ -1,15 +1,15 @@
 <fieldset>
-    <div ng-repeat="field in group.fields">
+    <div ng-repeat="field in group.fields" class="form-group">
         <label for="{{field.name}}" ng-if="field.type!='hidden'" tooltip="{{field.help}}">{{field.label}}</label>
         <p style="color: red;" ng-show="errors[field.name]">{{errors[field.name]}}</p>
         <multi refer="data[field.name]" schema="field" ng-if="field.options.multi"></multi>
         <input id="{{field.name}}" type="hidden" ng-if="field.type=='hidden' && !field.options.multi" ng-model="data[field.name]">
         <input id="{{field.name}}" name="{{field.name}}" class="form-control" type="text" ng-if="field.type=='string' && !field.options.multi" ng-model="data[field.name]" ng-minlength="field.options.minLength" ng-maxlength="field.options.maxLength" ng-required="field.options.minLength>0">
         <input id="{{field.name}}" name="{{field.name}}" class="form-control" type="number" ng-if="field.type=='num' && !field.options.multi" ng-model="data[field.name]">
-        <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="data[field.name]"></div>
+        <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="data[field.name]" ngrequired="field.options.required"></div>
         <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="data[field.name]">
         <select id="{{field.name}}" class="form-control" ng-options="item.id as item.libelle for item in field.options.choices" ng-model="data[field.name]" ng-if="field.type=='select' && !field.options.multi"></select>
-        <angucompletewrapper inputclass="form-control" id="{{field.name}}" pause="100" selectedobject="data[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="data[field.name]"></angucompletewrapper>
+        <angucompletewrapper inputclass="form-control" id="{{field.name}}" name="{{field.name}}" pause="100" selectedobject="data[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="data[field.name]" ngrequired="field.options.required"></angucompletewrapper>
         <textarea class="form-control" id="{{field.name}}" ng-if="field.type=='text' && !field.options.multi" ng-model="data[field.name]"></textarea>
         <calculated class="form-control" id="{{field.name}}" ng-if="field.type=='sum' && !field.options.multi" refs="field.options.ref" data="data" model="data[field.name]"></calculated>
         <fileinput ng-if="field.type=='file' && !field.options.multi" fileids="data[field.name]"></fileinput>

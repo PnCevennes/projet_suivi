@@ -32,6 +32,10 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
+    configServ.bc.splice(configServ.bc.length);
+    if(configServ.bc.length == 0){
+        configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
+    }
 
     mapService.clear();
     mapService.map.setZoom(10);
@@ -178,13 +182,19 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $routeParams){
+app.controller('siteDetailController', function($scope, $routeParams, configServ){
 
     $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/site/detail';
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
+
+    configServ.bc.splice(1, configServ.bc.length);
+
+    $scope.$on('display:init', function(ev, data){
+        $scope.title = data.siteNom;
+    });
 
 });
 
@@ -199,6 +209,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
 
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/site/form';
+    configServ.bc.splice(1, configServ.bc.length);
 
     if($routeParams.id){
         $scope.saveUrl = $scope._appName + '/site/' + $routeParams.id;
@@ -210,9 +221,13 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.saveUrl = $scope._appName + '/site';
         $scope.data = {}
     }
+
     $scope.$on('form:init', function(ev, data){
         if(data.siteNom){
             $scope.title = 'Modification du site ' + data.siteNom;
+            if(configServ.bc.length == 1){
+                configServ.bc.push({label: data.siteNom, url: '#/' + $scope._appName + '/site/' + data.id});
+            }
         }
         else{
             $scope.title = 'Nouveau site';
@@ -227,6 +242,12 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('form:update', function(ev, data){
         //TODO msg utilisateur
         $location.url($scope._appName + '/site/' + data.id);
+    });
+
+    $scope.$on('form:delete', function(ev, data){
+        //TODO msg utilisateur
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/site/');
     });
 });
 

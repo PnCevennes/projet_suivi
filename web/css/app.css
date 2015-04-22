@@ -59,3 +59,7 @@
     border: none;
     width: 100%;
 }
+
+.css-form input.ng-invalid{
+    border-color: red;
+}

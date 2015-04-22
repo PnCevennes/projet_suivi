@@ -55,10 +55,13 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
         $scope.data = {siteId: $routeParams.site_id};
     }
 
+    configServ.bc.splice(2, configServ.bc.length);
 
     $scope.$on('form:init', function(ev, data){
         if(data.obsDate){
             $scope.title = "Modification de l'observation du " + data.obsDate;
+            // breadcrumbs
+            configServ.bc.push({label: data.obsDate, url: '#/' + $scope._appName + '/observation/' + data.id});
         }
         else{
             $scope.title = 'Nouvelle observation';
@@ -75,6 +78,11 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
+    $scope.$on('form:delete', function(ev, data){
+        //TODO msg utilisateur
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/site/' + data.siteId);
+    });
 });
 
 
@@ -85,9 +93,12 @@ app.controller('observationSiteEditController', function($scope, $routeParams, $
         $scope.schema = angular.copy(resp);
         $scope.setData({});
     };
+    
 
     $scope.setData = function(resp){
         $scope.data = angular.copy(resp);
+
+
         angular.forEach($scope.schema.formObs, function(value){
             $scope.data[value.name] = value.default || null;
         }, $scope);
@@ -121,9 +132,18 @@ app.controller('observationSiteEditController', function($scope, $routeParams, $
 app.controller('observationDetailController', function($scope, $routeParams, dataServ, configServ){
     $scope._appName = $routeParams.appName;
 
+    configServ.bc.splice(1, configServ.bc.length);
+
     $scope.schemaUrl = $scope._appName + '/config/observation/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
+
+    $scope.$on('display:init', function(ev, data){
+        if(configServ.bc.length == 1){
+            configServ.bc.push({label: data.siteNom, url: '#/' + $scope._appName + '/site/' + data.siteId});
+        }
+        $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+    });
 
 });

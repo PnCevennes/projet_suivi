@@ -14,13 +14,15 @@ app.directive('angucompletewrapper', function(dataServ){
         restrict: 'E',
         scope: {
             id: '@',
+            name: '@',
             inputclass: '@',
             selectedobject: '=',
             url: '@',
             initial: '=',
-            reverseurl: '@'
+            reverseurl: '@',
+            ngrequired: '=',
         },
-        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}} pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial">',
+        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}} pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial"></angucomplete><input type="hidden" name="_{{name}}" ng-model="selectedobject" ng-required="ngrequired"></input>',
         controller: function($scope){
             $scope.localselectedobject = {};
             $scope.$watch('initial', function(newval){
@@ -234,8 +236,39 @@ app.directive('simpleform', function(){
         templateUrl: 'js/templates/simpleForm.htm',
         controller: function($scope, $rootScope, configServ, dataServ){
             $scope.errors = {};
+            $scope.currentPage = 0;
+            $scope.isActive = [];
+            $scope.isDisabled = [];
+
+            $scope.prevPage = function(){
+                if($scope.currentPage > 0){
+                    $scope.isActive[$scope.currentPage] = false;
+                    $scope.currentPage--;
+                    $scope.isActive[$scope.currentPage] = true;
+                }
+            };
+
+            $scope.nextPage = function(){
+                if($scope.currentPage < $scope.isActive.length-1){
+                    $scope.isActive[$scope.currentPage] = false;
+                    $scope.isDisabled[$scope.currentPage] = false;
+                    $scope.currentPage++;
+                    $scope.isActive[$scope.currentPage] = true;
+                    $scope.isDisabled[$scope.currentPage] = false;
+                }
+            };
+
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
+                
+                // mise en place tabulation formulaire
+                $scope.schema.groups.forEach(function(group){
+                    $scope.isActive.push(false);
+                    $scope.isDisabled.push(!$scope.dataUrl);
+                });
+                $scope.isActive[0] = true;
+                $scope.isDisabled[0] = false;
+
                 if($scope.dataUrl){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }
@@ -276,6 +309,16 @@ app.directive('simpleform', function(){
 
             $scope.error = function(resp){
                 $scope.errors = angular.copy(resp);
+            }
+
+            $scope.remove = function(){
+                if(confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
+                    dataServ.delete($scope.saveUrl, $scope.removed);
+                }
+            }
+
+            $scope.removed = function(resp){
+                $rootScope.$broadcast('form:delete', $scope.data);
             }
 
             configServ.getUrl($scope.schemaUrl, $scope.setSchema);
@@ -389,6 +432,7 @@ app.directive('datepick', function(){
         scope: {
             uid: '@',
             date: '=',
+            ngrequired: '=',
         },
         templateUrl: 'js/templates/form/datepick.htm',
         controller: function($scope){
@@ -405,7 +449,9 @@ app.directive('datepick', function(){
                     $scope.date = newval;
                 }
                 catch(e){
-                    //console.log(e);
+                    if(newval){
+                        $scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                    }
                 }
             });
         }

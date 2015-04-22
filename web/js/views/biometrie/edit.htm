@@ -1,7 +1,4 @@
+<h1>{{title}}</h1>
+<div breadcrumbs></div>
 <div simpleform saveurl="saveUrl" schemaurl="configUrl" redirectto="#/{{_appName}}/biometrie/" dataurl="dataUrl" data="data">
-<div class="row">
-    <a class="btn btn-xs" ng-href="#/{{_appName}}/site"><span class="glyphicon glyphicon-chevron-left"></span>sites</a>
-    <a class="btn btn-xs" ng-href="#/{{_appName}}/taxons/{{data.obsTxId}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour taxon</a>
-    <a ng-if="data.id" class="btn btn-xs" ng-href="#/{{_appName}}/biometrie/{{data.id}}"><span class="glyphicon glyphicon-chevron-left"></span>Retour biometrie</a>
-</div>
 </div>

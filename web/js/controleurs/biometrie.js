@@ -24,19 +24,14 @@ app.controller('biometrieDetailController', function($scope, $routeParams, confi
     $scope.updateUrl = '#/' + $scope._appName + '/edit/biometrie/' + $routeParams.id;
 
     $scope.dataId = $routeParams.id;
-    /*
-    $scope.setSchema = function(resp){
-        $scope.schema = angular.copy(resp);
-        dataServ.get($scope._appName + '/biometrie/' + $routeParams.id, $scope.setData);
 
-    };
+    configServ.bc.splice(3, configServ.bc.length);
 
-    $scope.setData = function(resp){
-        $scope.data = angular.copy(resp);
-    }
+    $scope.$on('display:init', function(ev, data){
+        $scope.title = "Biométrie n°" + data.id;
+        configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + data.obsTxId});
+    });
 
-    configServ.getUrl($scope._appName + '/biomConfig', $scope.setSchema);
-    */
 });
 
 app.controller('biometrieEditController', function($scope, $routeParams, $location, configServ, dataServ){
@@ -51,4 +46,14 @@ app.controller('biometrieEditController', function($scope, $routeParams, $locati
         $scope.saveUrl = $scope._appName + '/biometrie'
         $scope.data = {obsTxId: $routeParams.otx_id};
     }
+    $scope.$on('form:init', function(ev, data){
+        if($routeParams.id){
+            $scope.title = "Modification de la biométrie";
+            // breadcrumbs
+            configServ.bc.push({label: 'biometrie', url: '#/' + $scope._appName + '/biometrie/' + $routeParams.id});
+        }
+        else{
+            $scope.title = 'Nouvelle biométrie';
+        }
+    });
 });

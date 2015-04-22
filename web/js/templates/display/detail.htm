@@ -1,5 +1,5 @@
 <div class="col-lg-6">
-    <tabset justified="true">
+    <tabset justified="true" ng-if="schema.groups.length>1">
         <tab ng-repeat="group in schema.groups" heading="{{group.name}}">
             <div ng-repeat="field in group.fields">
                 <div ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></div>
@@ -7,6 +7,12 @@
             </div>
         </tab>
     </tabset>
+    <div ng-if="schema.groups.length==1">
+            <div ng-repeat="field in schema.groups[0].fields">
+                <div ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></div>
+                <div ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></div>
+            </div>
+    </div>
     <a class="btn btn-warning" ng-if="updateUrl" ng-href="{{updateUrl}}">Modifier</a>
 <div>
 <div ng-if="subSchema">
