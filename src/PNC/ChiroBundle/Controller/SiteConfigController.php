@@ -78,7 +78,8 @@ class SiteConfigController extends Controller{
                             'help'=>'',
                             'options'=>array(
                                 'url'=>'chiro/observateurs', 
-                                'reverseurl'=>'chiro/observateurs/id'
+                                'reverseurl'=>'chiro/observateurs/id',
+                                'required'=>true,
                             ),
                         ),
                         array(
@@ -86,7 +87,7 @@ class SiteConfigController extends Controller{
                             'label'=>'Date créa.',
                             'type'=>'date',
                             'help'=>"Date d'ajout du site à la base de données",
-                            'options'=>array(),
+                            'options'=>array('required'=>true),
                         ),
                         array(
                             'name'=>'siteDescription',
