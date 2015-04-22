@@ -119,10 +119,10 @@ app.directive('fieldDisplay', function(){
 app.directive('breadcrumbs', function(){
     return {
         restrict: 'A',
+        scope: {},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ){
-            console.log(configServ.bc);
-            $scope.data = configServ.bc;
+            $scope.bc = configServ.bc;
         },
     };
 });
