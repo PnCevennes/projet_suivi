@@ -85,7 +85,10 @@ class ObsTaxonConfigController extends Controller{
                             'label'=>'Effectif total',
                             'type'=>'sum',
                             'help'=>'',
-                            'options'=>array('ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'))
+                            'options'=>array(
+                                'ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'), 
+                                'modifiable'=>true
+                            )
                         ),
                         array(
                             'name'=>'obsNbMaleAdulte',
