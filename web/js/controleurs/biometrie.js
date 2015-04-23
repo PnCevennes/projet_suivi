@@ -56,4 +56,20 @@ app.controller('biometrieEditController', function($scope, $routeParams, $locati
             $scope.title = 'Nouvelle biométrie';
         }
     });
+
+    $scope.$on('form:create', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/biometrie/' + data.id);
+    });
+
+    $scope.$on('form:update', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/biometrie/' + data.id);
+    });
+
+    $scope.$on('form:delete', function(ev, data){
+        //TODO msg utilisateur
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/taxons/' + data.obsTxId);
+    });
 });

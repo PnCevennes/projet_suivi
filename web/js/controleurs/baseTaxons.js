@@ -69,6 +69,22 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
             $scope.title = 'Nouveau taxon';
         }
     });
+
+    $scope.$on('form:create', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/taxons/' + data.id);
+    });
+
+    $scope.$on('form:update', function(ev, data){
+        //TODO msg utilisateur
+        $location.url($scope._appName + '/taxons/' + data.id);
+    });
+
+    $scope.$on('form:delete', function(ev, data){
+        //TODO msg utilisateur
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/observation/' + data.obsId);
+    });
 });
 
 app.controller('taxonListController', function(){
