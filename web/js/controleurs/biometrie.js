@@ -54,6 +54,7 @@ app.controller('biometrieEditController', function($scope, $routeParams, $locati
         }
         else{
             $scope.title = 'Nouvelle biométrie';
+            configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + $routeParams.otx_id});
         }
     });
 
