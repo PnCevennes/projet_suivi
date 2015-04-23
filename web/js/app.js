@@ -43,7 +43,7 @@ app.controller('baseController', function($scope, dataServ, configServ, mapServi
     $scope._appName = 'chiro';
     $scope.success = function(resp){
         $scope.data = resp;
-        configServ.put('debug', false);
+        configServ.put('debug', true);
         //userMessages.infoMessage = "bienvenue !";
     };
     dataServ.get('config/apps', $scope.success);
