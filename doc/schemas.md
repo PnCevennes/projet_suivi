@@ -5,37 +5,43 @@ Les schémas sont prévus pour configurer coté serveur l'aspect de la plupart d
 Les schémas se présentent dans la plupart des cas sous forme de liste.
 
 
-les schémas sont censés être récupérés coté client via le service configServ. Ils sont systématiquement mis en cache coté client afin de n'avoir à les charger qu'une seule fois. Il est inutile de scinder les configurations selon le type de vue pour gagner en performances.
-
+les schémas sont censés être récupérés coté client via le service configServ. Ils sont systématiquement mis en cache coté client afin de n'avoir à les charger qu'une seule fois. 
 
 ##Formulaires
 
 ###Exemple
 
-    $schema = array(
-        array(
-            'name'=>'variable1',
-            'label'=>'libellé var 1',
-            'type'=>'hidden',
-            'help'=>'',
-            'options'=>array()
-        ),
-        array(
-            'name'=>'variable2',
-            'label'=>'libellé var 2',
-            'type'=>'string',
-            'help'=>'complément au libellé var 2',
-            'options'=>array('minLength'=>5, 'maxLength'=>250)
-        ),
-        array(
-            'name'=>'typeId',
-            'label'=>'Type',
-            'type'=>'select',
-            'help'=>'Type de lieu',
-            'options'=>array('choices'=>$typesLieu),
-            'default'=>37
+    $schema = array( //objet schema
+        'groups'=>array( //liste des groupes 
+            array( // objet groupe
+                'name'=>'Nom du groupe',
+                'fields'=>array( // liste des champs
+                    array( // objet champ
+                        'name'=>'variable1',
+                        'type'=>'hidden',
+                    ),
+                    array(
+                        'name'=>'variable2',
+                        'label'=>'libellé var 2',
+                        'type'=>'string',
+                        'help'=>'complément au libellé var 2',
+                        'options'=>array('minLength'=>5, 'maxLength'=>250)
+                    ),
+                    array(
+                        'name'=>'typeId',
+                        'label'=>'Type',
+                        'type'=>'select',
+                        'help'=>'Type de lieu',
+                        'options'=>array('choices'=>$typesLieu),
+                        'default'=>37
+                    ),
+                ),
+            ),
         ),
     );
+
+
+S'il y a plus d'un groupe, l'affichage du formulaire est scindé en différents panneaux avec une sous-validation style "wizard".
 
 
 ###Champs
@@ -62,6 +68,7 @@ aucune option définie
 crée un input type `text`
 
 les options possibles sont `minLength` et `maxLength`
+un champ dont la minlength est supérieure à 0 est automatiquement passé en "required"
 
 
 ####text
@@ -75,15 +82,18 @@ aucune option définie.
 
 crée un input type `numeric`
 
-aucune option définie (?TODO)
+options : 
+- min : la valeur minimale
+- max : la valeur maximale
+- step : le pas d'incrémentation
 
 
 ####date
 
-crée un input type `date` (fonctionnel sous chrome, equivalent text sous firefox)
+crée un datepicker
 
-aucune option définie
-
+pas d'options particulières
+format de date : yyyy-MM-dd
 
 ####select
 
@@ -104,9 +114,11 @@ options à définir : filtre d'extensions acceptées + voir les possibilité de 
 
 crée un champ texte avec autocompletion ajax
 
-option obligatoire : `url` pour indiquer l'url à contacter pour obtenir les possibilités de completion
+options obligatoires : 
+- `url` pour indiquer l'url à contacter pour obtenir les possibilités de completion
+- `reverseurl` pour indiquer l'url à contacter pour obtenir le label lié à la donnée fournie (cas d'un formulaire de modification)
 
-l'url contactée doit renvoyer une liste de dicos [{id: x, label: y}] où x est la valeur souhaitée, et y les libellés de réponse.
+les url contactées doivent renvoyer une liste de dicos [{id: x, label: y}] où x est la valeur souhaitée, et y les libellés de réponse.
 
 
 
@@ -118,6 +130,9 @@ un champ avec l'option `'multi'=>true` devient répétable
 
 ?TODO voir une limite de répétition ('multi'=>3) ne permettrait de répéter que 3 fois le champ
 
+
+####required (bool)
+indique qu'un champ est obligatoire
 
 
 ##Tables ng-table
@@ -152,29 +167,38 @@ un champ avec l'option `'multi'=>true` devient répétable
 
 ##Detail (table html)
 
-en cours d'adaptation
 
-        array(
-            'name'=>'siteCode',
-            'label'=>'Code site',
-            'type'=>'string',
-            'help'=>'',
-            'options'=>array()
-        ),
-        array(
-            'name'=>'nomObservateur',
-            'label'=>'Observateur',
-            'type'=>'string',
-            'help'=>'',
-            'options'=>array(),
-        ),
-        array(
-            'name'=>'siteDate',
-            'label'=>'Date de création',
-            'type'=>'date',
-            'help'=>"Date d'ajout du site à la base de données",
-            'options'=>array(),
-        ),
+        $out = array(
+            'subSchemaUrl'=>'chiro/config/obstaxon/list',
+            'subDataUrl'=>'chiro/obs_taxon/observation/',
+            'groups'=>array(
+                array(
+                    'name'=>'Observation',
+                    'fields'=>array(
+                        array(
+                            'name'=>'siteNom',
+                            'label'=>'Site',
+                            'type'=>'string',
+                        ),
+                        array(
+                            'name'=>'obsDate',
+                            'label'=>'Date',
+                            'type'=>'date',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'numerisateur',
+                            'label'=>'Numerisateur',
+                            'type'=>'xhr',
+                            'help'=>'',
+                            'options'=>array('url'=>'chiro/observateurs/id')
+                        ),
+                        ...
+
+Le format des schémas d'affichage suit le même format que celui des formulaires.
+Les groupes servent à séparer les données affichées en plusieurs panneaux.
+
 
 Voir le paragraphe sur les formulaires pour la description des champs
 
