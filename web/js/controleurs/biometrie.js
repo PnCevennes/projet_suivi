@@ -34,7 +34,7 @@ app.controller('biometrieDetailController', function($scope, $routeParams, confi
 
 });
 
-app.controller('biometrieEditController', function($scope, $routeParams, $location, configServ, dataServ){
+app.controller('biometrieEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/biometrie/form';
     if($routeParams.id){
@@ -59,17 +59,17 @@ app.controller('biometrieEditController', function($scope, $routeParams, $locati
     });
 
     $scope.$on('form:create', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "La biométrie n°" + data.id + ' a été créée avec succès.'
         $location.url($scope._appName + '/biometrie/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "La biométrie n°" + data.id + ' a été modifiée avec succès.'
         $location.url($scope._appName + '/biometrie/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "Personne n'a jamais pris la moindre mesure sur quoi que ce soit.";
         dataServ.forceReload = true;
         $location.url($scope._appName + '/taxons/' + data.obsTxId);
     });

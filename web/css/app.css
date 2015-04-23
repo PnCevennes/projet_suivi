@@ -36,9 +36,10 @@
 
 .suivi-popover{
     position: fixed;
-    top: 1em;
+    top: 4.5em;
     right: 1em;
-    background-color: #301010;
+    /*background-color: #301010;*/
+    background-color: #0D2E4C;
     color: white;
     padding: 1em;
     padding-left: 2em;

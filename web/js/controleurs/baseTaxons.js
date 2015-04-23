@@ -44,7 +44,7 @@ app.controller('taxonDetailController', function($scope, $routeParams, configSer
     });
 });
 
-app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ){
+app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
     
     $scope.configUrl = $scope._appName + '/config/obstaxon/form';
@@ -71,17 +71,17 @@ app.controller('taxonEditController', function($scope, $routeParams, $location, 
     });
 
     $scope.$on('form:create', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "l'observation de " + data.nomComplet + ' a été créée avec succès.'
         $location.url($scope._appName + '/taxons/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "l'observation de " + data.nomComplet + ' a été modifiée avec succès.'
         $location.url($scope._appName + '/taxons/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = data.nomComplet + " n'était pas là quand on est passés.";
         dataServ.forceReload = true;
         $location.url($scope._appName + '/observation/' + data.obsId);
     });

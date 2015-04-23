@@ -13,11 +13,11 @@ app.directive('usermsg', function(userMessages, $timeout){
             $scope.$watch(
                 function(){return userMessages.infoMessage},
                 function(newval){
-                    console.log(newval);
-                    $scope.userMessage = newval;
                     if(newval){
+                        $scope.userMessage = newval;
                         $scope.hideMsg=false;
                         $timeout(function(){
+                            userMessages.infoMessage = null;
                             $scope.hideMsg=true;
                         }, 3500);
                     }

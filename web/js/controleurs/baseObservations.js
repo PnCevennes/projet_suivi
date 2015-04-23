@@ -70,17 +70,17 @@ app.controller('observationEditController', function($scope, $routeParams, $loca
     });
 
     $scope.$on('form:create', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + ' a été créée avec succès.'
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + ' a été mise à jour avec succès.'
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        //TODO msg utilisateur
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + " n'a jamais eu lieu. Non. Jamais.";
         dataServ.forceReload = true;
         $location.url($scope._appName + '/site/' + data.siteId);
     });
