@@ -43,7 +43,7 @@ app.controller('observationSiteListController', function($scope, $routeParams){
     $scope._appName = $routeParams.appName;
 });
 
-app.controller('observationEditController', function($scope, $routeParams, $location, configServ, dataServ){
+app.controller('observationEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/observation/form';
     if($routeParams.id){
