@@ -1,8 +1,28 @@
 #map{
-    width: 80%;
-    height: 600px;
-    border: 2px solid black;
+    width: 100%;
+    height: 100%;
 }
+
+.fixed-col {
+  height: 90vh;
+  padding:0;
+  box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+    -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+}
+.content-panel {
+ min-height: 90vh;
+ padding:10px;
+}
+
+.float-right {
+  float:right;
+}
+
+.float-left {
+  float:left;
+}
+
 
 .sxhrinput li{
     list-style-type: none;
@@ -13,7 +33,6 @@
 .sxhrinput li:hover{
     background-color: #AAAAFF;
 }
-
 
 .suivi-popover{
     position: fixed;
@@ -62,4 +81,40 @@
 
 .css-form input.ng-invalid{
     border-color: red;
+}
+
+#main-menu {
+    font-size: 14px;
+    background-color: rgba(6, 18, 72, 1);
+    border-width: 1px;
+    border-radius: 4px;
+}
+#main-menu .navbar-nav>li>a {
+    color: rgba(186, 179, 179, 1);
+    background-color: rgba(248, 248, 248, 0);
+}
+#main-menu .navbar-nav>li>a:hover,
+#main-menu .navbar-nav>li>a:focus {
+    color: rgba(51, 51, 51, 1);
+    background-color: rgba(245, 167, 0, 1);
+}
+#main-menu .navbar-nav>.active>a,
+#main-menu .navbar-nav>.active>a:hover,
+#main-menu .navbar-nav>.active>a:focus {
+    color: rgba(85, 85, 85, 1);
+    background-color: rgba(231, 231, 231, 1);
+}
+#main-menu.navbar-toggle {
+    border-color: #ddd;
+}
+#main-menu .navbar-toggle:hover,
+#main-menu .navbar-toggle:focus {
+    background-color: #ddd;
+}
+#main-menu .navbar-toggle .icon-bar {
+    background-color: #888;
+}
+#main-menu .navbar-toggle:hover .icon-bar,
+#main-menu .navbar-toggle:focus .icon-bar {
+    background-color: #750707;
 }
