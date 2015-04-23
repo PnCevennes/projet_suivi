@@ -34,8 +34,9 @@ app.config(function($routeProvider){
 });
 
 
-app.controller('observationListController', function($scope, $routeParams){
+app.controller('observationListController', function($scope, $rootScope,  $routeParams){
     $scope._appName = $routeParams.appName;
+    $rootScope._function='observation';
 });
 
 app.controller('observationSiteListController', function($scope, $routeParams){

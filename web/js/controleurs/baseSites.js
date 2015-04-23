@@ -29,6 +29,7 @@ app.config(function($routeProvider){
  * controleur pour la carte et la liste des sites
  */
 app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages){
+    $rootScope._function='site'; 
     
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
