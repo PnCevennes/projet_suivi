@@ -70,7 +70,7 @@ class ConditionsObservation
      */
     public function getObsTemperature()
     {
-        return $this->obs_temperature;
+        return (float) $this->obs_temperature;
     }
 
     /**
@@ -93,7 +93,7 @@ class ConditionsObservation
      */
     public function getObsHumidite()
     {
-        return $this->obs_humidite;
+        return (float) $this->obs_humidite;
     }
 
     /**

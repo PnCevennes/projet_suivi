@@ -185,7 +185,7 @@ class ObservationView
      */
     public function getObsTemperature()
     {
-        return $this->obs_temperature;
+        return (float) $this->obs_temperature;
     }
 
     /**
@@ -208,7 +208,7 @@ class ObservationView
      */
     public function getObsHumidite()
     {
-        return $this->obs_humidite;
+        return (float) $this->obs_humidite;
     }
 
     /**
