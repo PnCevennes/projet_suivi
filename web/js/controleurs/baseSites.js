@@ -34,7 +34,9 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $scope.nb_sites = {};
     configServ.bc.splice(configServ.bc.length);
     if(configServ.bc.length == 0){
+
       $loading.start('spinner-1');
+
       configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
     }
 
@@ -88,10 +90,14 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                 configServ.put('listSite:ngTable:orderedData', orderedData);
                 params.total(orderedData.length); // set total for recalc pagination
                 $scope.nb_sites = {total: data.length, current: orderedData.length};
-                $loading.finish('spinner-1');
+
+                
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         });
+
+        $loading.finish('spinner-1');
+
         configServ.get('listSite:ngTable:Filter', function(filter){
             $scope.tableParams.filter(filter);
         });

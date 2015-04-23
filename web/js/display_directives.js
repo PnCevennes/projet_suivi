@@ -119,12 +119,12 @@ app.directive('fieldDisplay', function(){
 app.directive('breadcrumbs', function(){
     return {
         restrict: 'A',
-        scope: {},
+        scope: {_appName: '@appname'},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ, $location){
             $scope.bc = configServ.bc;
             if($scope.bc.length == 0){
-                $location.path('/');
+                $location.path($scope._appName + '/site');
             }
         },
     };
