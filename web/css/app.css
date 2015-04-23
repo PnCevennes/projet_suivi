@@ -85,9 +85,9 @@
 
 #main-menu {
     font-size: 14px;
-    background-color: rgba(6, 18, 72, 1);
+    background-color: #0D2E4C;
     border-width: 1px;
-    border-radius: 4px;
+    border-radius: 0px;
 }
 #main-menu .navbar-nav>li>a {
     color: rgba(186, 179, 179, 1);
