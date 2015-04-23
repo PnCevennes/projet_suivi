@@ -26,20 +26,6 @@ class SiteConfigController extends Controller{
         $out = array(
             'groups' => array(
                 array(
-                    'name'=>'Geometrie',
-                    'fields'=>array(
-                        array(
-                            'name'=>'geom',
-                            'label'=>'Coordonnées GPS',
-                            'type'=>'geom',
-                            'help'=>'',
-                            'options'=>array('geometryType'=>'point'),
-                            'default'=>array(),
-                        ),
-
-                    ),
-                ),
-                array(
                     'name'=>'Informations',
                     'fields'=>array(
                         array(
@@ -88,6 +74,14 @@ class SiteConfigController extends Controller{
                             'type'=>'date',
                             'help'=>"Date d'ajout du site à la base de données",
                             'options'=>array('required'=>true),
+                        ),
+                        array(
+                            'name'=>'geom',
+                            'label'=>'Coordonnées GPS',
+                            'type'=>'geom',
+                            'help'=>'',
+                            'options'=>array('geometryType'=>'point'),
+                            'default'=>array(),
                         ),
                         array(
                             'name'=>'siteDescription',
