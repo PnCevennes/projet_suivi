@@ -156,13 +156,13 @@ app.directive('calculated', function(){
         restrict: 'E',
         scope: {
             id: "@",
-            class: "@",
+            ngclass: "@",
             data: '=',
             refs: '=',
             model: '=',
             modifiable: '=',
         },
-        template: '<input id="{{id}}" class="{{class}}" type="number" ng-model="model" ng-disabled="!modifiable"/>',
+        template: '<input id="{{id}}" class="{{ngclass}}" type="number" ng-model="model" ng-disabled="!modifiable"/>',
         controller: function($scope){
             angular.forEach($scope.refs, function(elem){
                 $scope.$watch(function(){
