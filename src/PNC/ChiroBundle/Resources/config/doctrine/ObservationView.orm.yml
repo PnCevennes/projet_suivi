@@ -23,9 +23,9 @@ PNC\ChiroBundle\Entity\ObservationView:
         obs_id_table_src:
             type: integer
         obs_temperature:
-            type: decimal
+            type: float
         obs_humidite:
-            type: decimal
+            type: float
         nb_taxons:
             type: integer
 

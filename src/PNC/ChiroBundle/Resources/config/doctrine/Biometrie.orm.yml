@@ -19,37 +19,37 @@ PNC\ChiroBundle\Entity\Biometrie:
             type: integer
             nullable: true
         biom_ab:
-            type: decimal
+            type: float
             nullable: true
         biom_poids:
-            type: decimal
+            type: float
             nullable: true
         biom_d3mf1:
-            type: decimal
+            type: float
             nullable: true
         biom_d3f2f3:
-            type: decimal
+            type: float
             nullable: true
         biom_d3total:
-            type: decimal
+            type: float
             nullable: true
         biom_d5:
-            type: decimal
+            type: float
             nullable: true
         biom_cm3sup:
-            type: decimal
+            type: float
             nullable: true
         biom_cm3inf:
-            type: decimal
+            type: float
             nullable: true
         biom_cb:
-            type: decimal
+            type: float
             nullable: true
         biom_lm:
-            type: decimal
+            type: float
             nullable: true
         biom_oreille:
-            type: decimal
+            type: float
             nullable: true
         biom_commentaire:
             type: text 

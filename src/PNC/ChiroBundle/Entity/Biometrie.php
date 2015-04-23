@@ -179,7 +179,7 @@ class Biometrie
      */
     public function getBiomAb()
     {
-        return (float) $this->biom_ab;
+        return  $this->biom_ab;
     }
 
     /**
@@ -205,7 +205,7 @@ class Biometrie
      */
     public function getBiomPoids()
     {
-        return (float) $this->biom_poids;
+        return  $this->biom_poids;
     }
 
     /**
@@ -231,7 +231,7 @@ class Biometrie
      */
     public function getBiomD3mf1()
     {
-        return (float) $this->biom_d3mf1;
+        return  $this->biom_d3mf1;
     }
 
     /**
@@ -257,7 +257,7 @@ class Biometrie
      */
     public function getBiomD3f2f3()
     {
-        return (float) $this->biom_d3f2f3;
+        return  $this->biom_d3f2f3;
     }
 
     /**
@@ -283,7 +283,7 @@ class Biometrie
      */
     public function getBiomD3total()
     {
-        return (float) $this->biom_d3total;
+        return  $this->biom_d3total;
     }
 
     /**
@@ -309,7 +309,7 @@ class Biometrie
      */
     public function getBiomD5()
     {
-        return (float) $this->biom_d5;
+        return  $this->biom_d5;
     }
 
     /**
@@ -335,7 +335,7 @@ class Biometrie
      */
     public function getBiomCm3sup()
     {
-        return (float) $this->biom_cm3sup;
+        return  $this->biom_cm3sup;
     }
 
     /**
@@ -361,7 +361,7 @@ class Biometrie
      */
     public function getBiomCm3inf()
     {
-        return (float) $this->biom_cm3inf;
+        return  $this->biom_cm3inf;
     }
 
     /**
@@ -387,7 +387,7 @@ class Biometrie
      */
     public function getBiomCb()
     {
-        return (float) $this->biom_cb;
+        return  $this->biom_cb;
     }
 
     /**
@@ -413,7 +413,7 @@ class Biometrie
      */
     public function getBiomLm()
     {
-        return (float) $this->biom_lm;
+        return  $this->biom_lm;
     }
 
     /**
@@ -439,7 +439,7 @@ class Biometrie
      */
     public function getBiomOreille()
     {
-        return (float) $this->biom_oreille;
+        return  $this->biom_oreille;
     }
 
     /**

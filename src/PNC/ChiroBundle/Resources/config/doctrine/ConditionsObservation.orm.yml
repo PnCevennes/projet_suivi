@@ -13,7 +13,7 @@ PNC\ChiroBundle\Entity\ConditionsObservation:
         obs_id:
             type: integer
         obs_temperature:
-            type: decimal
+            type: float
         obs_humidite:
-            type: decimal
+            type: float
 
