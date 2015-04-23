@@ -118,3 +118,22 @@
 #main-menu .navbar-toggle:focus .icon-bar {
     background-color: #750707;
 }
+
+/* custom loader styles */
+.custom-loading.dw-loading {
+  text-align: center;
+}
+
+.custom-loading.dw-loading.dw-loading-overlay {
+  background-color: rgba(0, 255, 255, .7);
+  z-index: 9999;
+}
+
+.custom-loading.dw-loading > .dw-loading-body > .dw-loading-text {
+  color: green;
+  font-size: 13px;
+  top: 45px;
+}
+.dw-loading.dw-loading-active {
+  position: fixed;
+}

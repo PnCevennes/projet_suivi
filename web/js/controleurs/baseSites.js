@@ -28,14 +28,14 @@ app.config(function($routeProvider){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages){
+app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading){
     $rootScope._function='site'; 
-    
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
     configServ.bc.splice(configServ.bc.length);
     if(configServ.bc.length == 0){
-        configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
+      $loading.start('spinner-1');
+      configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
     }
 
     mapService.clear();
@@ -88,6 +88,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                 configServ.put('listSite:ngTable:orderedData', orderedData);
                 params.total(orderedData.length); // set total for recalc pagination
                 $scope.nb_sites = {total: data.length, current: orderedData.length};
+                $loading.finish('spinner-1');
                 $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
             } 
         });
