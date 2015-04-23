@@ -239,6 +239,9 @@ app.directive('simpleform', function(){
             $scope.currentPage = 0;
             $scope.isActive = [];
             $scope.isDisabled = [];
+            configServ.get('debug', function(value){
+                $scope.debug = value;   
+            });
 
             $scope.prevPage = function(){
                 if($scope.currentPage > 0){

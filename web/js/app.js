@@ -39,10 +39,11 @@ app.config(function($routeProvider){
  * Controleur de base
  * TODO authentification
  */
-app.controller('baseController', function($scope, dataServ, mapService, userMessages){
+app.controller('baseController', function($scope, dataServ, configServ, mapService, userMessages){
     $scope._appName = 'chiro';
     $scope.success = function(resp){
         $scope.data = resp;
+        configServ.put('debug', false);
         //userMessages.infoMessage = "bienvenue !";
     };
     dataServ.get('config/apps', $scope.success);

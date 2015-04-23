@@ -121,8 +121,11 @@ app.directive('breadcrumbs', function(){
         restrict: 'A',
         scope: {},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
-        controller: function($scope, configServ){
+        controller: function($scope, configServ, $location){
             $scope.bc = configServ.bc;
+            if($scope.bc.length == 0){
+                $location.path('/');
+            }
         },
     };
 });
