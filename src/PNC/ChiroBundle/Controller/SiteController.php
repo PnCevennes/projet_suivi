@@ -25,12 +25,18 @@ class SiteController extends Controller{
         $infos = $repo->findAll();
         $out = array();
 
+        // definition de la structure de données sous form GeoJson
         foreach($infos as $info){
             $out_item = array('type'=>'Feature');
-            $out_item['properties'] = $norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
-            //$out_item['properties']['siteAmenagement'] = $info->getSiteAmenagement();
-            $out_item['properties']['siteDate'] = !is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-            $out_item['properties']['dernObs'] = !is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
+            $out_item['properties'] = array(
+                'id'=>$info->getId(),
+                'siteNom'=>$info->getSiteNom(),
+                'siteDate'=>!is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '',
+                'dernObs'=>!is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '',
+                'nomObservateur'=>$info->getNomObservateur(),
+                'siteCode'=>$info->getSiteCode(),
+                'typeLieu'=>$info->getTypeLieu(),
+            );
             $out_item['geometry'] = $info->getGeom();
             $out[] = $out_item;
         }
