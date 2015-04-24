@@ -50,6 +50,12 @@ suivi_chiro_config_obstaxon_form:
     requirements:
         _method: GET
 
+suivi_chiro_config_obstaxon_form_many:
+    path: obstaxon/form/many
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getFormMany }
+    requirements:
+        _method: GET
+
 suivi_chiro_config_obstaxon_detail:
     path: obstaxon/detail
     defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getDetail }

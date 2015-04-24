@@ -11,6 +11,9 @@ class ObservationConfigController extends Controller{
     public function getFormAction(){
 
         $out = array(
+            'subSchemaUrl'=>'chiro/config/obstaxon/form/many',
+            'subDataRef'=>'__taxons__',
+            'subBtnTitle'=>'Ajout rapide de taxons',
             'groups'=>array(
                 array(
                     'name'=>'Observation',
