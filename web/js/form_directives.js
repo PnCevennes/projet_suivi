@@ -181,40 +181,6 @@ app.directive('calculated', function(){
 });
 
 
-/**
- * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
- * params : 
- *  schema -> le schema descripteur du tableau
- *  data -> la destination des données (ng-model)
- */
-app.directive('spread', function(){
-    return {
-        restrict: 'E',
-        scope: {
-            schema: '=',
-            data: '='
-        },
-        templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function($scope){
-            var defaultLine = {};
-            $scope.schema.fields.forEach(function(item){
-                defaultLine[item.name] = null;
-            });
-            $scope.onkeyup = function(ev){
-
-            }
-            if($scope.data.length == 0){
-                var lines = [];
-                for(i=0; i<20; i++){
-                    lines.push(angular.copy(defaultLine));
-                }
-                $scope.data = lines;
-            }
-        }
-    };
-});
-
-
 /*
  * directive pour l'affichage simple d'un formulaire
  * params: 
@@ -230,6 +196,7 @@ app.directive('simpleform', function(){
             saveUrl: '=saveurl',
             schemaUrl: '=schemaurl',
             dataUrl: '=dataurl',
+            creating: '=',
             data: '='
         },
         transclude: true,
@@ -459,4 +426,43 @@ app.directive('datepick', function(){
             });
         }
     }
+});
+
+
+/**
+ * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
+ * params : 
+ *  schemaurl -> url du schema descripteur du tableau
+ *  data -> reference vers le dictionnaire de données du formulaire parent
+ *  dataref -> champ à utiliser pour stocker les données
+ *  subtitle -> Titre indicatif du formulaire
+ */
+app.directive('spreadsheet', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            shemaUrl: '@schemaurl',
+            dataRef: '@dataref',
+            subTitle: '@subtitle',
+            data: '=',
+            templateUrl: 'js/templates/form/spreadsheet',
+            controller: {
+                var defaultLine = {};
+                $scope.schema.fields.forEach(function(item){
+                    defaultLine[item.name] = null;
+                });
+                $scope.onkeyup = function(ev){
+
+                }
+                if($scope.data.length == 0){
+                    var lines = [];
+                    for(i=0; i<20; i++){
+                        lines.push(angular.copy(defaultLine));
+                    }
+                    $scope.data = lines;
+                }
+            },
+            
+        },
+    };
 });

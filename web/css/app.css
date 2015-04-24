@@ -3,6 +3,15 @@
     height: 100%;
 }
 
+#formToolbox{
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    width: 100%;
+    background-color: #DDD;
+    z-index: 9999;
+}
+
 .fixed-col {
   height: 90vh;
   padding:0;
@@ -34,6 +43,7 @@
     background-color: #AAAAFF;
 }
 
+
 .suivi-popover{
     position: fixed;
     top: 4.5em;
@@ -51,7 +61,6 @@
     padding-left: 1em;
     padding-right: 1em;
     padding-bottom: 0.5em;
-    background-color: #EEE;
 }
 .spreadsheet-container table{
     width: 100%;
@@ -59,9 +68,9 @@
     border-spacing: 0;
 }   
 .spreadsheet-container th{
-    border-radius: 05em;
-    background-color: blue;
-    color: white;
+    background-color: #DDD;
+    text-align: center;
+    min-width: 10em;
 }
 .spreadsheet{
     padding: 0;

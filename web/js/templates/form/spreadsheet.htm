@@ -1,24 +1,22 @@
-<div class="spreadsheet-container">
-    <div>
-        <table>
-            <tr>
-                <th ng-repeat="field in schema.fields">{{field.name}}</th>
-            </tr>
-        </table>
-    </div>
+<div id="subForm" class="spreadsheet-container">
     <div class="spreadsheet">
         <table>
+            <tr>
+                <th ng-repeat="field in schema.fields">{{field.label}}</th>
+            </tr>
             <tr ng-repeat="line in data">
                 <td ng-repeat="field in schema.fields">
-                    <input type="text" ng-if="field.type=='string'" ng-model="line[field.name]" />
-                    <input type="number" ng-if="field.type=='int'" ng-model="line[field.name]" />
-                    <input type="text" ng-if="field.type=='date'" ng-model="line[field.name]">
-                    <input type="checkbox" ng-if="field.type=='bool'" ng-model="line[field.name]">
-                    <select ng-options="item.id as item.libelle for item in schema.options.choices" ng-model="line[field.name]" ng-if="field.type=='select'"></select>
-                    <angucompletewrapper id="{{field.name}}{{$parent.$index}}" selectedobject="line[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="schema.type=='xhr'" initial=""></angucompletewrapper>
+                    <ng-form name="spreadSheet"
+                        <input id="{{field.name}}" name="{{field.name}}" type="text" ng-if="field.type=='string' && !field.options.multi" ng-model="line[field.name]" ng-minlength="field.options.minLength" ng-maxlength="field.options.maxLength" ng-required="field.options.minLength>0">
+                        <input id="{{field.name}}" name="{{field.name}}" type="number" min="{{field.options.min}}" max="{{field.options.max}}" step="{{field.options.step}}" ng-if="field.type=='num' && !field.options.multi" ng-model="line[field.name]">
+                        <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="line[field.name]" ngrequired="field.options.required"></div>
+                        <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="line[field.name]">
+                        <select id="{{field.name}}" ng-options="item.id as item.libelle for item in field.options.choices" ng-model="line[field.name]" ng-if="field.type=='select' && !field.options.multi"></select>
+                        <angucompletewrapper id="{{field.name}}" name="{{field.name}}" pause="100" selectedobject="line[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="line[field.name]" ngrequired="field.options.required"></angucompletewrapper>
+                        <calculated id="{{field.name}}" ng-if="field.type=='sum' && !field.options.multi" refs="field.options.ref" data="line" model="line[field.name]" modifiable="field.options.modifiable"></calculated>
+                    </ng-form>
                 </td>
             </tr>
         </table>
-        <button type="button" ng-click="save">Enregistrer</button>
     </div>
 </div>
