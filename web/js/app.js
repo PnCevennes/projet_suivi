@@ -31,6 +31,10 @@ app.config(function($routeProvider){
             controller: 'baseController',
             templateUrl: 'js/templates/index.htm'
         })
+        .when('/login', {
+            controller: 'loginController',
+            templateUrl: 'js/views/login.htm',
+        })
         .otherwise({redirectTo: '/'});
 });
 
@@ -40,12 +44,42 @@ app.config(function($routeProvider){
  * TODO authentification
  */
 app.controller('baseController', function($scope, dataServ, configServ, mapService, userMessages){
-    $scope._appName = 'chiro';
     $scope.success = function(resp){
         $scope.data = resp;
+        $scope.user = {nomComplet: ''};
         configServ.put('debug', true);
-        //userMessages.infoMessage = "bienvenue !";
+        configServ.put('app', $scope.data[0]);
+        userMessages.infoMessage = "bienvenue !";
+        $scope._appName = $scope.data[0].name;
+
+        $scope.$on('user:logged', function(ev, user){
+            console.log(user);
+            $scope.user = user;
+        });
+        //console.log($scope.data);
     };
     dataServ.get('config/apps', $scope.success);
 });
 
+
+/*
+ * controleur login
+ */
+app.controller('loginController', function($scope, $location, $rootScope, dataServ, configServ, userMessages){
+    $scope.data = {
+        login: '',
+        pass: '',
+        idApp: 100,
+    };
+
+    $scope.login = function(resp){
+        configServ.put('loggedUser', resp);
+        userMessages.infoMessage = "Bienvenue " + resp.nomComplet;
+        $rootScope.$broadcast('user:logged', resp);
+        $location.path('chiro/site');
+    }
+
+    $scope.send = function(){
+        dataServ.post('users/login', $scope.data, $scope.login);
+    }
+});

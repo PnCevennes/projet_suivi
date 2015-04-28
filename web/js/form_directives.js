@@ -445,24 +445,23 @@ app.directive('spreadsheet', function(){
             dataRef: '@dataref',
             subTitle: '@subtitle',
             data: '=',
-            templateUrl: 'js/templates/form/spreadsheet',
-            controller: {
-                var defaultLine = {};
-                $scope.schema.fields.forEach(function(item){
-                    defaultLine[item.name] = null;
-                });
-                $scope.onkeyup = function(ev){
+        },
+        templateUrl: 'js/templates/form/spreadsheet.htm',
+        controller: function(){
+            var defaultLine = {};
+            $scope.schema.fields.forEach(function(item){
+                defaultLine[item.name] = null;
+            });
+            $scope.onkeyup = function(ev){
 
+            }
+            if($scope.data.length == 0){
+                var lines = [];
+                for(i=0; i<20; i++){
+                    lines.push(angular.copy(defaultLine));
                 }
-                if($scope.data.length == 0){
-                    var lines = [];
-                    for(i=0; i<20; i++){
-                        lines.push(angular.copy(defaultLine));
-                    }
-                    $scope.data = lines;
-                }
-            },
-            
+                $scope.data = lines;
+            }
         },
     };
 });
