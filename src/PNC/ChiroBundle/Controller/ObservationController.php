@@ -170,9 +170,16 @@ class ObservationController extends Controller{
         // initialisation transaction
         $manager->getConnection()->beginTransaction();
 
+        $obs = $rObs->findOneBy(array('id'=>$data['id']));
+        $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            if(!$user->isOwner($obs->getNumerisateurId())){
+                throw new AccessDeniedHttpException();
+            }
+        }
+
         try{
-            $obs = $rObs->findOneBy(array('id'=>$data['id']));
-            $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
             $this->hydrateObservation($obs, $data);
             $this->hydrateConditionsObservation($cobs, $data);
 
@@ -208,11 +215,16 @@ class ObservationController extends Controller{
         // initialisation transaction
         $manager->getConnection()->beginTransaction();
 
-        try{
-            $obs = $rObs->findOneBy(array('id'=>$id));
-            $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+        $obs = $rObs->findOneBy(array('id'=>$id));
+        $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            if(!$user->isOwner($obs->getNumerisateurId())){
+                throw new AccessDeniedHttpException();
+            }
+        }
 
-            //TODO Ajouter sécurités
+        try{
             $manager->remove($cobs);
             $manager->flush();
             $manager->remove($obs);

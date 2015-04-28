@@ -21,7 +21,7 @@ class ConfigController extends Controller{
     // path: GET /apps
     public function getAppsAction(){
         return new JsonResponse(array(
-            array('id'=>'1', 'name'=>'chiro'),
+            array('id'=>'1', 'name'=>'chiro', 'appId'=>100),
             //array('id'=>'2', 'name'=>'cheveche'),
         ));
     }

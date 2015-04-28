@@ -4,7 +4,8 @@ namespace PNC\ChiroBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -122,6 +123,10 @@ class SiteController extends Controller{
 
     // path: PUT /chiro/site
     public function createAction(Request $req){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
         $props = json_decode($req->getContent(), true);
 
         $logger = $this->get('logger');
@@ -178,6 +183,10 @@ class SiteController extends Controller{
 
     // path: POST /chiro/site/{id}
     public function updateAction(Request $req, $id=null){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
         $props = json_decode($req->getContent(), true);
         $logger = $this->get('logger');
         $logger->info(json_encode($props));
@@ -237,6 +246,11 @@ class SiteController extends Controller{
 
     // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(6)){
+            throw new AccessDeniedHttpException();
+        }
+        
         $em = $this->getDoctrine()->getRepository('PNCChiroBundle:InfoSite');
         $infoSite = $em->findOneBy(array('site_id'=>$id));
         $site = $infoSite->getParentSite();

@@ -1,0 +1,16 @@
+#commons_users_homepage:
+#    path:     /hello/{name}
+#    defaults: { _controller: CommonsUsersBundle:Default:index }
+
+
+commons_users_login:
+    path: /login
+    defaults: { _controller: CommonsUsersBundle:Default:login }
+    requirements:
+        _method: POST
+
+commons_users_logout:
+    path: /logout
+    defaults: { _controller: CommonsUsersBundle:Default:logout }
+    requirements:
+        _method: GET
