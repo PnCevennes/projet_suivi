@@ -1,3 +1,7 @@
+commons_users:
+    resource: "@CommonsUsersBundle/Resources/config/routing.yml"
+    prefix:   /users/
+
 pnc_ext:
     resource: "@PNCExtBundle/Resources/config/routing.yml"
     prefix:   /

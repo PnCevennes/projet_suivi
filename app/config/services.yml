@@ -13,3 +13,14 @@ services:
 
     normalizer:
         class: PNC\Utils\NormalizeService
+
+    commons.check_auth:
+        class: Commons\UsersBundle\EventListeners\SecurityListener
+        tags:
+            - {name: kernel.event_listener, event: kernel.controller, method: authTokenCheck}
+
+    commons.auth_error:
+        class: Commons\UsersBundle\EventListeners\SecurityListener
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception, method: authExceptionResponse}
+

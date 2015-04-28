@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new PNC\BaseAppBundle\PNCBaseAppBundle(),
             new PNC\ChiroBundle\PNCChiroBundle(),
             new PNC\ExtBundle\PNCExtBundle(),
+            new Commons\UsersBundle\CommonsUsersBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
