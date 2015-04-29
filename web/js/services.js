@@ -209,6 +209,8 @@ app.service('mapService', function($rootScope, $filter){
 
 app.service('userMessages', function(){
     this.infoMessage = '';
+    this.errorMessage = '';
+    this.successMessage = '';
 });
 
 

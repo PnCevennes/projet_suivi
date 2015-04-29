@@ -48,13 +48,24 @@
     position: fixed;
     top: 4.5em;
     right: 1em;
-    background-color: #0D2E4C;
     color: white;
     padding: 1em;
     padding-left: 2em;
     padding-right: 2em;
     border-radius: 5px;
     box-shadow: 3px 3px 5px #CCC;
+}
+
+.msg-default{
+    background-color: #0D2E4C;
+}
+
+.msg-error{
+    background-color: red;
+}
+
+.msg-success{
+    background-color: green;
 }
 
 .spreadsheet-container{

@@ -29,6 +29,8 @@ app.config(function($routeProvider){
  * controleur pour la carte et la liste des sites
  */
 app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading){
+
+    $rootScope.$broadcast('map:show');
     $rootScope._function='site'; 
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
@@ -190,8 +192,9 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $routeParams, configServ){
+app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ){
 
+    $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/site/detail';
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
@@ -216,6 +219,7 @@ app.controller('siteDetailController', function($scope, $routeParams, configServ
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
 
     $scope._appName = $routeParams.appName;
+    $rootScope.$broadcast('map:show');
     $scope.configUrl = $scope._appName + '/config/site/form';
     configServ.bc.splice(1, configServ.bc.length);
 

@@ -14,15 +14,41 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.infoMessage},
                 function(newval){
                     if(newval){
-                        $scope.userMessage = newval;
-                        $scope.hideMsg=false;
-                        $timeout(function(){
-                            userMessages.infoMessage = null;
-                            $scope.hideMsg=true;
-                        }, 3500);
+                        $scope.msgStyle = 'msg-default';
+                        $scope.showMsg(newval);
                     }
                 }
             );
+
+            $scope.$watch(
+                function(){return userMessages.errorMessage},
+                function(newval){
+                    if(newval){
+                        $scope.msgStyle = 'msg-error';
+                        $scope.showMsg(newval);
+                    }
+                }
+            );
+
+            $scope.$watch(
+                function(){return userMessages.successMessage},
+                function(newval){
+                    if(newval){
+                        $scope.msgStyle = 'msg-success';
+                        $scope.showMsg(newval);
+                    }
+                }
+            );
+
+            $scope.showMsg = function(msg){
+                $scope.userMessage = msg;
+                $scope.hideMsg=false;
+                $timeout(function(){
+                    userMessages.infoMessage = null;
+                    $scope.hideMsg=true;
+                }, 3500);
+
+            }
         }
     };
 });
