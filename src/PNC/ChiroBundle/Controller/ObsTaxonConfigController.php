@@ -260,6 +260,9 @@ class ObsTaxonConfigController extends Controller{
         }
 
         $out = array(
+            'editAccess'=>3,
+            'subEditAccess'=>3,
+            //'editAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/biometrie/list',
             'subDataUrl'=>'chiro/biometrie/taxon/',
             'groups'=>array(

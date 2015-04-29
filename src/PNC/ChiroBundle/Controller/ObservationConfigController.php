@@ -33,6 +33,13 @@ class ObservationConfigController extends Controller{
                             'options'=>array()
                         ),
                         array(
+                            'name'=>'numerisateurId',
+                            'label'=>'Numerisateur',
+                            'type'=>'hidden',
+                            'help'=>'',
+                            'options'=>array('ref'=>'userId')
+                        ),
+                        array(
                             'name'=>'observateurs',
                             'label'=>'Observateurs',
                             'type'=>'xhr',
@@ -115,6 +122,9 @@ class ObservationConfigController extends Controller{
     public function getDetailAction(){
 
         $out = array(
+            'editAccess'=>3,
+            'subEditAccess'=>2,
+            'editAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/obstaxon/list',
             'subDataUrl'=>'chiro/obs_taxon/observation/',
             'groups'=>array(
@@ -136,7 +146,7 @@ class ObservationConfigController extends Controller{
                             'options'=>array()
                         ),
                         array(
-                            'name'=>'numerisateur',
+                            'name'=>'numerisateurId',
                             'label'=>'Numerisateur',
                             'type'=>'xhr',
                             'help'=>'',

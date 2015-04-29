@@ -16,6 +16,8 @@ PNC\BaseAppBundle\Entity\Observation:
             type: text
         obs_id_table_src:
             type: integer
+        numerisateur_id:
+            type: integer
         site_id:
             type: integer
 

@@ -103,6 +103,7 @@ class ObservationController extends Controller{
         }
         $obs->setObsDate($date);
         $obs->setObsCommentaire($data['obsCommentaire']);
+        $obs->setNumerisateurId($data['numerisateurId']);
         //$obs->setObsIdTableSrc($data['obsIdTableSrc']);
         $obs->setSiteId($data['siteId']);
         if($obs->errors()){

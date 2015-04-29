@@ -231,6 +231,7 @@ class BiometrieConfigController extends Controller{
         }
 
         $out = array(
+            'editAccess'=>3,
             'groups'=>array(
                 array(
                     'name'=>'Biométrie',

@@ -253,6 +253,8 @@ class SiteConfigController extends Controller{
         }
 
         $out = array(
+            'editAccess'=>6,
+            'subEditAccess'=>2,
             'subSchemaUrl'=>'chiro/config/observation/list',
             'subDataUrl'=>'chiro/observation/site/',
             'groups'=>array(
