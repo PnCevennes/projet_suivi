@@ -92,15 +92,20 @@ app.directive('detailDisplay', function(){
             dataId: '@dataid'
         },
         templateUrl: 'js/templates/display/detail.htm',
-        controller: function($scope, $rootScope, dataServ, configServ){
+        controller: function($scope, $rootScope, dataServ, configServ, userServ){
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
+                $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
+                $scope.subEditAccess = userServ.checkLevel($scope.schema.subEditAccess);
                 //récupération des données
                 dataServ.get($scope.dataUrl, $scope.setData);
             };
 
             $scope.setData = function(resp){
                 $scope.data = angular.copy(resp);
+                if(!$scope.editAccess && $scope.schema.editAccessOverride){
+                    $scope.editAccess = userServ.isOwner($scope.data[$scope.schema.editAccessOverride]);
+                }
 
                 // envoi des données vers le controleur
                 $rootScope.$broadcast('display:init', $scope.data);

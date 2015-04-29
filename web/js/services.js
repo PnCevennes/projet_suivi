@@ -207,10 +207,67 @@ app.service('mapService', function($rootScope, $filter){
 
 });
 
+
+/*
+ * messages utilisateurs
+ */
 app.service('userMessages', function(){
     this.infoMessage = '';
     this.errorMessage = '';
     this.successMessage = '';
+});
+
+/*
+ * service utilisateur
+ */
+app.service('userServ', function(dataServ, $rootScope){
+    var _user = {idApplication: 100}; //FIXME idApp
+    var _tmp_password = '';
+
+    this.getUser = function(){
+        return _user;
+    };
+
+
+    this.checkLevel = function(level){
+        return _user.maxdroit >= level;
+    };
+
+    this.isOwner = function(ownerId){
+        return _user.idRole == ownerId;
+    };
+
+    this.login = function(login, password, app){
+        _tmp_password = password;
+        dataServ.post('users/login', {
+            login: login, 
+            pass: password, 
+            idApp: app},
+            this.connected,
+            this.error
+            );
+    };
+
+    this.logout = function(){
+        dataServ.get('users/logout', this.disconnected);
+    };
+
+    this.connected = function(resp){
+        console.log(resp);
+        _user = resp;
+        _user.pass = _tmp_password;
+        console.log(this.user);
+        $rootScope.$broadcast('user:login', _user);
+    };
+
+    this.disconnected = function(resp){
+        _user = {idApplication: 100}; //FIXME idApp
+        $rootScope.$broadcast('user:logout');
+    }
+
+    this.error = function(resp){
+        $rootScope.$broadcast('user:error');
+    };
 });
 
 

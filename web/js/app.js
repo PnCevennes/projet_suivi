@@ -81,23 +81,26 @@ app.controller('baseController', function($scope, dataServ, configServ, mapServi
 /*
  * controleur login
  */
-app.controller('loginController', function($scope, $location, $rootScope, dataServ, configServ, userMessages){
+app.controller('loginController', function($scope, $location, $rootScope, userServ, userMessages){
+    console.log(userServ.user);
     $scope.data = {
-        login: '',
-        pass: '',
-        idApp: 100, //FIXME
+        login: userServ.getUser().identifiant,
+        pass: userServ.getUser().pass,
+        idApp: userServ.getUser().idApplication
     };
     $rootScope.$broadcast('map:hide');
 
-    $scope.login = function(resp){
-        configServ.put('loggedUser', resp);
-        userMessages.infoMessage = resp.nomComplet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
-        $rootScope.$broadcast('user:login', resp);
+    $scope.$on('user:login', function(ev, user){
+        userMessages.infoMessage = user.nomComplet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
         $location.path('chiro/site'); //FIXME
-    };
+    });
+
+    $scope.$on('user:error', function(ev){
+        userMessages.errorMessage = "Erreur d'identification. Respirez un coup et recommencez."
+    });
 
     $scope.send = function(){
-        dataServ.post('users/login', $scope.data, $scope.login);
+        userServ.login($scope.data.login, $scope.data.pass, $scope.data.idApp);
     };
 });
 
@@ -105,13 +108,11 @@ app.controller('loginController', function($scope, $location, $rootScope, dataSe
 /*
  * controleur logout
  */
-app.controller('logoutController', function($scope, $rootScope, $location, dataServ, configServ, userMessages){
-    $scope.logout = function(resp){
-        configServ.put('loggedUser', null);
+app.controller('logoutController', function($scope, $location, userServ, userMessages){
+    $scope.$on('user:logout', function(ev){
         userMessages.infoMessage = "Tchuss !";
-        $rootScope.$broadcast('user:logout');
         $location.path('login');
-    };
+    });
 
-    dataServ.get('users/logout', $scope.logout);
+    userServ.logout();
 });

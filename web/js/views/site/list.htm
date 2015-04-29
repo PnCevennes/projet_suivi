@@ -7,40 +7,42 @@
               <li ng-repeat="column in schema"><input id="sel[{{$index}}]" type="checkbox" ng-model="column.options.visible" /><label for="sel[{{$index}}]">{{column.label}}</label></li>
           </ul>
       </div>
-      <div class='float-right'>
+      <div class='float-right' ng-show="createAccess">
         <a ng-href="#/{{_appName}}/edit/site" class="btn btn-success">Nouveau site</a>
       </div>
     </div>
     <div class="row">
-      <table border="1" ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
-          <thead>
-              <tr>
-                  <th ng-repeat="column in schema" 
-                      ng-show="column.options.visible" 
-                      class="text-center sortable"
-                      ng-class="
-                          {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
-                          'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
-                      ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
-                      {{column.label}}
-                  </th>
-              </tr>
-              <tr class="ng-table-filters" ng-init="tableParams">
-                  <th ng-repeat="column in schema" ng-show="column.options.visible" class="filter">
-                  <div ng-repeat="(name, filter) in column.filter">
-                      <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
-                      <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
-                  </div>
-                  </th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr ng-repeat="item in $data" ng-click="selectSite(item)" ng-class="{'active': item.$selected}">
-                  <td ng-repeat="column in schema" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">{{item[column.name]|datefr}}</td>
-                  <td><a ng-href="#/{{_appName}}/site/{{item.id}}">Voir</a></td>
-                  <td><a ng-href="#/{{_appName}}/edit/site/{{item.id}}">Editer</a></td>
-              </tr>
-          </tbody>
-      </table>
+        <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in schema" 
+                        ng-show="column.options.visible" 
+                        class="text-center sortable"
+                        ng-class="
+                            {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
+                            'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
+                        ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
+                        {{column.label}}
+                    </th>
+                </tr>
+                <tr class="ng-table-filters" ng-init="tableParams">
+                    <th ng-repeat="column in schema" ng-show="column.options.visible" class="filter">
+                        <div ng-repeat="(name, filter) in column.filter">
+                            <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
+                            <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in $data" ng-click="selectSite(item)" ng-class="{'active': item.$selected}">
+                <td ng-repeat="column in schema" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">{{item[column.name]|datefr}}</td>
+                    <td> 
+                        <a class="btn btn-primary btn-xs" tooltip="Voir" ng-href="#/{{_appName}}/site/{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                        <a class="btn btn-warning btn-xs" tooltip="Editer" ng-show="editAccess" ng-href="#/{{_appName}}/edit/site/{{item.id}}"><span class="glyphicon glyphicon-wrench"></span></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

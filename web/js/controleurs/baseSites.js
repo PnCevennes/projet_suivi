@@ -28,8 +28,9 @@ app.config(function($routeProvider){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading){
+app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading, userServ){
 
+    var data = [];
     $rootScope.$broadcast('map:show');
     $rootScope._function='site'; 
     $scope._appName = $routeParams.appName;
@@ -42,11 +43,53 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
       configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
     }
 
+
+    /*
+     *  initialisation des parametres du tableau
+     */
+    $scope.tableParams = new ngTableParams({
+        page: 1,
+        count: 10,
+        filter: {},
+        sorting: {}
+    },
+    {
+        counts: [10, 25, 50],
+        total: data.length, // length of data
+        getData: function ($defer, params) {
+            // use build-in angular filter
+            var filteredData = params.filter() ?
+                    $filter('filter')(data, params.filter()) :
+                    data;
+            var orderedData = params.sorting() ?
+                    $filter('orderBy')(filteredData, params.orderBy()) :
+                    data;
+            var ids = [];
+            configServ.put('listSite:ngTable:Filter', params.filter());
+            configServ.put('listSite:ngTable:Sorting', params.sorting());
+            angular.forEach(orderedData, function(item){
+                ids.push(item.id);
+            });
+            mapService.filterMarks(ids);
+            configServ.put('listSite:ngTable:orderedData', orderedData);
+            params.total(orderedData.length); // set total for recalc pagination
+            $scope.nb_sites = {total: data.length, current: orderedData.length};
+
+            
+            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+        } 
+    });
+
+
+
     mapService.clear();
     mapService.map.setZoom(10);
+
     $scope.success = function(resp){
-        var data=[];
         $scope.items = resp;
+        $scope.createAccess = userServ.checkLevel(6);
+        $scope.editAccess = userServ.checkLevel(6);
+        console.log($scope.createAccess);
         mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
             var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));
@@ -62,44 +105,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         }, $scope);
 
 
-        /*
-         *  initialisation des parametres du tableau
-         */
-        $scope.tableParams = new ngTableParams({
-            page: 1,
-            count: 10,
-            filter: {},
-            sorting: {}
-        },
-        {
-            counts: [10, 25, 50],
-            total: data.length, // length of data
-            getData: function ($defer, params) {
-                // use build-in angular filter
-                var filteredData = params.filter() ?
-                        $filter('filter')(data, params.filter()) :
-                        data;
-                var orderedData = params.sorting() ?
-                        $filter('orderBy')(filteredData, params.orderBy()) :
-                        data;
-                var ids = [];
-                configServ.put('listSite:ngTable:Filter', params.filter());
-                configServ.put('listSite:ngTable:Sorting', params.sorting());
-                angular.forEach(orderedData, function(item){
-                    ids.push(item.id);
-                });
-                mapService.filterMarks(ids);
-                configServ.put('listSite:ngTable:orderedData', orderedData);
-                params.total(orderedData.length); // set total for recalc pagination
-                $scope.nb_sites = {total: data.length, current: orderedData.length};
-
-                
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-            } 
-        });
-
-        $loading.finish('spinner-1');
-
         configServ.get('listSite:ngTable:Filter', function(filter){
             $scope.tableParams.filter(filter);
         });
@@ -107,6 +112,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             $scope.tableParams.sorting(sorting);
         });
 
+        $loading.finish('spinner-1');
         $scope.data = data;
         $scope.tableParams.reload();
     };
@@ -160,7 +166,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             $scope.changeIcon(old[0]);
         }
         $scope.changeIcon(item);
-    }
+    };
 
 
     /*
@@ -185,14 +191,14 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                 popupAnchor: [0, -41],
             }));
         }
-    }
+    };
 });
 
 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ){
+app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ){
 
     $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
@@ -200,7 +206,6 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
-
     configServ.bc.splice(1, configServ.bc.length);
 
     $scope.$on('display:init', function(ev, data){

@@ -201,7 +201,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ){
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.isActive = [];
@@ -251,6 +251,9 @@ app.directive('simpleform', function(){
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
                         $scope.data[field.name] = resp[field.name] || field.default || null;
+                        if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null){
+                            $scope.data[field.name] = userServ.getUser().idRole;
+                        }
                     });
                 });
                 $rootScope.$broadcast('form:init', $scope.data);

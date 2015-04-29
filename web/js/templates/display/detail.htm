@@ -15,11 +15,11 @@
                 <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
             </dl>
     </div>
-    <a class="btn btn-warning" ng-if="updateUrl" ng-href="{{updateUrl}}">Modifier</a>
+    <a class="btn btn-warning" ng-if="updateUrl && editAccess" ng-href="{{updateUrl}}">Modifier</a>
 <div>
 <div ng-if="subSchema">
     <h2>{{subSchema.title}}</h2>
-    <a class="btn btn-success" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
+    <a class="btn btn-success" ng-if="subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
     <table class="table" ng-if="subData.length>0">
         <tr>
             <th ng-repeat="subf in subSchema.fields">{{subf.label}}</th>
