@@ -94,6 +94,61 @@ class ObservationTaxon
      */
     private $obs_validateur;
 
+    private $mod_id;
+
+    private $act_id;
+
+    private $eff_id;
+
+    private $prv_id;
+
+    private $num_id;
+
+    public function getNumId(){
+        return $this->num_id;
+    }
+
+    public function setNumId($num_id){
+        $this->num_id = $num_id;
+        return $this;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
+    }
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+        return $this;
+    }
+
+    public function getActId(){
+        return $this->act_id;
+    }
+
+    public function setActId($act_id){
+        $this->act_id = $act_id;
+        return $this;
+    }
+
+    public function getEffId(){
+        return $this->eff_id;
+    }
+
+    public function setEffId($eff_id){
+        $this->eff_id = $eff_id;
+        return $this;
+    }
+
+    public function getPrvId(){
+        return $this->prv_id;
+    }
+
+    public function setPrvId($prv_id){
+        $this->prv_id = $prv_id;
+        return $this;
+    }
+
 
     /**
      * Get rt_id

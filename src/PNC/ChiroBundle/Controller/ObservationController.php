@@ -122,6 +122,13 @@ class ObservationController extends Controller{
 
     // path: PUT /chiro/observation
     public function createAction(Request $req){
+
+        // vérification droits utilisateur
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(2)){
+            throw new AccessDeniedHttpException();
+        }
+
         $data = json_decode($req->getContent(), true);
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
 
@@ -172,6 +179,8 @@ class ObservationController extends Controller{
 
         $obs = $rObs->findOneBy(array('id'=>$data['id']));
         $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
+
+        // vérification droits utilisateur
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
             if(!$user->isOwner($obs->getNumerisateurId())){
@@ -213,10 +222,11 @@ class ObservationController extends Controller{
         // manager de base de données
         $manager = $this->getDoctrine()->getManager();
         // initialisation transaction
-        $manager->getConnection()->beginTransaction();
 
         $obs = $rObs->findOneBy(array('id'=>$id));
         $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+
+        // vérification droits utilisateur
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
             if(!$user->isOwner($obs->getNumerisateurId())){
@@ -224,6 +234,7 @@ class ObservationController extends Controller{
             }
         }
 
+        $manager->getConnection()->beginTransaction();
         try{
             $manager->remove($cobs);
             $manager->flush();

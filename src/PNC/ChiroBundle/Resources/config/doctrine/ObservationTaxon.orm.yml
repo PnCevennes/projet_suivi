@@ -45,4 +45,13 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: text
         obs_validateur:
             type: integer
-
+        mod_id: 
+            type: integer
+        act_id: 
+            type: integer
+        eff_id: 
+            type: integer
+        prv_id: 
+            type: integer
+        num_id:
+            type: integer

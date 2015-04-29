@@ -63,6 +63,10 @@ class BiometrieController extends Controller
 
     // path: PUT chiro/biometrie
     public function createAction(Request $req, $id=null){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
         $data = json_decode($req->getContent(), true);
         $manager = $this->getDoctrine()->getManager();
         $biom = new Biometrie();
@@ -80,6 +84,10 @@ class BiometrieController extends Controller
 
     // path: POST chiro/biometrie/{id}
     public function updateAction(Request $req, $id=null){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
         $data = json_decode($req->getContent(), true);
         $manager = $this->getDoctrine()->getManager();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
@@ -99,6 +107,10 @@ class BiometrieController extends Controller
 
     // path: DELETE chiro/biometrie/{id}
     public function deleteAction($id){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
         $manager = $this->getDoctrine()->getManager();
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Biometrie');
         $biom = $repo->findOneBy(array('id'=>$id));

@@ -71,6 +71,13 @@ class ObsTaxonController extends Controller
 
     // path: PUT chiro/obs_taxon
     public function createAction(Request $req){
+
+        // vérification droits utilisateur
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(2)){
+            throw new AccessDeniedHttpException();
+        }
+
         $data = json_decode($req->getContent(), true);
 
         $manager = $this->getDoctrine()->getManager();
@@ -97,6 +104,14 @@ class ObsTaxonController extends Controller
         if(!$obsTx){
             return new JsonResponse(array('id'=>$id), 404);
         }
+
+        // vérification droits utilisateur
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            //TODO verification proprio
+            throw new AccessDeniedHttpException();
+        }
+
         try{
             $this->hydrateObsTaxon($obsTx, $data);
             $manager->flush();
@@ -110,6 +125,14 @@ class ObsTaxonController extends Controller
 
     // path: DELETE chiro/obs_taxon/{id}
     public function deleteAction($id){
+
+        // vérification droits utilisateur
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            //TODO verification proprio
+            throw new AccessDeniedHttpException();
+        }
+
         $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationTaxon');
         $obsTx = $repo->findOneBy(array('id'=>$id));
         if(!$obsTx){
