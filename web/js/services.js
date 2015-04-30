@@ -249,7 +249,10 @@ app.service('userServ', function(dataServ, $rootScope){
     };
 
     this.logout = function(){
-        dataServ.get('users/logout', this.disconnected);
+        dataServ.get('users/logout', 
+                this.disconnected, 
+                function(){}, 
+                true);
     };
 
     this.connected = function(resp){
