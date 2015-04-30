@@ -43,7 +43,8 @@ app.controller('observationSiteListController', function($scope, $routeParams){
     $scope._appName = $routeParams.appName;
 });
 
-app.controller('observationEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
+app.controller('observationEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
+    $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/observation/form';
     if($routeParams.id){
@@ -130,10 +131,11 @@ app.controller('observationSiteEditController', function($scope, $routeParams, $
 
 });
 
-app.controller('observationDetailController', function($scope, $routeParams, dataServ, configServ){
+app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ){
     $scope._appName = $routeParams.appName;
 
     configServ.bc.splice(1, configServ.bc.length);
+    $rootScope.$broadcast('map:show');
 
     $scope.schemaUrl = $scope._appName + '/config/observation/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;

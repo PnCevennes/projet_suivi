@@ -16,8 +16,9 @@ app.config(function($routeProvider){
         })
 });
 
-app.controller('biometrieDetailController', function($scope, $routeParams, configServ, dataServ){
+app.controller('biometrieDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
     $scope._appName = $routeParams.appName;
+    $rootScope.$broadcast('map:hide');
 
     $scope.schemaUrl = $scope._appName + '/config/biometrie/detail';
     $scope.dataUrl = $scope._appName + '/biometrie/' + $routeParams.id;
@@ -34,8 +35,9 @@ app.controller('biometrieDetailController', function($scope, $routeParams, confi
 
 });
 
-app.controller('biometrieEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
+app.controller('biometrieEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
+    $rootScope.$broadcast('map:hide');
     $scope.configUrl = $scope._appName + '/config/biometrie/form';
     if($routeParams.id){
         $scope.saveUrl = $scope._appName + '/biometrie/' + $routeParams.id;

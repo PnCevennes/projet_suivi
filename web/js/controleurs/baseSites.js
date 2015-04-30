@@ -85,10 +85,10 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     mapService.clear();
     mapService.map.setZoom(10);
 
-    $scope.success = function(resp){
+    $scope.setData = function(resp){
         $scope.items = resp;
-        $scope.createAccess = userServ.checkLevel(6);
-        $scope.editAccess = userServ.checkLevel(6);
+        $scope.createAccess = userServ.checkLevel(3);
+        $scope.editAccess = userServ.checkLevel(3);
         console.log($scope.createAccess);
         mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
@@ -119,7 +119,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 
     $scope.setSchema = function(schema){
         $scope.schema = schema.listSite;
-        dataServ.get($scope._appName + '/site', $scope.success);
+        dataServ.get($scope._appName + '/site', $scope.setData);
     };
 
     configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);

@@ -28,7 +28,8 @@ app.config(function($routeProvider){
         });
 });
 
-app.controller('taxonDetailController', function($scope, $routeParams, configServ, dataServ){
+app.controller('taxonDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
+    $rootScope.$broadcast('map:hide');
     $scope._appName = $routeParams.appName;
 
     $scope.schemaUrl = $scope._appName + '/config/obstaxon/detail';
@@ -44,8 +45,9 @@ app.controller('taxonDetailController', function($scope, $routeParams, configSer
     });
 });
 
-app.controller('taxonEditController', function($scope, $routeParams, $location, configServ, dataServ, userMessages){
+app.controller('taxonEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
+    $rootScope.$broadcast('map:hide');
     
     $scope.configUrl = $scope._appName + '/config/obstaxon/form';
     if($routeParams.id){
