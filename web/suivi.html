@@ -44,6 +44,7 @@
                             <ul class="nav navbar-nav navbar-left" role="menu">
                                 <li ng-class="{'active': $root._function =='site' }"><a ng-href="#{{_appName}}/site">Sites</a></li>
                                 <li ng-class="{'active': $root._function =='observation' }"><a ng-href="#{{_appName}}/observation">Observations</a></li>
+                                <li ng-if="user.maxdroit>=5" ng-class="{'active': $root._function =='validation' }"><a ng-href="#{{_appName}}/validation">Validation</a></li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">  
                                 <li ng-if="user">

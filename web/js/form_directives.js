@@ -235,6 +235,12 @@ app.directive('simpleform', function(){
                 $scope.schema.groups.forEach(function(group){
                     $scope.isActive.push(false);
                     $scope.isDisabled.push(!$scope.dataUrl);
+                    group.fields.forEach(function(field){
+                        if(!field.options){
+                            field.options = {};
+                        }
+                        field.options.readOnly = !userServ.checkLevel(field.options.restrictLevel || 0);
+                    });
                 });
                 $scope.isActive[0] = true;
                 $scope.isDisabled[0] = false;
@@ -256,6 +262,10 @@ app.directive('simpleform', function(){
                         }
                     });
                 });
+                $scope.deleteAccess = userServ.checkLevel($scope.schema.deleteAccess);
+                if(!$scope.deleteAccess && $scope.schema.deleteAccessOverride){
+                    $scope.deleteAccess = userServ.isOwner($scope.data[$scope.schema.deleteAccessOverride]);
+                }
                 $rootScope.$broadcast('form:init', $scope.data);
             };
 

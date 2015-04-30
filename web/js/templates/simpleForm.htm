@@ -17,7 +17,7 @@
     </div>
     <div id="formToolbox" class="row">
         <button class="btn btn-success float-right" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Enregistrer</button>
-        <button class="btn btn-danger float-right" type="button" ng-if="data.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
+        <button class="btn btn-danger float-right" type="button" ng-if="data.id && deleteAccess" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
     </div>    
 </form>
 <div spreadsheet ng-if="schema.subSchemaUrl && creating" schemaurl="{{schema.subSchemaUrl}}" dataref="{{schema.subDataRef}}" data="data" subtitle="{{schema.subTitle}}"></div>
