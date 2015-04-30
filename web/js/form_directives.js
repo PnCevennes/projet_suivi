@@ -239,7 +239,8 @@ app.directive('simpleform', function(){
                         if(!field.options){
                             field.options = {};
                         }
-                        field.options.readOnly = !userServ.checkLevel(field.options.restrictLevel || 0);
+                        field.options.readOnly = !userServ.checkLevel(field.options.editLevel || 0);
+                        field.options.dismissed = !userServ.checkLevel(field.options.restrictLevel || 0);
                     });
                 });
                 $scope.isActive[0] = true;
@@ -257,7 +258,7 @@ app.directive('simpleform', function(){
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
                         $scope.data[field.name] = resp[field.name] || field.default || null;
-                        if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null){
+                        if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
                             $scope.data[field.name] = userServ.getUser().idRole;
                         }
                     });

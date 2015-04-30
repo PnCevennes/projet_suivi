@@ -53,15 +53,15 @@ class ObsTaxonConfigController extends Controller{
                             'label'=>'Statut validation',
                             'type'=>'select',
                             'help'=>'',
-                            'options'=>array('choices'=> $typesVal, 'restrictLevel'=>5),
+                            'options'=>array('choices'=> $typesVal, 'editLevel'=>5),
                             'default'=>56
                         ),
                         array(
                             'name'=>'obsValidateur',
                             'label'=>'Validateur',
-                            'type'=>'xhr',
+                            'type'=>'hidden',
                             'help'=>'',
-                            'options'=>array('url'=>'chiro/observateurs', 'reverseurl'=>'chiro/observateurs/id', 'ref'=>'obsValidateur')
+                            'options'=>array('ref'=>'userId', 'restrictLevel'=>5)
                         ),
                         array(
                             'name'=>'obsEspeceIncertaine',

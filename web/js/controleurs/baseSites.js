@@ -89,7 +89,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         $scope.items = resp;
         $scope.createAccess = userServ.checkLevel(3);
         $scope.editAccess = userServ.checkLevel(3);
-        console.log($scope.createAccess);
         mapService.markLayer.clearLayers();
         angular.forEach(resp, function(item){
             var mark = L.marker(L.latLng([item.geometry.coordinates[1], item.geometry.coordinates[0]]));

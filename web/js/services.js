@@ -256,10 +256,8 @@ app.service('userServ', function(dataServ, $rootScope){
     };
 
     this.connected = function(resp){
-        console.log(resp);
         _user = resp;
         _user.pass = _tmp_password;
-        console.log(this.user);
         $rootScope.$broadcast('user:login', _user);
     };
 

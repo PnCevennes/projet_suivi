@@ -82,7 +82,6 @@ app.controller('baseController', function($scope, dataServ, configServ, mapServi
  * controleur login
  */
 app.controller('loginController', function($scope, $location, $rootScope, userServ, userMessages){
-    console.log(userServ.user);
     $scope.data = {
         login: userServ.getUser().identifiant,
         pass: userServ.getUser().pass,
