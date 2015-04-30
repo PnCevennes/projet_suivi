@@ -24,6 +24,7 @@ class SiteConfigController extends Controller{
         }
 
         $out = array(
+            'deleteAccess' => 5,
             'groups' => array(
                 array(
                     'name'=>'Informations',
@@ -253,7 +254,7 @@ class SiteConfigController extends Controller{
         }
 
         $out = array(
-            'editAccess'=>6,
+            'editAccess'=>3,
             'subEditAccess'=>2,
             'subSchemaUrl'=>'chiro/config/observation/list',
             'subDataUrl'=>'chiro/observation/site/',

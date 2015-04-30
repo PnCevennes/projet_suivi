@@ -29,6 +29,7 @@ class BiometrieConfigController extends Controller{
         }
 
         $out = array(
+            'deleteAccess'=>3,
             'groups'=>array(
                 array(
                     'name'=>'Mesures',

@@ -11,6 +11,8 @@ class ObservationConfigController extends Controller{
     public function getFormAction(){
 
         $out = array(
+            'deleteAccess'=>5,
+            'deleteAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/obstaxon/form/many',
             'subDataRef'=>'__taxons__',
             'subBtnTitle'=>'Ajout rapide de taxons',

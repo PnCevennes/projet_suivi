@@ -21,6 +21,8 @@ class ObsTaxonConfigController extends Controller{
         }
 
         $out = array(
+            'deleteAccess'=>5,
+            //'deleteAccessOverride'=>'numerisateurId', FIXME ajouter numerisateurId dans mapping & schema
             'groups'=>array(
                 array(
                     'name'=>'Informations',
@@ -51,7 +53,7 @@ class ObsTaxonConfigController extends Controller{
                             'label'=>'Statut validation',
                             'type'=>'select',
                             'help'=>'',
-                            'options'=>array('choices'=> $typesVal),
+                            'options'=>array('choices'=> $typesVal, 'restrictLevel'=>5),
                             'default'=>56
                         ),
                         array(
