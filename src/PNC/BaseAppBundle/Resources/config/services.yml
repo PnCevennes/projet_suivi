@@ -4,7 +4,7 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     baseSiteService:
         class: PNC\BaseAppBundle\Services\BaseSiteService
-        arguments: []
+        arguments: [@geometry]
     baseObservationService:
         class: PNC\BaseAppBundle\Services\BaseObservationService
         arguments: []
