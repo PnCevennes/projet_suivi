@@ -45,7 +45,7 @@ class ObsTaxonController extends Controller
         $data = json_decode($req->getContent(), true);
         $ts = $this->get('taxonService');
         try{
-            $ts->create($data);
+            return new JsonResponse($ts->create($data));
         }
         catch(DataObjectException $e){
             $errs = $obsTx->errors();
