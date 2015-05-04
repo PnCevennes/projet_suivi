@@ -2,10 +2,6 @@
 
 namespace PNC\ChiroBundle\Services;
 
-use Commons\Exceptions\DataObjectException;
-
-use PNC\BaseAppBundle\Entity\Observation;
-use PNC\BaseAppBundle\Entity\Observateurs;
 use PNC\ChiroBundle\Entity\ConditionsObservation;
 
 
@@ -16,9 +12,17 @@ class ObservationService{
     // normalizer
     private $norm;
 
-    public function __construct($db, $norm){
+    //service taxon
+    private $taxonServ;
+
+    // baseObservation
+    private $parentService;
+
+    public function __construct($db, $norm, $taxonServ, $parentServ){
         $this->db = $db;
         $this->norm = $norm;
+        $this->taxonServ = $taxonServ;
+        $this->parentService = $parentServ;
     }
 
     public function getList($siteId=null){
@@ -62,87 +66,53 @@ class ObservationService{
     }
 
     public function create($data){
-        $repo = $this->db->getRepository('PNCBaseAppBundle:Observateurs');
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
-        $obs = new Observation();
-        $cobs = new ConditionsObservation();
         $errors = array();
+
         try{
-            $this->hydrateBase($obs, $data);
+            $resObs = $this->parentService->create($this->db, $data);
         }
         catch(DataObjectException $e){
             $errors = $e->getErrors();
         }
         try{
-            $this->hydrateExt($cobs, $data);
+            $cobs = new ConditionsObservation();
+            $this->hydrate($cobs, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors()); 
-        }
-        foreach($data['observateurs'] as $obr_id){
-            $obr = $repo->findOneBy(array('id_role'=>$obr_id));
-            if($obr){
-                $obs->addObservateur($obr);
-            }
-            else{
-                if(!isset($errors['observateurs'])){
-                    $errors['observateurs'] = array();
-                }
-                $errors['observateurs'][] = 'Utilisateur inconnu';
-            }
         }
         if($errors){
             $manager->getConnection()->rollback();
             throw new DataObjectException($errors);
         }
-        
-        $manager->persist($obs);
-        $manager->flush();
 
-        $cobs->setObsId($obs->getId());
+        $cobs->setObsId($resObs);
         $manager->persist($cobs);
         $manager->flush();
         $manager->getConnection()->commit();
-        return array('id'=>$obs->getId());
+        return array('id'=>$resObs);
     }
 
     public function update($id, $data){
-        $rObr = $this->db->getRepository('PNCBaseAppBundle:Observateurs');
-        $rObs = $this->db->getRepository('PNCBaseAppBundle:Observation');
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
 
-        $obs = $rObs->findOneBy(array('id'=>$data['id']));
         $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
         $errors = array();
         try{
-            $this->hydrateBase($obs, $data);
+            $resObs = $this->parentService->update($this->db, $id, $data);
         }
         catch(DataObjectException $e){
-            $errors = $e->getErrors();
+            $errors = $e->getErrors(); 
         }
         try{
-            $this->hydrateExt($cobs, $data);
+            $this->hydrate($cobs, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors()); 
-        }
-        foreach($obs->getObservateurs() as $dObr){
-            $obs->removeObservateur($dObr);
-        }
-        foreach($data['observateurs'] as $obr_id){
-            $obr = $rObr->findOneBy(array('id_role'=>$obr_id));
-            if($obr){
-                $obs->addObservateur($obr);
-            }
-            else{
-                if(!isset($errors['observateurs'])){
-                    $errors['observateurs'] = array();
-                }
-                $errors['observateurs'][] = 'Utilisateur inconnu';
-            }
         }
         if($errors){
             $manager->getConnection()->rollback();
@@ -154,18 +124,15 @@ class ObservationService{
     }
 
     public function remove($id){
-        $rObs = $this->db->getRepository('PNCBaseAppBundle:Observation');
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
-        $obs = $rObs->findOneBy(array('id'=>$id));
         $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
         
         $manager->getConnection()->beginTransaction();
         try{
             $manager->remove($cobs);
             $manager->flush();
-            $manager->remove($obs);
-            $manager->flush();
+            $resObs = $this->parentService->remove($this->db, $id);
             $manager->getConnection()->commit();
             return true;
         }
@@ -173,26 +140,9 @@ class ObservationService{
             $manager->getConnection()->rollback();
             return false;
         }
-
     }
 
-    private function hydrateBase($obj, $data){
-        if(strpos($data['obsDate'], '/')!==false){
-            $date = \DateTime::createFromFormat('d/m/Y', $data['obsDate']);
-        }
-        else{
-            $date = \DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10));
-        }
-        $obj->setObsDate($date);
-        $obj->setObsCommentaire($data['obsCommentaire']);
-        $obj->setNumerisateurId($data['numerisateurId']);
-        $obj->setSiteId($data['siteId']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors()); 
-        }
-    }
-
-    private function hydrateExt($obj, $data){
+    private function hydrate($obj, $data){
         $obj->setObsTemperature($data['obsTemperature']);
         $obj->setObsHumidite($data['obsHumidite']);
         if($obj->errors()){

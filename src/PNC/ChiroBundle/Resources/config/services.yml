@@ -14,9 +14,9 @@ services:
             
     observationService:
         class: PNC\ChiroBundle\Services\ObservationService
-        arguments: [@doctrine, @normalizer, @taxonService]
+        arguments: [@doctrine, @normalizer, @taxonService, @baseObservationService]
             
     siteService:
         class: PNC\ChiroBundle\Services\SiteService
-        arguments: [@doctrine, @normalizer, @observationService]
+        arguments: [@doctrine, @normalizer, @observationService, @baseSiteService]
             
