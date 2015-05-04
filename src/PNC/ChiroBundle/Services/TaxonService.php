@@ -38,9 +38,9 @@ class TaxonService{
     }
     
     public function create($data){
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $this->db->getManager();
         $obsTx = new ObservationTaxon();
-        $this->hydrateObsTaxon($obsTx, $data);
+        $this->hydrate($obsTx, $data);
         $manager->persist($obsTx);
         $manager->flush();
         return array('id'=>$obsTx->getId());
@@ -53,7 +53,7 @@ class TaxonService{
         if(!$obsTx){
             return null;
         }
-        $this->hydrateObsTaxon($obsTx, $data);
+        $this->hydrate($obsTx, $data);
         $manager->flush();
         return array('id'=>$obsTx->getId());
     }
@@ -93,7 +93,7 @@ class TaxonService{
         $obj->setNomComplet($tx->getNomComplet());
         $obj->setObsValidateur($data['obsValidateur']);
         if($obj->errors()){
-            throw new \Exception(); //TODO lever exception explicite
+            throw new \Exception($obj->errors()); 
         }
     }
 
