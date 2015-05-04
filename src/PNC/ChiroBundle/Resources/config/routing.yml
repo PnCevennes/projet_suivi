@@ -173,17 +173,6 @@ pnc_chiro_config_biom:
 #
 # Vues autocomplete
 #
-pnc_chiro_config_observateurs_id:
-    path: /observateurs/id/{q}
-    defaults: { _controller: PNCChiroBundle:Config:getObservateursId, q: null }
-    requirements:
-        _method: GET
-
-pnc_chiro_config_observateurs:
-    path: /observateurs/{q}
-    defaults: { _controller: PNCChiroBundle:Config:getObservateurs, q: null }
-    requirements:
-        _method: GET
 
 pnc_chiro_config_taxons_id:
     path: /taxons/id/{q}

@@ -53,4 +53,31 @@ class DefaultController extends Controller
         $resp->headers->setCookie(new Cookie('token', ''));
         return $resp;
     }
+
+    // path: GET /users/name/{app}/{droit}/{q}
+    // retourne la liste des utilisateurs filtrée sur le nom et le niveau de droits
+    public function getUsersByNameAction($app, $droit, $q){
+        $repo = $this->getDoctrine()->getRepository('CommonsUsersBundle:Login');
+        $users = $repo->getLike($app, $droit, $q);
+        $out = array();
+        foreach($users as $user){
+            $out[] = array('id'=>$user->getIdRole(), 'label'=>$user->getNomComplet());
+        }
+        return new JsonResponse($out);
+    }
+
+    // path: GET /users/id/{id}
+    // retourne l'utilisateur identifié par l'ID fourni
+    public function getUserByIdAction($id){
+        $repo = $this->getDoctrine()->getRepository('CommonsUsersBundle:Login');
+        $user = $repo->findOneBy(array('id_role'=>$id));
+        if($user){
+            $out = array(
+                'id'=>$user->getIdRole(),
+                'label'=>$user->getNomComplet()
+            );
+            return new JsonResponse($out);
+        }
+        return new JsonResponse(array('id'=>'', 'label'=>''), 404);
+    }
 }

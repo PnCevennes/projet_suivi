@@ -49,6 +49,9 @@ class ObsTaxonController extends Controller
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Taxons');
         $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
         $obj->setObsId($data['obsId']);
+        $obj->setModId($data['modId']);
+        $obj->setActId($data['actId']);
+        $obj->setPrvId($data['prvId']);
         $obj->setObsTxInitial($data['obsTxInitial']);
         $obj->setObsEspeceIncertaine($data['obsEspeceIncertaine']);
         $obj->setObsEffectifAbs($data['obsEffectifAbs']);

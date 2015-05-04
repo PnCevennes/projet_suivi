@@ -46,7 +46,7 @@ class ObservationConfigController extends Controller{
                             'label'=>'Observateurs',
                             'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array('multi'=>true, 'url'=>'chiro/observateurs', 'reverseurl'=>'chiro/observateurs/id', 'ref'=>'nomComplet'),
+                            'options'=>array('multi'=>true, 'url'=>'users/name/100/2', 'reverseurl'=>'users/id', 'ref'=>'nomComplet'),
                             'default'=>array()
                         ),
                         array(
@@ -152,14 +152,14 @@ class ObservationConfigController extends Controller{
                             'label'=>'Numerisateur',
                             'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array('url'=>'chiro/observateurs/id')
+                            'options'=>array('url'=>'users/id')
                         ),
                         array(
                             'name'=>'observateurs',
                             'label'=>'Observateurs',
                             'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array('multi'=>true, 'url'=>'chiro/observateurs/id')
+                            'options'=>array('multi'=>true, 'url'=>'users/id')
                         ),
                         array(
                             'name'=>'obsCommentaire',

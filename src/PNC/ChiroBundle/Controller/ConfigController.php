@@ -10,31 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ConfigController extends Controller{
 
-
-    // path: GET chiro/observateurs/{q}
-    public function getObservateursAction($q){
-        $out = array();
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
-        $resp = $repo->getLike($q, 'observateur');
-        foreach($resp as $item){
-            $out[] = array(
-                'label'=>$item->getNomComplet(),
-                'id'=>$item->getObrId());
-        }
-        
-        return new JsonResponse($out);
-    }
-
-    // path: GET chiro/observateurs/id/{q}
-    public function getObservateursIdAction($q){
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservateurView');
-        $out = $repo->findOneBy(array('obr_id'=>$q));
-        if(!$out){
-            return new JsonResponse(array('id'=>$q, 'label'=>null), 404);
-        }
-        return new JsonResponse(array('id'=>$q, 'label'=>$out->getNomComplet()));
-    }
-
     // path: GET chiro/taxons/{q}
     public function getTaxonsAction($q){
         $out = array();

@@ -14,3 +14,15 @@ commons_users_logout:
     defaults: { _controller: CommonsUsersBundle:Default:logout }
     requirements:
         _method: GET
+
+commons_users_getbyname:
+    path: /name/{app}/{droit}/{q}
+    defaults: { _controller: CommonsUsersBundle:Default:getUsersByName }
+    requirements:
+        _method: GET
+
+commons_users_getbyid:
+    path: /id/{id}
+    defaults: { _controller: CommonsUsersBundle:Default:getUserById }
+    requirements:
+        _method: GET

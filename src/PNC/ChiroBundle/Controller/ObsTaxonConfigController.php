@@ -12,6 +12,8 @@ class ObsTaxonConfigController extends Controller{
     public function getFormAction(){
         $norm = $this->get('normalizer');
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
+
+        // Statut validation
         $types = $repo->findBy(array('id_type'=>9));
         $typesVal = array();
         foreach($types as $tl){
@@ -19,6 +21,38 @@ class ObsTaxonConfigController extends Controller{
                 $typesVal[] = $norm->normalize($tl, array());
             }
         }
+
+        // Mode d'observation
+        $mods = $repo->findBy(array('id_type'=>4));
+        $typeMod = array();
+        foreach($mods as $tl){
+            if($tl->getFkParent() != 0){
+                $typeMod[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Activité
+        $acts = $repo->findBy(array('id_type'=>5));
+        $typeAct = array();
+        foreach($acts as $tl){
+            if($tl->getFkParent() != 0){
+                $typeAct[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Preuves de reproduction
+        $prvs = $repo->findBy(array('id_type'=>6));
+        $typePrv = array();
+        foreach($prvs as $tl){
+            if($tl->getFkParent() != 0){
+                $typePrv[] = $norm->normalize($tl, array());
+            }
+        }
+
+
+
+
+
 
         $out = array(
             'deleteAccess'=>5,
@@ -55,6 +89,30 @@ class ObsTaxonConfigController extends Controller{
                             'help'=>'',
                             'options'=>array('choices'=> $typesVal, 'editLevel'=>5),
                             'default'=>56
+                        ),
+                        array(
+                            'name'=>'modId',
+                            'label'=>"Mode d'observation",
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typeMod),
+                            'default'=>18
+                        ),
+                        array(
+                            'name'=>'actId',
+                            'label'=>'Activité',
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typeAct),
+                            'default'=>25
+                        ),
+                        array(
+                            'name'=>'prvId',
+                            'label'=>'Preuves de reproduction',
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typePrv),
+                            'default'=>32
                         ),
                         array(
                             'name'=>'obsValidateur',
@@ -261,6 +319,35 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
+        // Mode d'observation
+        $mods = $repo->findBy(array('id_type'=>4));
+        $typeMod = array();
+        foreach($mods as $tl){
+            if($tl->getFkParent() != 0){
+                $typeMod[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Activité
+        $acts = $repo->findBy(array('id_type'=>5));
+        $typeAct = array();
+        foreach($acts as $tl){
+            if($tl->getFkParent() != 0){
+                $typeAct[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Preuves de reproduction
+        $prvs = $repo->findBy(array('id_type'=>6));
+        $typePrv = array();
+        foreach($prvs as $tl){
+            if($tl->getFkParent() != 0){
+                $typePrv[] = $norm->normalize($tl, array());
+            }
+        }
+
+
+
         $out = array(
             'editAccess'=>3,
             'subEditAccess'=>3,
@@ -304,7 +391,7 @@ class ObsTaxonConfigController extends Controller{
                             'label'=>'Validateur',
                             'type'=>'xhr',
                             'help'=>'',
-                            'options'=>array('url'=>'chiro/observateurs/id')
+                            'options'=>array('url'=>'users/id')
                         ),
                         array(
                             'name'=>'obsEspeceIncertaine',
@@ -312,6 +399,27 @@ class ObsTaxonConfigController extends Controller{
                             'type'=>'bool',
                             'help'=>'',
                             'options'=>array()
+                        ),
+                        array(
+                            'name'=>'modId',
+                            'label'=>"Mode d'observation",
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typeMod),
+                        ),
+                        array(
+                            'name'=>'actId',
+                            'label'=>'Activité',
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typeAct),
+                        ),
+                        array(
+                            'name'=>'prvId',
+                            'label'=>'Preuves de reproduction',
+                            'type'=>'select',
+                            'help'=>'',
+                            'options'=>array('choices'=> $typePrv),
                         ),
                         array(
                             'name'=>'obsEffectifAbs',

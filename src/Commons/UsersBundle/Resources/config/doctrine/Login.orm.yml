@@ -2,6 +2,7 @@ Commons\UsersBundle\Entity\Login:
     type: entity
     table: utilisateurs.view_login
     schema: utilisateurs
+    repositoryClass: Commons\UsersBundle\Repositories\LoginRepository
     id:
         id_role:
             type: integer

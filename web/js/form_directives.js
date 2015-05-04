@@ -22,7 +22,7 @@ app.directive('angucompletewrapper', function(dataServ){
             reverseurl: '@',
             ngrequired: '=',
         },
-        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}} pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial"></angucomplete><input type="hidden" name="_{{name}}" ng-model="selectedobject" ng-required="ngrequired"></input>',
+        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}}" pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial"></angucomplete><input type="hidden" name="_{{name}}" ng-model="selectedobject" ng-required="ngrequired"></input>',
         controller: function($scope){
             $scope.localselectedobject = {};
             $scope.$watch('initial', function(newval){
@@ -201,7 +201,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages){
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.isActive = [];
@@ -292,6 +292,7 @@ app.directive('simpleform', function(){
             }
 
             $scope.error = function(resp){
+                userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
                 $scope.errors = angular.copy(resp);
             }
 

@@ -64,8 +64,8 @@ class SiteConfigController extends Controller{
                             'type'=>'xhr',
                             'help'=>'',
                             'options'=>array(
-                                'url'=>'chiro/observateurs', 
-                                'reverseurl'=>'chiro/observateurs/id',
+                                'url'=>'users/name/100/2', 
+                                'reverseurl'=>'users/id',
                                 'required'=>true,
                             ),
                         ),
