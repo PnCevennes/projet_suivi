@@ -57,7 +57,11 @@ class BiometrieController extends Controller
         $bs = $this->get('biometrieService');
 
         try{
-            return new JsonResponse($bs->update($id, $data));
+            $res = $bs->update($id, $data);
+            if(!$res){
+                return new JsonResponse(array('id'=>$id), 404);
+            }
+            return new JsonResponse($res);
         }
         catch(DataObjectException $e){
             return new JsonResponse($e->getErrors(), 400);
@@ -74,9 +78,7 @@ class BiometrieController extends Controller
         if($bs->remove($id)){
             return new JsonResponse(array('id'=>$id));
         }
-        else{
-            return new JsonResponse(array('id'=>$id), 400);
-        }
+        return new JsonResponse(array('id'=>$id), 404);
     }
 }
 

@@ -81,9 +81,31 @@ class BiometrieService{
         $manager = $this->db->getManager();
         $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
         $biom = $repo->findOneBy(array('id'=>$id));
+        if(!$biom){
+            return null;
+        }
         $this->hydrate($biom, $data);
         $manager->flush();
         return array('id'=>$biom->getId());
+    }
+
+    /*
+     *  Supprime une biométrie
+     *  params:
+     *      id: l'ID de la biométrie à supprimer
+     *  return:
+     *      bool succès
+     */
+    public function remove($id){
+        $manager = $this->db->getManager();
+        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
+        $biom = $repo->findOneBy(array('id'=>$id));
+        if($biom){
+            $manager->remove($biom);
+            $manager->flush();
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -114,26 +136,6 @@ class BiometrieService{
         if($obj->errors()){
             throw new DataObjectException($obj->errors());
         }
-    }
-
-    /*
-     *  Supprime une biométrie
-     *  params:
-     *      id: l'ID de la biométrie à supprimer
-     *  return:
-     *      bool succès
-     */
-    public function remove($id){
-        $manager = $this->db->getManager();
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->findOneBy(array('id'=>$id));
-        if($biom){
-            $manager->remove($biom);
-            $manager->flush();
-            return true;
-        }
-        return false;
-
     }
 }
 
