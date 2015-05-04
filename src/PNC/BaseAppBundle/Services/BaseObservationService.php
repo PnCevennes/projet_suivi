@@ -76,7 +76,8 @@ class BaseObservationService{
     }
 
     public function remove($db, $id){
-        $rObs = $this->db->getRepository('PNCBaseAppBundle:Observation');
+        $rObs = $db->getRepository('PNCBaseAppBundle:Observation');
+        $manager = $db->getManager();
         $obs = $rObs->findOneBy(array('id'=>$id));
         $manager->remove($obs);
         $manager->flush();
