@@ -77,7 +77,6 @@ class BiometrieService{
      *  raise:
      *      DataObjectException si les données sont invalides
      */
-    public function create($data){
     public function update($id, $data){
         $manager = $this->db->getManager();
         $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
