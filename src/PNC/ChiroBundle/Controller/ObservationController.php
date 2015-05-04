@@ -4,13 +4,10 @@ namespace PNC\ChiroBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-use PNC\BaseAppBundle\Entity\Observation;
-use PNC\BaseAppBundle\Entity\Observateurs;
-use PNC\ChiroBundle\Entity\ConditionsObservation;
+use Commons\Exceptions\DataObjectException;
 
 class ObservationController extends Controller{
 
@@ -19,25 +16,9 @@ class ObservationController extends Controller{
         /*
          * retourne la liste complete des observations
          */
-        $norm = $this->get('normalizer');
+        $os = $this->get('observationService');
 
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationView');
-        $infos = $repo->findAll();
-        $out = array();
-
-        foreach($infos as $info){
-            $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-            $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
-            $out_item['observateurs'] = array();
-            foreach($info->getObservateurs() as $obr){
-                if($obr->getRole() == 'observateur'){
-                    $out_item['observateurs'][] = $norm->normalize($obr);
-                }
-            }
-            $out[] = $out_item;
-        }
-
-        return new JsonResponse($out);
+        return new JsonResponse($os->getList());
     }
 
     // path: GET /chiro/observation/site/{id}
@@ -45,26 +26,9 @@ class ObservationController extends Controller{
         /*
          * retourne la liste des observations associées à un site
          */
-        $norm = $this->get('normalizer');
-
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationView');
-        $infos = $repo->findBy(array('site_id'=>$id));
-        $out = array();
-
-        foreach($infos as $info){
-            $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-            $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
-            $out_item['observateurs'] = array();
-            foreach($info->getObservateurs() as $obr){
-                if($obr->getRole() == 'observateur'){
-                    //$out_item['observateurs'][] = $norm->normalize($obr);
-                    $out_item['observateurs'][] = $obr->getNomComplet();
-                }
-            }
-            $out[] = $out_item;
-        }
-
-        return new JsonResponse($out);
+        $os = $this->get('observationService');
+        
+        return new JsonResponse($os->getList($id));
     }
 
     // path: GET /chiro/observation/{id}
@@ -72,54 +36,14 @@ class ObservationController extends Controller{
         /*
          * retourne le détail d'une observation
          */
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:ObservationView');
-        $info = $repo->findOneById($id);
-        if(!$info){
-            return new JsonResponse(array('v'=>'detail obs', 'err'=>404), 404);
+        $os = $this->get('observationService');
+        $obs = $os->getOne($id);
+
+        if(!$obs){
+            return new JsonResponse(array('id'=>$id), 404);
         }
-        $out_item = $norm->normalize($info, array('obsDate', 'observateurs'));
-        $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
-        $out_item['observateurs'] = array();
-        foreach($info->getObservateurs() as $observateur){
-            if($observateur->getRole() == 'observateur'){
-                //$out_item['observateurs'][] = $norm->normalize($observateur);
-                $out_item['observateurs'][] = $observateur->getObrId();
-            }
-        }
-
-        //TODO ajouter liste des obs taxons + biometries
-
-        return new JsonResponse($out_item);
-
+        return new JsonResponse($obs);
     }
-
-    private function hydrateObservation($obs, $data){
-        if(strpos($data['obsDate'], '/')!==false){
-            $date = \DateTime::createFromFormat('d/m/Y', $data['obsDate']);
-        }
-        else{
-            $date = \DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10));
-        }
-        $obs->setObsDate($date);
-        $obs->setObsCommentaire($data['obsCommentaire']);
-        $obs->setNumerisateurId($data['numerisateurId']);
-        //$obs->setObsIdTableSrc($data['obsIdTableSrc']);
-        $obs->setSiteId($data['siteId']);
-        if($obs->errors()){
-            throw new \Exception(); //TODO lever une exception explicite
-        }
-    }
-
-    private function hydrateConditionsObservation($cobs, $data){
-        $cobs->setObsTemperature($data['obsTemperature']);
-        $cobs->setObsHumidite($data['obsHumidite']);
-        if($cobs->errors()){
-            throw new \Exception(); //TODO lever une exception explicite
-        }
-    }
-
-
 
     // path: PUT /chiro/observation
     public function createAction(Request $req){
@@ -131,56 +55,18 @@ class ObservationController extends Controller{
         }
 
         $data = json_decode($req->getContent(), true);
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
 
-        
-        // manager de base de données
-        $manager = $this->getDoctrine()->getManager();
-        // initialisation transaction
-        $manager->getConnection()->beginTransaction();
-        
-        $obs = new Observation();
-        $cobs = new ConditionsObservation();
+        $os = $this->get('observationService');
         try{
-            $this->hydrateObservation($obs, $data);
-            $this->hydrateConditionsObservation($cobs, $data);
-            foreach($data['observateurs'] as $obr_id){
-                $obr = $repo->findOneBy(array('id_role'=>$obr_id));
-                if($obr){
-                    $obs->addObservateur($obr);
-                }
-            }
-            $manager->persist($obs);
-            $manager->flush();
-
-            $cobs->setObsId($obs->getId());
-            $manager->persist($cobs);
-            $manager->flush();
-            $manager->getConnection()->commit();
-            return new JsonResponse(array('id'=>$obs->getId()));
+            return new JsonResponse($os->create($data));
         }
-        catch(\Exception $e){
-            $manager->getConnection()->rollback();
-            $errs = array_merge($obs->errors(), $cobs->errors());
-            return new JsonResponse($errs, 400);
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors(), 400);
         }
     }
 
     // path: POST /chiro/observation/{id}
     public function updateAction(Request $req, $id){
-        $data = json_decode($req->getContent(), true);
-        $rObr = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observateurs');
-        $rObs = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observation');
-        $rCobs = $this->getDoctrine()->getRepository('PNCChiroBundle:ConditionsObservation');
-
-        // manager de base de données
-        $manager = $this->getDoctrine()->getManager();
-        // initialisation transaction
-        $manager->getConnection()->beginTransaction();
-
-        $obs = $rObs->findOneBy(array('id'=>$data['id']));
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
-
         // vérification droits utilisateur
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
@@ -189,44 +75,19 @@ class ObservationController extends Controller{
             }
         }
 
+        $data = json_decode($req->getContent(), true);
+
+        $os = $this->get('observationService');
         try{
-            $this->hydrateObservation($obs, $data);
-            $this->hydrateConditionsObservation($cobs, $data);
-
-            foreach($obs->getObservateurs() as $_obr){
-                $obs->removeObservateur($_obr);
-            }
-            foreach($data['observateurs'] as $obr_id){
-                $obr = $rObr->findOneBy(array('id_role'=>$obr_id));
-                if($obr){
-                    $obs->addObservateur($obr);
-                }
-            }
-            $manager->flush();
-
-            $manager->getConnection()->commit();
-            return new JsonResponse(array('id'=>$data['id']));
+            return new JsonResponse($os->update($id, $data));
         }
-        catch(\Exception $e){
-            $manager->getConnection()->rollback();
-            $errs = array_merge($obs->errors(), $cobs->errors());
-
-            return new JsonResponse($errs, 400);
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors(), 400);
         }
     }
 
     // path: DELETE /chiro/observation/{id}
     public function deleteAction($id){
-        $rObs = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Observation');
-        $rCobs = $this->getDoctrine()->getRepository('PNCChiroBundle:ConditionsObservation');
-        
-        // manager de base de données
-        $manager = $this->getDoctrine()->getManager();
-        // initialisation transaction
-
-        $obs = $rObs->findOneBy(array('id'=>$id));
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
-
         // vérification droits utilisateur
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
@@ -235,20 +96,10 @@ class ObservationController extends Controller{
             }
         }
 
-        $manager->getConnection()->beginTransaction();
-        try{
-            $manager->remove($cobs);
-            $manager->flush();
-            $manager->remove($obs);
-            $manager->flush();
-            $manager->getConnection()->commit();
-
+        $os = $this->get('observationService');
+        if($os->remove($id)){
             return new JsonResponse(array('id'=>$id));
         }
-        catch(\Exception $e){
-            $manager->getConnection()->rollback();
-            return new JsonResponse(array('err'=>$e->getMessage()), 422);
-        }
-        
+        return new JsonResponse(array('id'=>$id), 404);
     }
 }
