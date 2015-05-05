@@ -81,13 +81,14 @@ app.controller('baseController', function($scope, dataServ, configServ, mapServi
 /*
  * controleur login
  */
-app.controller('loginController', function($scope, $location, $rootScope, userServ, userMessages){
+app.controller('loginController', function($scope, $location, $rootScope, userServ, userMessages, configServ){
     $scope.data = {
         login: userServ.getUser().identifiant,
         pass: userServ.getUser().pass,
         idApp: userServ.getUser().idApplication
     };
     $rootScope.$broadcast('map:hide');
+    configServ.addBc(0, 'Login', '');
 
     $scope.$on('user:login', function(ev, user){
         userMessages.infoMessage = user.nomComplet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');

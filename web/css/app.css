@@ -54,6 +54,7 @@
     padding-right: 2em;
     border-radius: 5px;
     box-shadow: 3px 3px 5px #CCC;
+    z-index: 9999;
 }
 
 .msg-default{

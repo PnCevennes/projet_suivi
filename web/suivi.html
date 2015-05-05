@@ -59,9 +59,13 @@
                         </div>
                     </div>   
                     <div class="container-fluid">
-                        <div class="col-md-6 fixed-col " ng-show="showMap"><div id="map"></div></div>
+                        <div class="col-md-6 fixed-col" ng-show="showMap">
+                            <div id="map"></div>
+                        </div>
                         <div class="col-md-6 content-panel">
-                        <div class="container-fluid"><ng-view></ng-view></div>
+                            <div breadcrumbs appname="{{_appName}}"></div>
+                            <div ng-view class="container-fluid"></div>
+                        </div>
                     </div>
                 </div>
             </div>
