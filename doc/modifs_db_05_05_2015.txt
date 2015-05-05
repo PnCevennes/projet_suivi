@@ -1,0 +1,24 @@
+-- View: utilisateurs.view_login
+
+-- DROP VIEW utilisateurs.view_login;
+
+CREATE OR REPLACE VIEW utilisateurs.view_login AS 
+ SELECT tr.id_role,
+    tr.identifiant,
+    tr.pass,
+    (tr.nom_role::text || ' '::text) || tr.prenom_role::text AS nom_complet,
+    crda.id_application,
+    max(crda.id_droit) AS maxdroit
+   FROM utilisateurs.t_roles tr
+     JOIN utilisateurs.cor_roles cr ON cr.id_role_utilisateur = tr.id_role
+     JOIN utilisateurs.cor_role_droit_application crda ON crda.id_role = tr.id_role OR crda.id_role = cr.id_role_groupe
+  GROUP BY tr.id_role, crda.id_application;
+
+ALTER TABLE utilisateurs.view_login
+  OWNER TO fred;
+
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN mod_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN act_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN eff_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN prv_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN num_id integer;
