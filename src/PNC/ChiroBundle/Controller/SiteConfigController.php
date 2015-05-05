@@ -263,20 +263,6 @@ class SiteConfigController extends Controller{
                     'name'=>'Informations',
                     'fields'=>array(
                         array(
-                            'name'=>'siteNom',
-                            'label'=>'Nom',
-                            'type'=>'hidden',
-                            'help'=>'Nom du site',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'id',
-                            'label'=>'id',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array('hidden'=>true)
-                        ),
-                        array(
                             'name'=>'siteCode',
                             'label'=>'Code site',
                             'type'=>'string',

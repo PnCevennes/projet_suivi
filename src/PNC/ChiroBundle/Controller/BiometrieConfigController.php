@@ -238,11 +238,6 @@ class BiometrieConfigController extends Controller{
                     'name'=>'Biométrie',
                     'fields'=>array(
                         array(
-                            'name'=>'id',
-                            'type'=>'hidden',
-                            'options'=>array()
-                        ),
-                        array(
                             'name'=>'ageId',
                             'label'=>'Age',
                             'type'=>'select',
