@@ -26,7 +26,6 @@ class BaseSiteService{
     public function update($db, $site, $data){
         $manager = $db->getManager();
         $this->hydrate($site, $data);
-        $manager->persist($site);
         $manager->flush();
         return $site;
     }

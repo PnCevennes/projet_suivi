@@ -81,6 +81,8 @@ class SiteService{
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors());
             $manager->getConnection()->rollback();
+        }
+        if($errors){
             throw new DataObjectException($errors);
         }
         $infoSite->setParentSite($site);
@@ -90,7 +92,7 @@ class SiteService{
         
         try{
             // enregistrement des fichiers liés
-            foreach($props['siteAmenagement'] as $fich_id){
+            foreach($data['siteAmenagement'] as $fich_id){
                 if(!strpos($fich_id, '_')){
                     $fichier = new SiteFichiers();
                     $fichier->setSiteId($site->getId());
@@ -112,20 +114,21 @@ class SiteService{
         if(!$infoSite){
             return null;
         }
-        $site = $infoSite->getParentSite();
 
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
+        $site = $infoSite->getParentSite();
         $errors = array();
-        $site = null;
         try{
-            $site = $this->parentService->update($this->db, $data);
+            $site = $this->parentService->update($this->db, $site, $data);
         }
         catch(DataObjectException $e){
             $errors = $e->getErrors();
         }
         try{
             $this->hydrate($infoSite, $data);
+            $manager->flush();
+            $manager->getConnection()->commit();
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors());
@@ -134,7 +137,7 @@ class SiteService{
         }
         try{
             // enregistrement des fichiers liés
-            foreach($props['siteAmenagement'] as $fich_id){
+            foreach($data['siteAmenagement'] as $fich_id){
                 if(!strpos($fich_id, '_')){
                     $fichier = new SiteFichiers();
                     $fichier->setSiteId($site->getId());
@@ -147,6 +150,7 @@ class SiteService{
         catch(\Exception $e){
             print_r($e);
         }
+        return array('id'=>$site->getId());
 
     }
 
@@ -158,7 +162,7 @@ class SiteService{
         }
         $site = $infoSite->getParentSite();
 
-        $manager = $db->getManager();
+        $manager = $this->db->getManager();
         $manager->remove($infoSite);
         $manager->flush();
         $this->parentService->remove($this->db, $site);

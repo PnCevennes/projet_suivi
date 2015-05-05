@@ -70,7 +70,7 @@ class SiteController extends Controller{
 
         try{
             $ss = $this->get('siteService');
-            return new JsonResponse($ss->update($props));
+            return new JsonResponse($ss->update($id, $props));
         }
         catch(DataObjectException $e){
             return new JsonResponse($e->getErrors(), 400);
@@ -81,7 +81,7 @@ class SiteController extends Controller{
     // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(6)){
+        if(!$user->checkLevel(5)){
             throw new AccessDeniedHttpException();
         }
         
