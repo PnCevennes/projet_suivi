@@ -4,6 +4,8 @@ namespace PNC\ChiroBundle\Services;
 
 use PNC\ChiroBundle\Entity\ConditionsObservation;
 
+use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 class ObservationService{
     // doctrine
@@ -13,7 +15,7 @@ class ObservationService{
     private $norm;
 
     //service taxon
-    private $taxonServ;
+    private $taxonService;
 
     // baseObservation
     private $parentService;
@@ -21,7 +23,7 @@ class ObservationService{
     public function __construct($db, $norm, $taxonServ, $parentServ){
         $this->db = $db;
         $this->norm = $norm;
-        $this->taxonServ = $taxonServ;
+        $this->taxonService = $taxonServ;
         $this->parentService = $parentServ;
     }
 
@@ -123,10 +125,21 @@ class ObservationService{
         return array('id'=>$data['id']);
     }
 
-    public function remove($id){
+    public function remove($id, $cascade=false){
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
         $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+        $taxons = $this->taxonService->getList($id);
+        if($cascade){
+            foreach($taxons as $taxon){
+                $this->taxonService->remove($taxon->getId(), $cascade);
+            }
+        }
+        else{
+            if($taxons){
+                throw new CascadeException();
+            }
+        }
         
         $manager->getConnection()->beginTransaction();
         try{

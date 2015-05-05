@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 class ObservationController extends Controller{
 
@@ -90,16 +91,37 @@ class ObservationController extends Controller{
     public function deleteAction($id){
         // vérification droits utilisateur
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        $delete = false;
+        $cascade = false;
+
+        if($user->checkLevel(5)){
+            $delete = true;
+            $cascade = true;
+        }
+        if($user->checkLevel(3)){
+            $delete = true;
             if(!$user->isOwner($obs->getNumerisateurId())){
-                throw new AccessDeniedHttpException();
+                $cascade = true;
             }
+        }
+        if($user->checkLevel(2) && $user->isOwner($obs->getNumerisateurId())){
+            $delete = true;
+        }
+
+        if(!$delete){
+            throw new AccessDeniedHttpException();
         }
 
         $os = $this->get('observationService');
-        if($os->remove($id)){
-            return new JsonResponse(array('id'=>$id));
+        try{
+            $res = $os->remove($id, $cascade);
         }
-        return new JsonResponse(array('id'=>$id), 404);
+        catch(CascadeException $e){
+            throw new AccessDeniedHttpException();
+        }
+        if(!$res){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
+        return new JsonResponse(array('id'=>$id));
     }
 }

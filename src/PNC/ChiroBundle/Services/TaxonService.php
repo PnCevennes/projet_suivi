@@ -3,6 +3,7 @@
 namespace PNC\ChiroBundle\Services;
 
 use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 use PNC\ChiroBundle\Entity\ObservationTaxon;
 
@@ -13,9 +14,13 @@ class TaxonService{
     // normalizer
     private $norm;
 
-    public function __construct($db, $norm){
+    // service biometrie
+    private $biometrieService;
+
+    public function __construct($db, $norm, $biomServ){
         $this->db = $db;
         $this->norm = $norm;
+        $this->biometrieService = $biomServ;
     }
 
     public function getList($obs_id){
@@ -58,13 +63,25 @@ class TaxonService{
         return array('id'=>$obsTx->getId());
     }
 
-    public function remove($id){
+    public function remove($id, $cascade=false){
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $manager = $this->db->getManager();
         $obsTx = $repo->findOneBy(array('id'=>$id));
         if(!$obsTx){
             return false;
         }
+        $biometries = $this->biometrieService->getList($id);
+        if($cascade){
+            foreach($biometries as $biom){
+                $this->biometrieService->remove($biom->getId());
+            }
+        }
+        else{
+            if($biometries){
+                throw new CascadeException();
+            }
+        }
+
         $manager->remove($obsTx);
         $manager->flush();
         return true;

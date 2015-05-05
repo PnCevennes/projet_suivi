@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 
 class SiteController extends Controller{
@@ -81,12 +82,20 @@ class SiteController extends Controller{
     // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(5)){
+        $delete = $user->checkLevel(5);
+        if(!$delete){
             throw new AccessDeniedHttpException();
         }
+
+        $cascade = true;
         
         $ss = $this->get('siteService');
-        $res = $ss->remove($id);
+        try{
+            $res = $ss->remove($id, $cascade);
+        }
+        catch(CascadeException $e){
+            throw new AccessDeniedHttpException();
+        }
         if(!$res){
             return new JsonResponse(array('id'=>$id), 404);
         }

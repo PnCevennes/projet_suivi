@@ -69,6 +69,13 @@ class ObsTaxonConfigController extends Controller{
                             'options'=>array()
                         ),
                         array(
+                            'name'=>'numId',
+                            'label'=>'Numerisateur',
+                            'type'=>'hidden',
+                            'help'=>'',
+                            'options'=>array('ref'=>'userId')
+                        ),
+                        array(
                             'name'=>'obsId',
                             'label'=>'Id observation',
                             'type'=>'hidden',
@@ -385,6 +392,13 @@ class ObsTaxonConfigController extends Controller{
                             'type'=>'string',
                             'help'=>'',
                             'options'=>array()
+                        ),
+                        array(
+                            'name'=>'numId',
+                            'label'=>'Numerisateur',
+                            'type'=>'xhr',
+                            'help'=>'',
+                            'options'=>array('url'=>'users/id')
                         ),
                         array(
                             'name'=>'obsCommentaire',

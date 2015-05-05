@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 class ObsTaxonController extends Controller
 {
@@ -82,17 +83,37 @@ class ObsTaxonController extends Controller
     // path: DELETE chiro/obs_taxon/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
+        $delete = false;
+        $cascade = false;
+
         // vérification droits utilisateur
-        if(!$user->checkLevel(3)){
-            //TODO verification proprio
+        if($user->checkLevel(5)){
+            $delete = true;
+            $cascade = true;
+        }
+        if($user->checkLevel(3) && $user->isOwner($obs->getNumId())){
+            $delete = true;
+            $cascade = true;
+        }
+        if($user->checkLevel(2) && $user->isOwner($obs->getNumId())){
+            $delete = true;
+        }
+
+        if(!$delete){
             throw new AccessDeniedHttpException();
         }
 
         $ts = $this->get('taxonService');
-        if($ts->remove($id)){
-            return new JsonResponse(array('id'=>$id));
+        try{
+            $res = $ts->remove($id);
         }
-        return new JsonResponse(array('id'=>$id), 404);
+        catch(CascadeException $e){
+            throw new AccessDeniedHttpException();
+        }
+        if(!$res){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
+        return new JsonResponse(array('id'=>$id));
     }
 }
 

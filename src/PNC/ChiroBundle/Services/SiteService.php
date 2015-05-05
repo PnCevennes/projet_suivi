@@ -3,6 +3,7 @@
 namespace PNC\ChiroBundle\Services;
 
 use Commons\Exceptions\DataObjectException;
+use Commons\Exceptions\CascadeException;
 
 use PNC\ChiroBundle\Entity\InfoSite;
 use PNC\ChiroBundle\Entity\SiteFichiers;
@@ -154,11 +155,22 @@ class SiteService{
 
     }
 
-    public function remove($id){
+    public function remove($id, $cascade=false){
         $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
         $infoSite = $repo->findOneBy(array('site_id'=>$id));
         if(!$infoSite){
             return false;
+        }
+        $observations = $this->obsService->getList($id);
+        if($cascade){
+            foreach($observation as $obs){
+                $this->obsService->remove($obs->getId(), $cascade);
+            }
+        }
+        else{
+            if($observations){
+                throw new CascadeException();
+            }
         }
         $site = $infoSite->getParentSite();
 
