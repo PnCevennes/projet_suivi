@@ -3,6 +3,7 @@
 namespace PNC\ChiroBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,16 +87,21 @@ class ObsTaxonController extends Controller
         $delete = false;
         $cascade = false;
 
+        $ts = $this->get('taxonService');
+        $obs = $ts->getOne($id);
+        if(!$obs){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
         // vérification droits utilisateur
         if($user->checkLevel(5)){
             $delete = true;
             $cascade = true;
         }
-        if($user->checkLevel(3) && $user->isOwner($obs->getNumId())){
+        elseif($user->checkLevel(3) && $user->isOwner($obs['numId'])){
             $delete = true;
             $cascade = true;
         }
-        if($user->checkLevel(2) && $user->isOwner($obs->getNumId())){
+        elseif($user->checkLevel(2) && $user->isOwner($obs['numId'])){
             $delete = true;
         }
 
@@ -103,12 +109,11 @@ class ObsTaxonController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $ts = $this->get('taxonService');
         try{
-            $res = $ts->remove($id);
+            $res = $ts->remove($id, $cascade);
         }
         catch(CascadeException $e){
-            throw new AccessDeniedHttpException();
+            return new JsonResponse(array('id'=>$id), 403);
         }
         if(!$res){
             return new JsonResponse(array('id'=>$id), 404);

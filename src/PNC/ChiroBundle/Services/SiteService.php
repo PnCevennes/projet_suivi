@@ -163,8 +163,8 @@ class SiteService{
         }
         $observations = $this->obsService->getList($id);
         if($cascade){
-            foreach($observation as $obs){
-                $this->obsService->remove($obs->getId(), $cascade);
+            foreach($observations as $obs){
+                $this->obsService->remove($obs['id'], $cascade);
             }
         }
         else{

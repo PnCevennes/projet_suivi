@@ -73,7 +73,7 @@ class TaxonService{
         $biometries = $this->biometrieService->getList($id);
         if($cascade){
             foreach($biometries as $biom){
-                $this->biometrieService->remove($biom->getId());
+                $this->biometrieService->remove($biom['id']);
             }
         }
         else{

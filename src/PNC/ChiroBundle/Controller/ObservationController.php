@@ -3,6 +3,7 @@
 namespace PNC\ChiroBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,17 +95,23 @@ class ObservationController extends Controller{
         $delete = false;
         $cascade = false;
 
+        $os = $this->get('observationService');
+        $obs = $os->getOne($id);
+        if(!$obs){
+            return new JsonResponse(array('id'=>$id), 404);
+        }
+
         if($user->checkLevel(5)){
             $delete = true;
             $cascade = true;
         }
         if($user->checkLevel(3)){
             $delete = true;
-            if(!$user->isOwner($obs->getNumerisateurId())){
+            if(!$user->isOwner($obs['numerisateurId'])){
                 $cascade = true;
             }
         }
-        if($user->checkLevel(2) && $user->isOwner($obs->getNumerisateurId())){
+        if($user->checkLevel(2) && $user->isOwner($obs['numerisateurId'])){
             $delete = true;
         }
 
@@ -112,7 +119,6 @@ class ObservationController extends Controller{
             throw new AccessDeniedHttpException();
         }
 
-        $os = $this->get('observationService');
         try{
             $res = $os->remove($id, $cascade);
         }

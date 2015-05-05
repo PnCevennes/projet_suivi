@@ -132,7 +132,7 @@ class ObservationService{
         $taxons = $this->taxonService->getList($id);
         if($cascade){
             foreach($taxons as $taxon){
-                $this->taxonService->remove($taxon->getId(), $cascade);
+                $this->taxonService->remove($taxon['id'], $cascade);
             }
         }
         else{
