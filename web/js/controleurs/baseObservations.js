@@ -57,16 +57,16 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
         $scope.data = {siteId: $routeParams.site_id};
     }
 
-    configServ.bc.splice(2, configServ.bc.length);
-
     $scope.$on('form:init', function(ev, data){
         if(data.obsDate){
             $scope.title = "Modification de l'observation du " + data.obsDate;
             // breadcrumbs
-            configServ.bc.push({label: data.obsDate, url: '#/' + $scope._appName + '/observation/' + data.id});
+            configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
+            configServ.addBc(3, 'Modification', '');
         }
         else{
             $scope.title = 'Nouvelle observation';
+            configServ.addBc(3, $scope.title, '');
         }
     });
 
@@ -87,7 +87,25 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     });
 });
 
+app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ){
+    $scope._appName = $routeParams.appName;
 
+    $rootScope.$broadcast('map:show');
+
+    $scope.schemaUrl = $scope._appName + '/config/observation/detail';
+    $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/' + $routeParams.id;
+    $scope.dataId = $routeParams.id;
+
+    $scope.$on('display:init', function(ev, data){
+        configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
+        $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+    });
+
+});
+
+
+/*
 app.controller('observationSiteEditController', function($scope, $routeParams, $location, configServ, dataServ){
     $scope._appName = $routeParams.appName;
 
@@ -130,23 +148,4 @@ app.controller('observationSiteEditController', function($scope, $routeParams, $
     configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
 
 });
-
-app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ){
-    $scope._appName = $routeParams.appName;
-
-    configServ.bc.splice(1, configServ.bc.length);
-    $rootScope.$broadcast('map:show');
-
-    $scope.schemaUrl = $scope._appName + '/config/observation/detail';
-    $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
-    $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/' + $routeParams.id;
-    $scope.dataId = $routeParams.id;
-
-    $scope.$on('display:init', function(ev, data){
-        if(configServ.bc.length == 1){
-            configServ.bc.push({label: data.siteNom, url: '#/' + $scope._appName + '/site/' + data.siteId});
-        }
-        $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
-    });
-
-});
+*/

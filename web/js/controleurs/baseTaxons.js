@@ -37,11 +37,10 @@ app.controller('taxonDetailController', function($scope, $rootScope, $routeParam
     $scope.dataId = $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/taxons/' + $routeParams.id;
     
-    configServ.bc.splice(2, configServ.bc.length);
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = 'Observation du taxon "' + data.nomComplet + '"';
-        configServ.bc.push({label: 'Observation', url: '#/' + $scope._appName + '/observation/' + data.obsId});
+        configServ.addBc(3, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
     });
 });
 
@@ -59,31 +58,31 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
         $scope.saveUrl = $scope._appName + '/obs_taxon';
         $scope.data = {obsId: $routeParams.obs_id};
     }
-    configServ.bc.splice(3, configServ.bc.length);
 
     $scope.$on('form:init', function(ev, data){
         if(data.cdNom){
             $scope.title = "Modification de l'observation du taxon";
             // breadcrumbs
-            configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + $routeParams.id});
+            configServ.addBc(4, 'Modification', '');
         }
         else{
             $scope.title = 'Nouveau taxon';
+            configServ.addBc(4, $scope.title, '');
         }
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = "l'observation de " + data.nomComplet + ' a été créée avec succès.'
+        userMessages.infoMessage = "l'observation a été créée avec succès.";
         $location.url($scope._appName + '/taxons/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        userMessages.infoMessage = "l'observation de " + data.nomComplet + ' a été modifiée avec succès.'
+        userMessages.infoMessage = "l'observation a été modifiée avec succès.";
         $location.url($scope._appName + '/taxons/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        userMessages.infoMessage = data.nomComplet + " n'était pas là quand on est passés.";
+        userMessages.infoMessage = "le taxon a été retiré avec succès";
         dataServ.forceReload = true;
         $location.url($scope._appName + '/observation/' + data.obsId);
     });

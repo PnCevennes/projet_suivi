@@ -35,13 +35,10 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $rootScope._function='site'; 
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
-    configServ.bc.splice(configServ.bc.length);
-    if(configServ.bc.length == 0){
-
-      $loading.start('spinner-1');
-
-      configServ.bc.push({label: 'Sites', url: '#/' + $scope._appName + '/site'});
+    if(configServ.getBc().length == 0){
+        $loading.start('spinner-1');
     }
+    configServ.addBc(0, 'Sites', '#/' + $scope._appName + '/site'); 
 
 
     /*
@@ -205,10 +202,10 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
-    configServ.bc.splice(1, configServ.bc.length);
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = data.siteNom;
+        configServ.addBc(1, data.siteNom, '#/'+$scope._appName+'/site/'+$routeParams.id);
     });
 
 });
@@ -225,7 +222,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope._appName = $routeParams.appName;
     $rootScope.$broadcast('map:show');
     $scope.configUrl = $scope._appName + '/config/site/form';
-    configServ.bc.splice(1, configServ.bc.length);
 
     if($routeParams.id){
         $scope.saveUrl = $scope._appName + '/site/' + $routeParams.id;
@@ -241,12 +237,12 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('form:init', function(ev, data){
         if(data.siteNom){
             $scope.title = 'Modification du site ' + data.siteNom;
-            if(configServ.bc.length == 1){
-                configServ.bc.push({label: data.siteNom, url: '#/' + $scope._appName + '/site/' + data.id});
-            }
+            configServ.addBc(1, data.siteNom, '#/' + $scope._appName + '/site/' + data.id);
+            configServ.addBc(2, 'Modification');
         }
         else{
             $scope.title = 'Nouveau site';
+            configServ.addBc(2, $scope.title, ''); 
         }
     });
 

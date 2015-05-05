@@ -153,10 +153,11 @@ app.directive('breadcrumbs', function(){
         scope: {_appName: '@appname'},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ, $location){
-            $scope.bc = configServ.bc;
-            if($scope.bc.length == 0){
+            var bc = configServ.getBc();
+            if(bc.length == 0){
                 $location.path($scope._appName + '/site');
             }
+            $scope.bc = bc; //.slice(0, bc.length-1);
         },
     };
 });

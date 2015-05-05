@@ -108,7 +108,25 @@ app.service('dataServ', function($http, $filter){
 app.service('configServ', function(dataServ){
     var cache = {};
 
-    this.bc = [];
+    var bc = [];
+
+    this.addBc = function(lvl, label, path){
+        if(bc.length>lvl){
+            bc.splice(lvl, bc.length);
+        }
+        bc.push({label: label, url: path});
+    }
+
+    this.getBc = function(){
+        return bc;
+    }
+
+
+    this.setBc = function(lvl){
+        if(bc.length>lvl){
+            bc.splice(lvl, bc.length);
+        }
+    }
     /*
      * charge des informations depuis une url si elles ne sont pas déja en cache
      * et les retourne via une callback. Si les variables sont déjà en cache, les 

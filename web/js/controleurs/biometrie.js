@@ -26,11 +26,9 @@ app.controller('biometrieDetailController', function($scope, $rootScope, $routeP
 
     $scope.dataId = $routeParams.id;
 
-    configServ.bc.splice(3, configServ.bc.length);
-
     $scope.$on('display:init', function(ev, data){
         $scope.title = "Biométrie n°" + data.id;
-        configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + data.obsTxId});
+        configServ.addBc(4, $scope.title, '#/'+$scope._appName+'/biometrie/'+data.id);
     });
 
 });
@@ -52,11 +50,11 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
         if($routeParams.id){
             $scope.title = "Modification de la biométrie";
             // breadcrumbs
-            configServ.bc.push({label: 'biometrie', url: '#/' + $scope._appName + '/biometrie/' + $routeParams.id});
+            configServ.addBc(5, 'Modification', '');
         }
         else{
             $scope.title = 'Nouvelle biométrie';
-            configServ.bc.push({label: 'taxon', url: '#/' + $scope._appName + '/taxons/' + $routeParams.otx_id});
+            configServ.addBc(5, $scope.title, '');
         }
     });
 
