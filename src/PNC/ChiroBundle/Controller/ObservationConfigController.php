@@ -15,7 +15,7 @@ class ObservationConfigController extends Controller{
             'deleteAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/obstaxon/form/many',
             'subDataRef'=>'__taxons__',
-            'subBtnTitle'=>'Ajout rapide de taxons',
+            'subTitle'=>'Ajout rapide de taxons',
             'groups'=>array(
                 array(
                     'name'=>'Observation',

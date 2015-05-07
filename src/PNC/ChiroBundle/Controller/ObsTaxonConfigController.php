@@ -56,7 +56,7 @@ class ObsTaxonConfigController extends Controller{
 
         $out = array(
             'deleteAccess'=>5,
-            //'deleteAccessOverride'=>'numerisateurId', FIXME ajouter numerisateurId dans mapping & schema
+            'deleteAccessOverride'=>'numId', 
             'groups'=>array(
                 array(
                     'name'=>'Informations',
@@ -365,7 +365,7 @@ class ObsTaxonConfigController extends Controller{
         $out = array(
             'editAccess'=>3,
             'subEditAccess'=>3,
-            //'editAccessOverride'=>'numerisateurId',
+            'editAccessOverride'=>'numId',
             'subSchemaUrl'=>'chiro/config/biometrie/list',
             'subDataUrl'=>'chiro/biometrie/taxon/',
             'groups'=>array(
