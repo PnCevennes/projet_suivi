@@ -88,11 +88,19 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
         idApp: userServ.getUser().idApplication
     };
     $rootScope.$broadcast('map:hide');
-    configServ.addBc(0, 'Login', '');
+    configServ.bcShown = false;
 
     $scope.$on('user:login', function(ev, user){
         userMessages.infoMessage = user.nomComplet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
-        $location.path('chiro/site'); //FIXME
+        
+        configServ.bcShown = true;
+        var curBc = configServ.getBc();
+        try{
+            $location.path(curBc[curBc.length-1].url.slice(2));
+        }
+        catch(e){
+            $location.path(''); //FIXME
+        }
     });
 
     $scope.$on('user:error', function(ev){
@@ -108,10 +116,16 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
 /*
  * controleur logout
  */
-app.controller('logoutController', function($scope, $location, userServ, userMessages){
+app.controller('logoutController', function($scope, $location, userServ, userMessages, configServ){
     $scope.$on('user:logout', function(ev){
         userMessages.infoMessage = "Tchuss !";
-        $location.path('login');
+        var curBc = configServ.getBc();
+        try{
+            $location.path(curBc[curBc.length-1].url.slice(2));
+        }
+        catch(e){
+            $location.path('login');
+        }
     });
 
     userServ.logout();

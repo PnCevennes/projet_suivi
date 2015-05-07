@@ -158,6 +158,7 @@ app.directive('breadcrumbs', function(){
                 $location.path($scope._appName + '/site');
             }
             $scope.bc = bc; //.slice(0, bc.length-1);
+            $scope.bcShown = configServ.bcShown;
         },
     };
 });

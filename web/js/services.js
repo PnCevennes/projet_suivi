@@ -109,6 +109,7 @@ app.service('configServ', function(dataServ){
     var cache = {};
 
     var bc = [];
+    this.bcShown = true;
 
     this.addBc = function(lvl, label, path){
         if(bc.length>lvl){
