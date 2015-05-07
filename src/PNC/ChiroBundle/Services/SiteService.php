@@ -185,6 +185,7 @@ class SiteService{
     private function hydrate($obj, $data){
         $obj->setSiteFrequentation($data['siteFrequentation']);
         $obj->setSiteMenace($data['siteMenace']);
+        $obj->setSiteMenaceCmt($data['siteMenaceCmt']);
         $obj->setContactNom($data['contactNom']);
         $obj->setContactPrenom($data['contactPrenom']);
         $obj->setContactAdresse($data['contactAdresse']);

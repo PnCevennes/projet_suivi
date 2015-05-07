@@ -33,14 +33,20 @@ class InfoSite
     private $site_schema;
 
     /**
-     * @var string
+     * @var integer
+     *
      */
     private $site_frequentation;
 
     /**
-     * @var string
+     * @var integer
      */
     private $site_menace;
+
+    /**
+     * @var string
+     */
+    private $site_menace_cmt;
 
     /**
      * @var string
@@ -220,6 +226,29 @@ class InfoSite
     public function getSiteMenace()
     {
         return $this->site_menace;
+    }
+
+    /**
+     * Set site_menace_cmt
+     *
+     * @param string $siteMenaceCmt
+     * @return InfoSite
+     */
+    public function setSiteMenaceCmt($siteMenaceCmt)
+    {
+        $this->site_menace_cmt = $siteMenaceCmt;
+
+        return $this;
+    }
+
+    /**
+     * Get site_menace_cmt
+     *
+     * @return string 
+     */
+    public function getSiteMenaceCmt()
+    {
+        return $this->site_menace_cmt;
     }
 
     /**

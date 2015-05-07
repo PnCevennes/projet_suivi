@@ -15,11 +15,27 @@ class SiteConfigController extends Controller{
          */
         $norm = $this->get('normalizer');
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $types = $repo->findBy(array('id_type'=>7));
+        $typeL = $repo->findBy(array('id_type'=>7));
         $typesLieu = array();
-        foreach($types as $tl){
+        foreach($typeL as $tl){
             if($tl->getFkParent() != 0){
                 $typesLieu[] = $norm->normalize($tl, array());
+            }
+        }
+
+        $typeM = $repo->findBy(array('id_type'=>11));
+        $typesMenaces = array();
+        foreach($typeM as $tl){
+            if($tl->getFkParent() != 0){
+                $typesMenaces[] = $norm->normalize($tl, array());
+            }
+        }
+
+        $typeF = $repo->findBy(array('id_type'=>10));
+        $typesFrequentation = array();
+        foreach($typeF as $tl){
+            if($tl->getFkParent() != 0){
+                $typesFrequentation[] = $norm->normalize($tl, array());
             }
         }
 
@@ -105,18 +121,27 @@ class SiteConfigController extends Controller{
                             'options'=>array()
                         ),
                         array(
-                            'name'=>'siteFrequentation',
-                            'label'=>'Fréquentation',
+                            'name'=>'siteMenace',
+                            'label'=>'Type menaces',
+                            'type'=>'select',
+                            'help'=>'Type de menace pesant sur le site',
+                            'options'=>array('choices'=>$typesMenaces),
+                            'default'=>64
+                        ),
+                        array(
+                            'name'=>'siteMenaceCmt',
+                            'label'=>'Menaces',
                             'type'=>'text',
-                            'help'=>'Fréquentation du site',
+                            'help'=>'Description des menaces pesant sur le site',
                             'options'=>array('maxLength'=>1000, 'minLength'=>0)
                         ),
                         array(
-                            'name'=>'siteMenace',
-                            'label'=>'Menaces',
-                            'type'=>'text',
-                            'help'=>'Menaces pesant sur le site',
-                            'options'=>array('maxLength'=>1000, 'minLength'=>0)
+                            'name'=>'siteFrequentation',
+                            'label'=>'Fréquentation',
+                            'type'=>'select',
+                            'help'=>'Estimation de la fréquentation du lieu',
+                            'options'=>array('choices'=>$typesFrequentation),
+                            'default'=>59
                         ),
                     ),
                 ),
@@ -253,6 +278,23 @@ class SiteConfigController extends Controller{
             }
         }
 
+        $typeM = $repo->findBy(array('id_type'=>11));
+        $typesMenaces = array();
+        foreach($typeM as $tl){
+            if($tl->getFkParent() != 0){
+                $typesMenaces[] = $norm->normalize($tl, array());
+            }
+        }
+
+        $typeF = $repo->findBy(array('id_type'=>10));
+        $typesFrequentation = array();
+        foreach($typeF as $tl){
+            if($tl->getFkParent() != 0){
+                $typesFrequentation[] = $norm->normalize($tl, array());
+            }
+        }
+
+
         $out = array(
             'editAccess'=>3,
             'subEditAccess'=>2,
@@ -312,15 +354,22 @@ class SiteConfigController extends Controller{
                         array(
                             'name'=>'siteFrequentation',
                             'label'=>'Fréquentation',
-                            'type'=>'string',
+                            'type'=>'select',
                             'help'=>'Fréquentation du site',
-                            'options'=>array()
+                            'options'=>array('choices'=>$typesFrequentation)
                         ),
                         array(
                             'name'=>'siteMenace',
                             'label'=>'Menaces',
-                            'type'=>'string',
+                            'type'=>'select',
                             'help'=>'Menaces pesant sur le site',
+                            'options'=>array('choices'=>$typesMenaces)
+                        ),
+                        array(
+                            'name'=>'siteMenaceCmt',
+                            'label'=>'Description menaces',
+                            'type'=>'string',
+                            'help'=>'Description des menaces pesant sur le site',
                             'options'=>array()
                         ),
                     ),

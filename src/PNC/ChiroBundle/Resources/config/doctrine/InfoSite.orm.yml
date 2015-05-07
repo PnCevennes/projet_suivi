@@ -20,9 +20,12 @@ PNC\ChiroBundle\Entity\InfoSite:
             length: 255
             nullable: true
         site_frequentation:
-            type: text
+            type: integer
             nullable: true
         site_menace:
+            type: integer
+            nullable: true
+        site_menace_cmt:
             type: text
             nullable: true
         site_commentaire:
