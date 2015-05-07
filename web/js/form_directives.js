@@ -474,27 +474,40 @@ app.directive('spreadsheet', function(){
     return {
         restrict: 'A',
         scope: {
-            shemaUrl: '@schemaurl',
-            dataRef: '@dataref',
-            subTitle: '@subtitle',
-            data: '=',
+            schemaUrl: '=schemaurl',
+            dataRef: '=dataref',
+            subTitle: '=subtitle',
+            dataIn: '=data',
         },
         templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function(){
+        controller: function($scope, configServ){
             var defaultLine = {};
-            $scope.schema.fields.forEach(function(item){
-                defaultLine[item.name] = null;
-            });
-            $scope.onkeyup = function(ev){
-
-            }
-            if($scope.data.length == 0){
+            $scope.data = [];
+            $scope.$watch(
+                function(){
+                    return $scope.schemaUrl;
+                }, 
+                function(newval){
+                    if(newval){
+                        configServ.getUrl(newval, $scope.setSchema);
+                    }
+                }
+            );
+            $scope.setSchema = function(schema){
+                $scope.schema = schema;
+                $scope.schema.fields.forEach(function(item){
+                    defaultLine[item.name] = null;
+                });
                 var lines = [];
                 for(i=0; i<20; i++){
                     lines.push(angular.copy(defaultLine));
                 }
                 $scope.data = lines;
-            }
+
+                if(!$scope.dataIn[$scope.dataRef]){
+                    $scope.dataIn[$scope.dataRef] = $scope.data;
+                }
+            };
         },
     };
 });

@@ -1,12 +1,16 @@
 <div id="subForm" class="spreadsheet-container">
+    <h2>{{subTitle}}</h2>
     <div class="spreadsheet">
         <table>
-            <tr>
-                <th ng-repeat="field in schema.fields">{{field.label}}</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th ng-repeat="field in schema.fields">{{field.label}}</th>
+                </tr>
+            </thead>
+            <tbody>
             <tr ng-repeat="line in data">
                 <td ng-repeat="field in schema.fields">
-                    <ng-form name="spreadSheet"
+                    <ng-form name="spreadSheet">
                         <input id="{{field.name}}" name="{{field.name}}" type="text" ng-if="field.type=='string' && !field.options.multi" ng-model="line[field.name]" ng-minlength="field.options.minLength" ng-maxlength="field.options.maxLength" ng-required="field.options.minLength>0">
                         <input id="{{field.name}}" name="{{field.name}}" type="number" min="{{field.options.min}}" max="{{field.options.max}}" step="{{field.options.step}}" ng-if="field.type=='num' && !field.options.multi" ng-model="line[field.name]">
                         <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="line[field.name]" ngrequired="field.options.required"></div>
@@ -17,6 +21,7 @@
                     </ng-form>
                 </td>
             </tr>
+            </tbody>
         </table>
     </div>
 </div>
