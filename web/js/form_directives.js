@@ -80,16 +80,34 @@ app.directive('multi', function(){
         },
         templateUrl: 'js/templates/form/multi.htm',
         controller: function($scope){
+            $scope.addDisabled = true;
+            $scope.data = $scope.refer;
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
                 if(newval){
-                    $scope.data = newval;
+                    newval.forEach(function(item){
+                        $scope.add(item);
+                    });
+                    //$scope.data = newval;
                     if(newval.length == 0){
-                        $scope.data.push(null);
+                        $scope.add(null);
                     }
                 }
             });
-            $scope.add = function(){
-                $scope.data.push(null);
+            $scope.add = function(item){
+                $scope.data.push(item || null);
+                $scope.$watch(
+                    function(){
+                        return $scope.data[$scope.data.length-1]
+                    },
+                    function(newval){
+                        if(newval){
+                            $scope.addDisabled = false;
+                        }
+                        else{
+                            $scope.addDisabled = true;
+                        }
+                    }
+                );
             };
             $scope.remove = function(idx){
                 $scope.data.splice(idx, 1);
