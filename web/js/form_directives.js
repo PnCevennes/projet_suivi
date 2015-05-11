@@ -84,12 +84,13 @@ app.directive('multi', function(){
             $scope.data = $scope.refer;
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
                 if(newval){
-                    newval.forEach(function(item){
-                        $scope.add(item);
-                    });
-                    //$scope.data = newval;
+                    $scope.data = $scope.refer;
                     if(newval.length == 0){
                         $scope.add(null);
+                        $scope.addDisabled = true;
+                    }
+                    else{
+                        $scope.addDisabled = false;
                     }
                 }
             });
@@ -112,6 +113,12 @@ app.directive('multi', function(){
             $scope.remove = function(idx){
                 $scope.data.splice(idx, 1);
             };
+            if($scope.refer && $scope.refer.length==0){
+                $scope.add(null);
+            }
+            if($scope.data && $scope.data.length>0){
+                $scope.addDisabled = false;
+            }
         }
     }
 });
@@ -275,7 +282,7 @@ app.directive('simpleform', function(){
             $scope.setData = function(resp){
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
-                        $scope.data[field.name] = resp[field.name] || field.default || null;
+                        $scope.data[field.name] = angular.copy(resp[field.name]) || field.default;
                         if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
                             $scope.data[field.name] = userServ.getUser().idRole;
                         }
