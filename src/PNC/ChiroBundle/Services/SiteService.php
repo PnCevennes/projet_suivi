@@ -2,6 +2,8 @@
 
 namespace PNC\ChiroBundle\Services;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Commons\Exceptions\DataObjectException;
 use Commons\Exceptions\CascadeException;
 
@@ -52,7 +54,7 @@ class SiteService{
         $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
         $info = $repo->findOneById($id);
         if(!$info){
-            return new JsonResponse(array('v'=>'detail site', 'err'=>404), 404);
+            throw new NotFoundHttpException();
         }
 
         $out_item = $this->norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));

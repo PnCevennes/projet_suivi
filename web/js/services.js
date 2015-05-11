@@ -1,10 +1,19 @@
 var app = angular.module('suiviProtocoleServices');
 
 
+/*
+ * messages utilisateurs
+ */
+app.service('userMessages', function(){
+    this.infoMessage = '';
+    this.errorMessage = '';
+    this.successMessage = '';
+});
+
 /**
  * Service de gestion des communications avec le serveur
  */
-app.service('dataServ', function($http, $filter){
+app.service('dataServ', function($http, $filter, userMessages){
     //cache de données pour ne pas recharger systématiquement les données du serveur
     var cache = {};
 
@@ -29,7 +38,7 @@ app.service('dataServ', function($http, $filter){
         // ne recharger les données du serveur que si le cache est vide ou 
         // si l'option force est true
         if(!error){
-            error = function(err){console.log(err);}
+            error = function(err){console.log(err)};
         }
         if(cache[url] == undefined || force || this.forceReload){
             $http.get(url)
@@ -38,7 +47,25 @@ app.service('dataServ', function($http, $filter){
                     cache[url] = data.data;
                     success(data.data);
                 },
-                error);
+                function(err){
+                    switch(err.status){
+                        case 500: 
+                            userMessages.errorMessage = "Erreur serveur ! Si cette erreur se reproduit, contactez un administrateur.";
+                            break;
+                        case 404: 
+                            userMessages.errorMessage = "Erreur : Donnée inexistante";
+                            break;
+                        case 403: 
+                            userMessages.errorMessage = "Vous n'êtes pas autorisé à effectuer cette action";
+                            break;
+                        case 400: 
+                            userMessages.errorMessage = "Données inutilisables";
+                            break;
+                        default: userMessages.errorMessage = "Erreur !";
+                    };
+                    error(err);
+                }
+            );
         }
         else{
             success(cache[url]);
@@ -226,15 +253,6 @@ app.service('mapService', function($rootScope, $filter){
 
 });
 
-
-/*
- * messages utilisateurs
- */
-app.service('userMessages', function(){
-    this.infoMessage = '';
-    this.errorMessage = '';
-    this.successMessage = '';
-});
 
 /*
  * service utilisateur

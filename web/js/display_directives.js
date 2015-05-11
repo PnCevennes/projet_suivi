@@ -108,7 +108,7 @@ app.directive('detailDisplay', function(){
                 $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
                 $scope.subEditAccess = userServ.checkLevel($scope.schema.subEditAccess);
                 //récupération des données
-                dataServ.get($scope.dataUrl, $scope.setData);
+                dataServ.get($scope.dataUrl, $scope.setData, function(){dfd.resolve('loading data')});
             };
 
             $scope.setData = function(resp){
