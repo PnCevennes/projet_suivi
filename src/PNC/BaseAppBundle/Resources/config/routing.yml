@@ -20,8 +20,9 @@ pnc_config_getobservateurs:
     requirements:
         _method: GET 
 
+
 pnc_config_upload:
-    path: /upload
+    path: /uploaded
     defaults: {_controller: PNCBaseAppBundle:Config:upload }
 
 

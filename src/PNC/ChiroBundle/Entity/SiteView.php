@@ -125,7 +125,7 @@ class SiteView
      * @param \jsonArray $geom
      * @return SiteView
      */
-    public function setGeom(\jsonArray $geom)
+    public function setGeom( $geom)
     {
         $this->geom = $geom;
 

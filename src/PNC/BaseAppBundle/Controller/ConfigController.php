@@ -51,8 +51,8 @@ class ConfigController extends Controller{
                 $fichier->setPath($file->getClientOriginalName());
                 $manager->persist($fichier);
                 $manager->flush();
-
-                $file->move('uploads', $fichier->getId() . '_' . $fichier->getPath());
+                
+                $file->move($this->get('kernel')->getRootDir().'/../web/uploads', $fichier->getId() . '_' . $fichier->getPath());
                 $manager->getConnection()->commit();
                 return new JsonResponse(array('id'=>$fichier->getId()));
             }
@@ -60,6 +60,7 @@ class ConfigController extends Controller{
                 $manager->getConnection()->rollback();
                 return new JsonResponse(array('err'=>$e->getMessage()), 422);
             }
+          return new JsonResponse(array('err'=>'No files'));
         }
     }
 }
