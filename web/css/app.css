@@ -160,3 +160,7 @@
 .dw-loading.dw-loading-active {
   position: fixed;
 }
+
+.text-info{
+  color:#554A0A;
+}

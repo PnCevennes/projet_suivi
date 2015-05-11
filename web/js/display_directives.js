@@ -92,7 +92,17 @@ app.directive('detailDisplay', function(){
             dataId: '@dataid'
         },
         templateUrl: 'js/templates/display/detail.htm',
-        controller: function($scope, $rootScope, dataServ, configServ, userServ){
+        controller: function($scope, $rootScope, dataServ, configServ, userServ, $loading, $q){
+            /*
+             * Spinner
+             * */
+            $loading.start('spinner-detail');
+            var dfd = $q.defer();
+            var promise = dfd.promise;
+            promise.then(function(result) {
+                $loading.finish('spinner-detail');
+            });
+            
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
                 $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
@@ -115,6 +125,9 @@ app.directive('detailDisplay', function(){
                 if($scope.schema.subSchemaUrl){
                     configServ.getUrl($scope.schema.subSchemaUrl, $scope.setSubSchema);
                 }
+                else {
+                  dfd.resolve('loading data');
+                }
             }
 
             $scope.setSubSchema = function(resp){
@@ -125,6 +138,7 @@ app.directive('detailDisplay', function(){
 
             $scope.setSubData = function(resp){
                 $scope.subData = angular.copy(resp);
+                dfd.resolve('loading data');
             }
 
             // récupération du schéma

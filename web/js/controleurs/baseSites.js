@@ -28,18 +28,14 @@ app.config(function($routeProvider){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading, userServ){
+app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading, userServ, $q){
 
     var data = [];
     $rootScope.$broadcast('map:show');
     $rootScope._function='site'; 
     $scope._appName = $routeParams.appName;
     $scope.nb_sites = {};
-    if(configServ.getBc().length == 0){
-        $loading.start('spinner-1');
-    }
     configServ.addBc(0, 'Sites', '#/' + $scope._appName + '/site'); 
-
 
     /*
      *  initialisation des parametres du tableau
@@ -77,8 +73,18 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
         } 
     });
 
-
-
+    
+    /*
+     * Spinner
+     * */
+    
+    $loading.start('spinner-1');
+    var dfd = $q.defer();
+    var promise = dfd.promise;
+    promise.then(function(result) {
+        $loading.finish('spinner-1');
+    });
+    
     mapService.clear();
     mapService.map.setZoom(10);
 
@@ -108,9 +114,9 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             $scope.tableParams.sorting(sorting);
         });
 
-        $loading.finish('spinner-1');
         $scope.data = data;
         $scope.tableParams.reload();
+        dfd.resolve('loading data');
     };
 
     $scope.setSchema = function(schema){
@@ -247,7 +253,6 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.$on('form:create', function(ev, data){
-
         userMessages.infoMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
         $location.url($scope._appName + '/site/' + data.id);
     });

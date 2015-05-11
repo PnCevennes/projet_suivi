@@ -226,7 +226,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q){
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.isActive = [];
@@ -234,7 +234,17 @@ app.directive('simpleform', function(){
             configServ.get('debug', function(value){
                 $scope.debug = value;   
             });
-
+            /*
+             * Spinner
+             * */
+            $loading.start('spinner-form');
+            var dfd = $q.defer();
+            var promise = dfd.promise;
+            promise.then(function(result) {
+                $loading.finish('spinner-form');
+            });
+            
+            
             $scope.prevPage = function(){
                 if($scope.currentPage > 0){
                     $scope.isActive[$scope.currentPage] = false;
@@ -276,6 +286,7 @@ app.directive('simpleform', function(){
                 }
                 else{
                     $scope.setData($scope.data || {});
+                    dfd.resolve('loading form');
                 }
             };
 
@@ -293,6 +304,7 @@ app.directive('simpleform', function(){
                     $scope.deleteAccess = userServ.isOwner($scope.data[$scope.schema.deleteAccessOverride]);
                 }
                 $rootScope.$broadcast('form:init', $scope.data);
+                dfd.resolve('loading form');
             };
 
             $scope.save = function(){
