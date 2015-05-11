@@ -151,7 +151,7 @@ app.directive('fileinput', function(){
                 angular.forEach(files, function(item){
                     $scope.lock = true;
                     $upload.upload({
-                        url: 'upload',
+                        url: 'uploaded',
                         file: item,
                         })
                         .progress(function(evt){
