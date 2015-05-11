@@ -250,7 +250,7 @@ class SiteConfigController extends Controller{
                 'name'=>'dernObs',
                 'label'=>'Dernière observation',
                 'filter'=>array('dernObs'=>'text'),
-                'options'=>array()
+                'options'=>array('visible'=>true)
             ),
             array(
                 'name'=>'typeLieu',

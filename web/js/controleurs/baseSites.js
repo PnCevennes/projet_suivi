@@ -120,11 +120,11 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     };
 
     $scope.setSchema = function(schema){
-        $scope.schema = schema.listSite;
+        $scope.schema = schema;
         dataServ.get($scope._appName + '/site', $scope.setData);
     };
 
-    configServ.getUrl($scope._appName + '/siteConfig', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/config/site/list', $scope.setSchema);
     
 
     /*

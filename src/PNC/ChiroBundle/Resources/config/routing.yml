@@ -141,34 +141,6 @@ pnc_biometrie_suppr:
 
 
 
-#
-# Configuration client
-# TODO a supprimer
-#
-pnc_chiro_config_site:
-    path: /siteConfig
-    defaults: { _controller: PNCChiroBundle:Config:getSiteConfig }
-    requirements:
-        _method: GET
-
-pnc_chiro_config_obs:
-    path: /obsConfig
-    defaults: { _controller: PNCChiroBundle:Config:getObservationConfig }
-    requirements:
-        _method: GET
-
-pnc_chiro_config_tx_obs:
-    path: /obsTxConfig
-    defaults: { _controller: PNCChiroBundle:Config:getObservationTaxonConfig }
-    requirements:
-        _method: GET
-
-pnc_chiro_config_biom:
-    path: /biomConfig
-    defaults: { _controller: PNCChiroBundle:Config:getBiometrieConfig }
-    requirements:
-        _method: GET
-            
             
 #
 # Vues autocomplete
