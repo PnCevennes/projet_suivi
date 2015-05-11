@@ -482,6 +482,7 @@ app.directive('spreadsheet', function(){
         templateUrl: 'js/templates/form/spreadsheet.htm',
         controller: function($scope, configServ){
             var defaultLine = {};
+            var lines = [];
             $scope.data = [];
             $scope.$watch(
                 function(){
@@ -498,14 +499,16 @@ app.directive('spreadsheet', function(){
                 $scope.schema.fields.forEach(function(item){
                     defaultLine[item.name] = null;
                 });
-                var lines = [];
-                for(i=0; i<20; i++){
-                    lines.push(angular.copy(defaultLine));
-                }
                 $scope.data = lines;
-
+                $scope.addLines();
                 if(!$scope.dataIn[$scope.dataRef]){
                     $scope.dataIn[$scope.dataRef] = $scope.data;
+                }
+            };
+
+            $scope.addLines = function(){
+                for(i=0; i<20; i++){
+                    lines.push(angular.copy(defaultLine));
                 }
             };
         },
