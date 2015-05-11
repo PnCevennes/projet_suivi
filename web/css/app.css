@@ -3,15 +3,6 @@
     height: 100%;
 }
 
-#formToolbox{
-    position: fixed;
-    right: 20px;
-    bottom: 0;
-    width: 100%;
-    background-color: #DDD;
-    z-index: 9999;
-}
-
 .fixed-col {
   height: 40vh;
   padding:0;
@@ -19,28 +10,10 @@
     -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
 }
+
 .content-panel {
  min-height: 90vh;
  padding:10px;
-}
-
-.float-right {
-  float:right;
-}
-
-.float-left {
-  float:left;
-}
-
-
-.sxhrinput li{
-    list-style-type: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-.sxhrinput li:hover{
-    background-color: #AAAAFF;
 }
 
 
@@ -57,6 +30,10 @@
     z-index: 9999;
 }
 
+
+/********************************************************
+ *  Messages utilisateurs
+ ********************************************************/
 .msg-default{
     background-color: #0D2E4C;
 }
@@ -69,43 +46,10 @@
     background-color: green;
 }
 
-.spreadsheet-container{
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-bottom: 0.5em;
-    margin-bottom: 4em;
-}
-.spreadsheet-container table{
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-}   
-.spreadsheet-container th{
-    background-color: #DDD;
-    text-align: center;
-    min-width: 10em;
-}
-.spreadsheet{
-    padding: 0;
-    background-color: white;
-    border: 1px inset #CCC;
-    max-height: 20em;
-    overflow: scroll;
-}
 
-.spreadsheet td{
-    border: 1px dotted #CCC;
-}
-
-.spreadsheet input{
-    border: none;
-    width: 100%;
-}
-
-.css-form input.ng-invalid{
-    border-color: red;
-}
-
+/********************************************************
+ * Menu principal
+ ********************************************************/
 #main-menu {
     font-size: 14px;
     background-color: #0D2E4C;
@@ -142,7 +86,9 @@
     background-color: #750707;
 }
 
-/* custom loader styles */
+/********************************************************
+ * Spinner
+ *******************************************************/
 .custom-loading.dw-loading {
   text-align: center;
 }
@@ -161,6 +107,97 @@
   position: fixed;
 }
 
+/*
+ * Affichage du détail des éléments
+ */
 .text-info{
   color:#554A0A;
+}
+
+/*******************************************************
+ *      FORMULAIRES
+ *******************************************************/
+.css-form input.ng-invalid{
+    border-color: red;
+}
+
+
+.sxhrinput li{
+    list-style-type: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sxhrinput li:hover{
+    background-color: #AAAAFF;
+}
+
+/*
+ *Spreadsheet
+ */
+.spreadsheet-container{
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+    margin-bottom: 4em;
+}
+.spreadsheet-container table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}   
+.spreadsheet-container th{
+    background-color: #DDD;
+    text-align: center;
+    min-width: 10em;
+}
+.spreadsheet{
+    padding: 0;
+    background-color: white;
+    border: 1px inset #CCC;
+    max-height: 20em;
+    overflow: scroll;
+}
+
+.spreadsheet td{
+    border: 1px dotted #CCC;
+}
+
+.spreadsheet input{
+    border: none;
+    width: 100%;
+}
+
+
+/*
+ * Barre d'action des formulaires
+ */
+.btn-toolbox {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#formToolbox{
+    position: fixed;
+    right: 20px;
+    bottom: 0;
+    width: 100%;
+    background-color: #DDD;
+    z-index: 9999;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+/*******************************************************
+ * Balises génériques
+ *******************************************************/
+
+
+.float-right {
+  float:right;
+}
+
+.float-left {
+  float:left;
 }
