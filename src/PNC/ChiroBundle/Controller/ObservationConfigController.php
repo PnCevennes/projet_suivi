@@ -65,14 +65,14 @@ class ObservationConfigController extends Controller{
                         ),
                         array(
                             'name'=>'obsTemperature',
-                            'label'=>'Température',
+                            'label'=>'Température (C°)',
                             'type'=>'num',
                             'help'=>'',
                             'options'=>array()
                         ),
                         array(
                             'name'=>'obsHumidite',
-                            'label'=>'Humidité',
+                            'label'=>'Humidité (%)',
                             'type'=>'num',
                             'help'=>'',
                             'options'=>array()

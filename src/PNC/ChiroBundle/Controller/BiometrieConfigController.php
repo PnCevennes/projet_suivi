@@ -60,80 +60,80 @@ class BiometrieConfigController extends Controller{
                         ),
                         array(
                             'name'=>'biomAb',
-                            'label'=>'Biom AB',
+                            'label'=>'Biom AB (mm)',
                             'type'=>'num',
                             'help'=>"Mesure de l'avant bras",
                             'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomPoids',
-                            'label'=>'Poids',
+                            'label'=>'Poids (g)',
                             'type'=>'num',
                             'help'=>'Poids de la bebette',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomD3mf1',
-                            'label'=>'D3MF1',
+                            'label'=>'D3MF1 (mm)',
                             'type'=>'num',
                             'help'=>"Mesure du 3ème doigt, métacarpe + 1ere phalange",
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomD3f2f3',
-                            'label'=>'D3F2F3',
+                            'label'=>'D3F2F3 (mm)',
                             'type'=>'num',
                             'help'=>'Mesure du 3ème doigt, 2ème et 3ème phalange',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomD3total',
-                            'label'=>'D3 Total',
+                            'label'=>'D3 Total (mm)',
                             'type'=>'num',
                             'help'=>'Longueur totale du 3ème doigt',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomD5',
-                            'label'=>'D5',
+                            'label'=>'D5 (mm)',
                             'type'=>'num',
                             'help'=>'Mesure du 5ème doigt',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomCm3sup',
-                            'label'=>'CM3SUP',
+                            'label'=>'CM3SUP (mm)',
                             'type'=>'num',
                             'help'=>'Mesure canine - 3ème molaire (mandibule supérieure)',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomCm3inf',
-                            'label'=>'CM3INF',
+                            'label'=>'CM3INF (mm)',
                             'type'=>'num',
                             'help'=>'Mesure canine - 3ème molaire (mandibule inférieure)',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomCb',
-                            'label'=>'CB',
+                            'label'=>'CB (mm)',
                             'type'=>'num',
                             'help'=>'Mesure condylobasale',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomLm',
-                            'label'=>'LM',
+                            'label'=>'LM (mm)',
                             'type'=>'num',
                             'help'=>'Mesure mandibule inférieure',
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomOreille',
-                            'label'=>'Oreille',
+                            'label'=>'Oreille (mm)',
                             'type'=>'num',
                             'help'=>"Mesure de l'oreille",
-                            'options'=>array('step'=>'0.0001')
+                            'options'=>array('step'=>'0.01')
                         ),
                         array(
                             'name'=>'biomCommentaire',
