@@ -32,7 +32,6 @@ app.directive('angucompletewrapper', function(dataServ){
 
             $scope.$watch('localselectedobject', function(newval){
                 if(newval && newval.id){
-                    console.log(newval)
                     $scope.selectedobject = newval.id;
                 }
             });
@@ -86,7 +85,7 @@ app.directive('multi', function(){
             schema: '=',
         },
         templateUrl: 'js/templates/form/multi.htm',
-        controller: function($scope){
+        controller: function($scope, userMessages){
             $scope.addDisabled = true;
             $scope.data = $scope.refer;
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
@@ -109,6 +108,11 @@ app.directive('multi', function(){
                     },
                     function(newval){
                         if(newval){
+                            // protection doublons
+                            if($scope.data.indexOf(newval)<$scope.data.length-1){
+                                userMessages.errorMessage = "Il y a un doublon dans votre saisie !";
+                                $scope.data.pop();
+                            }
                             $scope.addDisabled = false;
                         }
                         else{
