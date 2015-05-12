@@ -159,7 +159,8 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
             var cnt = data.length;
             var res = $filter('filter')(data, {id: item.feature.properties.id});
             var idx = data.indexOf(res[0]);
-            var pg = idx / $scope.tableParams.count();
+            var pg = (idx+1) / $scope.tableParams.count();
+            console.log(pg);
             $scope.tableParams.page(Math.ceil(pg) || 1);
 
         });
