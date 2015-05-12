@@ -16,7 +16,7 @@
                         <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="line[field.name]" ngrequired="field.options.required"></div>
                         <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="line[field.name]">
                         <select id="{{field.name}}" ng-options="item.id as item.libelle for item in field.options.choices" ng-model="line[field.name]" ng-if="field.type=='select' && !field.options.multi"></select>
-                        <angucompletewrapper id="{{field.name}}" name="{{field.name}}" pause="100" selectedobject="line[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="line[field.name]" ngrequired="field.options.required"></angucompletewrapper>
+                        <angucompletewrapper id="{{field.name}}" name="{{field.name}}" selectedobject="line[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="line[field.name]" ngrequired="field.options.required"></angucompletewrapper>
                         <calculated id="{{field.name}}" ng-if="field.type=='sum' && !field.options.multi" refs="field.options.ref" data="line" model="line[field.name]" modifiable="field.options.modifiable"></calculated>
                     </ng-form>
                 </td>

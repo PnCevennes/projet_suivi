@@ -1,4 +1,4 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'angucomplete', 'ui.bootstrap', 'darthwade.loading']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
@@ -46,12 +46,17 @@ app.config(function($routeProvider){
 /*
  * Controleur de base
  */
-app.controller('baseController', function($scope, dataServ, configServ, mapService, userMessages){
+app.controller('baseController', function($scope, dataServ, configServ, mapService, userMessages, userServ){
     $scope.success = function(resp){
         $scope.data = resp;
         $scope.showMap = false;
         $scope.user = null;
+
+        // FIXME DEBUG
         configServ.put('debug', true);
+        userServ.login('as_test', 'test', 100);
+
+        
         configServ.put('app', $scope.data[0]);
         userMessages.infoMessage = "bienvenue !";
         $scope._appName = $scope.data[0].name;

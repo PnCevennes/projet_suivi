@@ -2,7 +2,7 @@ var app = angular.module('FormDirectives');
 
 
 /**
- * wrapper pour la directive angucomplete permettant de l'utiliser en édition
+ * wrapper pour la directive typeahead permettant de l'utiliser en édition
  * requete inverse au serveur pour obtenir un label lié à l'ID fourni et passage
  * label à la directive pour affichage
  * params supplémentaires:
@@ -13,8 +13,6 @@ app.directive('angucompletewrapper', function(dataServ){
     return {
         restrict: 'E',
         scope: {
-            id: '@',
-            name: '@',
             inputclass: '@',
             selectedobject: '=',
             url: '@',
@@ -22,19 +20,28 @@ app.directive('angucompletewrapper', function(dataServ){
             reverseurl: '@',
             ngrequired: '=',
         },
-        template: '<angucomplete id="{{id}}" inputclass="{{inputclass}}" pause="100" selectedobject="localselectedobject" url="{{url}}" titlefield="label" initial="localInitial"></angucomplete><input type="hidden" name="_{{name}}" ng-model="selectedobject" ng-required="ngrequired"></input>',
-        controller: function($scope){
-            $scope.localselectedobject = {};
+        template: '<input type="text" class="{{inputclass}}" ng-model="localselectedobject" typeahead="item as item.label for item in find($viewValue)" typeahead-loading="items" typeahead-editable="false" typeahead-min-length="3" required="ngrequired"></input><input type="hidden" ng-model="selectedobject" required="ngrequired"></input>',
+        controller: function($scope, $http){
+            $scope.localselectedobject = '';
+
+            $scope.find = function(txt){
+                return $http.get($scope.url + txt).then(function(resp){
+                    return resp.data;    
+                });
+            };
+
+            $scope.$watch('localselectedobject', function(newval){
+                if(newval && newval.id){
+                    console.log(newval)
+                    $scope.selectedobject = newval.id;
+                }
+            });
+
             $scope.$watch('initial', function(newval){
                 if(newval){
                     dataServ.get($scope.reverseurl + '/' + newval, function(resp){
-                        $scope.localInitial = resp.label;
+                        $scope.localselectedobject = resp;
                     });
-                }
-            });
-            $scope.$watch('localselectedobject', function(newval){
-                if(newval && newval.originalObject){
-                    $scope.selectedobject = newval.originalObject.id;
                 }
             });
         }
@@ -116,7 +123,8 @@ app.directive('multi', function(){
             if($scope.refer && $scope.refer.length==0){
                 $scope.add(null);
             }
-            if($scope.data && $scope.data.length>0){
+            else{
+            //if($scope.data && $scope.data.length>0){
                 $scope.addDisabled = false;
             }
         }

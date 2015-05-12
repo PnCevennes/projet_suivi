@@ -9,7 +9,7 @@
         <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="data[field.name]" ngrequired="field.options.required" ngdisabled="field.options.readOnly"></div>
         <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="data[field.name]" ng-disabled="field.options.readOnly">
         <select id="{{field.name}}" class="form-control" ng-options="item.id as item.libelle for item in field.options.choices" ng-model="data[field.name]" ng-if="field.type=='select' && !field.options.multi" ng-disabled="field.options.readOnly"></select>
-        <angucompletewrapper inputclass="form-control" id="{{field.name}}" name="{{field.name}}" pause="100" selectedobject="data[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="data[field.name]" ngrequired="field.options.required" ngdisabled="field.options.readOnly"></angucompletewrapper>
+        <angucompletewrapper inputclass="form-control" id="{{field.name}}" name="{{field.name}}" selectedobject="data[field.name]" url="{{field.options.url}}/" reverseurl="{{field.options.reverseurl}}" titlefield="label" ng-if="field.type=='xhr' && !field.options.multi" initial="data[field.name]" ngrequired="field.options.required" ngdisabled="field.options.readOnly"></angucompletewrapper>
         <textarea class="form-control" id="{{field.name}}" ng-if="field.type=='text' && !field.options.multi" ng-model="data[field.name]" ng-disabled="field.options.readOnly"></textarea>
         <calculated ngclass="form-control" id="{{field.name}}" ng-if="field.type=='sum' && !field.options.multi" refs="field.options.ref" data="data" model="data[field.name]" modifiable="field.options.modifiable"></calculated>
         <fileinput ng-if="field.type=='file' && !field.options.multi" fileids="data[field.name]"></fileinput>
@@ -17,3 +17,4 @@
     </div>
 </fieldset>
 
+<pre style='clear:both;' ng-if="debug">{{Simpleform|json}}</pre>
