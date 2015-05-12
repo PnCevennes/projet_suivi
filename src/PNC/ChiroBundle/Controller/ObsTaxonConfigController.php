@@ -8,6 +8,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ObsTaxonConfigController extends Controller{
 
+    // path: GET chiro/taxons/id/{id}
+    public function getTaxonsIdAction($id){
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Taxons');
+        $resp = $repo->findOneBy(array('cd_nom'=>$id));
+        if($resp){
+            return new JsonResponse(array('id'=>$id, 'label'=>$resp->getNomComplet()));
+        }
+        return new JsonResponse(array());
+    }
+
+    // path: GET chiro/taxons/{qr}
+    public function getTaxonsAction($qr){
+        $repo = $this->getDoctrine()->getRepository('PNCChiroBundle:Taxons');
+        $resp = $repo->getLike($qr);
+        $out = array();
+        foreach($resp as $item){
+            $out[] = array('id'=>$item->getCdNom(), 'label'=>$item->getNomComplet());
+        }
+        return new JsonResponse($out);
+    }
+
     // path : GET chiro/config/obstaxon/form
     public function getFormAction(){
         $norm = $this->get('normalizer');
@@ -48,11 +69,6 @@ class ObsTaxonConfigController extends Controller{
                 $typePrv[] = $norm->normalize($tl, array());
             }
         }
-
-
-
-
-
 
         $out = array(
             'deleteAccess'=>5,

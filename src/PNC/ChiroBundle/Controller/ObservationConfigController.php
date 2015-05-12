@@ -54,7 +54,7 @@ class ObservationConfigController extends Controller{
                             'label'=>'Date',
                             'type'=>'date',
                             'help'=>'',
-                            'options'=>array()
+                            'options'=>array('required'=>true)
                         ),
                         array(
                             'name'=>'obsCommentaire',

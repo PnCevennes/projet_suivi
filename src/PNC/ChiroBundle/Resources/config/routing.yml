@@ -147,13 +147,13 @@ pnc_biometrie_suppr:
 #
 
 pnc_chiro_config_taxons_id:
-    path: /taxons/id/{q}
-    defaults: { _controller: PNCChiroBundle:Config:getTaxonsId, q: null }
+    path: /taxons/id/{id}
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getTaxonsId, id: null }
     requirements:
         _method: GET
 
 pnc_chiro_config_taxons:
-    path: /taxons/{q}
-    defaults: { _controller: PNCChiroBundle:Config:getTaxons, q: null }
+    path: /taxons/{qr}
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getTaxons, qr: null }
     requirements:
         _method: GET
