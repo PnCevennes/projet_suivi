@@ -9,25 +9,34 @@ var app = angular.module('FormDirectives');
  *  initial -> l'ID fourni
  *  reverseurl -> l'url permettant d'obtenir le label correspondant à l'ID
  */
-app.directive('angucompletewrapper', function(dataServ){
+app.directive('angucompletewrapper', function(dataServ, $http){
     return {
         restrict: 'E',
         scope: {
             inputclass: '@',
             selectedobject: '=',
+            ngBlur: '=',
             url: '@',
             initial: '=',
             reverseurl: '@',
             ngrequired: '=',
         },
-        template: '<input type="text" class="{{inputclass}}" ng-model="localselectedobject" typeahead="item as item.label for item in find($viewValue)" typeahead-loading="items" typeahead-editable="false" typeahead-min-length="3" required="ngrequired"></input><input type="hidden" ng-model="selectedobject" required="ngrequired"></input>',
-        controller: function($scope, $http){
+        template: '<input id="aw" ng-blur="ngBlur" type="text" class="{{inputclass}}" ng-model="localselectedobject" typeahead="item as item.label for item in find($viewValue || null)" typeahead-loading="items" typeahead-editable="false" typeahead-min-length="3" required="ngrequired" ng-change="test()"></input><input type="hidden" ng-model="selectedobject" required="ngrequired"></input>',
+        link: function($scope, elem){
             $scope.localselectedobject = '';
 
+            $scope.test = function(){
+                if($('#aw')[0].value == ''){
+                    $scope.selectedobject = null;
+                }
+            };
+
             $scope.find = function(txt){
-                return $http.get($scope.url + txt).then(function(resp){
-                    return resp.data;    
-                });
+                if(txt){
+                    return $http.get($scope.url + txt).then(function(resp){
+                        return resp.data;    
+                    });
+                }
             };
 
             $scope.$watch('localselectedobject', function(newval){
@@ -194,12 +203,15 @@ app.directive('calculated', function(){
         scope: {
             id: "@",
             ngclass: "@",
+            ngBlur: "=",
+            min: '=',
+            max: '=',
             data: '=',
             refs: '=',
             model: '=',
             modifiable: '=',
         },
-        template: '<input id="{{id}}" class="{{ngclass}}" type="number" ng-model="model" ng-disabled="!modifiable"/>',
+        template: '<input id="{{id}}" ng-blur="ngBlur" class="{{ngclass}}" type="number" min="{{min}}" max="{{max}}" ng-model="model" ng-disabled="!modifiable"/>',
         controller: function($scope){
             angular.forEach($scope.refs, function(elem){
                 $scope.$watch(function(){
@@ -238,7 +250,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet){
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.isActive = [];
@@ -320,6 +332,15 @@ app.directive('simpleform', function(){
             };
 
             $scope.save = function(){
+                if($scope.schema.subDataRef){
+                    res = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
+                    console.log(res);
+                    if(res){
+                        userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
+                        var confirm_save = userMessages.confirm("Il y a des erreurs dans le sous formulaire de saisie rapide.\n\nSi vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées");
+                    }
+                }
+                
                 if($scope.dataUrl){
                     dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
                 }
@@ -346,7 +367,7 @@ app.directive('simpleform', function(){
             }
 
             $scope.remove = function(){
-                if(confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
+                if(userMessages.confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
                     dataServ.delete($scope.saveUrl, $scope.removed);
                 }
             }
@@ -493,6 +514,13 @@ app.directive('datepick', function(){
 });
 
 
+app.factory('SpreadSheet', function(){
+    return {
+        errorMessage: {},
+        hasErrors: {},
+    };
+});
+
 /**
  * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
  * params : 
@@ -511,7 +539,7 @@ app.directive('spreadsheet', function(){
             dataIn: '=data',
         },
         templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function($scope, configServ){
+        controller: function($scope, configServ, SpreadSheet){
             var defaultLine = {};
             var lines = [];
             $scope.data = [];
@@ -532,16 +560,77 @@ app.directive('spreadsheet', function(){
                 });
                 $scope.data = lines;
                 $scope.addLines();
-                if(!$scope.dataIn[$scope.dataRef]){
-                    $scope.dataIn[$scope.dataRef] = $scope.data;
-                }
             };
 
             $scope.addLines = function(){
-                for(i=0; i<20; i++){
-                    lines.push(angular.copy(defaultLine));
+                for(i=0; i<3; i++){
+                    line = angular.copy(defaultLine);
+                    lines.push(line);
                 }
             };
+
+            $scope.check = function(){
+                console.log('check');
+                var out = [];
+                var err_lines = [];
+                var primaries = [];
+                var errMsg = "Erreur";
+                var hasErrors = false;
+                $scope.data.forEach(function(line){
+                    var line_valid = true;
+                    var line_empty = true;
+                    $scope.schema.fields.forEach(function(field){
+                        if(line[field.name]){
+                            line_empty = false;
+                        }
+                        if((field.options.required || field.options.primary) && !line[field.name]){
+                            line_valid = false;
+                        }
+                        if(field.options.primary && line_valid){
+                            //gestion des clés primaires pour la suppression des doublons
+                            if(primaries.indexOf(line[field.name])>-1){
+                                line_valid = false;
+                                errMsg = "Doublon";
+                                hasErrors = true
+                            }
+                            else{
+                                primaries.push(line[field.name]);
+                            }
+                        }
+                    });
+                    if(line_valid){
+                        out.push(line);
+                    }
+                    else{
+                        if(!line_empty){
+                            err_lines.push($scope.data.indexOf(line) + 1);
+                            hasErrors = true;
+                        }
+                    }
+                });
+
+                //FIXME debug
+                console.log('lines');
+                console.log(out);
+                console.log('errors');
+                console.log(err_lines);
+
+                if(!$scope.dataIn[$scope.dataRef]){
+                    $scope.dataIn[$scope.dataRef] = [];
+                }
+                else{
+                    $scope.dataIn[$scope.dataRef].splice(0);
+                }
+                out.forEach(function(item){
+                    $scope.dataIn[$scope.dataRef].push(item);
+                });
+                if(hasErrors){
+                    errMsg = 'Il y a des erreurs ligne(s) : '+err_lines.join(', ');
+                    SpreadSheet.errorMessage[$scope.dataRef]= errMsg;
+                }
+                return hasErrors;
+            };
+            SpreadSheet.hasErrors[$scope.dataRef] = $scope.check;
         },
     };
 });
