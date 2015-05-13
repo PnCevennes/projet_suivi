@@ -1,15 +1,5 @@
 var app = angular.module('suiviProtocoleServices');
 
-
-/*
- * messages utilisateurs
- */
-app.service('userMessages', function(){
-    this.infoMessage = '';
-    this.errorMessage = '';
-    this.successMessage = '';
-});
-
 /**
  * Service de gestion des communications avec le serveur
  */

@@ -1,6 +1,27 @@
 var app = angular.module('DisplayDirectives');
 
 
+
+/*
+ * messages utilisateurs
+ */
+app.service('userMessages', function(){
+    this.infoMessage = '';
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    // wrapper pour alert
+    this.alert = function(txt){
+        return alert(txt);
+    };
+
+    // wrapper pour confirm
+    this.confirm = function(txt){
+        return confirm(txt);
+    };
+});
+
+
 /**
  * Directive pour l'affichage des messages utilisateur en popover
  */
@@ -46,6 +67,9 @@ app.directive('usermsg', function(userMessages, $timeout){
                 $timeout(function(){
                     userMessages.infoMessage = null;
                     $scope.hideMsg=true;
+                    userMessages.infoMessage = '';
+                    userMessages.errorMessage = '';
+                    userMessages.successMessage = '';
                 }, 3500);
 
             }
