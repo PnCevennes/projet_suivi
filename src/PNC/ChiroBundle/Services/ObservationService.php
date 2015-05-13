@@ -90,9 +90,24 @@ class ObservationService{
             throw new DataObjectException($errors);
         }
 
+        if(isset($data['__taxons__'])){
+            foreach($data['__taxons__'] as $taxon){
+                $taxon['obsId'] = $resObs;
+                $taxon['numId'] = $data['numerisateurId'];
+                $taxon['obsObjStatusValidation'] = 56;
+                $taxon['obsCommentaire'] = '';
+                $taxon['obsValidateur'] = null;
+
+                $this->taxonService->create($taxon);
+            }
+
+        }
         $cobs->setObsId($resObs);
         $manager->persist($cobs);
         $manager->flush();
+
+
+
         $manager->getConnection()->commit();
         return array('id'=>$resObs);
     }

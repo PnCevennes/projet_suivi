@@ -249,6 +249,34 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
+        // Mode d'observation
+        $mods = $repo->findBy(array('id_type'=>4));
+        $typeMod = array();
+        foreach($mods as $tl){
+            if($tl->getFkParent() != 0){
+                $typeMod[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Activité
+        $acts = $repo->findBy(array('id_type'=>5));
+        $typeAct = array();
+        foreach($acts as $tl){
+            if($tl->getFkParent() != 0){
+                $typeAct[] = $norm->normalize($tl, array());
+            }
+        }
+
+        // Preuves de reproduction
+        $prvs = $repo->findBy(array('id_type'=>6));
+        $typePrv = array();
+        foreach($prvs as $tl){
+            if($tl->getFkParent() != 0){
+                $typePrv[] = $norm->normalize($tl, array());
+            }
+        }
+
+
         $out = array(
             'title'=>'Ajout rapide de taxons',
             'fields'=>array(
@@ -257,7 +285,7 @@ class ObsTaxonConfigController extends Controller{
                     'label'=>'Nom taxon',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
+                    'options'=>array('primary'=>true, 'url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
                 ),
                 array(
                     'name'=>'obsTxInitial',
@@ -271,7 +299,32 @@ class ObsTaxonConfigController extends Controller{
                     'label'=>'Espece incertaine',
                     'type'=>'bool',
                     'help'=>'',
+                    'default'=>false,
                     'options'=>array()
+                ),
+                array(
+                    'name'=>'modId',
+                    'label'=>"Mode d'observation",
+                    'type'=>'select',
+                    'help'=>'',
+                    'options'=>array('choices'=> $typeMod),
+                    'default'=>18
+                ),
+                array(
+                    'name'=>'actId',
+                    'label'=>'Activité',
+                    'type'=>'select',
+                    'help'=>'',
+                    'options'=>array('choices'=> $typeAct),
+                    'default'=>25
+                ),
+                array(
+                    'name'=>'prvId',
+                    'label'=>'Preuves de reproduction',
+                    'type'=>'select',
+                    'help'=>'',
+                    'options'=>array('choices'=> $typePrv),
+                    'default'=>32
                 ),
                 array(
                     'name'=>'obsEffectifAbs',
@@ -279,6 +332,8 @@ class ObsTaxonConfigController extends Controller{
                     'type'=>'sum',
                     'help'=>'',
                     'options'=>array(
+                        'min'=>0,
+                        'required'=>true,
                         'ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'), 
                         'modifiable'=>true
                     )
@@ -288,49 +343,49 @@ class ObsTaxonConfigController extends Controller{
                     'label'=>'Mâles adultes',
                     'type'=>'num',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbFemelleAdulte',
                     'label'=>'Femelles adultes',
                     'type'=>'num',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbMaleJuvenile',
                     'label'=>'Mâles juveniles',
                     'type'=>'num',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbFemelleJuvenile',
                     'label'=>'Femelles juveniles',
                     'type'=>'num',
                     'help'=>'',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbMaleIndetermine',
                     'label'=>'Mâles indeterminés',
                     'type'=>'num',
                     'help'=>'Age indéterminé',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbFemelleIndetermine',
                     'label'=>'Femelles indeterminées',
                     'type'=>'num',
                     'help'=>'Age indéterminé',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
                 array(
                     'name'=>'obsNbIndetermineIndetermine',
                     'label'=>'Indetermines indeterminés',
                     'type'=>'num',
                     'help'=>'Age et sexe indéterminés',
-                    'options'=>array()
+                    'options'=>array('min'=>0)
                 ),
             ),
         );
