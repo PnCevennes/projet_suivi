@@ -245,7 +245,6 @@ app.directive('simpleform', function(){
             saveUrl: '=saveurl',
             schemaUrl: '=schemaurl',
             dataUrl: '=dataurl',
-            creating: '=',
             data: '='
         },
         transclude: true,
@@ -253,6 +252,7 @@ app.directive('simpleform', function(){
         controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet){
             $scope.errors = {};
             $scope.currentPage = 0;
+            $scope.addSubSchema = false;
             $scope.isActive = [];
             $scope.isDisabled = [];
             configServ.get('debug', function(value){
@@ -309,6 +309,9 @@ app.directive('simpleform', function(){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }
                 else{
+                    if($scope.schema.subSchemaAdd && userServ.checkLevel($scope.schema.subSchemaAdd)){
+                        $scope.addSubSchema = true;
+                    }
                     $scope.setData($scope.data || {});
                     dfd.resolve('loading form');
                 }
@@ -332,20 +335,23 @@ app.directive('simpleform', function(){
             };
 
             $scope.save = function(){
+                var errors = null;
+                var confirm_save = true;
                 if($scope.schema.subDataRef){
-                    res = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
-                    console.log(res);
-                    if(res){
+                    errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
+                    console.log(errors);
+                    if(errors){
                         userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
                         var confirm_save = userMessages.confirm("Il y a des erreurs dans le sous formulaire de saisie rapide.\n\nSi vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées");
                     }
                 }
-                
-                if($scope.dataUrl){
-                    dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
-                }
-                else{
-                    dataServ.put($scope.saveUrl, $scope.data, $scope.created, $scope.error);
+                if(confirm_save){
+                    if($scope.dataUrl){
+                        dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
+                    }
+                    else{
+                        dataServ.put($scope.saveUrl, $scope.data, $scope.created, $scope.error);
+                    }
                 }
             };
 
@@ -632,5 +638,34 @@ app.directive('spreadsheet', function(){
             };
             SpreadSheet.hasErrors[$scope.dataRef] = $scope.check;
         },
+    };
+});
+
+app.directive('subeditform', function(){
+    return{
+        restrict: 'A',
+        scope: {
+            schema: "=",
+            saveUrl: "=saveurl",
+            refId: "=refid",
+        },
+        template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button><pre>{{data|json}}</pre>',
+        controller: function($scope, $location, $window, dataServ, configServ, SpreadSheet){
+            console.log($scope);
+            $scope.data = {refId: $scope.refId};
+            $scope.dataRef = '__items__';
+
+            $scope.save = function(){
+                errors = SpreadSheet.hasErrors[$scope.dataRef]();
+                console.log(errors);
+                dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+            };
+
+            $scope.saved = function(resp){
+                dataServ.forceReload = true;
+                var bc = configServ.getBc();
+                $location.path(bc[bc.length-1]);
+            };
+        }
     };
 });

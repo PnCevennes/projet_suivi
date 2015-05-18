@@ -54,7 +54,6 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     }
     else{
         $scope.saveUrl = $scope._appName + '/observation';
-        $scope.creating = true;
         $scope.data = {siteId: $routeParams.site_id};
     }
 

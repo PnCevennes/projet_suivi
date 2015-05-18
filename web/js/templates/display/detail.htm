@@ -20,7 +20,8 @@
 <div ng-if="subSchema">
     <h2>{{subSchema.title}}</h2>
     <a class="btn btn-success" ng-if="subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
-    <table class="table" ng-if="subData.length>0">
+    <button type="button" class="btn btn-primary" ng-if="subData.length==0 && subEditAccess && schema.subEditSchemaUrl" ng-click="switchEditing()">{{subSchema.createBtnLabel}} - Rapide</button>
+    <table class="table" ng-if="subData.length>0 && !subEditing">
         <tr>
             <th ng-repeat="subf in subSchema.fields">{{subf.label}}</th>
         </tr>
@@ -34,7 +35,8 @@
             </td>
         </tr>
     </table>
-    <div ng-if="subData.length==0">{{subSchema.emptyMsg}}</div>
+    <div ng-if="subData.length==0 && !subEditing">{{subSchema.emptyMsg}}</div>
+    <div ng-if="subData.length==0 && subEditing" subeditform schema="schema.subEditSchemaUrl" saveurl="schema.subEditSaveUrl" refid="data[schema.subEditRef]"></div>
 </div>
 
 <div dw-loading="spinner-detail" dw-loading-options="{text: 'Chargement des données'}" ng-options="{ text: '', className: 'custom-loading', spinnerOptions: {radius:30, width:8, length: 16, color: '#f0f', direction: -1, speed: 3}}"></div>

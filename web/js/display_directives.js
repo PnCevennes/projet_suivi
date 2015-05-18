@@ -117,6 +117,7 @@ app.directive('detailDisplay', function(){
         },
         templateUrl: 'js/templates/display/detail.htm',
         controller: function($scope, $rootScope, dataServ, configServ, userServ, $loading, $q){
+            $scope.subEditing = false;
             /*
              * Spinner
              * */
@@ -163,6 +164,10 @@ app.directive('detailDisplay', function(){
             $scope.setSubData = function(resp){
                 $scope.subData = angular.copy(resp);
                 dfd.resolve('loading data');
+            }
+
+            $scope.switchEditing = function(){
+                $scope.subEditing = !$scope.subEditing;
             }
 
             // récupération du schéma

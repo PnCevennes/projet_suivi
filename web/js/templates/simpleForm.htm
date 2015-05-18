@@ -30,7 +30,7 @@
         </div>
     </div>   
 </form>
-<div spreadsheet ng-if="schema.subSchemaUrl && creating" schemaurl="schema.subSchemaUrl" dataref="schema.subDataRef" data="data" subtitle="schema.subTitle"></div>
+<div spreadsheet ng-if="addSubSchema" schemaurl="schema.subSchemaUrl" dataref="schema.subDataRef" data="data" subtitle="schema.subTitle"></div>
 <pre style='clear:both;' ng-if="debug">{{data|json}}</pre>
 
 
