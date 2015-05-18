@@ -15,6 +15,7 @@ class ObservationConfigController extends Controller{
             'deleteAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/obstaxon/form/many',
             'subDataRef'=>'__taxons__',
+            'subSchemaAdd'=>2,
             'subTitle'=>'Ajout rapide de taxons',
             'groups'=>array(
                 array(
@@ -129,10 +130,21 @@ class ObservationConfigController extends Controller{
             'editAccessOverride'=>'numerisateurId',
             'subSchemaUrl'=>'chiro/config/obstaxon/list',
             'subDataUrl'=>'chiro/obs_taxon/observation/',
+            'subEditSchemaUrl'=>'chiro/config/obstaxon/form/many',
+            'subEditSaveUrl'=>'chiro/obs_taxon/many',
+            'subEditRef'=>'id',
+            'subSchemaAdd'=>2,
             'groups'=>array(
                 array(
                     'name'=>'Observation',
                     'fields'=>array(
+                        array(
+                            'name'=>'id',
+                            'label'=>'',
+                            'type'=>'string',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
                         array(
                             'name'=>'siteNom',
                             'label'=>'Site',

@@ -42,16 +42,42 @@ class TaxonService{
         return null;
     }
     
-    public function create($data){
-        $manager = $this->db->getManager();
-        $obsTx = new ObservationTaxon();
-        $this->hydrate($obsTx, $data);
-        $manager->persist($obsTx);
-        $manager->flush();
+    public function create($data, $db=null, $commit=true){
+        if($db){
+            $manager = $db;
+        }
+        else{
+            $manager = $this->db->getManager();
+        }
+        if($commit){
+            $manager->getConnection()->beginTransaction();
+        }
+        try{
+            $obsTx = new ObservationTaxon();
+            $this->hydrate($obsTx, $data);
+            $manager->persist($obsTx);
+            $manager->flush();
+            if(isset($data['__biometries__'])){
+                foreach($data['__biometries__'] as $biom){
+                    $biom['obsTxId'] = $obsTx->getId();
+                    $biom['biomCommentaire'] = '';
+                    $this->biometrieService->create($biom, false);
+                }
+            }
+        }
+        catch(DataObjectException $e){
+            if($commit){
+                $manager->getConnection()->rollback();
+                throw new DataObjectException($e->getErrors());
+            }
+        }
+        if($commit){
+            $manager->getConnection()->commit();
+        }
         return array('id'=>$obsTx->getId());
     }
 
-    public function update($data){
+    public function update($id, $data){
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $manager = $this->db->getManager();
         $obsTx = $repo->findOneBy(array('id'=>$id));

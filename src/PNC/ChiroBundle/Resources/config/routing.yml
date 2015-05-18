@@ -94,6 +94,12 @@ pnc_observation_taxon_create:
     requirements:
         _method: PUT
 
+pnc_observation_taxon_create_many:
+    path:     /obs_taxon/many
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:createMany }
+    requirements:
+        _method: PUT
+
 pnc_observation_taxon_update:
     path:     /obs_taxon/{id}
     defaults: { _controller: PNCChiroBundle:ObsTaxon:update, id: null }

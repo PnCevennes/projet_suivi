@@ -78,6 +78,12 @@ suivi_chiro_config_biometrie_form:
     requirements:
         _method: GET
 
+suivi_chiro_config_biometrie_form_many:
+    path: biometrie/form/many
+    defaults: { _controller: PNCChiroBundle:BiometrieConfig:getFormMany }
+    requirements:
+        _method: GET
+
 suivi_chiro_config_biometrie_detail:
     path: biometrie/detail
     defaults: { _controller: PNCChiroBundle:BiometrieConfig:getDetail }

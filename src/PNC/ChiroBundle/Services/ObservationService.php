@@ -89,19 +89,26 @@ class ObservationService{
             $manager->getConnection()->rollback();
             throw new DataObjectException($errors);
         }
-
         if(isset($data['__taxons__'])){
-            foreach($data['__taxons__'] as $taxon){
-                $taxon['obsId'] = $resObs;
-                $taxon['numId'] = $data['numerisateurId'];
-                $taxon['obsObjStatusValidation'] = 56;
-                $taxon['obsCommentaire'] = '';
-                $taxon['obsValidateur'] = null;
+            try{
+                foreach($data['__taxons__'] as $taxon){
+                    $taxon['obsId'] = $resObs;
+                    $taxon['numId'] = $data['numerisateurId'];
+                    $taxon['obsObjStatusValidation'] = 56;
+                    $taxon['obsCommentaire'] = '';
+                    $taxon['obsValidateur'] = null;
 
-                $this->taxonService->create($taxon);
+                    $this->taxonService->create($taxon, false);
+                }
+
             }
-
+            catch(DataObjectException $e){
+                $manager->getConnection()->rollback();
+                $errors = $e->getErrors();
+                throw new DataObjectException($errors);
+            }
         }
+
         $cobs->setObsId($resObs);
         $manager->persist($cobs);
         $manager->flush();

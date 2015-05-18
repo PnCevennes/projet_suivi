@@ -56,13 +56,26 @@ class BiometrieService{
      *  raise:
      *      DataObjectException si les données sont invalides
      */
-    public function create($data){
+    public function create($data, $commit=true){
         $manager = $this->db->getManager();
-        $biom = new Biometrie();
-
-        $this->hydrate($biom, $data);
-        $manager->persist($biom);
-        $manager->flush();
+        if($commit){
+            $manager->getConnection()->beginTransaction();
+        }
+        try{
+            $biom = new Biometrie();
+            $this->hydrate($biom, $data);
+            $manager->persist($biom);
+            $manager->flush();
+        }
+        catch(DataObjectException $e){
+            if($commit){
+                $manager->getConnection()->rollback();
+            }
+            throw new DataObjectException($e->getErrors());
+        }
+        if($commit){
+            $manager->getConnection()->commit();
+        }
         return array('id'=>$biom->getId());
 
     }

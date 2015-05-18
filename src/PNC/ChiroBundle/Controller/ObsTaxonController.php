@@ -53,8 +53,38 @@ class ObsTaxonController extends Controller
             $errs = $obsTx->errors();
             return new JsonResponse($errs, 400);
         }
+    }
 
+    // path: PUT chiro/obs_taxon/many
+    public function createManyAction(Request $req){
 
+        // vérification droits utilisateur
+        $user = $this->get('userServ');
+        $ts = $this->get('taxonService');
+        if(!$user->checkLevel(2)){
+            throw new AccessDeniedHttpException();
+        }
+        $in_data = json_decode($req->getContent(), true);
+        $db = $this->get('doctrine');
+        $db->getConnection()->beginTransaction();
+        $manager = $db->getManager();
+        try{
+            foreach($in_data['__items__'] as $item){
+                $item['obsId'] = $in_data['refId'];
+                $item['numId'] = $user->getUser()->getIdRole();
+                $item['obsObjStatusValidation'] = 56;
+                $item['obsCommentaire'] = '';
+                $item['obsValidateur'] = null;
+                $ts->create($item, $manager, false);
+            }
+        }
+        catch(DataObjectException $e){
+            $db->getConnection()->rollback();
+            $errs = $e->getErrors();
+            return new JsonResponse($errs, 400);
+        }
+        $db->getConnection()->commit();
+        return new JsonResponse(array('id'=>$in_data['refId']));
     }
 
     // path: POST chiro/obs_taxon/{id}

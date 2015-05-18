@@ -73,6 +73,10 @@ class ObsTaxonConfigController extends Controller{
         $out = array(
             'deleteAccess'=>5,
             'deleteAccessOverride'=>'numId', 
+            'subSchemaAdd'=>3,
+            'subSchemaUrl'=>'chiro/config/biometrie/form/many',
+            'subDataRef'=>'__biometries__',
+            'subTitle'=>'Ajout rapide de biometries',
             'groups'=>array(
                 array(
                     'name'=>'Informations',
@@ -242,7 +246,7 @@ class ObsTaxonConfigController extends Controller{
         $norm = $this->get('normalizer');
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
         $types = $repo->findBy(array('id_type'=>9));
-        $typesVal = array();
+        $typesVal = array(array('id'=>null, 'libelle'=>''));
         foreach($types as $tl){
             if($tl->getFkParent() != 0){
                 $typesVal[] = $norm->normalize($tl, array());
@@ -251,7 +255,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Mode d'observation
         $mods = $repo->findBy(array('id_type'=>4));
-        $typeMod = array();
+        $typeMod = array(array('id'=>null, 'libelle'=>''));
         foreach($mods as $tl){
             if($tl->getFkParent() != 0){
                 $typeMod[] = $norm->normalize($tl, array());
@@ -260,7 +264,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array();
+        $typeAct = array(array('id'=>null, 'libelle'=>''));
         foreach($acts as $tl){
             if($tl->getFkParent() != 0){
                 $typeAct[] = $norm->normalize($tl, array());
@@ -269,7 +273,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Preuves de reproduction
         $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array();
+        $typePrv = array(array('id'=>null, 'libelle'=>''));
         foreach($prvs as $tl){
             if($tl->getFkParent() != 0){
                 $typePrv[] = $norm->normalize($tl, array());
@@ -285,7 +289,11 @@ class ObsTaxonConfigController extends Controller{
                     'label'=>'Nom taxon',
                     'type'=>'xhr',
                     'help'=>'',
-                    'options'=>array('primary'=>true, 'url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
+                    'options'=>array(
+                        'primary'=>true, 
+                        'url'=>'chiro/taxons', 
+                        'reverseurl'=>'chiro/taxons/id', 
+                        'ref'=>'cdNom')
                 ),
                 array(
                     'name'=>'obsTxInitial',
@@ -438,6 +446,7 @@ class ObsTaxonConfigController extends Controller{
             'subEditAccess'=>3,
             'editAccessOverride'=>'numId',
             'subSchemaUrl'=>'chiro/config/biometrie/list',
+            'subSchemaAdd'=>3,
             'subDataUrl'=>'chiro/biometrie/taxon/',
             'groups'=>array(
                 array(
