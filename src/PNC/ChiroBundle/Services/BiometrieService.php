@@ -56,8 +56,13 @@ class BiometrieService{
      *  raise:
      *      DataObjectException si les données sont invalides
      */
-    public function create($data, $commit=true){
-        $manager = $this->db->getManager();
+    public function create($data, $db=null, $commit=true){
+        if(!$db){
+            $manager = $this->db->getManager();
+        }
+        else{
+            $manager = $db;
+        }
         if($commit){
             $manager->getConnection()->beginTransaction();
         }

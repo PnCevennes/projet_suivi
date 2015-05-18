@@ -48,6 +48,34 @@ class BiometrieController extends Controller
         }
     }
 
+    // path: PUT chiro/biometrie/many
+    public function createManyAction(Request $req){
+        $user = $this->get('userServ');
+        if(!$user->checkLevel(3)){
+            throw new AccessDeniedHttpException();
+        }
+        $bs = $this->get('biometrieService');
+        $data = json_decode($req->getContent(), true);
+        $db = $this->get('doctrine');
+        $db->getConnection()->beginTransaction();
+        $manager = $db->getManager();
+        try{
+            foreach($data['__items__'] as $item){
+                $item['obsTxId'] = $data['refId'];
+                $item['biomCommentaire'] = '';
+                $bs->create($item, $manager, false);
+            }
+        }
+        catch(DataObjectException $e){
+            $db->getConnection()->rollback();
+            $errs = $e->getErrors();
+            return new JsonResponse($errs, 400);
+        }
+        $db->getConnection()->commit();
+        return new JsonResponse(array('id'=>$data['refId']));
+
+    }
+
     // path: POST chiro/biometrie/{id}
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');

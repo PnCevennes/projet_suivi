@@ -133,6 +133,12 @@ pnc_biometrie_create:
     requirements:
         _method: PUT
 
+pnc_biometrie_create_many:
+    path:     /biometrie/many
+    defaults: { _controller: PNCChiroBundle:Biometrie:createMany }
+    requirements:
+        _method: PUT
+
 pnc_biometrie_update:
     path:     /biometrie/{id}
     defaults: { _controller: PNCChiroBundle:Biometrie:update, id: null }

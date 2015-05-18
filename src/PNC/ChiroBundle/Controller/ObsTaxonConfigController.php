@@ -446,12 +446,22 @@ class ObsTaxonConfigController extends Controller{
             'subEditAccess'=>3,
             'editAccessOverride'=>'numId',
             'subSchemaUrl'=>'chiro/config/biometrie/list',
-            'subSchemaAdd'=>3,
             'subDataUrl'=>'chiro/biometrie/taxon/',
+            'subEditSchemaUrl'=>'chiro/config/biometrie/form/many',
+            'subEditSaveUrl'=>'chiro/biometrie/many',
+            'subEditRef'=>'id',
+            'subSchemaAdd'=>3,
             'groups'=>array(
                 array(
                     'name'=>'Général',
                     'fields'=>array(
+                        array(
+                            'name'=>'id',
+                            'label'=>'',
+                            'type'=>'hidden',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
                         array(
                             'name'=>'cdNom',
                             'label'=>'Cd nom',

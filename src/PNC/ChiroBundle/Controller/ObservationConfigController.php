@@ -141,7 +141,7 @@ class ObservationConfigController extends Controller{
                         array(
                             'name'=>'id',
                             'label'=>'',
-                            'type'=>'string',
+                            'type'=>'hidden',
                             'help'=>'',
                             'options'=>array()
                         ),
