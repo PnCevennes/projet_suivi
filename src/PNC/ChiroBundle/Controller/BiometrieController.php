@@ -59,11 +59,13 @@ class BiometrieController extends Controller
         $db = $this->get('doctrine');
         $db->getConnection()->beginTransaction();
         $manager = $db->getManager();
+        $ids = array();
         try{
             foreach($data['__items__'] as $item){
                 $item['obsTxId'] = $data['refId'];
                 $item['biomCommentaire'] = '';
-                $bs->create($item, $manager, false);
+                $res = $bs->create($item, $manager, false);
+                $ids[] = $res['id'];
             }
         }
         catch(DataObjectException $e){
@@ -72,7 +74,7 @@ class BiometrieController extends Controller
             return new JsonResponse($errs, 400);
         }
         $db->getConnection()->commit();
-        return new JsonResponse(array('id'=>$data['refId']));
+        return new JsonResponse(array('ids'=>$ids));
 
     }
 

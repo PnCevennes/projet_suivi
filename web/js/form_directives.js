@@ -650,21 +650,21 @@ app.directive('subeditform', function(){
             refId: "=refid",
         },
         template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button><pre>{{data|json}}</pre>',
-        controller: function($scope, $location, $window, dataServ, configServ, SpreadSheet){
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet){
             console.log($scope);
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
             $scope.save = function(){
                 errors = SpreadSheet.hasErrors[$scope.dataRef]();
-                console.log(errors);
                 dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
             };
 
             $scope.saved = function(resp){
-                dataServ.forceReload = true;
-                var bc = configServ.getBc();
-                $location.path(bc[bc.length-1]);
+                resp.ids.forEach(function(item, key){
+                    $scope.data.__items__[key].id = item;
+                });
+                $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
             };
         }
     };

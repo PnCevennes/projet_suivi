@@ -68,6 +68,7 @@ class ObsTaxonController extends Controller
         $db = $this->get('doctrine');
         $db->getConnection()->beginTransaction();
         $manager = $db->getManager();
+        $ids = array();
         try{
             foreach($in_data['__items__'] as $item){
                 $item['obsId'] = $in_data['refId'];
@@ -75,7 +76,8 @@ class ObsTaxonController extends Controller
                 $item['obsObjStatusValidation'] = 56;
                 $item['obsCommentaire'] = '';
                 $item['obsValidateur'] = null;
-                $ts->create($item, $manager, false);
+                $res = $ts->create($item, $manager, false);
+                $ids[] = $res['id'];
             }
         }
         catch(DataObjectException $e){
@@ -84,7 +86,7 @@ class ObsTaxonController extends Controller
             return new JsonResponse($errs, 400);
         }
         $db->getConnection()->commit();
-        return new JsonResponse(array('id'=>$in_data['refId']));
+        return new JsonResponse(array('ids'=>$ids));
     }
 
     // path: POST chiro/obs_taxon/{id}

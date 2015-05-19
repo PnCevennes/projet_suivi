@@ -166,6 +166,12 @@ app.directive('detailDisplay', function(){
                 dfd.resolve('loading data');
             }
 
+            $scope.$on('subEdit:dataAdded', function(evt, data){
+                $scope.subEditing = false;
+                dataServ.forceReload = true;
+                dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
+            });
+
             $scope.switchEditing = function(){
                 $scope.subEditing = !$scope.subEditing;
             }
