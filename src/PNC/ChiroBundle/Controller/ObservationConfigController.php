@@ -95,6 +95,7 @@ class ObservationConfigController extends Controller{
             'createUrl'=>'#/chiro/edit/observation/site/',
             'editUrl'=>'#/chiro/edit/observation/',
             'detailUrl'=>'#/chiro/observation/',
+            'editAccess'=>2,
             'fields'=>array(
                 array(
                     'name'=>'id',
@@ -119,7 +120,6 @@ class ObservationConfigController extends Controller{
                         'visible'=>true,
                         'type'=>'list'
                     )
-
                 ),
                 array(
                     'name'=>'nbTaxons',

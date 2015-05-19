@@ -300,6 +300,7 @@ class BiometrieConfigController extends Controller{
             'createUrl'=>'#/chiro/edit/biometrie/taxon/',
             'editUrl'=>'#/chiro/edit/biometrie/',
             'detailUrl'=>'#/chiro/biometrie/',
+            'editAccess'=>3,
             'fields'=>array(
                 array(
                     'name'=>'id',

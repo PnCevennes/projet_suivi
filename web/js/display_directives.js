@@ -216,12 +216,14 @@ app.directive('tablewrapper', function(){
     return {
         restrict: 'A',
         scope: {
-            refName: '=refname',
+            refName: '@refname',
             schema: '=',
             data: '=',
         },
         templateUrl: 'js/templates/display/tableWrapper.htm',
-        controller: function($scope, $rootScope, $filter, configServ, ngTableParams){
+        controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
+
+            $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
             /*
              *  initialisation des parametres du tableau
              */

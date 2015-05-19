@@ -627,6 +627,7 @@ class ObsTaxonConfigController extends Controller{
             'createUrl'=>'#/chiro/edit/taxons/observation/',
             'editUrl'=>'#/chiro/edit/taxons/',
             'detailUrl'=>'#/chiro/taxons/',
+            'editAccess'=>3,
             'fields'=>array(
                 array(
                     'name'=>'id',
