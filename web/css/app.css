@@ -149,7 +149,13 @@
 .spreadsheet-container th{
     background-color: #DDD;
     text-align: center;
+}
+.spreadsheet-container td{
     min-width: 10em;
+}
+.spreadsheet-container tbody th{
+    min-width: 3em;
+    max-width: 3em;
 }
 .spreadsheet{
     padding: 0;
