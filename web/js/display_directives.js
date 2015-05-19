@@ -212,3 +212,79 @@ app.directive('breadcrumbs', function(){
     };
 });
 
+app.directive('tablewrapper', function(){
+    return {
+        restrict: 'A',
+        scope: {
+            refName: '=refname',
+            schema: '=',
+            data: '=',
+        },
+        templateUrl: 'js/templates/display/tableWrapper.htm',
+        controller: function($scope, $rootScope, $filter, configServ, ngTableParams){
+            /*
+             *  initialisation des parametres du tableau
+             */
+            $scope.tableParams = new ngTableParams({
+                page: 1,
+                count: 10,
+                filter: {},
+                sorting: {}
+            },
+            {
+                counts: [10, 25, 50],
+                total: $scope.data.length, // length of data
+                getData: function ($defer, params) {
+                    // use build-in angular filter
+                    var filteredData = params.filter() ?
+                            $filter('filter')($scope.data, params.filter()) :
+                            $scope.data;
+                    var orderedData = params.sorting() ?
+                            $filter('orderBy')(filteredData, params.orderBy()) :
+                            $scope.data;
+                    var ids = [];
+                    configServ.put($scope.refName + ':ngTable:Filter', params.filter());
+                    configServ.put($scope.refName + ':ngTable:Sorting', params.sorting());
+                    //configServ.put($scope.refName + ':ngTable:orderedData', orderedData);
+                    //TODO
+                    angular.forEach(orderedData, function(item){
+                        ids.push(item.id);
+                    });
+
+
+                    params.total(orderedData.length); // set total for recalc pagination
+                    $scope.currentSel = {total: $scope.data.length, current: orderedData.length};
+
+                    
+                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                } 
+            });
+
+
+            // récupération des filtres utilisés sur le tableau 
+            configServ.get($scope.refName + ':ngTable:Filter', function(filter){
+                $scope.tableParams.filter(filter);
+            });
+            // récupération du tri utilisé sur le tableau 
+            configServ.get($scope.refName + ':ngTable:Sorting', function(sorting){
+                $scope.tableParams.sorting(sorting);
+            });
+
+
+            /*
+             * Fonctions
+             */
+            $scope.selectItem = function(item){
+                $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+            };
+
+            /*
+             * Listeners
+             */
+            $scope.$on($scope.refName + ':select', function(evt, item){
+
+            });
+
+        },
+    };
+});

@@ -93,27 +93,39 @@ class ObservationConfigController extends Controller{
             'emptyMsg'=>'Aucune observation pour le moment',
             'createBtnLabel'=>'Nouvelle obs.',
             'createUrl'=>'#/chiro/edit/observation/site/',
+            'editUrl'=>'#/chiro/edit/observation/',
+            'detailUrl'=>'#/chiro/observation/',
             'fields'=>array(
                 array(
                     'name'=>'id',
-                    'type'=>'hidden',
+                    'label'=>'ID',
+                    'filter'=>array('id'=>'text'),
+                    'options'=>array('visible'=>false)
                 ),
                 array(
                     'name'=>'obsDate',
                     'label'=>"Date d'observation",
-                    'type'=>'link',
-                    'url'=>'#/chiro/observation/',
-                    'ref'=>'id',
+                    'filter'=>array('obsDate'=>'text'),
+                    'options'=>array(
+                        'visible'=>true,
+                        'type'=>'date',
+                    )
                 ),
                 array(
                     'name'=>'observateurs',
                     'label'=>'Observateurs',
-                    'type'=>'list',
+                    'filter'=>array('observateurs'=>'text'),
+                    'options'=>array(
+                        'visible'=>true,
+                        'type'=>'list'
+                    )
+
                 ),
                 array(
                     'name'=>'nbTaxons',
                     'label'=>'Taxons',
-                    'type'=>'string',
+                    'filter'=>array('nbTaxons'=>'text'),
+                    'options'=>array('visible'=>true)
                 ),
             ),
         );

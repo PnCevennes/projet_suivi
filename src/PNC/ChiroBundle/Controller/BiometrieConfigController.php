@@ -298,34 +298,40 @@ class BiometrieConfigController extends Controller{
             'emptyMsg'=>'Aucune biométrie',
             'createBtnLabel'=>'Nouvelle biométrie',
             'createUrl'=>'#/chiro/edit/biometrie/taxon/',
+            'editUrl'=>'#/chiro/edit/biometrie/',
+            'detailUrl'=>'#/chiro/biometrie/',
             'fields'=>array(
                 array(
                     'name'=>'id',
-                    'label'=>'Numéro',
-                    'type'=>'link',
-                    'url'=>'#/chiro/biometrie/',
-                    'ref'=>'id',
+                    'label'=>'ID',
+                    'filter'=>array('id'=>'text'),
+                    'options'=>array('visible'=>false)
                 ),
                 array(
                     'name'=>'ageId',
                     'label'=>'Age',
-                    'type'=>'select',
-                    'help'=>'',
-                    'options'=>array('choices'=>$typesAge)
+                    'filter'=>array('ageId'=>'text'),
+                    'options'=>array(
+                        'visible'=>true,
+                        'type'=>'select',
+                        'choices'=>$typesAge,
+                    )
                 ),
                 array(
                     'name'=>'sexeId',
                     'label'=>'Sexe',
-                    'type'=>'select',
-                    'help'=>'',
-                    'options'=>array('choices'=>$typesSexe)
+                    'filter'=>array('sexeId'=>'text'),
+                    'options'=>array(
+                        'visible'=>true,
+                        'type'=>'select',
+                        'choices'=>$typesSexe,
+                    )
                     ),
                 array(
                     'name'=>'biomPoids',
                     'label'=>'Poids',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
+                    'filter'=>array('biomPoids'=>'text'),
+                    'options'=>array('visible'=>true)
                     ),
                 ),
             );

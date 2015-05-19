@@ -625,25 +625,36 @@ class ObsTaxonConfigController extends Controller{
             'emptyMsg'=>'Aucun taxon observé',
             'createBtnLabel'=>'Ajouter taxon',
             'createUrl'=>'#/chiro/edit/taxons/observation/',
+            'editUrl'=>'#/chiro/edit/taxons/',
+            'detailUrl'=>'#/chiro/taxons/',
             'fields'=>array(
+                array(
+                    'name'=>'id',
+                    'label'=>'ID',
+                    'filter'=>array('id'=>'text'),
+                    'options'=>array('visible'=>false)
+                ),
                 array(
                     'name'=>'nomComplet',
                     'label'=>'Nom taxon',
-                    'type'=>'link',
-                    'url'=>'#chiro/taxons/',
-                    'ref'=>'id',
+                    'filter'=>array('nomComplet'=>'text'),
+                    'options'=>array('visible'=>true)
                 ),
                 array(
                     'name'=>'obsEffectifAbs',
                     'label'=>'Effectif total',
-                    'type'=>'string',
-                    'options'=>array()
+                    'filter'=>array('obsEffectifAbs'=>'text'),
+                    'options'=>array('visible'=>true)
                 ),
                 array(
                     'name'=>'obsObjStatusValidation',
                     'label'=>'Statut validation',
-                    'type'=>'select',
-                    'options'=>array('choices'=>$typesVal)
+                    'filter'=>array('obsObjStatusValidation'=>'text'),
+                    'options'=>array(
+                        'visible'=>true,
+                        'type'=>'select',
+                        'choices'=>$typesVal
+                    )
                 ),
             ),
         );

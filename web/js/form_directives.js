@@ -338,8 +338,13 @@ app.directive('simpleform', function(){
                 var errors = null;
                 var confirm_save = true;
                 if($scope.schema.subDataRef){
-                    errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
-                    console.log(errors);
+                    if(SpreadSheet.hasErrors[$scope.schema.subDataRef]){
+                        errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
+                        console.log(errors);
+                    }
+                    else{
+                        errors = null;
+                    }
                     if(errors){
                         userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
                         var confirm_save = userMessages.confirm("Il y a des erreurs dans le sous formulaire de saisie rapide.\n\nSi vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées");
