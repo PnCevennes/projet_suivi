@@ -37,9 +37,6 @@ app.factory('mapService', function(){
  * params:
  *  configUrl [str] -> url du fichier de config des fonds carto
  *  data [obj] -> Liste des géométries 
- *  editId [str] -> ID du layer à éditer
- *  editRef [obj] -> référence du champ formulaire (eq ng-model)
- *  editOptions [obj] -> options d'édition (type geom, etc.)
  */
 app.directive('leafletMap', function(){
     return {
@@ -47,9 +44,6 @@ app.directive('leafletMap', function(){
         scope: {
             configUrl: '@',
             data: '=',
-            editId: '@',
-            editRef: '=',
-            editOptions: '=',
         },
         template: '<div id="mapd"></div>',
         controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ){
@@ -58,16 +52,15 @@ app.directive('leafletMap', function(){
 
             var map = null;
             var layer = null; 
-            var editLayer = null;
-            var editControl = null;
             var tileLayers = {};
             var geoms = [];
             var currentSel = null;
+            var layerControl = null;
 
             var initialize = function(){
+                console.log(map);
                 dfd = $q.defer();
-                map = L.map('mapd');
-                mapService.map = map;
+                map = L.map('mapd', {maxZoom: 15});
                 layer = L.markerClusterGroup({disableClusteringAtZoom: 13});
                 layer.addTo(map);
                 configServ.getUrl($scope.configUrl, function(res){
@@ -82,27 +75,31 @@ app.directive('leafletMap', function(){
                     map.setView(
                         [resource.center.lat, resource.center.lng], 
                         resource.center.zoom);
-                    var layerControl = L.control.layers(tileLayers, {'Données': layer});
-                    if($scope.editId){
-                        editLayer = new L.FeatureGroup();
-                        layerControl.addOverlay(editLayer, 'Edition');
-                        var editControl = new L.control.draw({
-                            edit: {featureGroup: $scope.editLayer},
-                            draw: {
-                                circle: false,
-                                rectangle: false,
-                                marker: $scope.options.geometryType == 'point',
-                                polyline: $scope.options.geometryType == 'linestring',
-                                polygon: $scope.options.geometryType == 'polygon',
-                            },
-                        });
-                        map.addControl(editControl);
-                    }
-
+                    layerControl = L.control.layers(tileLayers, {'Données': layer});
+                    
                     layerControl.addTo(map);
-                    mapService.layerControl = layerControl;
                     dfd.resolve();
                 });
+
+                var getLayerControl = function(){
+                    return layerControl;
+                };
+                mapService.getLayerControl = getLayerControl;
+
+                var getLayer = function(){
+                    return layer;
+                };
+                mapService.getLayer = getLayer;
+
+                var getMap = function(){
+                    return map;
+                }
+                mapService.getMap = getMap;
+
+                var getGeoms = function(){
+                    return geoms;
+                }
+                mapService.getGeoms = getGeoms;
 
                 var filterData = function(ids){
                     angular.forEach(geoms, function(geom){
@@ -134,9 +131,7 @@ app.directive('leafletMap', function(){
 
 
                 var selectItem = function(_id){
-                    console.log(_id);
                     var geom = getItem(_id);
-                    console.log(geom);
                     
                     try{
                         if(currentSel){
@@ -218,11 +213,13 @@ app.directive('leafletMap', function(){
             });
 
 
-            $scope.$on('$destroy', function(evt){
-                mapService.layerReady = false;
-                mapService.geoms = [];
-            });
             */
+            $scope.$on('$destroy', function(evt){
+                console.log(map);
+                if(map){
+                    map.remove();
+                }
+            });
         }
     };
 });

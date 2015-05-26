@@ -91,6 +91,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
                 mapService.filterData(ids);
             });
 
+
             dataServ.get($scope._appName + '/site', $scope.setData);
         });
     };

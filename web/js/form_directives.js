@@ -400,7 +400,7 @@ app.directive('simpleform', function(){
  *  options: options à passer tel que le type de géométrie editer
  *  origin: identifiant du point à éditer
  */
-app.directive('geometry', function(){
+app.directive('geometry', function($timeout){
     return {
         restrict: 'A',
         scope: {
@@ -420,15 +420,22 @@ app.directive('geometry', function(){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
+            $scope._editLayer = function(layer){
+                mapService.getLayer().removeLayer(layer);
+                $scope.updateCoords(layer);
+                layer.addTo($scope.editLayer);
+                current = layer;
+            }
+
             mapService.initialize().then(function(){
-                mapService.layerControl.addOverlay($scope.editLayer, "Edition");
+                mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
+                mapService.getMap().addLayer($scope.editLayer);
+                mapService.getMap().removeLayer(mapService.getLayer());
                 mapService.loadData($scope.options.dataUrl).then(function(){
                     if($scope.origin){
-                        var layer = mapService.getItem($scope.origin);
+                        var layer = mapService.selectItem($scope.origin);
                         if(layer){
-                            $scope.updateCoords(layer);
-                            $scope.editLayer.addLayer(layer);
-                            current = layer;
+                            $scope._editLayer(layer);
                         }
                     }
                 });
@@ -444,9 +451,10 @@ app.directive('geometry', function(){
                     },
                 });
 
-                mapService.map.addControl($scope.controls);
+                mapService.getMap().addControl($scope.controls);
 
-                mapService.map.on('draw:created', function(e){
+
+                mapService.getMap().on('draw:created', function(e){
                     if(!current){
                         $scope.editLayer.addLayer(e.layer);
                         current = e.layer;
@@ -454,14 +462,17 @@ app.directive('geometry', function(){
                     }
                 });
 
-                mapService.map.on('draw:edited', function(e){
+                mapService.getMap().on('draw:edited', function(e){
                     $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
                 });
 
-                mapService.map.on('draw:deleted', function(e){
+                mapService.getMap().on('draw:deleted', function(e){
                     current = null;
                     $rootScope.$apply($scope.updateCoords(current));
                 });
+                $timeout(function() {
+                    mapService.getMap().invalidateSize();
+                }, 0 );
             
             });
 
@@ -481,7 +492,7 @@ app.directive('geometry', function(){
                     }
                 }
             };
-            
+            /*
             $scope.$on('$destroy', function(ev){
                 mapService.geoms = [];
                 /*
@@ -494,9 +505,9 @@ app.directive('geometry', function(){
                 mapService.map.removeControl($scope.controls);
                 mapService.layerControl.removeLayer($scope.editLayer);
                 $scope.controls = null;
-                */
+                * /
             });
-
+            */
            
 
 
