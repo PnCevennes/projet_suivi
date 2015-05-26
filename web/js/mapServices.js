@@ -123,10 +123,12 @@ app.directive('leafletMap', function(){
                 var getItem = function(_id){
                     var res = $filter('filter')(geoms, {feature: {properties: {id: _id}}}, function(act, exp){return act==exp;});
                     try{
-                        map.setView(geom.getLatLng(), Math.max(this.map.getZoom(), 13));
+                        console.log(res);
+                        map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
                         return res[0];
                     }
                     catch(e){
+                        console.log(e);
                         return null;
                     }
                 };
