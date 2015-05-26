@@ -43,6 +43,19 @@ class SiteConfigController extends Controller{
             'deleteAccess' => 5,
             'groups' => array(
                 array(
+                    'name'=>'Géographie',
+                    'fields'=>array(
+                        array(
+                            'name'=>'geom',
+                            'label'=>'Coordonnées GPS',
+                            'type'=>'geom',
+                            'help'=>'',
+                            'options'=>array('geometryType'=>'point', 'dataUrl'=>'chiro/site'),
+                            'default'=>array(),
+                        ),
+                    ),
+                ),
+                array(
                     'name'=>'Informations',
                     'fields'=>array(
                         array(
@@ -91,14 +104,6 @@ class SiteConfigController extends Controller{
                             'type'=>'date',
                             'help'=>"Date d'ajout du site à la base de données",
                             'options'=>array('required'=>true),
-                        ),
-                        array(
-                            'name'=>'geom',
-                            'label'=>'Coordonnées GPS',
-                            'type'=>'geom',
-                            'help'=>'',
-                            'options'=>array('geometryType'=>'point'),
-                            'default'=>array(),
                         ),
                         array(
                             'name'=>'siteDescription',
@@ -216,47 +221,56 @@ class SiteConfigController extends Controller{
     public function getListAction(){
 
         $out = array(
-            array(
-                'name'=>'id',
-                'label'=>'ID',
-                'filter'=>array('id'=>'text'),
-                'options'=>array('visible'=>true)
-            ),
-            array(
-                'name'=>'siteNom',
-                'label'=>'Nom',
-                'filter'=>array('siteNom'=>'text'),
-                'options'=>array('visible'=>true)
-            ),
-            array(
-                'name'=>'siteCode',
-                'label'=>'Code site',
-                'filter'=>array('siteCode'=>'text'),
-                'options'=>array()
-            ),
-            array(
-                'name'=>'nomObservateur',
-                'label'=>'Observateur',
-                'filter'=>array('nomObservateur'=>'text'),
-                'options'=>array(),
-            ),
-            array(
-                'name'=>'siteDate',
-                'label'=>'Date créa.',
-                'filter'=>array('siteDate'=>'text'),
-                'options'=>array()
-            ),
-            array(
-                'name'=>'dernObs',
-                'label'=>'Dernière observation',
-                'filter'=>array('dernObs'=>'text'),
-                'options'=>array('visible'=>true)
-            ),
-            array(
-                'name'=>'typeLieu',
-                'label'=>'Type',
-                'filter'=>array('typeLieu'=>'text'),
-                'options'=>array('visible'=>true)
+            'title'=>'Sites',
+            'emptyMsg'=>'Aucun site pour le moment',
+            'createBtnLabel'=>'Nouveau site',
+            'createUrl'=>'#/chiro/edit/site/',
+            'editUrl'=>'#/chiro/edit/site/',
+            'detailUrl'=>'#/chiro/site/',
+            'editAccess'=>5,
+            'fields'=>array(
+                array(
+                    'name'=>'id',
+                    'label'=>'ID',
+                    'filter'=>array('id'=>'text'),
+                    'options'=>array('visible'=>true)
+                ),
+                array(
+                    'name'=>'siteNom',
+                    'label'=>'Nom',
+                    'filter'=>array('siteNom'=>'text'),
+                    'options'=>array('visible'=>true)
+                ),
+                array(
+                    'name'=>'siteCode',
+                    'label'=>'Code site',
+                    'filter'=>array('siteCode'=>'text'),
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'nomObservateur',
+                    'label'=>'Observateur',
+                    'filter'=>array('nomObservateur'=>'text'),
+                    'options'=>array(),
+                ),
+                array(
+                    'name'=>'siteDate',
+                    'label'=>'Date créa.',
+                    'filter'=>array('siteDate'=>'text'),
+                    'options'=>array()
+                ),
+                array(
+                    'name'=>'dernObs',
+                    'label'=>'Dernière observation',
+                    'filter'=>array('dernObs'=>'text'),
+                    'options'=>array('visible'=>true)
+                ),
+                array(
+                    'name'=>'typeLieu',
+                    'label'=>'Type',
+                    'filter'=>array('typeLieu'=>'text'),
+                    'options'=>array('visible'=>true)
+                ),
             ),
         );
 

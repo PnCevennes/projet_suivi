@@ -1,11 +1,12 @@
-#map{
+#mapd{
     width: 100%;
-    height: 100%;
+    height: 92%;
 }
 
 .fixed-col {
-  height: 40vh;
-  padding:0;
+  height: 80vh;
+  float: left;
+  padding: 3px;
   box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
     -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);

@@ -1,10 +1,10 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'leaflet-directive']);
 
 // module de gestion des sites
-angular.module('baseSites', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
+angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
 
 // module de gestion des observations
-angular.module('baseObservations', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
+angular.module('baseObservations', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
 
 // module de gestion des taxons
 angular.module('baseTaxons', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
@@ -13,13 +13,16 @@ angular.module('baseTaxons', ['suiviProtocoleServices', 'ngRoute', 'ngTable']);
 angular.module('biometrie', ['suiviProtocoleServices', 'ngRoute']);
 
 // services de l'application
-angular.module('suiviProtocoleServices', []);
+angular.module('suiviProtocoleServices', ['SimpleMap']);
 
 // directives formulaires
-angular.module('FormDirectives', ['angularFileUpload']);
+angular.module('FormDirectives', ['angularFileUpload', 'SimpleMap']);
 
 // directives affichage
-angular.module('DisplayDirectives', []);
+angular.module('DisplayDirectives', ['SimpleMap']);
+
+// directives map
+angular.module('SimpleMap', ['suiviProtocoleServices']);
 
 
 /*

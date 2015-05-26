@@ -402,7 +402,7 @@ app.directive('simpleform', function(){
  */
 app.directive('geometry', function(){
     return {
-        restrict: 'E',
+        restrict: 'A',
         scope: {
             geom: '=',
             options: '=',
@@ -413,16 +413,60 @@ app.directive('geometry', function(){
             $scope.editLayer = new L.FeatureGroup();
             var current = null;
 
-            $scope.geom = $scope.geom || [];
-            /*
-            $scope.$watch('geom', function(newval){
-                $scope.geom.splice(0);
-                $scope.geom.push(newval);
-            });
-            */
+            if(!$scope.options.configUrl){
+                $scope.configUrl = 'js/resources/defaults.json';
+            }
+            else{
+                $scope.configUrl = $scope.options.configUrl;
+            }
 
-            mapService.map.addLayer($scope.editLayer);
- 
+            mapService.initialize().then(function(){
+                mapService.layerControl.addOverlay($scope.editLayer, "Edition");
+                mapService.loadData($scope.options.dataUrl).then(function(){
+                    if($scope.origin){
+                        var layer = mapService.getItem($scope.origin);
+                        if(layer){
+                            $scope.updateCoords(layer);
+                            $scope.editLayer.addLayer(layer);
+                            current = layer;
+                        }
+                    }
+                });
+
+                $scope.controls = new L.Control.Draw({
+                    edit: {featureGroup: $scope.editLayer},
+                    draw: {
+                        circle: false,
+                        rectangle: false,
+                        marker: $scope.options.geometryType == 'point',
+                        polyline: $scope.options.geometryType == 'linestring',
+                        polygon: $scope.options.geometryType == 'polygon',
+                    },
+                });
+
+                mapService.map.addControl($scope.controls);
+
+                mapService.map.on('draw:created', function(e){
+                    if(!current){
+                        $scope.editLayer.addLayer(e.layer);
+                        current = e.layer;
+                        $rootScope.$apply($scope.updateCoords(current));
+                    }
+                });
+
+                mapService.map.on('draw:edited', function(e){
+                    $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
+                });
+
+                mapService.map.on('draw:deleted', function(e){
+                    current = null;
+                    $rootScope.$apply($scope.updateCoords(current));
+                });
+            
+            });
+
+            $scope.geom = $scope.geom || [];
+
             $scope.updateCoords = function(layer){
                 $scope.geom.splice(0);
                 if(layer){
@@ -437,51 +481,25 @@ app.directive('geometry', function(){
                     }
                 }
             };
-
+            
             $scope.$on('$destroy', function(ev){
-                mapService.map.removeControl($scope.controls);
+                mapService.geoms = [];
+                /*
+                if($scope.origin){
+                    if(current){
+                        current.addTo(mapService.layer);
+                    }
+                }
                 mapService.map.removeLayer($scope.editLayer);
+                mapService.map.removeControl($scope.controls);
+                mapService.layerControl.removeLayer($scope.editLayer);
                 $scope.controls = null;
+                */
             });
 
            
-            $scope.controls = new L.Control.Draw({
-                edit: {featureGroup: $scope.editLayer},
-                draw: {
-                    circle: false,
-                    rectangle: false,
-                    marker: $scope.options.geometryType == 'point',
-                    polyline: $scope.options.geometryType == 'linestring',
-                    polygon: $scope.options.geometryType == 'polygon',
-                },
-            });
-
-            mapService.map.addControl($scope.controls);
 
 
-            mapService.map.on('draw:created', function(e){
-                if(!current){
-                    $scope.editLayer.addLayer(e.layer);
-                    current = e.layer;
-                    $rootScope.$apply($scope.updateCoords(current));
-                }
-            });
-
-            mapService.map.on('draw:edited', function(e){
-                $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
-            });
-
-            mapService.map.on('draw:deleted', function(e){
-                current = null;
-                $rootScope.$apply($scope.updateCoords(current));
-            });
-
-            if($scope.origin){
-                var layer = mapService.getMarker($scope.origin);
-                $scope.updateCoords(layer);
-                $scope.editLayer.addLayer(layer);
-                current = layer;
-            }
         },
     };
 });
@@ -581,7 +599,6 @@ app.directive('spreadsheet', function(){
             };
 
             $scope.check = function(){
-                console.log('check');
                 var out = [];
                 var err_lines = [];
                 var primaries = [];

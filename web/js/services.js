@@ -190,23 +190,48 @@ app.service('configServ', function(dataServ){
 
 /**
  * Service de gestion de la carte leaflet
- */
-app.service('mapService', function($rootScope, $filter){
+ * /
+app.service('mapService', function($rootScope, $filter, dataServ){
     // conteneur pour les points de la carte
+    /*
     this.marks = [];
 
-    this.map = L.map('map').setView([44.34, 3.5858], 10);
+    this.map = L.map('map', {maxZoom: 20}).setView([44.34, 3.5858], 10);
+    var tiles = {};
+    var ctrl = L.control.layers(tiles, overlays);
+    /*
+    var tiles = {
+        'OpenCycleMap': L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'),
+        'OpenStreetMap': L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'),
+    };
+    
 
-    var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
-    this.map.addLayer(tiles);
 
+    this.map.addLayer(tiles['OpenCycleMap']);
+    this.map.addLayer(tiles['OpenStreetMap']);
+    * /
+
+    this.setMaps = function(resp){
+        /*
+        resp.forEach(function(item){
+            var _layer = L.tileLayer(item.url);
+            tiles[item.name] = _layer;
+            _layer.addTo(this.map);
+        });* /
+    };
+
+    /*
     this.markLayer = new L.markerClusterGroup({disableClusteringAtZoom: 13});
+    var overlays = {
+        'Sites': this.markLayer,
+    };
     this.map.addLayer(this.markLayer);
 
+    ctrl.addTo(this.map);
 
     /*
      * ajoute un point à la carte
-     */
+     *  /
     this.addPoint = function(point){
         this.markLayer.addLayer(point);
         this.marks.push(point);
@@ -217,6 +242,7 @@ app.service('mapService', function($rootScope, $filter){
     * retire tous les points de la carte et n'affiche que les points dont
     * les ids sont fournis
     */
+    /*
     this.filterMarks = function(ids){
         this.markLayer.clearLayers();
         angular.forEach(this.marks, function(mark){
@@ -241,8 +267,11 @@ app.service('mapService', function($rootScope, $filter){
         }
     };
 
-});
+    dataServ.get('js/resources/maps.json', this.setMaps);
+    * /
 
+});
+*/
 
 /*
  * service utilisateur

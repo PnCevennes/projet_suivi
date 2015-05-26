@@ -4,43 +4,48 @@
         <li ng-repeat="column in schema.fields"><input id="sel[{{$index}}]" type="checkbox" ng-model="column.options.visible" /><label for="sel[{{$index}}]">{{column.label}}</label></li>
     </ul>
 </div>
-<table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected">
-    <thead>
-        <tr>
-            <th ng-repeat="column in schema.fields" 
-                ng-show="column.options.visible" 
-                class="text-center sortable"
-                ng-class="
-                    {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
-                    'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
-                ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
-                {{column.label}}
-            </th>
-        </tr>
-        <tr class="ng-table-filters" ng-init="tableParams">
-            <th ng-repeat="column in schema.fields" ng-show="column.options.visible" class="filter">
-                <div ng-repeat="(name, filter) in column.filter">
-                    <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
-                    <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
-                </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="item in $data" ng-click="selectItem(item)" ng-class="{'active': item.$selected}">
-        <td ng-repeat="column in schema.fields" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">
-            <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
-            <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
-            <ul ng-if="column.options.type=='list'" class="list list-inline">
-                <li ng-repeat="name in item[column.name]">{{name}}</li>
-            </ul>
-            <span ng-if="!column.options.type || column.options.type=='text'">{{item[column.name]}}</span>
-        </td>
-            <td> 
-                <a class="btn btn-primary btn-xs" tooltip="Voir" ng-href="{{schema.detailUrl}}{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
-                <a class="btn btn-warning btn-xs" tooltip="Editer" ng-show="editAccess" ng-href="{{schema.editUrl}}{{item.id}}"><span class="glyphicon glyphicon-wrench"></span></a>
+<div class="row">
+    <h3 class="float-right">
+        {{currentSel.current}}/{{currentSel.total}}
+    </h3>
+    <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected">
+        <thead>
+            <tr>
+                <th ng-repeat="column in schema.fields" 
+                    ng-show="column.options.visible" 
+                    class="text-center sortable"
+                    ng-class="
+                        {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
+                        'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
+                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
+                    {{column.label}}
+                </th>
+            </tr>
+            <tr class="ng-table-filters" ng-init="tableParams">
+                <th ng-repeat="column in schema.fields" ng-show="column.options.visible" class="filter">
+                    <div ng-repeat="(name, filter) in column.filter">
+                        <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
+                        <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in $data" ng-click="selectItem(item)" ng-class="{'active': item.$selected}">
+            <td ng-repeat="column in schema.fields" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">
+                <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
+                <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
+                <ul ng-if="column.options.type=='list'" class="list list-inline">
+                    <li ng-repeat="name in item[column.name]">{{name}}</li>
+                </ul>
+                <span ng-if="!column.options.type || column.options.type=='text'">{{item[column.name]}}</span>
             </td>
-        </tr>
-    </tbody>
-</table>
+                <td> 
+                    <a class="btn btn-primary btn-xs" tooltip="Voir" ng-href="{{schema.detailUrl}}{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                    <a class="btn btn-warning btn-xs" tooltip="Editer" ng-show="editAccess" ng-href="{{schema.editUrl}}{{item.id}}"><span class="glyphicon glyphicon-wrench"></span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 

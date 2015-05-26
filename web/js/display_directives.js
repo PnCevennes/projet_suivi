@@ -222,8 +222,31 @@ app.directive('tablewrapper', function(){
         },
         templateUrl: 'js/templates/display/tableWrapper.htm',
         controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
+            $scope.currentItem = null;
+            var orderedData;
 
-            $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
+            $scope.__init__ = function(){
+                $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
+            };
+
+
+            if(!$scope.schema){
+                $scope.$watch('schema', function(newval){
+                    if(newval){
+                        $scope.__init__();
+                    }
+                });
+            }
+            else{
+                $scope.__init__();
+            }
+
+            $scope.$watch('data', function(newval){
+                if(newval){
+                    $scope.tableParams.reload();
+                }
+            });
+
             /*
              *  initialisation des parametres du tableau
              */
@@ -241,17 +264,12 @@ app.directive('tablewrapper', function(){
                     var filteredData = params.filter() ?
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;
-                    var orderedData = params.sorting() ?
+                    orderedData = params.sorting() ?
                             $filter('orderBy')(filteredData, params.orderBy()) :
                             $scope.data;
-                    var ids = [];
                     configServ.put($scope.refName + ':ngTable:Filter', params.filter());
                     configServ.put($scope.refName + ':ngTable:Sorting', params.sorting());
-                    //configServ.put($scope.refName + ':ngTable:orderedData', orderedData);
-                    //TODO
-                    angular.forEach(orderedData, function(item){
-                        ids.push(item.id);
-                    });
+                    $rootScope.$broadcast($scope.refName + ':ngTable:Filtered', orderedData);
 
 
                     params.total(orderedData.length); // set total for recalc pagination
@@ -261,6 +279,7 @@ app.directive('tablewrapper', function(){
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 } 
             });
+            
 
 
             // récupération des filtres utilisés sur le tableau 
@@ -276,15 +295,28 @@ app.directive('tablewrapper', function(){
             /*
              * Fonctions
              */
-            $scope.selectItem = function(item){
-                $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+            $scope.selectItem = function(item, broadcast){
+                if($scope.currentItem){
+                    $scope.currentItem.$selected = false;
+                }
+                if(broadcast == undefined){
+                    broadcast = true;
+                }
+                item.$selected = true;
+                $scope.currentItem = item;
+                var idx = orderedData.indexOf(item);
+                var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
+                $scope.tableParams.page(pgnum);
+                if(broadcast){
+                    $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                }
             };
 
             /*
              * Listeners
              */
             $scope.$on($scope.refName + ':select', function(evt, item){
-
+                $scope.selectItem(item, false);
             });
 
         },
