@@ -46,7 +46,7 @@ app.directive('leafletMap', function(){
             data: '=',
         },
         template: '<div id="mapd"></div>',
-        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ){
+        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout){
             /*
              */
 
@@ -58,7 +58,11 @@ app.directive('leafletMap', function(){
             var layerControl = null;
 
             var initialize = function(){
-                console.log(map);
+                if(map){
+                    $timeout(function() {
+                        map.invalidateSize();
+                    }, 0 );
+                }
                 dfd = $q.defer();
                 map = L.map('mapd', {maxZoom: 15});
                 layer = L.markerClusterGroup({disableClusteringAtZoom: 13});
@@ -141,6 +145,7 @@ app.directive('leafletMap', function(){
                                 iconAnchor: [13, 41],
                                 popupAnchor: [0, -41],
                             }));
+                            currentSel.setZIndexOffset(0);
                         }
                         geom.setIcon(L.icon({
                             iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', 
@@ -148,6 +153,7 @@ app.directive('leafletMap', function(){
                             iconAnchor: [13, 41],
                             popupAnchor: [0, -41],
                         }));
+                        geom.setZIndexOffset(1000);
                         currentSel = geom;
                         return geom;
                     }
@@ -166,6 +172,7 @@ app.directive('leafletMap', function(){
                         );
                     });
                     geom.bindPopup('<a href="#/chiro/site/' + jsonData.properties.id + '">' + jsonData.properties.siteNom + '</a>');
+                    geom.setZIndexOffset(0);
                     geoms.push(geom);
                     layer.addLayer(geom);
                     return geom;
@@ -174,9 +181,9 @@ app.directive('leafletMap', function(){
 
 
                 var loadData = function(url){
-                    var dfd = $q.defer();
-                    dataServ.get(url, dataLoad(dfd));
-                    return dfd.promise;
+                    var defd = $q.defer();
+                    dataServ.get(url, dataLoad(defd));
+                    return defd.promise;
                 };
                 mapService.loadData = loadData;
 
@@ -215,9 +222,9 @@ app.directive('leafletMap', function(){
 
             */
             $scope.$on('$destroy', function(evt){
-                console.log(map);
                 if(map){
                     map.remove();
+                    geoms = [];
                 }
             });
         }

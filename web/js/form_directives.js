@@ -340,7 +340,6 @@ app.directive('simpleform', function(){
                 if($scope.schema.subDataRef){
                     if(SpreadSheet.hasErrors[$scope.schema.subDataRef]){
                         errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
-                        console.log(errors);
                     }
                     else{
                         errors = null;
@@ -411,7 +410,16 @@ app.directive('geometry', function($timeout){
         templateUrl:  'js/templates/form/geometry.htm',
         controller: function($scope, $rootScope, mapService){
             $scope.editLayer = new L.FeatureGroup();
+
             var current = null;
+
+            var setEditLayer = function(layer){
+                mapService.getLayer().removeLayer(layer);
+                $scope.updateCoords(layer);
+                $scope.editLayer.addLayer(layer);
+                current = layer;
+            }
+
 
             if(!$scope.options.configUrl){
                 $scope.configUrl = 'js/resources/defaults.json';
@@ -420,24 +428,17 @@ app.directive('geometry', function($timeout){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
-            $scope._editLayer = function(layer){
-                mapService.getLayer().removeLayer(layer);
-                $scope.updateCoords(layer);
-                layer.addTo($scope.editLayer);
-                current = layer;
-            }
-
             mapService.initialize().then(function(){
                 mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
-                mapService.getMap().addLayer($scope.editLayer);
-                mapService.getMap().removeLayer(mapService.getLayer());
                 mapService.loadData($scope.options.dataUrl).then(function(){
                     if($scope.origin){
                         var layer = mapService.selectItem($scope.origin);
                         if(layer){
-                            $scope._editLayer(layer);
+                            setEditLayer(layer);
                         }
                     }
+                    mapService.getMap().addLayer($scope.editLayer);
+                    mapService.getMap().removeLayer(mapService.getLayer());
                 });
 
                 $scope.controls = new L.Control.Draw({
@@ -470,9 +471,11 @@ app.directive('geometry', function($timeout){
                     current = null;
                     $rootScope.$apply($scope.updateCoords(current));
                 });
+                /*
                 $timeout(function() {
                     mapService.getMap().invalidateSize();
                 }, 0 );
+                */
             
             });
 
@@ -648,11 +651,6 @@ app.directive('spreadsheet', function(){
                     }
                 });
 
-                //FIXME debug
-                console.log('lines');
-                console.log(out);
-                console.log('errors');
-                console.log(err_lines);
 
                 if(!$scope.dataIn[$scope.dataRef]){
                     $scope.dataIn[$scope.dataRef] = [];

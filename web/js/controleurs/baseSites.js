@@ -105,7 +105,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ){
+app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ, mapService){
 
     $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
@@ -115,8 +115,15 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        $scope.title = data.siteNom;
-        configServ.addBc(1, data.siteNom, '#/'+$scope._appName+'/site/'+$routeParams.id);
+        mapService.initialize().then(function(){
+            mapService.loadData($scope._appName + '/site').then(
+                function(){
+                    mapService.selectItem($routeParams.id);
+                }
+                );
+            $scope.title = data.siteNom;
+            configServ.addBc(1, data.siteNom, '#/'+$scope._appName+'/site/'+$routeParams.id);
+        });
     });
 
 });
@@ -144,36 +151,34 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
         $scope.data = {}
     }
 
-    mapService.loadData($scope._appName + '/site').then(function(){
-        $scope.$on('form:init', function(ev, data){
-            if(data.siteNom){
-                $scope.title = 'Modification du site ' + data.siteNom;
-                configServ.addBc(1, data.siteNom, '#/' + $scope._appName + '/site/' + data.id);
-                configServ.addBc(2, 'Modification');
-            }
-            else{
-                $scope.title = 'Nouveau site';
-                configServ.addBc(2, $scope.title, ''); 
-            }
-        });
+    $scope.$on('form:init', function(ev, data){
+        if(data.siteNom){
+            $scope.title = 'Modification du site ' + data.siteNom;
+            configServ.addBc(1, data.siteNom, '#/' + $scope._appName + '/site/' + data.id);
+            configServ.addBc(2, 'Modification');
+        }
+        else{
+            $scope.title = 'Nouveau site';
+            configServ.addBc(2, $scope.title, ''); 
+        }
+    });
 
-        $scope.$on('form:create', function(ev, data){
-            userMessages.infoMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
-            $location.url($scope._appName + '/site/' + data.id);
-        });
+    $scope.$on('form:create', function(ev, data){
+        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
+        $location.url($scope._appName + '/site/' + data.id);
+    });
 
-        $scope.$on('form:update', function(ev, data){
+    $scope.$on('form:update', function(ev, data){
 
-            userMessages.infoMessage = 'le site ' + data.siteNom + ' a été mis à jour avec succès.'
-            $location.url($scope._appName + '/site/' + data.id);
-        });
+        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été mis à jour avec succès.'
+        $location.url($scope._appName + '/site/' + data.id);
+    });
 
-        $scope.$on('form:delete', function(ev, data){
+    $scope.$on('form:delete', function(ev, data){
 
-            userMessages.infoMessage = 'le site ' + data.siteNom + ' a été supprimé avec violence.'
-            dataServ.forceReload = true;
-            $location.url($scope._appName + '/site/');
-        });
+        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été supprimé avec violence.'
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/site/');
     });
 });
 
