@@ -28,16 +28,17 @@ class ObservationService{
     }
 
     public function getList($siteId=null){
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
         if(!$siteId){
+            $repo = $this->db->getRepository('PNCChiroBundle:ObservationSsSiteView');
             $infos = $repo->findAll();
         }
         else{
+            $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
             $infos = $repo->findBy(array('site_id'=>$siteId));
         }
         $out = array();
         foreach($infos as $info){
-            $out_item = $this->norm->normalize($info, array('obsDate', 'observateurs'));
+            $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
             $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
             $out_item['observateurs'] = array();
             foreach($info->getObservateurs() as $obr){
@@ -45,24 +46,36 @@ class ObservationService{
                     $out_item['observateurs'][] = $obr->getNomComplet();
                 }
             }
+            if(!$siteId){
+                $out_item['geom'] = $info->getGeom();
+            }
             $out[] = $out_item;
         }
         return $out;
     }
 
     public function getOne($id){
+        $has_geom = false;
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
         $info = $repo->findOneById($id);
         if(!$info){
-            return null;
+            $has_geom = true;
+            $repo = $this->db->getRepository('PNCChiroBundle:ObservationSsSiteView');
+            $info = $repo->findOneById($id);
+            if(!$info){
+                return null;
+            }
         }
-        $out_item = $this->norm->normalize($info, array('obsDate', 'observateurs'));
+        $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
         $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
             if($observateur->getRole() == 'observateur'){
                 $out_item['observateurs'][] = $observateur->getObrId();
             }
+        }
+        if($has_geom){
+            $out_item['geom'] = $info->getGeom();
         }
         return $out_item;
     }

@@ -1,31 +1,34 @@
-PNC\BaseAppBundle\Entity\Observation:
+PNC\ChiroBundle\Entity\ObservationSsSiteView:
     type: entity
-    table: pnc.base_observation
-    schema: pnc
-    repositoryClass: PNC\BaseAppBundle\Repositories\ObservationRepository
+    table: chiro.vue_chiro_obs_ss_site
+    schema: chiro
     id:
         id:
             type: integer
             id: true
-            generator:
-                strategy: AUTO
     fields:
+        geom:
+            type: json_array
         obs_date:
             type: date
+        numerisateur_id:
+            type: integer
+        numerisateur:
+            type: text
         obs_commentaire:
             type: text
         obs_id_table_src:
             type: integer
-        numerisateur_id:
+        obs_temperature:
+            type: float
+        obs_humidite:
+            type: float
+        nb_taxons:
             type: integer
-        site_id:
-            type: integer
-        geom:
-            type: geometry
 
     manyToMany:
         observateurs:
-            targetEntity: PNC\BaseAppBundle\Entity\Observateurs
+            targetEntity: PNC\ChiroBundle\Entity\ObservateurView
             joinTable:
                 name: pnc.rel_obs_obr
                 joinColumns:
@@ -33,5 +36,4 @@ PNC\BaseAppBundle\Entity\Observation:
                         referencedColumnName: id
                 inverseJoinColumns:
                     obr_id:
-                        referencedColumnName: id_role
-
+                        referencedColumnName: obr_id

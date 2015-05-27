@@ -254,4 +254,27 @@ class Observation
     {
         return $this->numerisateur_id;
     }
+
+    /**
+     * Set geom
+     *
+     * @param geometry $geom
+     * @return Observation
+     */
+    public function setGeom($geom)
+    {
+        $this->geom = $geom;
+
+        return $this;
+    }
+
+    /**
+     * Get geom
+     *
+     * @return geometry 
+     */
+    public function getGeom()
+    {
+        return $this->geom;
+    }
 }
