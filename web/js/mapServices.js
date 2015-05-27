@@ -64,8 +64,8 @@ app.directive('leafletMap', function(){
                         map.invalidateSize();
                     }, 0 );
                 }
-                dfd = $q.defer();
-                map = L.map('mapd', {maxZoom: 13});
+                var dfd = $q.defer();
+                map = L.map('mapd', {maxZoom: 17});
                 layer = L.markerClusterGroup({spiderfyOnMaxZoom: true});
                 layer.addTo(map);
                 configServ.getUrl($scope.configUrl, function(res){
@@ -172,8 +172,8 @@ app.directive('leafletMap', function(){
                             $rootScope.$broadcast('mapService:itemClick', geom)    
                         );
                     });
-                    if(resource.template){
-                        geom.bindPopup(eval(resource.template));
+                    if(jsonData.properties.geomLabel){
+                        geom.bindPopup(jsonData.properties.geomLabel);
                     }
                     geom.setZIndexOffset(0);
                     geoms.push(geom);

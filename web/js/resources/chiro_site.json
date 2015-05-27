@@ -5,7 +5,6 @@
         "geosearch": true,
         "imageUrl": "img/limites_pnc_overview.png", 
         "name": "Sites chiro", 
-        "template": "'<a href=\"#/chiro/site/' + jsonData.properties.id + '\">' + jsonData.properties.siteNom + '</a>'",
         "snippet": "Limites PnC",
          "center": {
             "lat": 44.3266459,

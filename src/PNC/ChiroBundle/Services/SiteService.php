@@ -43,6 +43,9 @@ class SiteService{
                 'typeLieu'=>$info->getTypeLieu(),
             );
             $out_item['geometry'] = $info->getGeom();
+
+            $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/site/%s">%s</a>',
+                $info->getId(), $info->getSiteNom());
             $out[] = $out_item;
         }
         return $out;

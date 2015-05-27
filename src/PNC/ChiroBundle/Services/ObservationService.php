@@ -49,8 +49,13 @@ class ObservationService{
             if(!$siteId){
                 $out_item['geom'] = $info->getGeom();
             }
+
+            $out_item['geomLabel'] = sprintf('<a href="#/chiro/observation/%s">Observation du %s</a>',
+                $info->getId(), $out_item['obsDate']);
+
             $out[] = $out_item;
         }
+
         return $out;
     }
 

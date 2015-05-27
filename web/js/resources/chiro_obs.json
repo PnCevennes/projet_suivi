@@ -1,11 +1,10 @@
 [
     {
         "order" : 1,
-        "id": "sites_chiro", 
+        "id": "observations_chiro", 
         "geosearch": true,
         "imageUrl": "img/limites_pnc_overview.png", 
-        "name": "Sites chiro", 
-        "template": "'<a href=\"#/chiro/observation/' + jsonData.properties.id + '\">Observation du ' + jsonData.properties.obsDate.replace('(\\d+)-(\\d+)-(\\d+)', '$3/$2/$1')+ '</a>'",
+        "name": "Observations chiro", 
         "snippet": "Limites PnC",
          "center": {
             "lat": 44.3266459,
