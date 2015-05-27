@@ -66,7 +66,7 @@ app.directive('leafletMap', function(){
                 }
                 var dfd = $q.defer();
                 map = L.map('mapd', {maxZoom: 17});
-                layer = L.markerClusterGroup({spiderfyOnMaxZoom: true});
+                layer = L.markerClusterGroup({disableClusteringAtZoom: 13, spiderfyOnMaxZoom: true});
                 layer.addTo(map);
                 configServ.getUrl($scope.configUrl, function(res){
                     resource = res[0];
@@ -142,6 +142,7 @@ app.directive('leafletMap', function(){
                         if(currentSel){
                             currentSel.setIcon(L.icon({
                                 iconUrl: 'js/lib/leaflet/images/marker-icon.png', 
+                                shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
                                 iconSize: [25, 41], 
                                 iconAnchor: [13, 41],
                                 popupAnchor: [0, -41],
@@ -149,7 +150,8 @@ app.directive('leafletMap', function(){
                             currentSel.setZIndexOffset(0);
                         }
                         geom.setIcon(L.icon({
-                            iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', 
+                            iconUrl: 'js/lib/leaflet/images/marker-rouge.png', 
+                            shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
                             iconSize: [25, 41], 
                             iconAnchor: [13, 41],
                             popupAnchor: [0, -41],

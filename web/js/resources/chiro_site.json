@@ -17,7 +17,7 @@
               "name": "OpenCycleMap",
               "type": "xyz",
               "url": "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-              "active": true,
+              "active": false,
               "options":{}
             },
             {
