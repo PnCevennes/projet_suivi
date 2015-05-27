@@ -34,9 +34,84 @@ app.config(function($routeProvider){
 });
 
 
-app.controller('observationListController', function($scope, $rootScope,  $routeParams){
+app.controller('observationListController', function($scope, $rootScope, $routeParams, $filter, dataServ, mapService, configServ, userMessages, $loading, ngTableParams, userServ, $q){
     $scope._appName = $routeParams.appName;
     $rootScope._function='observation';
+
+
+    var data = [];
+    $scope._appName = $routeParams.appName;
+    $scope.createAccess = userServ.checkLevel(2);
+    $scope.editAccess = userServ.checkLevel(3);
+    $scope.data = [];
+    configServ.addBc(0, 'Observations', '#/' + $scope._appName + '/observation'); 
+
+    
+    /*
+     * Spinner
+     * */
+    
+    $loading.start('spinner-1');
+    var dfd = $q.defer();
+    var promise = dfd.promise;
+    promise.then(function(result) {
+        $loading.finish('spinner-1');
+    });
+    
+    $scope.setData = function(resp){
+        var tmp = [];
+        $scope.items = resp;
+        resp.forEach(function(item){
+            tmp.push(item);
+            geom = item.geom;
+            mapService.addGeom({
+                    type: 'Feature',
+                    geometry: geom,
+                    properties: item
+            });
+        });
+        $scope.geoms = resp;
+        $scope.data = tmp;
+        dfd.resolve('loading data');
+    };
+
+    $scope.setSchema = function(schema){
+        $scope.schema = schema;
+        mapService.initialize().then(function(){
+
+            /*
+             * initialisation des listeners d'évenements carte 
+             */
+
+            // click sur la carte
+            $scope.$on('mapService:itemClick', function(ev, item){
+                mapService.selectItem(item.feature.properties.id);
+                $rootScope.$broadcast('chiro/observation:select', item.feature.properties);
+            });
+
+            // sélection dans la liste
+            $scope.$on('chiro/observation:ngTable:ItemSelected', function(ev, item){
+                var geom = mapService.selectItem(item.id);
+                geom.openPopup();
+            });
+
+            // filtrage de la liste
+            $scope.$on('chiro/observation:ngTable:Filtered', function(ev, data){
+                ids = [];
+                data.forEach(function(item){
+                    ids.push(item.id);
+                });
+                mapService.filterData(ids);
+            });
+
+
+            dataServ.get($scope._appName + '/observation', $scope.setData);
+        });
+    };
+
+    configServ.getUrl($scope._appName + '/config/observation/list', $scope.setSchema);
+    
+
 });
 
 app.controller('observationSiteListController', function($scope, $routeParams){

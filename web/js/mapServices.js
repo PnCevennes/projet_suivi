@@ -56,6 +56,7 @@ app.directive('leafletMap', function(){
             var geoms = [];
             var currentSel = null;
             var layerControl = null;
+            var resource = null;
 
             var initialize = function(){
                 if(map){
@@ -64,11 +65,11 @@ app.directive('leafletMap', function(){
                     }, 0 );
                 }
                 dfd = $q.defer();
-                map = L.map('mapd', {maxZoom: 15});
-                layer = L.markerClusterGroup({disableClusteringAtZoom: 13});
+                map = L.map('mapd', {maxZoom: 13});
+                layer = L.markerClusterGroup({spiderfyOnMaxZoom: true});
                 layer.addTo(map);
                 configServ.getUrl($scope.configUrl, function(res){
-                    var resource = res[0];
+                    resource = res[0];
                     resource.layers.baselayers.forEach(function(layer, name){
                         var layerData = LeafletServices.loadData(layer);
                         tileLayers[layerData.name] = layerData.map;
@@ -171,7 +172,9 @@ app.directive('leafletMap', function(){
                             $rootScope.$broadcast('mapService:itemClick', geom)    
                         );
                     });
-                    geom.bindPopup('<a href="#/chiro/site/' + jsonData.properties.id + '">' + jsonData.properties.siteNom + '</a>');
+                    if(resource.template){
+                        geom.bindPopup(eval(resource.template));
+                    }
                     geom.setZIndexOffset(0);
                     geoms.push(geom);
                     layer.addLayer(geom);
