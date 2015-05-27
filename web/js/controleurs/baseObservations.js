@@ -59,10 +59,10 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
 
     $scope.$on('form:init', function(ev, data){
         if(data.obsDate){
-            $scope.title = "Modification de l'observation du " + data.obsDate;
+            $scope.title = "Modification de l'observation du " + data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1');
             // breadcrumbs
             configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
-            configServ.addBc(3, 'Modification', '');
+            configServ.addBc(3, $scope.title, '');
         }
         else{
             $scope.title = 'Nouvelle observation';
