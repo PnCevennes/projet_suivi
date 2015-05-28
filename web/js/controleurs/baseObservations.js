@@ -77,7 +77,7 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
-        mapService.initialize().then(function(){
+        mapService.initialize('js/resources/chiro_obs.json').then(function(){
 
             /*
              * initialisation des listeners d'évenements carte 

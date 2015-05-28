@@ -64,7 +64,7 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
-        mapService.initialize().then(function(){
+        mapService.initialize('js/resources/chiro_site.json').then(function(){
 
             /*
              * initialisation des listeners d'évenements carte 
@@ -115,7 +115,7 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        mapService.initialize().then(function(){
+        mapService.initialize('js/resources/chiro_site.json').then(function(){
             mapService.loadData($scope._appName + '/site').then(
                 function(){
                     mapService.selectItem($routeParams.id);

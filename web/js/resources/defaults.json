@@ -1,42 +1,31 @@
 [
     {
         "order" : 1,
-        "id": "sites_chiro", 
-        "geosearch": true,
-        "imageUrl": "img/limites_pnc_overview.png", 
-        "name": "Sites chiro", 
-        "snippet": "Limites PnC",
-         "center": {
+        "id": "default", 
+        "clustering": false,
+        "name": "Map", 
+        "center": {
             "lat": 44.3266459,
             "lng": 3.6072651,
             "zoom": 10
         },
         "layers": { 
-          "baselayers": [
-            {
-              "name": "OpenCycleMap",
-              "type": "xyz",
-              "url": "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-              "active": true,
-              "options":{}
-            },
-            {
-              "name": "OpenStreetMap",
-              "type": "xyz",
-              "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-              "active": true,
-              "options":{}
-            }
-          ],
-          "overlays": {
-            "limites_pnc": {
-              "name": "Limite PNC",
-              "url": "data/tiles/limites_pnc/{z}/{x}/{y}.png",
-              "type": "xyz",
-              "active": "true",
-              "options":{"minZoom":7, "maxZoom":16, "bounds":[[44.6002, 4.2428], [43.9206,3.1744]]}
-            }
-          }
+            "baselayers": [
+                {
+                    "name": "OpenCycleMap",
+                    "type": "xyz",
+                    "url": "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                    "active": false,
+                    "options":{}
+                },
+                {
+                    "name": "OpenStreetMap",
+                    "type": "xyz",
+                    "url": "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+                    "active": true,
+                    "options":{}
+                }
+            ]
         }
     }
 ]

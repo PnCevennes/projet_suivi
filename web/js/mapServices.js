@@ -35,14 +35,12 @@ app.factory('mapService', function(){
 /*
  * directive pour l'affichage et l'édition des cartes
  * params:
- *  configUrl [str] -> url du fichier de config des fonds carto
  *  data [obj] -> Liste des géométries 
  */
 app.directive('leafletMap', function(){
     return {
         restrict: 'A',
         scope: {
-            configUrl: '@',
             data: '=',
         },
         template: '<div id="mapd"></div>',
@@ -58,7 +56,10 @@ app.directive('leafletMap', function(){
             var layerControl = null;
             var resource = null;
 
-            var initialize = function(){
+            var initialize = function(configUrl){
+                if(!configUrl){
+                    configUrl = 'js/resources/defaults.json';
+                }
                 if(map){
                     $timeout(function() {
                         map.invalidateSize();
@@ -66,10 +67,13 @@ app.directive('leafletMap', function(){
                 }
                 var dfd = $q.defer();
                 map = L.map('mapd', {maxZoom: 17});
-                layer = L.markerClusterGroup({disableClusteringAtZoom: 13, spiderfyOnMaxZoom: true});
+                layer = L.markerClusterGroup();
                 layer.addTo(map);
-                configServ.getUrl($scope.configUrl, function(res){
+                configServ.getUrl(configUrl, function(res){
                     resource = res[0];
+                    if(!resource.clustering){
+                        layer.options.disableClusteringAtZoom = 13;
+                    }
                     resource.layers.baselayers.forEach(function(layer, name){
                         var layerData = LeafletServices.loadData(layer);
                         tileLayers[layerData.name] = layerData.map;
@@ -206,26 +210,6 @@ app.directive('leafletMap', function(){
             };
             mapService.initialize = initialize;
 
-
-            /*
-            $scope.layers = {};
-            if(!$scope.configUrl){
-                $scope.configUrl = 'js/resources/defaults.json';
-            }
-
-            mapService.initialize($scope.configUrl);
-
-           
-            $scope.$watch('data', function(newval){
-                if(newval){
-                    newval.forEach(function(item){
-                        mapService.addGeom(item);
-                    });
-                }
-            });
-
-
-            */
             $scope.$on('$destroy', function(evt){
                 if(map){
                     map.remove();
@@ -235,140 +219,3 @@ app.directive('leafletMap', function(){
         }
     };
 });
-
-
-
-
-/*
-app.service('mapService', function($rootScope, $filter, dataServ, $q, configServ, LeafletServices){
-    this.map = null;
-    this.dataLayer = null;
-    this.layer = null;
-    this.layers = {};
-    this.layerControl = null;
-    this.currentSel = null;
-    this.geoms = [];
-    this.layerReady = false;
-    this.dataLoaded = false;
-    var self = this;
-
-
-    this.initialize = function(configUrl, layer){
-        
-        var dfd = $q.defer();
-        self.map = L.map('mapd');
-        if(!layer){
-            self.layer = L.markerClusterGroup({disableClusteringAtZoom: 13});
-        }
-        else{
-            self.layer = layer;
-        }
-        self.layer.addTo(self.map);
-        configServ.getUrl(configUrl, function(res){
-            var resource = res[0];
-            resource.layers.baselayers.forEach(function(layer, name){
-                var layerData = LeafletServices.loadData(layer);
-                self.layers[layerData.name] = layerData.map;
-                if(layerData.active){
-                    layerData.map.addTo(self.map);
-                }
-            });
-            self.map.setView(
-                [resource.center.lat, resource.center.lng], 
-                resource.center.zoom);
-            self.layerControl = L.control.layers(self.layers, {'Données': self.layer});
-            self.layerControl.addTo(self.map);
-            self.layerReady = true;
-            dfd.resolve();
-        });
-        return dfd.promise;
-    }; 
-
-
-    this.initLayer = function(){
-        self.geoms.forEach(function(geom){
-            geom.addTo(self.layer);
-        });
-    };
-
-    this.addGeom = function(jsonData){
-        var geom = L.GeoJSON.geometryToLayer(jsonData);
-        geom.feature = jsonData;
-        geom.on('click', function(e){
-            $rootScope.$apply(
-                $rootScope.$broadcast('mapService:itemClick', geom)    
-            );
-        });
-        geom.bindPopup('<a href="#/chiro/site/' + jsonData.properties.id + '">' + jsonData.properties.siteNom + '</a>');
-        self.geoms.push(geom);
-        if(this.layerReady){
-            geom.addTo(this.layer);
-        }
-        return geom;
-    };
-
-    this.selectItem = function(_id){
-        var res = $filter('filter')(self.geoms, {feature: {properties: {id: _id}}}, function(act, exp){return act==exp;});
-        try{
-            geom = res[0];
-            if(this.currentSel){
-                this.currentSel.setIcon(L.icon({
-                    iconUrl: 'js/lib/leaflet/images/marker-icon.png', 
-                    iconSize: [25, 41], 
-                    iconAnchor: [13, 41],
-                    popupAnchor: [0, -41],
-                }));
-            }
-            geom.setIcon(L.icon({
-                iconUrl: 'js/lib/leaflet/images/marker-icon-rouge.png', 
-                iconSize: [25, 41], 
-                iconAnchor: [13, 41],
-                popupAnchor: [0, -41],
-            }));
-            self.map.setView(geom.getLatLng(), Math.max(this.map.getZoom(), 13));
-            self.currentSel = geom;
-            return geom;
-        }
-        catch(e){
-            return null;
-        }
-    };
-
-    this.filterData = function(ids){
-        if(!this.layer){
-            return;
-        }
-        angular.forEach(this.geoms, function(geom){
-            if(ids.indexOf(geom.feature.properties.id) < 0){
-                geom.feature.$shown = false;
-                this.layer.removeLayer(geom);
-            }
-            else{
-                if(geom.feature.$shown === false){
-                    geom.feature.$shown = true;
-                    this.layer.addLayer(geom);
-                }
-            }
-        }, this);
-    };
-
-    this.loadData = function(url){
-        var dfd = $q.defer();
-        dataServ.get(url, this.dataLoad(dfd));
-        return dfd.promise;
-    };
-
-    this.dataLoad = function(deferred){
-        return function(resp){
-            resp.forEach(function(geom){
-                self.addGeom(geom);
-            });
-            $rootScope.$broadcast('mapService:dataLoaded');
-            self.dataLoaded = true;
-            deferred.resolve();
-        };
-    };
-});
-*/
-
-
