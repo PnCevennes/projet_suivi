@@ -382,78 +382,8 @@ class BiometrieConfigController extends Controller{
                             'options'=>array('choices'=>$typesSexe)
                         ),
                         array(
-                            'name'=>'biomAb',
-                            'label'=>'Biom AB',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
                             'name'=>'biomPoids',
-                            'label'=>'Poids',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomD3mf1',
-                            'label'=>'D3MF1',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomD3f2f3',
-                            'label'=>'D3F2F3',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomD3total',
-                            'label'=>'D3 Total',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomD5',
-                            'label'=>'D5',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomCm3sup',
-                            'label'=>'CM3SUP',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomCm3inf',
-                            'label'=>'CM3INF',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomCb',
-                            'label'=>'CB',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomLm',
-                            'label'=>'LM',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'biomOreille',
-                            'label'=>'Oreille',
+                            'label'=>'Poids (g)',
                             'type'=>'num',
                             'help'=>'',
                             'options'=>array()
@@ -461,6 +391,86 @@ class BiometrieConfigController extends Controller{
                         array(
                             'name'=>'biomCommentaire',
                             'label'=>'Commentaires',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                    ),
+                ),
+                array(
+                    'name'=>'Bras',
+                    'fields'=>array(
+                        array(
+                            'name'=>'biomAb',
+                            'label'=>'Avant Bras (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomD3mf1',
+                            'label'=>'D3MF1 (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomD3f2f3',
+                            'label'=>'D3F2F3 (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomD3total',
+                            'label'=>'D3 Total (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomD5',
+                            'label'=>'D5 (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                    ),
+                ),
+                array(
+                    'name'=>'Tête',
+                    'fields'=>array(
+                        array(
+                            'name'=>'biomCm3sup',
+                            'label'=>'CM3SUP (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomCm3inf',
+                            'label'=>'CM3INF (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomCb',
+                            'label'=>'CB (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomLm',
+                            'label'=>'LM (mm)',
+                            'type'=>'num',
+                            'help'=>'',
+                            'options'=>array()
+                        ),
+                        array(
+                            'name'=>'biomOreille',
+                            'label'=>'Oreille (mm)',
                             'type'=>'num',
                             'help'=>'',
                             'options'=>array()
