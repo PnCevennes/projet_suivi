@@ -8,6 +8,9 @@ use PNC\BaseAppBundle\Entity\Observation;
 use PNC\BaseAppBundle\Entity\Observateurs;
 
 class BaseObservationService{
+    public function __construct($gs){
+        $this->geometryService = $gs;
+    }
     
     public function create($db, $data){
         $repo = $db->getRepository('PNCBaseAppBundle:Observateurs');
@@ -90,6 +93,10 @@ class BaseObservationService{
         }
         else{
             $date = \DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10));
+        }
+        if(isset($data['geom'])){
+            $geom = $this->geometryService->getPoint($data['geom']);
+            $this->setGeom($geom);
         }
         $obj->setObsDate($date);
         $obj->setObsCommentaire($data['obsCommentaire']);

@@ -51,7 +51,7 @@ class ObservationService{
             }
 
             $out_item['geomLabel'] = sprintf('<a href="#/chiro/observation/%s">Observation du %s</a>',
-                $info->getId(), $out_item['obsDate']);
+                $info->getId(), $info->getObsDate()->format('d/m/Y'));
 
             $out[] = $out_item;
         }

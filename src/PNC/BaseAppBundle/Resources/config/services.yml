@@ -7,5 +7,5 @@ services:
         arguments: [@geometry]
     baseObservationService:
         class: PNC\BaseAppBundle\Services\BaseObservationService
-        arguments: []
+        arguments: [@geometry]
 
