@@ -428,7 +428,7 @@ app.directive('geometry', function($timeout){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
-            mapService.initialize().then(function(){
+            mapService.initialize($scope.configUrl).then(function(){
                 mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
                 mapService.loadData($scope.options.dataUrl).then(function(){
                     if($scope.origin){
@@ -471,11 +471,9 @@ app.directive('geometry', function($timeout){
                     current = null;
                     $rootScope.$apply($scope.updateCoords(current));
                 });
-                /*
                 $timeout(function() {
                     mapService.getMap().invalidateSize();
                 }, 0 );
-                */
             
             });
 

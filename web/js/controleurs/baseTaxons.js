@@ -28,6 +28,7 @@ app.config(function($routeProvider){
         });
 });
 
+
 app.controller('taxonDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
     $rootScope.$broadcast('map:hide');
     $scope._appName = $routeParams.appName;
@@ -40,9 +41,15 @@ app.controller('taxonDetailController', function($scope, $rootScope, $routeParam
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = 'Observation du taxon "' + data.nomComplet + '"';
-        configServ.addBc(3, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
+        if($rootScope._function == 'site'){
+            configServ.addBc(3, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
+        }
+        else{
+            configServ.addBc(2, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
+        }
     });
 });
+
 
 app.controller('taxonEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
@@ -63,11 +70,21 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
         if(data.cdNom){
             $scope.title = "Modification de l'observation du taxon";
             // breadcrumbs
-            configServ.addBc(4, 'Modification', '');
+            if($rootScope._function == 'site'){
+                configServ.addBc(4, 'Modification', '');
+            }
+            else{
+                configServ.addBc(3, 'Modification', '');
+            }
         }
         else{
             $scope.title = 'Nouveau taxon';
-            configServ.addBc(4, $scope.title, '');
+            if($rootScope._function == 'site'){
+                configServ.addBc(4, $scope.title, '');
+            }
+            else{
+                configServ.addBc(3, $scope.title, '');
+            }
         }
     });
 

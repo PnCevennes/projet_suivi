@@ -14,12 +14,24 @@ app.config(function($routeProvider){
             controller: 'observationSiteListController',
             templateUrl: 'js/views/observation/list.htm'
         })
+        .when('/:appName/observation/sans-site/:id', {
+            controller: 'observationSsSiteDetailController',
+            templateUrl: 'js/views/observation/detailSsSite.htm'
+        })
         .when('/:appName/edit/observation', {
             controller: 'observationEditController',
             templateUrl: 'js/views/observation/edit.htm'
         })
         .when('/:appName/edit/observation/site/:site_id', {
             controller: 'observationEditController',
+            templateUrl: 'js/views/observation/edit.htm'
+        })
+        .when('/:appName/edit/observation/sans-site', {
+            controller: 'observationSsSiteEditController',
+            templateUrl: 'js/views/observation/edit.htm'
+        })
+        .when('/:appName/edit/observation/sans-site/:id', {
+            controller: 'observationSsSiteEditController',
             templateUrl: 'js/views/observation/edit.htm'
         })
         .when('/:appName/edit/observation/:id', {
@@ -33,7 +45,9 @@ app.config(function($routeProvider){
 
 });
 
-
+/*
+ *  Liste des observations sans site
+ */
 app.controller('observationListController', function($scope, $rootScope, $routeParams, $filter, dataServ, mapService, configServ, userMessages, $loading, ngTableParams, userServ, $q){
     $scope._appName = $routeParams.appName;
     $rootScope._function='observation';
@@ -62,13 +76,8 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
         var tmp = [];
         $scope.items = resp;
         resp.forEach(function(item){
-            tmp.push(item);
-            geom = item.geom;
-            mapService.addGeom({
-                    type: 'Feature',
-                    geometry: geom,
-                    properties: item
-            });
+            tmp.push(item.properties);
+            mapService.addGeom(item);
         });
         $scope.geoms = resp;
         $scope.data = tmp;
@@ -109,15 +118,21 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
         });
     };
 
-    configServ.getUrl($scope._appName + '/config/observation/list', $scope.setSchema);
+    configServ.getUrl($scope._appName + '/config/observation/sans-site/list', $scope.setSchema);
     
 
 });
 
+/*
 app.controller('observationSiteListController', function($scope, $routeParams){
     $scope._appName = $routeParams.appName;
 });
+*/
 
+
+/*
+ * Edition d'une observation associée à un site
+ */
 app.controller('observationEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
@@ -162,7 +177,10 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     });
 });
 
-app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ){
+/*
+ * Detail d'une observation associée à un site
+*/
+app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ, mapService){
     $scope._appName = $routeParams.appName;
 
     $rootScope.$broadcast('map:show');
@@ -176,51 +194,81 @@ app.controller('observationDetailController', function($scope, $rootScope, $rout
         configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
         $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
     });
-
 });
 
 
 /*
-app.controller('observationSiteEditController', function($scope, $routeParams, $location, configServ, dataServ){
+ * Détail d'une observation sans site
+ */
+app.controller('observationSsSiteDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ, mapService){
     $scope._appName = $routeParams.appName;
 
-    $scope.setSchema = function(resp){
-        $scope.schema = angular.copy(resp);
-        $scope.setData({});
-    };
-    
+    $rootScope.$broadcast('map:show');
 
-    $scope.setData = function(resp){
-        $scope.data = angular.copy(resp);
+    $scope.schemaUrl = $scope._appName + '/config/observation/sans-site/detail';
+    $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/sans-site/' + $routeParams.id;
+    $scope.dataId = $routeParams.id;
 
-
-        angular.forEach($scope.schema.formObs, function(value){
-            $scope.data[value.name] = value.default || null;
-        }, $scope);
-        $scope.data.siteId = $routeParams.id;
-        $scope.data.observateurs = [null];
-        dataServ.get($scope._appName + '/site/' + $routeParams.id, $scope.setSite);
-    };
-
-    $scope.setSite = function(resp){
-        $scope.site = resp;
-    };
-
-    $scope.save = function(){
-        dataServ.put($scope._appName + '/observation', $scope.data, function(resp){
-            dataServ.forceReload = true;
-            $location.path($scope._appName + '/observation/' + resp.id);
-
-        }, function(resp, status){
-            $scope.errors = resp;
+    $scope.$on('display:init', function(ev, data){
+        configServ.addBc(1, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/sans-site/' + data.id);
+        $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+        
+        mapService.initialize('js/resources/chiro_obs.json').then(function(){
+            mapService.loadData($scope._appName + '/observation').then(function(){
+                mapService.selectItem($routeParams.id);
+            });
         });
-    };
 
-    $scope.remove = function(){
-
-    };
-
-    configServ.getUrl($scope._appName + '/obsConfig', $scope.setSchema);
-
+    });
 });
-*/
+
+
+/*
+ * Edition d'une observation sans site
+ */
+app.controller('observationSsSiteEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
+    $rootScope.$broadcast('map:show');
+    $scope._appName = $routeParams.appName;
+    $scope.configUrl = $scope._appName + '/config/observation/sans-site/form';
+    if($routeParams.id){
+        $scope.saveUrl = $scope._appName + '/observation/' + $routeParams.id;
+        $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
+        $scope.data = {__origin__: {geom: $routeParams.id}};
+    }
+    else{
+        $scope.saveUrl = $scope._appName + '/observation';
+        $scope.data = {};
+    }
+
+    $scope.$on('form:init', function(ev, data){
+        if(data.obsDate){
+            $scope.title = "Modification de l'observation du " + data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1');
+            // breadcrumbs
+            configServ.addBc(1, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/sans-site/' + data.id);
+            configServ.addBc(2, $scope.title, '');
+        }
+        else{
+            $scope.title = 'Nouvelle observation';
+            configServ.addBc(2, $scope.title, '');
+        }
+    });
+
+    $scope.$on('form:create', function(ev, data){
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + ' a été créée avec succès.'
+        $location.url($scope._appName + '/observation/' + data.id);
+    });
+
+    $scope.$on('form:update', function(ev, data){
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + ' a été mise à jour avec succès.'
+        $location.url($scope._appName + '/observation/' + data.id);
+    });
+
+    $scope.$on('form:delete', function(ev, data){
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + data.obsDate + " n'a jamais eu lieu. Non. Jamais.";
+        dataServ.forceReload = true;
+        $location.url($scope._appName + '/site/' + data.siteId);
+    });
+});
+
+
