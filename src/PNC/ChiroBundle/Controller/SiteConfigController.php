@@ -43,7 +43,7 @@ class SiteConfigController extends Controller{
             'deleteAccess' => 5,
             'groups' => array(
                 array(
-                    'name'=>'Géographie',
+                    'name'=>'Localisation',
                     'fields'=>array(
                         array(
                             'name'=>'geom',

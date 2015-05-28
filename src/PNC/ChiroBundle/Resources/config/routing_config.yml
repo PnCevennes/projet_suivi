@@ -40,6 +40,26 @@ suivi_chiro_config_observation_list:
     requirements:
         _method: GET
 
+suivi_chiro_config_observation_sanssite_list:
+    path: observation/sans-site/list
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getListSsSite }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_sanssite_form:
+    path: observation/sans-site/form
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getFormSsSite }
+    requirements:
+        _method: GET
+
+suivi_chiro_config_observation_sanssite_detail:
+    path: observation/sans-site/detail
+    defaults: { _controller: PNCChiroBundle:ObservationConfig:getDetailSsSite }
+    requirements:
+        _method: GET
+
+
+
 
 #
 # configurations obs taxon

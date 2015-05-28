@@ -96,12 +96,14 @@ class BaseObservationService{
         }
         if(isset($data['geom'])){
             $geom = $this->geometryService->getPoint($data['geom']);
-            $this->setGeom($geom);
+            $obj->setGeom($geom);
         }
         $obj->setObsDate($date);
         $obj->setObsCommentaire($data['obsCommentaire']);
         $obj->setNumerisateurId($data['numerisateurId']);
-        $obj->setSiteId($data['siteId']);
+        if(isset($data['siteId'])){
+            $obj->setSiteId($data['siteId']);
+        }
         if($obj->errors()){
             throw new DataObjectException($obj->errors()); 
         }

@@ -19,8 +19,16 @@ class ObservationController extends Controller{
          * retourne la liste complete des observations
          */
         $os = $this->get('observationService');
+        $out = array();
+        foreach($os->getList() as $item){
+            $geoJson = array(
+                'type'=>'Feature',
+                'geometry'=>$item['geom'],
+                'properties'=>$item);
+            $out[] = $geoJson;
+        }
 
-        return new JsonResponse($os->getList());
+        return new JsonResponse($out);
     }
 
     // path: GET /chiro/observation/site/{id}
