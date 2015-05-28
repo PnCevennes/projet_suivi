@@ -7,6 +7,17 @@
     padding-left: 2em;
 }
 
+.coords-dsp{
+    width: 15em;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 4px;
+    font-weight: 900;
+}
+.coords-dsp span{
+    display: block;
+}
+
 .map{
     float: left;
     padding: 3px;

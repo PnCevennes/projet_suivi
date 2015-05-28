@@ -418,7 +418,9 @@ app.directive('geometry', function($timeout){
                 $scope.updateCoords(layer);
                 $scope.editLayer.addLayer(layer);
                 current = layer;
-            }
+            };
+
+            var coordsDisplay = null;
 
 
             if(!$scope.options.configUrl){
@@ -453,6 +455,28 @@ app.directive('geometry', function($timeout){
                 });
 
                 mapService.getMap().addControl($scope.controls);
+
+                /*
+                 * affichage coords curseur en edition 
+                 * TODO confirmer le maintien
+                 */
+                coordsDisplay = L.control({position: 'bottomleft'});
+                coordsDisplay.onAdd = function(map){
+                    this._dsp = L.DomUtil.create('div', 'coords-dsp');
+                    return this._dsp;
+                };
+                coordsDisplay.update = function(evt){
+                    this._dsp.innerHTML = '<span>Long. : ' + evt.latlng.lng + '</span><span>Lat. : ' + evt.latlng.lat + '</span>';
+                };
+
+                mapService.getMap().on('mousemove', function(e){
+                    coordsDisplay.update(e);
+                });
+
+                coordsDisplay.addTo(mapService.getMap());
+                /*
+                 * ---------------------------------------
+                 */
 
 
                 mapService.getMap().on('draw:created', function(e){
@@ -493,25 +517,6 @@ app.directive('geometry', function($timeout){
                     }
                 }
             };
-            /*
-            $scope.$on('$destroy', function(ev){
-                mapService.geoms = [];
-                /*
-                if($scope.origin){
-                    if(current){
-                        current.addTo(mapService.layer);
-                    }
-                }
-                mapService.map.removeLayer($scope.editLayer);
-                mapService.map.removeControl($scope.controls);
-                mapService.layerControl.removeLayer($scope.editLayer);
-                $scope.controls = null;
-                * /
-            });
-            */
-           
-
-
         },
     };
 });

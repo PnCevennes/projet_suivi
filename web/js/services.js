@@ -94,27 +94,7 @@ app.service('dataServ', function($http, $filter, userMessages){
     this.delete = function(url, success, error){
         $http.delete(url).success(success).error(error || function(err){console.log(err);});
     };
-        
 
-    // FIXME virer le reste
-    this.addToCache = function(cacheName, obj){
-        cache[cacheName].push(obj);
-    };
-
-    this.getFromCache = function(cacheName, path){
-        var res = $filter('filter')(cache[cacheName], path, function(act, exp){return act==exp;});
-        if(res){
-            return res[0];
-        }
-        return null;
-    };
-
-    this.getCacheLength = function(cachename){
-        if(cache[cachename]){
-            return cache[cachename].length;
-        }
-        return 0;
-    };
 });
 
 

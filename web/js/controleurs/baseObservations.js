@@ -193,6 +193,13 @@ app.controller('observationDetailController', function($scope, $rootScope, $rout
     $scope.$on('display:init', function(ev, data){
         configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
         $scope.title = "Observation du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+
+        mapService.initialize('js/resources/chiro_obs.json').then(function(){
+            mapService.loadData($scope._appName + '/site').then(function(){
+                mapService.selectItem(data.siteId);
+            });
+        });
+
     });
 });
 
