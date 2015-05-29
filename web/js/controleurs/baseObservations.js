@@ -170,12 +170,12 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.'
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.'
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.';
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
@@ -280,12 +280,12 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.'
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
         $location.url($scope._appName + '/observation/sans-site/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.'
+        userMessages.infoMessage = "l'observation n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.';
         $location.url($scope._appName + '/observation/sans-site/' + data.id);
     });
 
