@@ -13,6 +13,5 @@ CREATE OR REPLACE VIEW chiro.vue_chiro_obs_ss_site AS
     FROM pnc.base_observation obs
     JOIN chiro.chiro_conditions_observ cco ON cco.obs_id = obs.id
     LEFT JOIN utilisateurs.t_roles num ON num.id_role = obs.numerisateur_id
-    WHERE obs.site_id IS NULL
+    WHERE obs.site_id IS NULL AND NOT obs.geom IS NULL
     ORDER BY obs.obs_date DESC;
-
