@@ -71,6 +71,7 @@ Chaque champ est un objet comportant au minimum un nom (**name**), un type (**ty
 ####string et text
 
 *string* affiche un input type="text"
+
 *text* affiche un textarea
 
 les options possibles sont *minLength* et *maxLength*. Un champ dont *minLength* est >0 définit systématiquement *required*
@@ -79,10 +80,10 @@ les options possibles sont *minLength* et *maxLength*. Un champ dont *minLength*
 
 ####num et sum
 
-*num* affiche un input type="number"
-Les options possibles sont *min*, *max* et *step*
+*num* affiche un input type="number". Les options possibles sont *min*, *max* et *step*
 
 *sum* affiche un input type="number" dont la valeur est la somme des champs qui lui sont passés en référence
+
 Option obligatoire: 
 
 - ref: liste des champs de référence pour la somme
@@ -91,6 +92,7 @@ Option obligatoire:
 ####select
 
 *select* affiche une liste déroulante (balise select)
+
 Option obligatoire:
 
 - choices: liste d'objets {label: titre, id: valeur}
