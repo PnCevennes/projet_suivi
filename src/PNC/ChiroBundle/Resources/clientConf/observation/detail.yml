@@ -1,0 +1,43 @@
+editAccess: 3
+subEditAccess: 2
+editAccessOverride: numerisateurId
+subSchemaUrl: "chiro/config/obstaxon/list"
+subDataUrl: "chiro/obs_taxon/observation/"
+subEditSchemaUrl: "chiro/config/obstaxon/form/many"
+subEditSaveUrl: "chiro/obs_taxon/many"
+subEditRef: id
+subSchemaAdd: 2
+groups:
+    - name: Observation
+      fields:
+          - name: id
+            type: hidden
+          - name: siteNom
+            label: Site
+            type: string
+          - name: obsDate
+            label: Date
+            type: date
+          - name: numerisateurId
+            label: Numérisateur
+            type: xhr
+            options:
+                url: "users/id"
+          - name: observateurs
+            label: Observateurs
+            type: xhr
+            options:
+                multi: true
+                url: "users/id"
+          - name: obsCommentaire
+            label: Commentaires
+            type: string
+          - name: obsTemperature
+            label: "Température (°C)"
+            type: string
+          - name: obsHumidite
+            label: "Humidité (%)"
+            type: string
+
+
+

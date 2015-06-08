@@ -1,0 +1,36 @@
+title: Observations
+emptyMsg: "Aucune observation pour le moment"
+createBtnLabel: "Nouvelle obs."
+createUrl: "#/chiro/edit/observation/site/"
+editUrl: "#/chiro/edit/observation/"
+detailUrl: "#/chiro/observation/"
+editAccess: 2
+fields:
+    - name: id
+      label: Id
+      filter: 
+          id: text
+      options:
+          visible: false
+    - name: obsDate
+      label: "Date d'observation"
+      filter:
+          obsDate: text
+      options:
+          visible: true
+          type: date
+    - name: observateurs
+      label: Observateurs
+      filter:
+          observateurs: text
+      options:
+          visible: true
+          type: list
+    - name: nbTaxons
+      label: Taxons
+      filter:
+          nbTaxons: text
+      options:
+          visible: true
+
+

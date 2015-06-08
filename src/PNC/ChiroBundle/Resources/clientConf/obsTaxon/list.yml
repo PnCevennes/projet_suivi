@@ -1,0 +1,33 @@
+title: Taxons
+emptyMsg: Aucun taxon observé
+createBtnLabel: Ajouter taxon
+createUrl: "#/chiro/edit/taxons/observation/"
+editUrl: "#/chiro/edit/taxons/"
+detailUrl: "#/chiro/taxons/"
+editAccess: 3
+fields:
+    -   name: id
+        label: Id
+        filter:
+            id: text
+        options:
+            visible: false
+    -   name: nomComplet
+        label: "Nom taxon"
+        filter:
+            nomComplet: text
+        options:
+            visible: true
+    -   name: obsEffectifAbs
+        label: "Effectif total"
+        filter:
+            obsEffectifAbs: text
+        options:
+            visible: true
+    -   name: obsObjStatusValidation
+        label: "Validation"
+        filter:
+            obsObjStatusValidation: text
+        options:
+            visible: true
+            type: select

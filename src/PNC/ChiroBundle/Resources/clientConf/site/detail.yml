@@ -1,0 +1,69 @@
+editAccess: 3
+subEditAccess: 2
+subSchemaUrl: chiro/config/observation/list
+subDataUrl: chiro/observation/site/
+groups:
+    -   name: Informations
+        fields:
+            -   name: siteCode
+                label: "Code site"
+                type: string
+            -   name: nomObservateur
+                label: "Observateur"
+                type: string
+            -   name: siteDate
+                label: "Date de création"
+                type: date
+                help: "Date d'ajout du site à la base de données"
+            -   name: typeId
+                label: "Type"
+                type: select
+                help: "Type de lieu"
+    -   name: Détails
+        fields:
+            -   name: siteDescription
+                label: Description
+                type: string
+            -   name: siteAmenagement
+                label: Aménagement
+                type: file
+                help: "Aménagement du site"
+            -   name: siteFrequentation
+                label: Fréquentation
+                type: select
+                help: "Fréquentation du site"
+            -   name: siteMenace
+                label: Menaces
+                type: select
+                help: "Menaces pesant sur le site"
+            -   name: siteMenaceCmt
+                label: "Description menaces"
+                type: string
+                help: "Description des menaces pesant sur le site"
+    -   name: Contact
+        fields:
+            -   name: contactNom
+                label: "Nom du contact"
+                type: string
+            -   name: contactPrenom
+                label: "Prénom du contact"
+                type: string
+            -   name: contactAdresse
+                label: "Adresse du contact"
+                type: string
+            -   name: contactCodePostal
+                label: "Code postal"
+                type: string
+            -   name: contactVille
+                label: "Ville"
+                type: string
+            -   name: contactTelephone
+                label: "Téléphone"
+                type: string
+            -   name: contactPortable
+                label: "Portable"
+                type: string
+            -   name: contactCommentaire
+                label: "Commentaires contact"
+                type: string
+                help: "Informations complémentaires contact"

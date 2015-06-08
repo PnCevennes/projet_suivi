@@ -1,0 +1,40 @@
+deleteAccess: 5
+deleteAccessOverride: numerisateurId
+subSchemaUrl: chiro/config/obstaxon/form/many
+subDataRef: __taxons__
+subSchemaAdd: 2,
+subTitle: "Ajout rapide de taxons"
+groups:
+    - name: Observation
+      fields:
+          - name: id
+            label: Id
+            type: hidden
+          - name: siteId
+            label: Site
+            type: hidden
+          - name: numerisateurId
+            label: Numerisateur
+            type: hidden
+          - name: observateurs
+            label: Observateurs
+            type: xhr
+            options:
+                multi: true
+                url: "users/name/100/2"
+                reverseurl: "users/id"
+                ref: nomComplet
+          - name: obsDate
+            label: Date
+            type: date
+            options:
+                required: true
+          - name: obsCommentaire
+            label: Commentaires
+            type: text
+          - name: obsTemperature
+            label: "Température (°C)"
+            type: num
+          - name: obsHumidite
+            label: "Humidité (%)"
+            type: num

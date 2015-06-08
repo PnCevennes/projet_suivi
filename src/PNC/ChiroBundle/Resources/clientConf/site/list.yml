@@ -1,0 +1,54 @@
+title: Sites
+emptyMsg: Aucun site pour le moment
+createBtnLabel: Nouveau site
+createUrl: "#/chiro/edit/site/"
+editUrl: "#/chiro/edit/site/"
+detailUrl: "#/chiro/site/"
+editAccess: 5
+fields: 
+    -   name: id 
+        label: ID
+        filter: 
+            id: text
+        options: 
+            visible: true
+
+    -   name: siteNom
+        label: Nom
+        filter: 
+            siteNom: text
+        options:
+            visible: true
+    -   name: siteCode
+        label: Code site
+        filter: 
+            siteCode: text
+        options:
+            visible: true
+    -   name: nomObservateur
+        label: Observateur
+        filter:
+            nomObservateur: text
+        options:
+            visible: true
+    -   name: siteDate
+        label: Date créa.
+        filter:
+            siteDate: text
+        options:
+            visible: false
+    -   name: dernObs
+        label: Dernière observation
+        filter:
+            dernObs: text
+        options:
+            visible: false
+    -   name: typeLieu
+        label: Type
+        filter:
+            typeLieu: text
+        options:
+            visible: true;
+
+
+

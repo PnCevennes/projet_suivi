@@ -1,0 +1,59 @@
+fields:
+    -   name: cdNom
+        label: "Nom taxon"
+        type: xhr
+        options:
+            url: "chiro/taxons"
+            reverseurl: "chiro/taxons/id"
+            ref: cdNom
+    -   name: obsTxInitial
+        label: "Taxon initial"
+        type: string
+    -   name: obsEspeceIncertaine
+        label: "Espece incertaine"
+        type: bool
+    -   name: modId
+        label: "Mode d'observation"
+        type: select
+    -   name: actId
+        label: "Activité"
+        type: select
+    -   name: prvId
+        label: "Preuves de reproduction"
+        type: select
+    -   name: obsEffectifAbs
+        label: Effectif total
+        type: sum
+        options:
+            ref:
+                -   obsNbMaleAdulte
+                -   obsNbFemelleAdulte
+                -   obsNbMaleJuvenile
+                -   obsNbFemelleJuvenile
+                -   obsNbMaleIndetermine
+                -   obsNbFemelleIndetermine
+                -   obsNbIndetermineIndetermine
+            modifiable: true
+    -   name: obsNbMaleAdulte
+        label: "Mâles adultes"
+        type: num
+    -   name: obsNbFemelleAdulte
+        label: "Femelles adultes"
+        type: num
+    -   name: obsNbMaleJuvenile
+        label: "Mâles juveniles"
+        type: num
+    -   name: obsNbFemelleJuvenile
+        label: "Femelles juveniles"
+        type: num
+    -   name: obsNbMaleIndetermine
+        label: "Mâles indeterminés"
+        type: num
+    -   name: obsNbFemelleIndetermine
+        label: "Femelles indeterminés"
+        type: num
+    -   name: obsNbIndetermineIndetermine
+        label: "Indéterminés"
+        type: num
+        help: "Âge et sexe indéterminés"
+

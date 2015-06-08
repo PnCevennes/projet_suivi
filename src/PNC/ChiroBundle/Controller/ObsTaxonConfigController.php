@@ -5,6 +5,7 @@ namespace PNC\ChiroBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
 
 class ObsTaxonConfigController extends Controller{
 
@@ -70,173 +71,32 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
-        $out = array(
-            'deleteAccess'=>5,
-            'deleteAccessOverride'=>'numId', 
-            'subSchemaAdd'=>3,
-            'subSchemaUrl'=>'chiro/config/biometrie/form/many',
-            'subDataRef'=>'__biometries__',
-            'subTitle'=>'Ajout rapide de biometries',
-            'groups'=>array(
-                array(
-                    'name'=>'Informations',
-                    'fields'=>array(
-                        array(
-                            'name'=>'id',
-                            'label'=>'id',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'numId',
-                            'label'=>'Numerisateur',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array('ref'=>'userId')
-                        ),
-                        array(
-                            'name'=>'obsId',
-                            'label'=>'Id observation',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'cdNom',
-                            'label'=>'Nom taxon',
-                            'type'=>'xhr',
-                            'help'=>'',
-                            'options'=>array('url'=>'chiro/taxons', 'reverseurl'=>'chiro/taxons/id', 'ref'=>'cdNom')
-                        ),
-                        array(
-                            'name'=>'obsTxInitial',
-                            'label'=>'Taxon initial',
-                            'type'=>'string',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsObjStatusValidation',
-                            'label'=>'Statut validation',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typesVal, 'editLevel'=>5),
-                            'default'=>56
-                        ),
-                        array(
-                            'name'=>'modId',
-                            'label'=>"Mode d'observation",
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typeMod),
-                            'default'=>18
-                        ),
-                        array(
-                            'name'=>'actId',
-                            'label'=>'Activité',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typeAct),
-                            'default'=>25
-                        ),
-                        array(
-                            'name'=>'prvId',
-                            'label'=>'Preuves de reproduction',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typePrv),
-                            'default'=>32
-                        ),
-                        array(
-                            'name'=>'obsValidateur',
-                            'label'=>'Validateur',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array('ref'=>'userId', 'restrictLevel'=>5)
-                        ),
-                        array(
-                            'name'=>'obsEspeceIncertaine',
-                            'label'=>'Espece incertaine',
-                            'type'=>'bool',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsCommentaire',
-                            'label'=>'Commentaire',
-                            'type'=>'text',
-                            'help'=>"Informations complémentaires sur l'observation",
-                            'options'=>array()
-                        ),
-                    ),
-                ),
-                array(
-                    'name'=>'Enumeration',
-                    'fields'=>array(
-                        array(
-                            'name'=>'obsEffectifAbs',
-                            'label'=>'Effectif total',
-                            'type'=>'sum',
-                            'help'=>'',
-                            'options'=>array(
-                                'ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'), 
-                                'modifiable'=>true
-                            )
-                        ),
-                        array(
-                            'name'=>'obsNbMaleAdulte',
-                            'label'=>'Mâles adultes',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleAdulte',
-                            'label'=>'Femelles adultes',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbMaleJuvenile',
-                            'label'=>'Mâles juveniles',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleJuvenile',
-                            'label'=>'Femelles juveniles',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbMaleIndetermine',
-                            'label'=>'Mâles indeterminés',
-                            'type'=>'num',
-                            'help'=>'Age indéterminé',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleIndetermine',
-                            'label'=>'Femelles indeterminées',
-                            'type'=>'num',
-                            'help'=>'Age indéterminé',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbIndetermineIndetermine',
-                            'label'=>'Indetermines indeterminés',
-                            'type'=>'num',
-                            'help'=>'Age et sexe indéterminés',
-                            'options'=>array()
-                        ),
-                    ),
-                ),
-            ),
-        );
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form.yml');
+        $out = Yaml::parse($file);
+
+        foreach($out['groups'] as &$group){
+            foreach($group['fields'] as &$field){
+                if(!isset($field['options'])){
+                    $field['options'] = array();
+                }
+                if($field['name'] == 'obsObjStatusValidation'){
+                    $field['options']['choices'] = $typesVal;
+                    $field['default'] = 56;
+                }
+                if($field['name'] == 'modId'){
+                    $field['options']['choices'] = $typeMod;
+                    $field['default'] = 18;
+                }
+                if($field['name'] == 'actId'){
+                    $field['options']['choices'] = $typeAct;
+                    $field['default'] = 25;
+                }
+                if($field['name'] == 'prvId'){
+                    $field['options']['choices'] = $typePrv;
+                    $field['default'] = 32;
+                }
+            }
+        }
 
         return new JsonResponse($out);
     }
@@ -246,12 +106,6 @@ class ObsTaxonConfigController extends Controller{
         $norm = $this->get('normalizer');
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
         $types = $repo->findBy(array('id_type'=>9));
-        $typesVal = array(array('id'=>null, 'libelle'=>''));
-        foreach($types as $tl){
-            if($tl->getFkParent() != 0){
-                $typesVal[] = $norm->normalize($tl, array());
-            }
-        }
 
         // Mode d'observation
         $mods = $repo->findBy(array('id_type'=>4));
@@ -280,123 +134,27 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form_many.yml');
+        $out = Yaml::parse($file);
 
-        $out = array(
-            'title'=>'Ajout rapide de taxons',
-            'fields'=>array(
-                array(
-                    'name'=>'cdNom',
-                    'label'=>'Nom taxon',
-                    'type'=>'xhr',
-                    'help'=>'',
-                    'options'=>array(
-                        'primary'=>true, 
-                        'url'=>'chiro/taxons', 
-                        'reverseurl'=>'chiro/taxons/id', 
-                        'ref'=>'cdNom')
-                ),
-                array(
-                    'name'=>'obsTxInitial',
-                    'label'=>'Taxon initial',
-                    'type'=>'string',
-                    'help'=>'',
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'obsEspeceIncertaine',
-                    'label'=>'Espece incertaine',
-                    'type'=>'bool',
-                    'help'=>'',
-                    'default'=>false,
-                    'options'=>array()
-                ),
-                array(
-                    'name'=>'modId',
-                    'label'=>"Mode d'observation",
-                    'type'=>'select',
-                    'help'=>'',
-                    'options'=>array('choices'=> $typeMod),
-                    'default'=>18
-                ),
-                array(
-                    'name'=>'actId',
-                    'label'=>'Activité',
-                    'type'=>'select',
-                    'help'=>'',
-                    'options'=>array('choices'=> $typeAct),
-                    'default'=>25
-                ),
-                array(
-                    'name'=>'prvId',
-                    'label'=>'Preuves de reproduction',
-                    'type'=>'select',
-                    'help'=>'',
-                    'options'=>array('choices'=> $typePrv),
-                    'default'=>32
-                ),
-                array(
-                    'name'=>'obsEffectifAbs',
-                    'label'=>'Effectif total',
-                    'type'=>'sum',
-                    'help'=>'',
-                    'options'=>array(
-                        'min'=>0,
-                        'required'=>true,
-                        'ref'=>array('obsNbMaleAdulte', 'obsNbFemelleAdulte', 'obsNbMaleJuvenile', 'obsNbFemelleJuvenile', 'obsNbMaleIndetermine', 'obsNbFemelleIndetermine', 'obsNbIndetermineIndetermine'), 
-                        'modifiable'=>true
-                    )
-                ),
-                array(
-                    'name'=>'obsNbMaleAdulte',
-                    'label'=>'Mâles adultes',
-                    'type'=>'num',
-                    'help'=>'',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbFemelleAdulte',
-                    'label'=>'Femelles adultes',
-                    'type'=>'num',
-                    'help'=>'',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbMaleJuvenile',
-                    'label'=>'Mâles juveniles',
-                    'type'=>'num',
-                    'help'=>'',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbFemelleJuvenile',
-                    'label'=>'Femelles juveniles',
-                    'type'=>'num',
-                    'help'=>'',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbMaleIndetermine',
-                    'label'=>'Mâles indeterminés',
-                    'type'=>'num',
-                    'help'=>'Age indéterminé',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbFemelleIndetermine',
-                    'label'=>'Femelles indeterminées',
-                    'type'=>'num',
-                    'help'=>'Age indéterminé',
-                    'options'=>array('min'=>0)
-                ),
-                array(
-                    'name'=>'obsNbIndetermineIndetermine',
-                    'label'=>'Indetermines indeterminés',
-                    'type'=>'num',
-                    'help'=>'Age et sexe indéterminés',
-                    'options'=>array('min'=>0)
-                ),
-            ),
-        );
+        foreach($out['fields'] as &$field){
+            if(!isset($field['options'])){
+                $field['options'] = array();
+            }
+            if($field['name'] == 'modId'){
+                $field['options']['choices'] = $typeMod;
+                $field['default'] = 18;
+            }
+            if($field['name'] == 'actId'){
+                $field['options']['choices'] = $typeAct;
+                $field['default'] = 25;
+            }
+            if($field['name'] == 'prvId'){
+                $field['options']['choices'] = $typePrv;
+                $field['default'] = 32;
+            }
+        }
+
         return new JsonResponse($out);
     }
 
@@ -439,171 +197,30 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/detail.yml');
+        $out = Yaml::parse($file);
+
+        foreach($out['groups'] as &$group){
+            foreach($group['fields'] as &$field){
+                if(!isset($field['options'])){
+                    $field['options'] = array();
+                }
+                if($field['name'] == 'obsObjStatusValidation'){
+                    $field['options']['choices'] = $typesVal;
+                }
+                if($field['name'] == 'modId'){
+                    $field['options']['choices'] = $typeMod;
+                }
+                if($field['name'] == 'actId'){
+                    $field['options']['choices'] = $typeAct;
+                }
+                if($field['name'] == 'prvId'){
+                    $field['options']['choices'] = $typePrv;
+                }
+            }
+        }
 
 
-        $out = array(
-            'editAccess'=>3,
-            'subEditAccess'=>3,
-            'editAccessOverride'=>'numId',
-            'subSchemaUrl'=>'chiro/config/biometrie/list',
-            'subDataUrl'=>'chiro/biometrie/taxon/',
-            'subEditSchemaUrl'=>'chiro/config/biometrie/form/many',
-            'subEditSaveUrl'=>'chiro/biometrie/many',
-            'subEditRef'=>'id',
-            'subSchemaAdd'=>3,
-            'groups'=>array(
-                array(
-                    'name'=>'Général',
-                    'fields'=>array(
-                        array(
-                            'name'=>'id',
-                            'label'=>'',
-                            'type'=>'hidden',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'cdNom',
-                            'label'=>'Cd nom',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'nomComplet',
-                            'label'=>'Nom taxon',
-                            'type'=>'string',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsTxInitial',
-                            'label'=>'Taxon initial',
-                            'type'=>'string',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'numId',
-                            'label'=>'Numerisateur',
-                            'type'=>'xhr',
-                            'help'=>'',
-                            'options'=>array('url'=>'users/id')
-                        ),
-                        array(
-                            'name'=>'obsCommentaire',
-                            'label'=>'Commentaire',
-                            'type'=>'string',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsValidateur',
-                            'label'=>'Validateur',
-                            'type'=>'xhr',
-                            'help'=>'',
-                            'options'=>array('url'=>'users/id')
-                        ),
-                        array(
-                            'name'=>'obsEspeceIncertaine',
-                            'label'=>'Espece incertaine',
-                            'type'=>'bool',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'modId',
-                            'label'=>"Mode d'observation",
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typeMod),
-                        ),
-                        array(
-                            'name'=>'actId',
-                            'label'=>'Activité',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typeAct),
-                        ),
-                        array(
-                            'name'=>'prvId',
-                            'label'=>'Preuves de reproduction',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=> $typePrv),
-                        ),
-                        array(
-                            'name'=>'obsEffectifAbs',
-                            'label'=>'Effectif total',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                    ),
-                ),
-                array(
-                    'name'=> 'Détail',
-                    'fields'=>array(
-                        array(
-                            'name'=>'obsNbMaleAdulte',
-                            'label'=>'Mâles adultes',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleAdulte',
-                            'label'=>'Femelles adultes',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbMaleJuvenile',
-                            'label'=>'Mâles juveniles',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleJuvenile',
-                            'label'=>'Femelles juveniles',
-                            'type'=>'num',
-                            'help'=>'',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbMaleIndetermine',
-                            'label'=>'Mâles indeterminés',
-                            'type'=>'num',
-                            'help'=>'Age indéterminé',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbFemelleIndetermine',
-                            'label'=>'Femelles indeterminées',
-                            'type'=>'num',
-                            'help'=>'Age indéterminé',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsNbIndetermineIndetermine',
-                            'label'=>'Indetermines indeterminés',
-                            'type'=>'num',
-                            'help'=>'Age et sexe indéterminés',
-                            'options'=>array()
-                        ),
-                        array(
-                            'name'=>'obsObjStatusValidation',
-                            'label'=>'Statut validation',
-                            'type'=>'select',
-                            'help'=>'',
-                            'options'=>array('choices'=>$typesVal)
-                        ),
-                    ),
-                ),
-            ),
-        );
 
         return new JsonResponse($out);
     }
@@ -620,46 +237,18 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
-        $out = array(
-            'title'=>'Taxons',
-            'emptyMsg'=>'Aucun taxon observé',
-            'createBtnLabel'=>'Ajouter taxon',
-            'createUrl'=>'#/chiro/edit/taxons/observation/',
-            'editUrl'=>'#/chiro/edit/taxons/',
-            'detailUrl'=>'#/chiro/taxons/',
-            'editAccess'=>3,
-            'fields'=>array(
-                array(
-                    'name'=>'id',
-                    'label'=>'ID',
-                    'filter'=>array('id'=>'text'),
-                    'options'=>array('visible'=>false)
-                ),
-                array(
-                    'name'=>'nomComplet',
-                    'label'=>'Nom taxon',
-                    'filter'=>array('nomComplet'=>'text'),
-                    'options'=>array('visible'=>true)
-                ),
-                array(
-                    'name'=>'obsEffectifAbs',
-                    'label'=>'Effectif total',
-                    'filter'=>array('obsEffectifAbs'=>'text'),
-                    'options'=>array('visible'=>true)
-                ),
-                array(
-                    'name'=>'obsObjStatusValidation',
-                    'label'=>'Statut validation',
-                    'filter'=>array('obsObjStatusValidation'=>'text'),
-                    'options'=>array(
-                        'visible'=>true,
-                        'type'=>'select',
-                        'choices'=>$typesVal
-                    )
-                ),
-            ),
-        );
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/list.yml');
+        $out = Yaml::parse($file);
 
+
+        foreach($out['fields'] as &$field){
+            if(!isset($field['options'])){
+                $field['options'] = array();
+            }
+            if($field['name'] == 'obsObjStatusValidation'){
+                $field['options']['choices'] = $typesVal;
+            }
+        }
         return new JsonResponse($out);
     }
 }

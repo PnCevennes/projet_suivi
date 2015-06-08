@@ -1,0 +1,107 @@
+deleteAccess: 5
+groups:
+    -   name: Localisation
+        fields:
+            -   name: geom
+                label: Coordonnées GPS
+                type: geom
+                options:
+                    geometryType: point
+                    dataUrl: chiro/site
+    -   name: Informations
+        fields:
+            -   name: id
+                label: ID
+                type: hidden
+            -   name: siteNom
+                label: Nom
+                type: string
+                help: nom du site
+                options:
+                    minLength: 5
+                    maxlength: 250
+            -   name: typeId
+                label: Type
+                type: select
+                help: Type de lieu
+            -   name: siteCode
+                label: Code site
+                type: string
+                options:
+                    minLength: 5
+                    maxLength: 250
+            -   name: observateurId
+                label: Observateur
+                type: xhr
+                options:
+                    url: users/name/100/2
+                    reverseurl: users/id
+                    required: true
+            -   name: siteDate
+                label: Date créa.
+                type: date
+                help: "date d'ajout à la base de données"
+                options:
+                    required: true
+            -   name: siteDescription
+                label: Description
+                type: text
+                options: 
+                    maxLength: 1000
+    -   name: Etat
+        fields:
+            -   name: siteAmenagement
+                label: Amenagement
+                type: file
+                help: "Aménagement du site"
+            -   name: siteMenace
+                label: "Types de menace"
+                type: select
+                help: "Type de menace pesant sur le site"
+            -   name: siteFrequentation
+                label: Fréquentation
+                type: select
+                help: "Estimation de la fréquentation du site"
+    -   name: Contact
+        fields:
+            -   name: contactNom
+                label: "Nom du contact"
+                type: string
+                options:
+                    maxLength: 25
+            -   name: contactPrenom
+                label: "Prénom du contact"
+                type: string
+                options:
+                    maxLength: 25
+            -   name: contactAdresse
+                label: "Adresse du contact"
+                type: string
+                options:
+                    maxLength: 150
+            -   name: contactCodePostal
+                label: "Code postal"
+                type: string
+                options:
+                    maxLength: 5
+            -   name: contactVille
+                label: Ville
+                type: string
+                options:
+                    maxLength: 100
+            -   name: contactTelephone
+                label: Téléphone
+                type: string
+                options:
+                    maxLength: 15
+            -   name: contactPortable
+                label: Portable
+                type: string
+                options:
+                    maxLength: 15
+            -   name: contactCommentaire
+                label: "Commentaires contact"
+                type: text
+                help: "Insultes et médisances"
+                options:
+                    maxLength: 1000

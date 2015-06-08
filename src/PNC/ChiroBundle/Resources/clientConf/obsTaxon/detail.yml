@@ -1,0 +1,81 @@
+editAccess: 3
+subEditAccess: 3
+editAccessOverride: numId
+subSchemaUrl: chiro/config/biometrie/list
+subDataUrl: chiro/biometrie/taxon/
+subEditSchemaUrl: chiro/config/biometrie/form/many
+subEditSaveUrl: chiro/biometrie/many
+subEditRef: id
+subSchemaAdd: 3
+groups:
+    -   name: "Général"
+        fields:
+            -   name: id
+                type: hidden
+            -   name: cdNom
+                label: "Cd nom"
+                type: num
+            -   name: nomComplet
+                label: "Nom taxon"
+                type: string
+            -   name: obsTxInitial
+                label: "Taxon initial"
+                type: string
+            -   name: obsEspeceIncertaine
+                label: "Espece incertaine"
+                type: bool
+            -   name: numId
+                label: "Numérisateur"
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: obsObjStatusValidation
+                label: "Statut validation"
+                type: select
+            -   name: obsValidateur
+                label: "Validateur"
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: modId
+                label: "Mode d'observation"
+                type: select
+            -   name: actId
+                label: "Activité"
+                type: select
+            -   name: prvId
+                label: "Preuves de reproduction"
+                type: select
+            -   name: obsEffectifAbs
+                label: "Effectif total"
+                type: num
+    -   name: "Détail"
+        fields:
+            -   name: obsNbMaleAdulte
+                label: "Mâles adultes"
+                type: num
+            -   name: obsNbFemelleAdulte
+                label: "Femelles adultes"
+                type: num
+            -   name: obsNbMaleJuvenile
+                label: "Mâles juvéniles"
+                type: num
+            -   name: obsNbFemelleJuvenile
+                label: "Femelles juvéniles"
+                type: num
+            -   name: obsNbMaleIndetermine
+                label: "Mâles indéterminés"
+                help: "Âge indéterminé"
+                type: num
+            -   name: obsNbFemelleIndetermine
+                label: "Femelles indéterminées"
+                help: "Âge indéterminé"
+                type: num
+            -   name: obsNbIndetermineIndetermine
+                label: "Indéterminé indéterminé"
+                help: "Âge et sexe indéterminés"
+                type: num
+            -   name: obsCommentaire
+                label: "Commentaires"
+                type: string
+

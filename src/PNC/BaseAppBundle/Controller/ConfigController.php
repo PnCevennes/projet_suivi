@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 use PNC\BaseAppBundle\Entity\Fichiers;
 
@@ -18,12 +19,12 @@ class ConfigController extends Controller{
         return new BinaryFileResponse('suivi.html');
     }
 
-    // path: GET /apps
+    // path: GET /config/apps
     public function getAppsAction(){
-        return new JsonResponse(array(
-            array('id'=>'1', 'name'=>'chiro', 'appId'=>100),
-            //array('id'=>'2', 'name'=>'cheveche'),
-        ));
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/application.yml');
+        $out = Yaml::parse($file);
+        return new JsonResponse($out);
+
     }
 
     /*
