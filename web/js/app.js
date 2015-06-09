@@ -42,6 +42,10 @@ app.config(function($routeProvider){
             controller: 'logoutController',
             templateUrl: 'js/templates/index.htm'
         })
+        .when('/apps', {
+            controller: 'appsController',
+            templateUrl: 'js/views/appSelection.htm'
+        })
         .otherwise({redirectTo: '/'});
 });
 
@@ -49,40 +53,58 @@ app.config(function($routeProvider){
 /*
  * Controleur de base
  */
-app.controller('baseController', function($scope, dataServ, configServ, mapService, userMessages, userServ){
+app.controller('baseController', function($scope, $location, dataServ, configServ, mapService, userMessages, userServ){
+    $scope._appName = null;
+    $scope.app = {name: "Suivi des protocoles", menu: []};
+    $scope.user = userServ.getUser();
+    if(!$scope.user){
+        $location.url('login');
+    }
     $scope.success = function(resp){
         $scope.data = resp;
-        $scope.showMap = false;
-        $scope.user = null;
 
         // FIXME DEBUG
+        /*
         configServ.put('debug', true);
-        userServ.login('as_test', 'test', 100);
-
+        userServ.login('as_test', 'test');
+        */
         
-        configServ.put('app', $scope.data[0]);
+        //configServ.put('app', $scope.data[0]);
         userMessages.infoMessage = "bienvenue !";
-        $scope._appName = $scope.data[0].name;
+        //$scope._appName = $scope.data[0].name;
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
+            $location.url('apps');
         });
 
         $scope.$on('user:logout', function(ev){
+            $scope.app = {name: "Suivi des protocoles", menu: []};
             $scope.user = null;
         });
 
-        $scope.$on('map:show', function(ev){
-            $scope.showMap = true;
+        $scope.$on('app:select', function(ev, app){
+            $scope.app = app;
         });
-
-        $scope.$on('map:hide', function(ev){
-            $scope.showMap = false;
-        });
-
 
     };
-    dataServ.get('config/apps', $scope.success);
+
+    $scope.setActive = function(item){
+        $scope.app.menu.forEach(function(elem){
+            if(elem.url == item.url){
+                elem.__active__ = true;
+            }
+            else{
+                elem.__active__ = false;
+            }
+        });
+    };
+
+    $scope.check = function(val){
+        return userServ.checkLevel(val); 
+    };
+
+    configServ.getUrl('config/apps', $scope.success);
 });
 
 
@@ -90,25 +112,23 @@ app.controller('baseController', function($scope, dataServ, configServ, mapServi
  * controleur login
  */
 app.controller('loginController', function($scope, $location, $rootScope, userServ, userMessages, configServ){
-    $scope.data = {
-        login: userServ.getUser().identifiant,
-        pass: userServ.getUser().pass,
-        idApp: userServ.getUser().idApplication
-    };
-    $rootScope.$broadcast('map:hide');
+    if(userServ.getUser()){
+        $scope.data = {
+            login: userServ.getUser().identifiant,
+            pass: userServ.getUser().pass, 
+        };
+    }
+    else{
+        $scope.data = {login: null, pass: null};
+    }
     configServ.bcShown = false;
 
     $scope.$on('user:login', function(ev, user){
-        userMessages.infoMessage = user.nomComplet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
+        userMessages.infoMessage = user.nom_complet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
         
         configServ.bcShown = true;
         var curBc = configServ.getBc();
-        try{
-            $location.path(curBc[curBc.length-1].url.slice(2));
-        }
-        catch(e){
-            $location.path(''); //FIXME
-        }
+        $location.url('apps'); 
     });
 
     $scope.$on('user:error', function(ev){
@@ -116,7 +136,7 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
     });
 
     $scope.send = function(){
-        userServ.login($scope.data.login, $scope.data.pass, $scope.data.idApp);
+        userServ.login($scope.data.login, $scope.data.pass);
     };
 });
 
@@ -128,13 +148,30 @@ app.controller('logoutController', function($scope, $location, userServ, userMes
     $scope.$on('user:logout', function(ev){
         userMessages.infoMessage = "Tchuss !";
         var curBc = configServ.getBc();
-        try{
-            $location.path(curBc[curBc.length-1].url.slice(2));
-        }
-        catch(e){
-            $location.path('login');
-        }
+        $location.url('login');
     });
 
     userServ.logout();
+});
+
+
+/*
+ * controleur selection app
+ */
+
+app.controller('appsController', function($scope, $location, configServ, userServ){
+    $scope.setData = function(resp){
+        $scope.apps = resp;
+    };
+
+    $scope.select = function(id){
+        $scope.apps.forEach(function(item){
+            if(item.id == id){
+                userServ.currentApp = item.appId;
+                $scope.$emit('app:select', item);
+            }
+        });
+    };
+
+    configServ.getUrl('config/apps', $scope.setData);
 });

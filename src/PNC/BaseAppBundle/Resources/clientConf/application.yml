@@ -1,6 +1,26 @@
 -   id: 1
     name: chiro
+    base_url: "chiro/site"
+    menu:
+        -   url: "#/chiro/site"
+            label: "Sites"
+            restrict: 2
+        -   url: "#/chiro/observation"
+            label: "Observations"
+            restrict: 2
+        -   url: "#/chiro/validation"
+            label: "Validation"
+            restrict: 5
     appId: 100
--   id: 2
-    name: cheveche
-    appId: 200
+#-   id: 2
+#    name: flore
+#    base_url: "flore/site"
+#    appId: 20
+#-   id: 3
+#    name: eau
+#    base_url: "eau/site"
+#    appId: 40
+#-   id: 4
+#    name: cheveche
+#    base_url: "cheveche/site"
+#    appId: 110

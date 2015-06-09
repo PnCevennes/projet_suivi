@@ -257,8 +257,9 @@ app.service('mapService', function($rootScope, $filter, dataServ){
  * service utilisateur
  */
 app.service('userServ', function(dataServ, $rootScope){
-    var _user = {idApplication: 100}; //FIXME idApp
+    var _user = null; //FIXME idApp
     var _tmp_password = '';
+    this.currentApp = null;
 
     this.getUser = function(){
         return _user;
@@ -266,11 +267,11 @@ app.service('userServ', function(dataServ, $rootScope){
 
 
     this.checkLevel = function(level){
-        return _user.maxdroit >= level;
+        return _user.apps[this.currentApp] >= level;
     };
 
     this.isOwner = function(ownerId){
-        return _user.idRole == ownerId;
+        return _user.id_role == ownerId;
     };
 
     this.login = function(login, password, app){
@@ -298,7 +299,7 @@ app.service('userServ', function(dataServ, $rootScope){
     };
 
     this.disconnected = function(resp){
-        _user = {idApplication: 100}; //FIXME idApp
+        _user = null;
         $rootScope.$broadcast('user:logout');
     }
 

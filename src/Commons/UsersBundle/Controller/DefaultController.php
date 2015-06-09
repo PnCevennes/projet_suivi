@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 
-
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class DefaultController extends Controller
 {
@@ -16,21 +16,30 @@ class DefaultController extends Controller
     // path: POST /users/login
     public function loginAction(Request $req){
         $userData = json_decode($req->getContent(), true);
+        
 
-        $repo = $this->getDoctrine()->getRepository('CommonsUsersBundle:Login');
-        $norm = $this->get('normalizer');
+        //FIXME usage d'une requête native : revoir mapping entité
 
-        $user = $repo->findOneBy(array(
-            'identifiant'=>$userData['login'],
-            'pass'=>md5($userData['pass']),
-            'id_application'=>$userData['idApp'],
-            )
-        );
+        $mgr = $this->getDoctrine()->getConnection();
+        $qr = $mgr->prepare('select a.* from utilisateurs.view_login a where identifiant=:login and pass=:pass');
+        $qr->bindValue('login', $userData['login']);
+        $qr->bindValue('pass', md5($userData['pass']));
+        $qr->execute();
+        $data = $qr->fetchAll();
+        //print_r($data);
 
-        if(!$user){
+        if(!$data){
             return new JsonResponse(array('id'=>null), 403);
         }
-        $out = $norm->normalize($user);
+        foreach($data as $user){
+            if(!isset($out)){
+                $out = $user;
+                $out['apps'] = array($user['id_application']=>$user['maxdroit']);
+            }
+            else{
+                $out['apps'][$user['id_application']] = $user['maxdroit'];
+            }
+        }
 
         // génération d'un token
         $token = md5(uniqid());

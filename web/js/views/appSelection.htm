@@ -1,0 +1,4 @@
+<h1>Selection d'une application</h1>
+<div ng-repeat="app in apps" ng-if="user.apps[app.appId]">
+    <a ng-href="#/{{app.base_url}}" ng-click="select(app.id)">{{app.name}}</a>
+</div>
