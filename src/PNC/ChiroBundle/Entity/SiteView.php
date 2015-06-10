@@ -202,6 +202,11 @@ class SiteView
     /**
      * @var string
      */
+    private $site_menace_cmt;
+
+    /**
+     * @var string
+     */
     private $site_amenagement;
 
     /**
@@ -404,6 +409,14 @@ class SiteView
     public function getSiteMenace()
     {
         return $this->site_menace;
+    }
+
+    public function setSiteMenaceCmt($siteMenaceCmt){
+        $this->site_menace_cmt = $siteMenaceCmt;
+    }
+
+    public function getSiteMenaceCmt(){
+        return $this->site_menace_cmt;
     }
 
     /**

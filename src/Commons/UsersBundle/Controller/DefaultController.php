@@ -47,7 +47,7 @@ class DefaultController extends Controller
         $resp = new JsonResponse($out);
         $resp->headers->setCookie(new Cookie('token', $token));
         $req->getSession()->set('token', $token);
-        $req->getSession()->set('user', $user);
+        $req->getSession()->set('user', $out);
 
         /*
          *

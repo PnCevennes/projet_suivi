@@ -58,6 +58,10 @@ groups:
                 label: "Types de menace"
                 type: select
                 help: "Type de menace pesant sur le site"
+            -   name: siteMenaceCmt
+                label: "Informations menaces"
+                type: text
+                help: "Informations complémentaires sur les menaces pesant sur le site"
             -   name: siteFrequentation
                 label: Fréquentation
                 type: select
