@@ -1,7 +1,10 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
+
+// module de gestion de la validation
+angular.module('baseValidation', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
 
 // module de gestion des observations
 angular.module('baseObservations', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
@@ -57,6 +60,7 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
     $scope._appName = null;
     $scope.app = {name: "Suivi des protocoles", menu: []};
     $scope.user = userServ.getUser();
+    configServ.bcShown = false;
     if(!$scope.user){
         $location.url('login');
     }
@@ -79,12 +83,15 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
         });
 
         $scope.$on('user:logout', function(ev){
+            configServ.bcShown = false;
             $scope.app = {name: "Suivi des protocoles", menu: []};
             $scope.user = null;
         });
 
         $scope.$on('app:select', function(ev, app){
+            configServ.bcShown = true;
             $scope.app = app;
+            $scope.setActive(app.menu[0]);
         });
 
     };
@@ -158,8 +165,12 @@ app.controller('logoutController', function($scope, $location, userServ, userMes
 /*
  * controleur selection app
  */
-
 app.controller('appsController', function($scope, $location, configServ, userServ){
+    
+    if(!userServ.getUser()){
+        $location.url('login');
+    }
+
     $scope.setData = function(resp){
         $scope.apps = resp;
     };

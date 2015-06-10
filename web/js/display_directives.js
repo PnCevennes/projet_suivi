@@ -208,9 +208,18 @@ app.directive('breadcrumbs', function(){
             }
             $scope.bc = bc; //.slice(0, bc.length-1);
             $scope.bcShown = configServ.bcShown;
+            $scope.$watch(
+                function(){return configServ.bcShown;},
+                function(newv, oldv){
+                    if(newv !== oldv){
+                        $scope.bcShown = newv;
+                    }
+                }
+            );
         },
     };
 });
+
 
 app.directive('tablewrapper', function(){
     return {
