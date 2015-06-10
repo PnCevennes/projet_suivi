@@ -24,11 +24,27 @@ class TaxonService{
     }
 
     public function getList($obs_id){
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-        $data = $repo->findBy(array('obs_id'=>$obs_id));
         $out = array();
-        foreach($data as $item){
-            $out[] = $this->norm->normalize($item);
+        if($obs_id){
+            $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
+            $data = $repo->findBy(array('obs_id'=>$obs_id));
+            foreach($data as $item){
+                $out[] = $this->norm->normalize($item);
+            }
+        }
+        else{
+            $repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
+            $data = $repo->findAll();
+            foreach($data as $item){
+                $out_item = array(
+                    'type'=>'Feature', 
+                    'properties'=>$this->norm->normalize($item, array('obsDate', 'geom')),
+                    'geometry'=>$item->getGeom()
+                    );
+            
+                $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
+                $out[] = $out_item;
+            }
         }
         return $out;
     }

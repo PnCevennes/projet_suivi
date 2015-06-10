@@ -1,0 +1,14 @@
+CREATE OR REPLACE VIEW chiro.vue_chiro_validation AS 
+    SELECT 
+        tx.id,
+        tx.cd_nom,
+        tx.nom_complet,
+        tx.obs_effectif_abs,
+        obs.obs_date,
+        site.site_nom,
+        st_asgeojson(COALESCE(obs.geom, site.geom)) AS geom
+    FROM chiro.chiro_observation_taxon tx
+    JOIN pnc.base_observation obs ON obs.id = tx.obs_id
+    LEFT JOIN pnc.base_site site ON site.id = obs.site_id
+    WHERE tx.obs_obj_status_validation = 55;
+

@@ -1,0 +1,23 @@
+PNC\ChiroBundle\Entity\ValidationTaxonView:
+    type: entity
+    table: chiro.vue_chiro_validation
+    schema: chiro
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        cd_nom:
+            type: integer
+        nom_complet:
+            type: text
+        obs_effectif_abs:
+            type: integer
+        obs_date:
+            type: date
+        site_nom:
+            type: text
+        geom:
+            type: json_array
