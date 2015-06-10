@@ -250,6 +250,7 @@ app.directive('simpleform', function(){
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
         controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet){
+            var dirty = true;
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.addSubSchema = false;
@@ -362,12 +363,14 @@ app.directive('simpleform', function(){
             $scope.updated = function(resp){
                 dataServ.forceReload = true;
                 $scope.data.id = resp.id;
+                dirty = false;
                 $rootScope.$broadcast('form:update', $scope.data);
             }
 
             $scope.created = function(resp){
                 dataServ.forceReload = true;
                 $scope.data.id = resp.id;
+                dirty = false;
                 $rootScope.$broadcast('form:create', $scope.data);
             }
 
@@ -385,6 +388,15 @@ app.directive('simpleform', function(){
             $scope.removed = function(resp){
                 $rootScope.$broadcast('form:delete', $scope.data);
             }
+
+            $scope.$on('$locationChangeStart', function(ev){
+                if(!dirty){
+                    return;
+                }
+                if(!userMessages.confirm("Etes vous certain de vouloir quitter cette page ?\n\nLes données non enregistrées pourraient être perdues.")){
+                    ev.preventDefault();
+                }
+            });
 
             configServ.getUrl($scope.schemaUrl, $scope.setSchema);
         }

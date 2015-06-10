@@ -30,6 +30,10 @@
     height: 80vh;
 }
 
+.map.medium{
+    height: 60vh;
+}
+
 .map.small{
     height: 40vh; 
 }
@@ -39,6 +43,10 @@
  padding:10px;
 }
 
+.img_menu {
+    height: 100px;
+    box-shadow: 3px 3px 10px 2px gray;
+}
 
 .suivi-popover{
     position: fixed;
