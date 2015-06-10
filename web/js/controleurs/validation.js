@@ -34,7 +34,9 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     $scope.schema = {
         title: 'Taxons en attente de validation',
         emptyMsg: 'Aucun taxon en attente',
-        detailUrl: '#/'+$scope._appName+'/validation/',
+        detailUrl: '#/'+$scope._appName+'/taxons/',
+        editUrl: '#/'+$scope._appName+'/edit/taxons/',
+        editAccess: 5,
         fields: [
             {
                 name: 'id',
