@@ -34,7 +34,11 @@ groups:
             type: text
           - name: obsTemperature
             label: "Température (°C)"
+            options:
+                max: "100"
             type: num
           - name: obsHumidite
             label: "Humidité (%)"
+            options:
+                max: "100"
             type: num
