@@ -1,3 +1,6 @@
-<h1>{{title}}</h1>
 <div class="map small col-md-3 col-sm-12" leaflet-map data="geoms"></div>
-<div class= "col-md-9 col-sm-12" detail-display schemaurl="{{schemaUrl}}" dataurl="{{dataUrl}}" dataid="{{dataId}}" updateurl="{{updateUrl}}"></div>
+<div class= "col-md-9 col-sm-12" >
+  <div breadcrumbs appname="{{_appName}}"></div>
+  <h1>{{title}}</h1>
+  <div detail-display schemaurl="{{schemaUrl}}" dataurl="{{dataUrl}}" dataid="{{dataId}}" updateurl="{{updateUrl}}"></div>
+</div>

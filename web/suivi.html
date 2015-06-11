@@ -33,7 +33,7 @@
         <div>
             <div ng-controller="baseController">
                 <div usermsg></div>
-                    <div class="navbar" id="main-menu">
+                    <div class="navbar navbar-fixed-top" id="main-menu">
                         <div class="navbar-brand">
                             <a href="#/apps"><img alt="Brand" style="height: 100%;" src="img/Spirale_orange.png"><span>{{app.name}}</span></a>
                   <!--<a ng-repeat="item in data" class="navbar-brand" ng-href="#/{{item.name}}/site">{{item.name}}</a>-->
@@ -56,12 +56,8 @@
                         </div>
                     </div>   
                     
-                    <div class="container-fluid">
-                        <div breadcrumbs appname="{{_appName}}"></div>
-                        <div class="content-panel">
-                            <div ng-view class="container-fluid"></div>
-                        </div>
-                    </div>
+                    <div ng-view class="container-fluid full-screen"></div>
+                    
                 </div>
             </div>
         </div>
