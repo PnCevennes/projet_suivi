@@ -65,7 +65,7 @@ class ConfigController extends Controller{
             }
             catch(\Exception $e){
                 $manager->getConnection()->rollback();
-                return new JsonResponse(array('err'=>$e->getMessage()), 422);
+                return new JsonResponse(array('err'=>$e->getMessage()), 400);
             }
           return new JsonResponse(array('err'=>'No files'));
         }

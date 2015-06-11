@@ -186,6 +186,10 @@ app.directive('fileinput', function(){
                             .success(function(data){
                                 $scope.fileids.push(data.path);
                                 $scope.lock = false;
+                            })
+                            .error(function(data){
+                                userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
+                                $scope.lock = false;
                             });
                     }
                     else{
