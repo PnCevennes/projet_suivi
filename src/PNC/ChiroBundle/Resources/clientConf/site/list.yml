@@ -29,7 +29,7 @@ fields:
         label: Observateur
         filter:
             nomObservateur: text
-        options:
+        option:
             visible: true
     -   name: siteDate
         label: Date créa.

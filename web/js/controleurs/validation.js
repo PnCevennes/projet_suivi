@@ -42,6 +42,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
                 name: 'id',
                 label: 'Id',
                 filter: {id: 'text'}, 
+                filterFunc: 'integer',
                 options: {visible: false}
             },
             {
@@ -54,6 +55,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
                 name: 'nomComplet',
                 label: 'Nom complet',
                 filter: {nomComplet: 'text'},
+                filterFunc: 'starting',
                 options: {visible: true}
             },
             {

@@ -54,6 +54,11 @@ groups:
                 label: Amenagement
                 type: file
                 help: "Aménagement du site"
+                options:
+                    accepted:
+                        - "png"
+                        - "jpg"
+                        - "pdf"
             -   name: siteMenace
                 label: "Types de menace"
                 type: select

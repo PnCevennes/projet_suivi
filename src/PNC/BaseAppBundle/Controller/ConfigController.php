@@ -43,6 +43,7 @@ class ConfigController extends Controller{
     }
     */
 
+    // path: POST /upload_file
     public function uploadAction(Request $req){
         $manager = $this->getDoctrine()->getManager();
         $manager->getConnection()->beginTransaction();
@@ -52,10 +53,15 @@ class ConfigController extends Controller{
                 $fichier->setPath($file->getClientOriginalName());
                 $manager->persist($fichier);
                 $manager->flush();
+
+                $fileName = $fichier->getId() . '_' . $fichier->getPath();
                 
-                $file->move($this->get('kernel')->getRootDir().'/../web/uploads', $fichier->getId() . '_' . $fichier->getPath());
+                $file->move($this->get('kernel')->getRootDir().'/../web/uploads', $fileName);
                 $manager->getConnection()->commit();
-                return new JsonResponse(array('id'=>$fichier->getId()));
+                return new JsonResponse(array(
+                    'id'=>$fichier->getId(),
+                    'path'=>$fileName
+                ));
             }
             catch(\Exception $e){
                 $manager->getConnection()->rollback();
@@ -63,5 +69,26 @@ class ConfigController extends Controller{
             }
           return new JsonResponse(array('err'=>'No files'));
         }
+    }
+
+    // path: DELETE /upload_file/{id}
+    public function deleteFileAction($id){
+        $id = substr($id, 0, strpos($id, '_'));
+        $deleted = false;
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Fichiers');
+        $fich = $repo->findOneById($id);
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($fich);
+        $manager->flush();
+        $fdir = $this->get('kernel')->getRootDir().'/../web/uploads/'.$id;
+        if(file_exists($fdir)){
+            unlink($fdir);
+            $deleted = true;
+        }
+        return new JsonResponse(array(
+            'id'=>$id, 
+            'fichier'=>$fich,
+            'deleted'=>$deleted
+        ));
     }
 }

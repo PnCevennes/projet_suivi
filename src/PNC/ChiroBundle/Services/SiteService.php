@@ -96,21 +96,11 @@ class SiteService{
         $manager->flush();
         $manager->getConnection()->commit();
         
-        try{
-            // enregistrement des fichiers liés
-            foreach($data['siteAmenagement'] as $fich_id){
-                if(!strpos($fich_id, '_')){
-                    $fichier = new SiteFichiers();
-                    $fichier->setSiteId($site->getId());
-                    $fichier->setFichierId($fich_id);
-                    $manager->persist($fichier);
-                    $manager->flush();
-                }
-            }
+        $errors = $this->_record_amenagement($site, $data['siteAmenagement']);
+        if($errors){
+            //print_r($errors);
         }
-        catch(\Exception $e){
-            print_r($e->getMessage());
-        }
+        
         return array('id'=>$site->getId());
     }
 
@@ -141,23 +131,41 @@ class SiteService{
             $manager->getConnection()->rollback();
             throw new DataObjectException($errors);
         }
-        try{
-            // enregistrement des fichiers liés
-            foreach($data['siteAmenagement'] as $fich_id){
-                if(!strpos($fich_id, '_')){
-                    $fichier = new SiteFichiers();
-                    $fichier->setSiteId($site->getId());
-                    $fichier->setFichierId($fich_id);
-                    $manager->persist($fichier);
-                    $manager->flush();
-                }
-            }
-        }
-        catch(\Exception $e){
-            print_r($e);
+
+        $errors = $this->_record_amenagement($site, $data['siteAmenagement']);
+        if($errors){
+            //print_r($errors);
         }
         return array('id'=>$site->getId());
 
+    }
+
+    private function _record_amenagement($site, $data){
+        $errors = array();
+        // enregistrement des fichiers liés
+
+        $manager = $this->db->getManager();
+
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid');
+        $delete->bindValue('siteid', $site->getId());
+        $delete->execute();
+
+        foreach($data as $fichier){
+            $fich_ = explode('_', $fichier);
+            $fich_id = (int) $fich_[0];
+            try{
+                $fichier = new SiteFichiers();
+                $fichier->setSiteId($site->getId());
+                $fichier->setFichierId($fich_id);
+                $manager->persist($fichier);
+                $manager->flush();
+            }
+            catch(\Exception $e){
+                $errors[] = $e->getMessage();
+            }
+        }
+        return $errors;
     }
 
     public function remove($id, $cascade=false){

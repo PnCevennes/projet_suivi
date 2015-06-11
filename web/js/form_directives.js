@@ -155,33 +155,42 @@ app.directive('fileinput', function(){
     return {
         restrict: 'E',
         scope: {
-            fileids: '='
+            fileids: '=',
+            options: '='
         },
         templateUrl: 'js/templates/form/fileinput.htm',
-        controller: function($scope, $rootScope, $upload){
+        controller: function($scope, $rootScope, $upload, dataServ, userMessages){
             if($scope.fileids == undefined){
                 $scope.fileids = [];
             }
             $scope.delete_file = function(f_id){
-                alert('TODO');
+                dataServ.delete('upload_file/'+f_id, function(resp){
+                    $scope.fileids.splice($scope.fileids.indexOf(resp.id), 1);
+                });
             };
             $scope.$watch('upload_file', function(){
                 $scope.upload($scope.upload_file);
             });
             $scope.upload = function(files){
                 angular.forEach(files, function(item){
-                    $scope.lock = true;
-                    $upload.upload({
-                        url: 'uploaded',
-                        file: item,
-                        })
-                        .progress(function(evt){
-                            $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
-                        })
-                        .success(function(data){
-                            $scope.fileids.push(data.id);
-                            $scope.lock = false;
-                        });
+                    var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length);
+                    if($scope.options.accepted && $scope.options.accepted.indexOf(ext)>-1){
+                        $scope.lock = true;
+                        $upload.upload({
+                            url: 'upload_file',
+                            file: item,
+                            })
+                            .progress(function(evt){
+                                $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
+                            })
+                            .success(function(data){
+                                $scope.fileids.push(data.path);
+                                $scope.lock = false;
+                            });
+                    }
+                    else{
+                        userMessages.errorMessage = "Type d'extension refusé";
+                    }
                 });
             };
         }

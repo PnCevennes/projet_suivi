@@ -1,6 +1,6 @@
 <table class="table">
     <tr ng-repeat="fich in fileids">
-        <td>{{fich}}</td>
+        <td>{{fich.slice(fich.indexOf('_')+1)}}</td>
         <td>
             <button type="button" class="btn btn-danger btn-xs" ng-click="delete_file(fich)">
                 <span class="glyphicon glyphicon-minus"></span>
@@ -9,5 +9,5 @@
     </tr>
 </table>
 <button type="button" ng-file-select ng-model="upload_file" class="btn btn-success btn-xs" ng-disabled="lock">Sélectionner un fichier</button>
-<span ng-show="lock" class="glyphicon glyphicon-send">Téléchargement: {{progress}}%</span>
+<progressbar ng-if="lock" class="progress-striped active" value="progress">{{progress}}%</progressbar>
 

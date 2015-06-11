@@ -234,8 +234,44 @@ app.directive('tablewrapper', function(){
             $scope.currentItem = null;
             var orderedData;
 
+            var filterFuncs = {
+                starting: function(key, filterTxt){
+                    if(filterTxt == ''){
+                        return function(x){return true};
+                    }
+                    return function(filtered){
+                        return filtered[key].toLowerCase().startsWith(filterTxt.toLowerCase());
+                    }
+                },
+                integer: function(key, filterTxt){
+                    filterTxt = filterTxt.trim();
+                    if(filterTxt == ''){
+                        return function(x){return true};
+                    }
+                    return function(filtered){
+                        var nbr = parseFloat(filterTxt.slice(1, filterTxt.length));
+                        if(filterTxt.startsWith('>')){
+                            return filtered[key] > nbr;
+                        }
+                        else if(filterTxt.startsWith('<')){
+                            return filtered[key] < nbr;
+                        }
+                        else if(filterTxt.startsWith('=')){
+                            return filtered[key] == nbr;
+                        }
+                        else return false;
+                    };
+                },
+            };
+            var filtering = {};
+
             $scope.__init__ = function(){
                 $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
+                $scope.schema.fields.forEach(function(field){
+                    if(field.filterFunc && filterFuncs[field.filterFunc]){
+                        filtering[field.name] = filterFuncs[field.filterFunc];
+                    }
+                });
             };
 
 
@@ -270,9 +306,27 @@ app.directive('tablewrapper', function(){
                 total: $scope.data.length, // length of data
                 getData: function ($defer, params) {
                     // use build-in angular filter
+                    console.log(params.filter());
+                    /*
                     var filteredData = params.filter() ?
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;
+                    */
+                    filteredData = $scope.data;
+                    reqFilter = params.filter();
+                    if(reqFilter){
+                        for(filterKey in reqFilter){
+                            if(filtering[filterKey]){
+                                //filteredData = $filter('filter')(filteredData, filterDef, );
+                                filteredData = filteredData.filter(filtering[filterKey](filterKey, reqFilter[filterKey]))
+                            }
+                            else{
+                                var filterDef = {}
+                                filterDef[filterKey] = reqFilter[filterKey];
+                                filteredData = $filter('filter')(filteredData, filterDef);
+                            }
+                        }
+                    }
                     orderedData = params.sorting() ?
                             $filter('orderBy')(filteredData, params.orderBy()) :
                             $scope.data;

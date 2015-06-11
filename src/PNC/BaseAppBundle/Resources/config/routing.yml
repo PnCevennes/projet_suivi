@@ -22,8 +22,17 @@ pnc_config_getobservateurs:
 
 
 pnc_config_upload:
-    path: /uploaded
+    path: /upload_file
     defaults: {_controller: PNCBaseAppBundle:Config:upload }
+    requirements:
+        _method: POST
+
+
+pnc_config_delete_file:
+    path: /upload_file/{id}
+    defaults: {_controller: PNCBaseAppBundle:Config:deleteFile }
+    requirements:
+        _method: DELETE
 
 
 pnc_observation_list:
