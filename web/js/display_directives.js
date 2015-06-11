@@ -240,7 +240,7 @@ app.directive('tablewrapper', function(){
                         return function(x){return true};
                     }
                     return function(filtered){
-                        return filtered[key].toLowerCase().startsWith(filterTxt.toLowerCase());
+                        return filtered[key].toLowerCase().indexOf(filterTxt.toLowerCase())===0;
                     }
                 },
                 integer: function(key, filterTxt){

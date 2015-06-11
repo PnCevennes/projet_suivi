@@ -1,7 +1,7 @@
 -   id: 1
     name: Chiroptères
     base_url: "chiro/site"
-    #img: "img/chiro.png"
+    img: "img/chiro.png"
     menu:
         -   url: "#/chiro/site"
             label: "Sites"
