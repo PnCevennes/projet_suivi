@@ -249,14 +249,19 @@ app.directive('tablewrapper', function(){
                         return function(x){return true};
                     }
                     return function(filtered){
-                        var nbr = parseFloat(filterTxt.slice(1, filterTxt.length));
-                        if(filterTxt.startsWith('>')){
+                        //Abscence de filtre quand uniquement = > ou <
+                        if (filterTxt.length <2 ) return true; 
+                        
+                        var nbr = parseFloat(filterTxt.slice(1, filterTxt.length)); 
+                        if (isNaN(nbr)) return false;
+                        
+                        if (filterTxt.indexOf('>') === 0){
                             return filtered[key] > nbr;
                         }
-                        else if(filterTxt.startsWith('<')){
+                        else if(filterTxt.indexOf('<') === 0){
                             return filtered[key] < nbr;
                         }
-                        else if(filterTxt.startsWith('=')){
+                        else if(filterTxt.indexOf('=') === 0){
                             return filtered[key] == nbr;
                         }
                         else return false;
