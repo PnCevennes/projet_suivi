@@ -11,7 +11,7 @@ groups:
                 label: "Coordonnées GPS"
                 type: geom
                 options:
-                    geometryType: Point
+                    geometryType: point
                     dataUrl: "chiro/observation"
     -   name: Observation
         fields:
