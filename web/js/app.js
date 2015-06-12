@@ -1,4 +1,4 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
@@ -52,6 +52,9 @@ app.config(function($routeProvider){
         .otherwise({redirectTo: '/'});
 });
 
+app.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider.setPrefix('projetSuivis');
+})
 
 /*
  * Controleur de base
@@ -178,7 +181,7 @@ app.controller('appsController', function($scope, $location, configServ, userSer
     $scope.select = function(id){
         $scope.apps.forEach(function(item){
             if(item.id == id){
-                userServ.currentApp = item.appId;
+                userServ.setCurrentApp(item.appId);
                 $scope.$emit('app:select', item);
             }
         });

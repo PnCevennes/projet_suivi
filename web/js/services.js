@@ -256,23 +256,34 @@ app.service('mapService', function($rootScope, $filter, dataServ){
 /*
  * service utilisateur
  */
-app.service('userServ', function(dataServ, $rootScope){
+app.service('userServ', function(dataServ, $rootScope, localStorageService){
     var _user = null; //FIXME idApp
     var _tmp_password = '';
-    this.currentApp = null;
-
+    
+    
     this.getUser = function(){
-        return _user;
+      return  localStorageService.get('user');
     };
 
-
-    this.checkLevel = function(level){
-        return _user.apps[this.currentApp] >= level;
+    this.setUser = function(){
+      localStorageService.set('user', _user);
     };
+    
+    this.getCurrentApp = function(appId){
+      return localStorageService.get('currentApp');
+    };
+    
+    this.setCurrentApp = function(appId){
+      localStorageService.set('currentApp', appId);
+    };
+    
+    this.checkLevel = angular.bind(this,function(level){
+      return this.getUser().apps[this.getCurrentApp()] >= level;
+    });
 
-    this.isOwner = function(ownerId){
+    this.isOwner = angular.bind(this,function(ownerId){
         return _user.id_role == ownerId;
-    };
+    });
 
     this.login = function(login, password, app){
         _tmp_password = password;
@@ -292,14 +303,17 @@ app.service('userServ', function(dataServ, $rootScope){
                 true);
     };
 
-    this.connected = function(resp){
+    this.connected = angular.bind(this, function(resp){
         _user = resp;
         _user.pass = _tmp_password;
+        this.setUser()
         $rootScope.$broadcast('user:login', _user);
-    };
+    });
 
     this.disconnected = function(resp){
         _user = null;
+        localStorageService.remove('user');
+        localStorageService.remove('currentApp');
         $rootScope.$broadcast('user:logout');
     }
 
