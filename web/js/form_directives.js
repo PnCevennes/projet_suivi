@@ -160,6 +160,7 @@ app.directive('fileinput', function(){
         },
         templateUrl: 'js/templates/form/fileinput.htm',
         controller: function($scope, $rootScope, $upload, dataServ, userMessages){
+            var maxSize = $scope.options.maxSize || 2048000;
             if($scope.fileids == undefined){
                 $scope.fileids = [];
             }
@@ -175,22 +176,27 @@ app.directive('fileinput', function(){
                 angular.forEach(files, function(item){
                     var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length);
                     if($scope.options.accepted && $scope.options.accepted.indexOf(ext)>-1){
-                        $scope.lock = true;
-                        $upload.upload({
-                            url: 'upload_file',
-                            file: item,
-                            })
-                            .progress(function(evt){
-                                $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
-                            })
-                            .success(function(data){
-                                $scope.fileids.push(data.path);
-                                $scope.lock = false;
-                            })
-                            .error(function(data){
-                                userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
-                                $scope.lock = false;
-                            });
+                        if(item.size < maxSize){
+                            $scope.lock = true;
+                            $upload.upload({
+                                url: 'upload_file',
+                                file: item,
+                                })
+                                .progress(function(evt){
+                                    $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
+                                })
+                                .success(function(data){
+                                    $scope.fileids.push(data.path);
+                                    $scope.lock = false;
+                                })
+                                .error(function(data){
+                                    userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
+                                    $scope.lock = false;
+                                });
+                        }
+                        else{
+                            userMessages.errorMessage = "La taille du fichier doit être inférieure à " + (maxSize/1024) + " Ko";
+                        }
                     }
                     else{
                         userMessages.errorMessage = "Type d'extension refusé";
