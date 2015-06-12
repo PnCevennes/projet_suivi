@@ -96,6 +96,9 @@ app.directive('multi', function(){
         templateUrl: 'js/templates/form/multi.htm',
         controller: function($scope, userMessages){
             $scope.addDisabled = true;
+            if(!$scope.refer){
+                $scope.refer = [];
+            }
             $scope.data = $scope.refer;
             $scope.$watch(function(){return $scope.refer;}, function(newval, oldval){
                 if(newval){
