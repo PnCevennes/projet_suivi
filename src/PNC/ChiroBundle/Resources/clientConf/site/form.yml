@@ -55,6 +55,7 @@ groups:
                 type: file
                 help: "Aménagement du site"
                 options:
+                    maxSize: 2048000
                     accepted:
                         - "png"
                         - "jpg"
