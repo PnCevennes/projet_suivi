@@ -11,7 +11,7 @@ fields:
         filter: 
             id: text
         options: 
-            visible: true
+            visible: false
 
     -   name: siteNom
         label: Nom
@@ -42,7 +42,13 @@ fields:
         filter:
             dernObs: text
         options:
-            visible: false
+            visible: true 
+    -   name: nbObs
+        label: Nombre de visites
+        filter:
+            nbObs: text
+        options:
+            visible: true
     -   name: typeLieu
         label: Type
         filter:

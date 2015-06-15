@@ -38,6 +38,7 @@ class SiteService{
                 'siteNom'=>$info->getSiteNom(),
                 'siteDate'=>!is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '',
                 'dernObs'=>!is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '',
+                'nbObs'=>$info->getNbObs(),
                 'nomObservateur'=>$info->getNomObservateur(),
                 'siteCode'=>$info->getSiteCode(),
                 'typeLieu'=>$info->getTypeLieu(),
