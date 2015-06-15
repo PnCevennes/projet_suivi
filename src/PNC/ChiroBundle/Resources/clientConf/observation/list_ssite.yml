@@ -1,6 +1,6 @@
-title: Observations
-emptyMsg: "Aucune observation pour le moment"
-createBtnLabel: "Nouvelle obs."
+title: Inventaire
+emptyMsg: "Aucun inventaire pour le moment"
+createBtnLabel: "Nouvel inventaire"
 createUrl: "#/chiro/edit/observation/sans-site/"
 editUrl: "#/chiro/edit/observation/sans-site/"
 detailUrl: "#/chiro/observation/sans-site/"
@@ -13,7 +13,7 @@ fields:
       options:
           visible: false
     - name: obsDate
-      label: "Date d'observation"
+      label: "Date d'inventaire"
       filter:
           obsDate: text
       options:

@@ -8,7 +8,7 @@ subEditSaveUrl: "chiro/obs_taxon/many"
 subEditRef: id
 subSchemaAdd: 2
 groups:
-    - name: Observation
+    - name: Inventaire
       fields:
           - name: id
             type: hidden

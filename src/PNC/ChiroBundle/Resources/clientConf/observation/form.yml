@@ -5,7 +5,7 @@ subDataRef: __taxons__
 subSchemaAdd: 2,
 subTitle: "Ajout rapide de taxons"
 groups:
-    - name: Observation
+    - name: Visite
       fields:
           - name: id
             label: Id
