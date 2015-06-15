@@ -362,4 +362,32 @@ class ObservationView
     {
         return $this->numerisateur;
     }
+    /**
+     * @var integer
+     */
+    private $abondance;
+
+
+    /**
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationView
+     */
+    public function setAbondance($abondance)
+    {
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
+    }
 }

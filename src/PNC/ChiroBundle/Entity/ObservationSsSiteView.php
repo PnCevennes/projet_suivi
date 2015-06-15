@@ -334,4 +334,32 @@ class ObservationSsSiteView
     {
         return $this->observateurs;
     }
+    /**
+     * @var integer
+     */
+    private $abondance;
+
+
+    /**
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationSsSiteView
+     */
+    public function setAbondance($abondance)
+    {
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
+    }
 }
