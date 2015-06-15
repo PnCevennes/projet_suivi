@@ -21,7 +21,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
             reverseurl: '@',
             ngrequired: '=',
         },
-        template: '<input id="aw" ng-blur="ngBlur" type="text" class="{{inputclass}}" ng-model="localselectedobject" typeahead="item as item.label for item in find($viewValue || null)" typeahead-loading="items" typeahead-editable="false" typeahead-min-length="3" required="ngrequired" ng-change="test()"></input><input type="hidden" ng-model="selectedobject" required="ngrequired"></input>',
+        templateUrl: 'js/templates/form/autoComplete.htm',
         link: function($scope, elem){
             $scope.localselectedobject = '';
 
