@@ -41,7 +41,7 @@
                 <span ng-if="!column.options.type || column.options.type=='text'">{{item[column.name]}}</span>
             </td>
                 <td> 
-                    <a class="btn btn-primary btn-xs" tooltip="Voir" ng-href="{{schema.detailUrl}}{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                    <a class="btn btn-primary btn-xs" tooltip="Afficher" ng-href="{{schema.detailUrl}}{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>
                     <a class="btn btn-warning btn-xs" tooltip="Editer" ng-show="editAccess" ng-href="{{schema.editUrl}}{{item.id}}"><span class="glyphicon glyphicon-wrench"></span></a>
                 </td>
             </tr>
