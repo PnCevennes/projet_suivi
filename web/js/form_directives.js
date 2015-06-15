@@ -21,6 +21,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
             reverseurl: '@',
             ngrequired: '=',
         },
+        transclude: true,
         templateUrl: 'js/templates/form/autoComplete.htm',
         link: function($scope, elem){
             $scope.localselectedobject = '';
