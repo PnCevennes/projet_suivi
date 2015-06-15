@@ -170,7 +170,12 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     });
 
     $scope.$on('form:cancel', function(ev, data){
-        $location.url($scope._appName + '/observation/' + data.id);
+        if(data.id){
+            $location.url($scope._appName + '/observation/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/site/' + data.siteId);
+        }
     });
 
     $scope.$on('form:create', function(ev, data){
@@ -284,7 +289,12 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
     });
 
     $scope.$on('form:cancel', function(ev, data){
-        $location.url($scope._appName + '/observation/sans-site/' + data.id);
+        if(data.id){
+            $location.url($scope._appName + '/observation/sans-site/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/observation');
+        }
     });
 
     $scope.$on('form:create', function(ev, data){

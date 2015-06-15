@@ -164,7 +164,7 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.$on('form:cancel', function(ev, data){
-        $location.url($scope._appName + '/site/' + data.id);
+        $location.url($scope._appName + '/site/');
     });
 
     $scope.$on('form:create', function(ev, data){

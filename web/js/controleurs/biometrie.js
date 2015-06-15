@@ -74,7 +74,12 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
     });
 
     $scope.$on('form:cancel', function(ev, data){
-        $location.url($scope._appName + '/biometrie/' + data.id);
+        if(data.id){
+            $location.url($scope._appName + '/biometrie/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/taxons/' + data.obsTxId);
+        }
     });
 
     $scope.$on('form:create', function(ev, data){
