@@ -1,7 +1,7 @@
 <div class="tb-wrapper">
-    <h3 class="float-right">
-        {{currentSel.current}}/{{currentSel.total}}
-    </h3>
+    <h1>
+        <ng-transclude></ng-transclude> {{currentSel.current}}/{{currentSel.total}}
+    </h1>
     <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected tablewrapper">
         <thead>
             <tr>

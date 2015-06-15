@@ -230,6 +230,7 @@ app.directive('tablewrapper', function(){
             schema: '=',
             data: '=',
         },
+        transclude: true,
         templateUrl: 'js/templates/display/tableWrapper.htm',
         controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
