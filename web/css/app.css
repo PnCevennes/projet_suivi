@@ -252,6 +252,14 @@
   right:0;
 }
 
+table.tablewrapper>tbody>tr.odd>td {
+  background-color:rgba(167, 167, 167, 0.72)
+}
+
+table.tablewrapper>tbody>tr.active>td{
+  background-color:rgb(117, 227, 118);
+}
+
 /*******************************************************
  * Balises génériques
  *******************************************************/

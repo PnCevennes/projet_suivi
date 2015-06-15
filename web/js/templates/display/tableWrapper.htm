@@ -2,7 +2,7 @@
     <h3 class="float-right">
         {{currentSel.current}}/{{currentSel.total}}
     </h3>
-    <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected">
+    <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected tablewrapper">
         <thead>
             <tr>
                 <th ng-repeat="column in schema.fields" 
@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in $data" ng-click="selectItem(item)" ng-class="{'active': item.$selected}">
+          <tr ng-repeat="item in $data" ng-click="selectItem(item)" ng-class="{'active': item.$selected}" ng-class-odd="'odd'" ng-class-even="'even'">
             <td ng-repeat="column in schema.fields" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">
                 <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
                 <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
