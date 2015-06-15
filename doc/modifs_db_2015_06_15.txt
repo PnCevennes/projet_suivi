@@ -1,0 +1,49 @@
+DROP VIEW chiro.vue_chiro_obs_ss_site;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_obs_ss_site AS 
+SELECT 
+    obs.id,
+    st_asgeojson(obs.geom) AS geom,
+    obs.obs_date,
+    obs.obs_commentaire,
+    obs.obs_id_table_src,
+    obs.numerisateur_id,
+    (upper(num.nom_role::text) || ' '::text) || num.prenom_role::text AS numerisateur,
+    cco.obs_temperature,
+    cco.obs_humidite,
+    ( SELECT count(*) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS nb_taxons,
+    ( SELECT sum(a.obs_effectif_abs) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS abondance
+FROM pnc.base_observation obs
+JOIN chiro.chiro_conditions_observ cco ON cco.obs_id = obs.id
+LEFT JOIN utilisateurs.t_roles num ON num.id_role = obs.numerisateur_id
+WHERE obs.site_id IS NULL AND NOT obs.geom IS NULL
+ORDER BY obs.obs_date DESC;
+
+ALTER TABLE chiro.vue_chiro_obs_ss_site OWNER TO fred;
+
+
+
+DROP VIEW chiro.vue_chiro_obs;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_obs AS 
+SELECT 
+    obs.id,
+    obs.site_id,
+    sit.site_nom,
+    obs.obs_date,
+    obs.obs_commentaire,
+    obs.obs_id_table_src,
+    obs.numerisateur_id,
+    (upper(num.nom_role::text) || ' '::text) || num.prenom_role::text AS numerisateur,
+    cco.obs_temperature,
+    cco.obs_humidite,
+    ( SELECT count(*) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS nb_taxons,
+    ( SELECT sum(a.obs_effectif_abs) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS abondance
+FROM pnc.base_observation obs
+JOIN chiro.chiro_conditions_observ cco ON cco.obs_id = obs.id
+JOIN pnc.base_site sit ON sit.id = obs.site_id
+LEFT JOIN utilisateurs.t_roles num ON num.id_role = obs.numerisateur_id
+ORDER BY obs.obs_date DESC;
+
+ALTER TABLE chiro.vue_chiro_obs OWNER TO fred;
+
