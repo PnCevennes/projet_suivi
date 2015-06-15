@@ -24,7 +24,6 @@ class ConfigController extends Controller{
         $file = file_get_contents(__DIR__ . '/../Resources/clientConf/application.yml');
         $out = Yaml::parse($file);
         return new JsonResponse($out);
-
     }
 
     /*

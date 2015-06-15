@@ -4,10 +4,10 @@
     img: "img/chiro.png"
     menu:
         -   url: "#/chiro/site"
-            label: "Sites"
+            label: "Suivi"
             restrict: 2
         -   url: "#/chiro/observation"
-            label: "Observations"
+            label: "Inventaire"
             restrict: 2
         -   url: "#/chiro/validation"
             label: "Validation"
