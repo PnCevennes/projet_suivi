@@ -1,4 +1,15 @@
 #
+# configuration breadcrumb
+#
+suivi_chiro_config_breadcrumb:
+    path: breadcrumb
+    defaults: { _controller: PNCChiroBundle:Config:breadcrumb }
+    requirements:
+        _method: GET
+
+
+
+#
 # configurations site
 #
 suivi_chiro_config_site_form:
