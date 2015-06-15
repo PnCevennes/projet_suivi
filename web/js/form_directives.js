@@ -358,6 +358,10 @@ app.directive('simpleform', function(){
                 dfd.resolve('loading form');
             };
 
+            $scope.cancel = function(){
+                $rootScope.$broadcast('form:cancel', $scope.data);
+            };
+
             $scope.save = function(){
                 var errors = null;
                 var confirm_save = true;
@@ -409,6 +413,7 @@ app.directive('simpleform', function(){
             }
 
             $scope.removed = function(resp){
+                dirty = false;
                 $rootScope.$broadcast('form:delete', $scope.data);
             }
 
