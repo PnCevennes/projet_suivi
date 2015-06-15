@@ -1,6 +1,6 @@
 editAccess: 3
 groups:
-    -   name: "Mesures"
+    -   name: "Général"
         fields:
             -   name: ageId
                 label: "Âge"
@@ -14,7 +14,7 @@ groups:
             -   name: biomCommentaire
                 label: "Commentaires"
                 type: string
-    -   name: "Bras"
+    -   name: "Membre"
         fields:
             -   name: biomAb
                 label: "AB (mm)"
@@ -35,7 +35,7 @@ groups:
                 label: "D5 (mm)"
                 type: num
                 help: "Mesure du 5ème doigt"
-    -   name: "Tête"
+    -   name: "Crane"
         fields:
             -   name: biomCm3sup
                 label: "CM3SUP (mm)"

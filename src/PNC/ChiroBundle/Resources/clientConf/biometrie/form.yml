@@ -1,6 +1,6 @@
 deleteAccess: 3
 groups:
-    -   name: "Mesures"
+    -   name: "Général"
         fields:
             -   name: id
                 type: hidden
@@ -18,7 +18,7 @@ groups:
             -   name: biomCommentaire
                 label: "Commentaires"
                 type: text
-    -   name: "Bras"
+    -   name: "Membre"
         fields:
             -   name: biomAb
                 label: "AB (mm)"
@@ -39,7 +39,7 @@ groups:
                 label: "D5 (mm)"
                 type: num
                 help: "Mesure du 5ème doigt"
-    -   name: "Tête"
+    -   name: "Crane"
         fields:
             -   name: biomCm3sup
                 label: "CM3SUP (mm)"
