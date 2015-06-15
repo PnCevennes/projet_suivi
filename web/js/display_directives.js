@@ -115,6 +115,7 @@ app.directive('detailDisplay', function(){
             updateUrl: '@updateurl',
             dataId: '@dataid'
         },
+        transclude: true,
         templateUrl: 'js/templates/display/detail.htm',
         controller: function($scope, $rootScope, dataServ, configServ, userServ, $loading, $q){
             $scope.subEditing = false;
