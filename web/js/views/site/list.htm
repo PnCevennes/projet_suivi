@@ -3,7 +3,9 @@
 </div>
 <div class="col-md-6  col-md-offset-6 col-sm-12">
   <div breadcrumbs appname="{{_appName}}"></div>
-  <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
+  <h1>Sites 
+      <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
+  </h1>
   <div class="padded">
     <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/site"></div>
   </div>
