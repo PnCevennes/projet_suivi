@@ -3,6 +3,7 @@ fields:
         label: "Nom taxon"
         type: xhr
         options:
+            primary: true
             url: "chiro/taxons"
             reverseurl: "chiro/taxons/id"
             ref: cdNom

@@ -2,9 +2,13 @@ fields:
     -   name: ageId
         label: "Âge"
         type: select
+        options:
+            required: true
     -   name: sexeId
         label: "Sexe"
         type: select
+        options:
+            required: true
     -   name: biomPoids
         label: "Poids (g)"
         type: num
