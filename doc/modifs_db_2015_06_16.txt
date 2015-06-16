@@ -1,5 +1,4 @@
 DROP VIEW chiro.vue_utilisateurs_acteurs;
-DROP VIEW chiro.vue_chiro_obs_all;
 DROP VIEW chiro.vue_chiro_obs;
 DROP VIEW chiro.vue_chiro_obs_ss_site;
 
@@ -8,6 +7,7 @@ ALTER TABLE chiro.chiro_conditions_observ ADD COLUMN mod_id integer;
 
 UPDATE chiro.chiro_conditions_observ SET mod_id=18;
 
+ALTER TABLE chiro.chiro_observation_taxon DROP COLUMN mod_id;
 
 CREATE OR REPLACE VIEW chiro.vue_chiro_obs AS 
 SELECT obs.id,
@@ -92,23 +92,4 @@ FROM utilisateurs.cor_role_menu crm))
 ORDER BY cr.id_role_utilisateur)) OR (r.id_role IN ( SELECT crm.id_role
 FROM utilisateurs.cor_role_menu crm
 JOIN utilisateurs.t_roles r_1 ON r_1.id_role = crm.id_role AND r_1.groupe = false));
-
-
-
-CREATE OR REPLACE VIEW chiro.vue_chiro_obs_all AS 
-SELECT vue_chiro_obs_ss_site.id,
-vue_chiro_obs_ss_site.geom,
-NULL::integer AS site_id,
-vue_chiro_obs_ss_site.obs_date,
-vue_chiro_obs_ss_site.nb_taxons
-FROM chiro.vue_chiro_obs_ss_site
-UNION
-SELECT obs.id,
-st_asgeojson(ste.geom) AS geom,
-obs.site_id,
-obs.obs_date,
-obs.nb_taxons
-FROM chiro.vue_chiro_obs obs
-JOIN pnc.base_site ste ON ste.id = obs.site_id
-ORDER BY 4 DESC;
 
