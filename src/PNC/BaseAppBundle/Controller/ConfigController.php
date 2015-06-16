@@ -70,23 +70,24 @@ class ConfigController extends Controller{
         }
     }
 
-    // path: DELETE /upload_file/{id}
-    public function deleteFileAction($id){
-        $id = substr($id, 0, strpos($id, '_'));
+    // path: DELETE /upload_file/{file_id}
+    public function deleteFileAction($file_id){
+        $id = substr($file_id, 0, strpos($file_id, '_'));
         $deleted = false;
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Fichiers');
         $fich = $repo->findOneById($id);
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($fich);
         $manager->flush();
-        $fdir = $this->get('kernel')->getRootDir().'/../web/uploads/'.$id;
+        $fdir = $this->get('kernel')->getRootDir().'/../web/uploads/'.$file_id;
         if(file_exists($fdir)){
             unlink($fdir);
             $deleted = true;
         }
         return new JsonResponse(array(
-            'id'=>$id, 
+            'id'=>$file_id, 
             'fichier'=>$fich,
+            'fdir'=>$fdir,
             'deleted'=>$deleted
         ));
     }
