@@ -72,8 +72,8 @@ class ObsTaxonController extends Controller
         try{
             foreach($in_data['__items__'] as $item){
                 $item['obsId'] = $in_data['refId'];
-                $item['numId'] = $user->getUser()->getIdRole();
-                $item['obsObjStatusValidation'] = 56;
+                $item['numId'] = $user->getUser()['id_role'];
+                $item['obsObjStatusValidation'] = 55;
                 $item['obsCommentaire'] = '';
                 $item['obsValidateur'] = null;
                 $res = $ts->create($item, $manager, false);

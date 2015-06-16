@@ -642,7 +642,7 @@ app.directive('spreadsheet', function(){
             $scope.setSchema = function(schema){
                 $scope.schema = schema;
                 $scope.schema.fields.forEach(function(item){
-                    defaultLine[item.name] = null;
+                    defaultLine[item.name] = item.default || null;
                 });
                 $scope.data = lines;
                 $scope.addLines();
@@ -665,10 +665,10 @@ app.directive('spreadsheet', function(){
                     var line_valid = true;
                     var line_empty = true;
                     $scope.schema.fields.forEach(function(field){
-                        if(line[field.name]){
+                        if(line[field.name] && line[field.name] != '__NULL__'){
                             line_empty = false;
                         }
-                        if((field.options.required || field.options.primary) && !line[field.name]){
+                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == '__NULL__')){
                             line_valid = false;
                         }
                         if(field.options.primary && line_valid){

@@ -56,7 +56,7 @@ class BiometrieConfigController extends Controller{
         $norm = $this->get('normalizer');
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
         $tSexe = $repo->findBy(array('id_type'=>2));
-        $typesSexe = array(array('id'=>null, 'libelle'=>''));
+        $typesSexe = array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($tSexe as $tl){
             if($tl->getFkParent() != 0){
                 $typesSexe[] = $norm->normalize($tl, array());
@@ -64,7 +64,7 @@ class BiometrieConfigController extends Controller{
         }
 
         $tAge = $repo->findBy(array('id_type'=>1));
-        $typesAge= array(array('id'=>null, 'libelle'=>''));
+        $typesAge= array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($tAge as $tl){
             if($tl->getFkParent() != 0){
                 $typesAge[] = $norm->normalize($tl, array());
@@ -80,11 +80,11 @@ class BiometrieConfigController extends Controller{
             }
             if($field['name'] == 'ageId'){
                 $field['options']['choices'] = $typesAge;
-                $field['default'] = 10;
+                $field['default'] = '__NULL__';
             }
             if($field['name'] == 'sexeId'){
                 $field['options']['choices'] = $typesSexe;
-                $field['default'] = 12;
+                $field['default'] = '__NULL__';
             }
         }
 
