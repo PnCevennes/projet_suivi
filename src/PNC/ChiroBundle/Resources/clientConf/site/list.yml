@@ -54,7 +54,7 @@ fields:
         filter:
             typeLieu: text
         options:
-            visible: true;
+            visible: true
 
 
 
