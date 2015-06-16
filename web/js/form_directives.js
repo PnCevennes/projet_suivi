@@ -14,6 +14,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
         restrict: 'E',
         scope: {
             inputclass: '@',
+            decorated: '@',
             selectedobject: '=',
             ngBlur: '=',
             url: '@',
@@ -25,7 +26,6 @@ app.directive('angucompletewrapper', function(dataServ, $http){
         templateUrl: 'js/templates/form/autoComplete.htm',
         link: function($scope, elem){
             $scope.localselectedobject = '';
-
             $scope.test = function(){
                 if($('#aw')[0].value == ''){
                     $scope.selectedobject = null;

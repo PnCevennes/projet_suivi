@@ -14,7 +14,7 @@
         </div>
     </div>
     <div ng-if="schema.type=='xhr'">
-        <angucompletewrapper id="{{schema.name}}{{$index}}" inputclass="form-control" selectedobject="data[$index]" url="{{schema.options.url}}/" reverseurl="{{schema.options.reverseurl}}" titlefield="label" initial="data[$index]">
+        <angucompletewrapper id="{{schema.name}}{{$index}}" decorated="true" inputclass="form-control" selectedobject="data[$index]" url="{{schema.options.url}}/" reverseurl="{{schema.options.reverseurl}}" titlefield="label" initial="data[$index]">
             <span ng-if="$index>0" class="glyphicon glyphicon-remove" ng-click="remove($index)"></span>
             <span ng-if="$index==0" class="glyphicon glyphicon-option-vertical"></span>
         </angucompletewrapper>
