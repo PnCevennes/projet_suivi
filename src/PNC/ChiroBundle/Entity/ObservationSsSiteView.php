@@ -64,6 +64,17 @@ class ObservationSsSiteView
      */
     private $observateurs;
 
+
+    private $mod_id;
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
+    }
+
     /**
      * Constructor
      */

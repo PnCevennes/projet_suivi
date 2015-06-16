@@ -49,6 +49,16 @@ class ObservationView
      */
     private $nb_taxons;
 
+    private $mod_id;
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
+    }
+
 
     /**
      * Set id

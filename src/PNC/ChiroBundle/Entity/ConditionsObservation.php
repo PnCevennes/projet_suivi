@@ -39,6 +39,8 @@ class ConditionsObservation
      */
     private $obs_humidite;
 
+    private $mod_id;
+
 
     /**
      * Get id
@@ -123,6 +125,14 @@ class ConditionsObservation
     public function getObsId()
     {
         return $this->obs_id;
+    }
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
     }
 
 }

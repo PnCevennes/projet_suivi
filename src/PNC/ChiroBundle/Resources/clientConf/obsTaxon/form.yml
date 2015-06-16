@@ -30,9 +30,6 @@ groups:
                 type: select
                 options:
                     editLevel: 5
-            -   name: modId
-                label: "Mode d'observation"
-                type: select
             -   name: actId
                 label: "Activité"
                 type: select

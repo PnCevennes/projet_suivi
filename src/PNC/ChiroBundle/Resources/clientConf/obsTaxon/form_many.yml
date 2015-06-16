@@ -13,11 +13,6 @@ fields:
     -   name: obsEspeceIncertaine
         label: "Espece incertaine"
         type: bool
-    -   name: modId
-        label: "Mode d'observation"
-        type: select
-        options:
-            required: true
     -   name: actId
         label: "Activité"
         type: select

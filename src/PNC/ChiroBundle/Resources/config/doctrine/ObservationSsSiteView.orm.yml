@@ -27,6 +27,8 @@ PNC\ChiroBundle\Entity\ObservationSsSiteView:
             type: integer
         abondance:
             type: integer
+        mod_id:
+            type: integer
 
     manyToMany:
         observateurs:
