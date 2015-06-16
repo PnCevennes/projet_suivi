@@ -3,6 +3,12 @@ DROP VIEW chiro.vue_chiro_obs_all;
 DROP VIEW chiro.vue_chiro_obs;
 DROP VIEW chiro.vue_chiro_obs_ss_site;
 
+
+ALTER TABLE chiro.chiro_conditions_observ ADD COLUMN mod_id integer;
+
+UPDATE chiro.chiro_conditions_observ SET mod_id=18;
+
+
 CREATE OR REPLACE VIEW chiro.vue_chiro_obs AS 
 SELECT obs.id,
 obs.site_id,
