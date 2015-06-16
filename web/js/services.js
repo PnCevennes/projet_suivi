@@ -178,23 +178,30 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
     
     
     this.getUser = function(){
-      return  localStorageService.get('user');
+        if(!_user){
+            var tmp_user = localStorageService.get('user');
+            if(tmp_user){
+                this.login(tmp_user.identifiant, tmp_user.pass);
+                _user = tmp_user;
+            }
+        }
+        return _user
     };
 
     this.setUser = function(){
-      localStorageService.set('user', _user);
+        localStorageService.set('user', _user);
     };
     
     this.getCurrentApp = function(appId){
-      return localStorageService.get('currentApp');
+        return localStorageService.get('currentApp');
     };
     
     this.setCurrentApp = function(appId){
-      localStorageService.set('currentApp', appId);
+        localStorageService.set('currentApp', appId);
     };
     
     this.checkLevel = angular.bind(this,function(level){
-      return this.getUser().apps[this.getCurrentApp()] >= level;
+        return this.getUser().apps[this.getCurrentApp()] >= level;
     });
 
     this.isOwner = angular.bind(this,function(ownerId){
@@ -203,10 +210,7 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
 
     this.login = function(login, password, app){
         _tmp_password = password;
-        dataServ.post('users/login', {
-            login: login, 
-            pass: password, 
-            idApp: app},
+        dataServ.post('users/login', {login: login, pass: password},
             this.connected,
             this.error
             );
