@@ -202,17 +202,16 @@ app.directive('breadcrumbs', function(){
         scope: {_appName: '@appname'},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ, $location){
-            var bc = configServ.getBc();
-            if(bc.length == 0){
-                $location.path($scope._appName + '/site');
-            }
-            $scope.bc = bc; //.slice(0, bc.length-1);
-            $scope.bcShown = configServ.bcShown;
+            $scope.bc = [];
             $scope.$watch(
-                function(){return configServ.bcShown;},
-                function(newv, oldv){
-                    if(newv !== oldv){
-                        $scope.bcShown = newv;
+                function(){return configServ.bc},
+                function(newval, oldval){
+                    if(newval !== oldval){
+                        $scope.bc = [];
+                        var bclength = newval.length;
+                        for(i=bclength-1; i>=0; i--){
+                            $scope.bc.push(newval[i]);
+                        }
                     }
                 }
             );

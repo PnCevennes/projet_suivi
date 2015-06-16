@@ -105,26 +105,17 @@ app.service('dataServ', function($http, $filter, userMessages){
 app.service('configServ', function(dataServ){
     var cache = {};
 
-    var bc = [];
-    this.bcShown = true;
+    this.bc = null;
 
-    this.addBc = function(lvl, label, path){
-        if(bc.length>lvl){
-            bc.splice(lvl, bc.length);
+    this.setBc = function(app, view, id){
+        if(!id){
+            id=null;
         }
-        bc.push({label: label, url: path});
+        dataServ.get(app + '/config/breadcrumb?view='+view+'&id='+id, angular.bind(this, function(resp){
+            this.bc = resp
+        });
     }
 
-    this.getBc = function(){
-        return bc;
-    }
-
-
-    this.setBc = function(lvl){
-        if(bc.length>lvl){
-            bc.splice(lvl, bc.length);
-        }
-    }
     /*
      * charge des informations depuis une url si elles ne sont pas déja en cache
      * et les retourne via une callback. Si les variables sont déjà en cache, les 
