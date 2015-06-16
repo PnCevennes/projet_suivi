@@ -97,7 +97,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     };
 
     configServ.getUrl($scope._appName + '/config/site/list', $scope.setSchema);
-    
 
 });
 

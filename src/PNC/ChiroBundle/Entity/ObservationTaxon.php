@@ -94,8 +94,6 @@ class ObservationTaxon
      */
     private $obs_validateur;
 
-    private $mod_id;
-
     private $act_id;
 
     private $eff_id;
@@ -110,15 +108,6 @@ class ObservationTaxon
 
     public function setNumId($num_id){
         $this->num_id = $num_id;
-        return $this;
-    }
-
-    public function getModId(){
-        return $this->mod_id;
-    }
-
-    public function setModId($mod_id){
-        $this->mod_id = $mod_id;
         return $this;
     }
 
