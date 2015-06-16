@@ -48,19 +48,6 @@ groups:
                 help: "Informations complémentaires sur l'observation"
     -   name: Enumération
         fields:
-            -   name: obsEffectifAbs
-                label: Effectif total
-                type: sum
-                options:
-                    ref:
-                        -   obsNbMaleAdulte
-                        -   obsNbFemelleAdulte
-                        -   obsNbMaleJuvenile
-                        -   obsNbFemelleJuvenile
-                        -   obsNbMaleIndetermine
-                        -   obsNbFemelleIndetermine
-                        -   obsNbIndetermineIndetermine
-                    modifiable: true
             -   name: obsNbMaleAdulte
                 label: "Mâles adultes"
                 type: num
@@ -83,3 +70,16 @@ groups:
                 label: "Indéterminés"
                 type: num
                 help: "Âge et sexe indéterminés"
+            -   name: obsEffectifAbs
+                label: Effectif total
+                type: sum
+                options:
+                    ref:
+                        -   obsNbMaleAdulte
+                        -   obsNbFemelleAdulte
+                        -   obsNbMaleJuvenile
+                        -   obsNbFemelleJuvenile
+                        -   obsNbMaleIndetermine
+                        -   obsNbFemelleIndetermine
+                        -   obsNbIndetermineIndetermine
+                    modifiable: true

@@ -28,6 +28,28 @@ fields:
         type: select
         options:
             required: true
+    -   name: obsNbIndetermineIndetermine
+        label: "Indéterminés"
+        type: num
+        help: "Âge et sexe indéterminés"
+    -   name: obsNbMaleIndetermine
+        label: "Mâles indeterminés"
+        type: num
+    -   name: obsNbFemelleIndetermine
+        label: "Femelles indeterminés"
+        type: num
+    -   name: obsNbMaleAdulte
+        label: "Mâles adultes"
+        type: num
+    -   name: obsNbFemelleAdulte
+        label: "Femelles adultes"
+        type: num
+    -   name: obsNbMaleJuvenile
+        label: "Mâles juveniles"
+        type: num
+    -   name: obsNbFemelleJuvenile
+        label: "Femelles juveniles"
+        type: num
     -   name: obsEffectifAbs
         label: Effectif total
         type: sum
@@ -41,26 +63,4 @@ fields:
                 -   obsNbFemelleIndetermine
                 -   obsNbIndetermineIndetermine
             modifiable: true
-    -   name: obsNbMaleAdulte
-        label: "Mâles adultes"
-        type: num
-    -   name: obsNbFemelleAdulte
-        label: "Femelles adultes"
-        type: num
-    -   name: obsNbMaleJuvenile
-        label: "Mâles juveniles"
-        type: num
-    -   name: obsNbFemelleJuvenile
-        label: "Femelles juveniles"
-        type: num
-    -   name: obsNbMaleIndetermine
-        label: "Mâles indeterminés"
-        type: num
-    -   name: obsNbFemelleIndetermine
-        label: "Femelles indeterminés"
-        type: num
-    -   name: obsNbIndetermineIndetermine
-        label: "Indéterminés"
-        type: num
-        help: "Âge et sexe indéterminés"
 
