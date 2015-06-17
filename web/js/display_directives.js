@@ -312,9 +312,8 @@ app.directive('tablewrapper', function(){
                 counts: [10, 25, 50],
                 total: $scope.data.length, // length of data
                 getData: function ($defer, params) {
-                    // use build-in angular filter
-                    console.log(params.filter());
                     /*
+                    // use build-in angular filter
                     var filteredData = params.filter() ?
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;

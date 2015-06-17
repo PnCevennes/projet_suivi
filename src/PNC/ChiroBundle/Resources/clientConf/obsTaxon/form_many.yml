@@ -22,7 +22,6 @@ fields:
     -   name: obsNbIndetermineIndetermine
         label: "Indéterminés"
         type: num
-        help: "Âge et sexe indéterminés"
     -   name: obsNbMaleIndetermine
         label: "Mâles indeterminés"
         type: num

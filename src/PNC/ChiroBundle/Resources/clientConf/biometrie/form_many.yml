@@ -18,38 +18,29 @@ fields:
     -   name: biomD3mf1
         label: "D3MF1 (mm)"
         type: num
-        help: "Mesure du 3ème doigt, métacarpe + 1ère phalange"
     -   name: biomD3f2f3
         label: "D3F2F3 (mm)"
         type: num
-        help: "Mesure du 3ème doigt, 2ème et 3ème phalanges"
     -   name: biomD3total
         label: "D3 total (mm)"
         type: num
-        help: "Longueur totale du 3ème doigt"
     -   name: biomD5
         label: "D5 (mm)"
         type: num
-        help: "Mesure du 5ème doigt"
     -   name: biomCm3sup
         label: "CM3SUP (mm)"
         type: num
-        help: "Mesure canine - 3ème molaire (mandibule supérieure)"
     -   name: biomCm3inf
         label: "CM3INF (mm)"
         type: num
-        help: "Mesure canine - 3ème molaire (mandibule inférieure)"
     -   name: biomCb
         label: "CB (mm)"
-        help: "Mesure condylobasale"
         type: num
     -   name: biomLm
         label: "LM (mm)"
-        help: "Mesure mandibule inférieure"
         type: num
     -   name: biomOreille
         label: "Oreille (mm)"
-        help: "Mesure de l'oreille"
         type: num
 
 
