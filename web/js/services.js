@@ -264,6 +264,9 @@ app.filter('datefr', function(){
  */
 app.filter('tselect', function($filter){
     return function(input, param){
+        if(!param){
+            return 'Non renseigné';
+        }
         var res = $filter('filter')(input, {id: param}, function(act, exp){return act==exp;});
         try{
             return res[0].libelle;

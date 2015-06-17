@@ -16,13 +16,9 @@ fields:
     -   name: actId
         label: "Activité"
         type: select
-        options:
-            required: true
     -   name: prvId
         label: "Preuves de reproduction"
         type: select
-        options:
-            required: true
     -   name: obsNbIndetermineIndetermine
         label: "Indéterminés"
         type: num
