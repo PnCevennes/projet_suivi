@@ -724,13 +724,18 @@ app.directive('subeditform', function(){
             refId: "=refid",
         },
         template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button><pre>{{data|json}}</pre>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet){
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
             $scope.save = function(){
                 errors = SpreadSheet.hasErrors[$scope.dataRef]();
-                dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                if(errors){
+                    userMessages.errorMessage = SpreadSheet.errorMessage[$scope.dataRef];
+                }
+                else{
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                }
             };
 
             $scope.saved = function(resp){
