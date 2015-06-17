@@ -207,8 +207,8 @@
     padding: 0;
     background-color: white;
     border: 1px inset #CCC;
-    max-height: 20em;
-    overflow: scroll;
+    /*max-height: 20em;*/
+    overflow: visible;
 }
 
 .spreadsheet td{
