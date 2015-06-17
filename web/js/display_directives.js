@@ -293,12 +293,6 @@ app.directive('tablewrapper', function(){
                 $scope.__init__();
             }
 
-            $scope.$watch('data', function(newval){
-                if(newval){
-                    $scope.tableParams.reload();
-                }
-            });
-
             /*
              *  initialisation des parametres du tableau
              */
@@ -380,6 +374,19 @@ app.directive('tablewrapper', function(){
                     $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
                 }
             };
+
+            $scope.$watch('data', function(newval){
+                if(newval){
+                    $scope.data.forEach(function(item){
+                        if(item.$selected){
+                            $scope.currentItem = item;
+                            $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                        }
+                    });
+                    $scope.tableParams.reload();
+                }
+            });
+
 
             /*
              * Listeners
