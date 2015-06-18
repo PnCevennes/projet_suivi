@@ -42,6 +42,7 @@ fields:
         filter:
             dernObs: text
         options:
+            type: date
             visible: true 
     -   name: nbObs
         label: Nombre de visites
