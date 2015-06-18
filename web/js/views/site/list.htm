@@ -3,10 +3,10 @@
 </div>
 <div class="col-md-6  col-md-offset-6 col-sm-12">
   <div breadcrumbs appname="{{_appName}}"></div>
-  <h1>Sites 
-      <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
-  </h1>
+  <div class="float-right padding-20"><a class="btn btn-success" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a></div>
   <div class="padded">
-    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/site"></div>
+    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/site">
+      Sites
+    </div>
   </div>
 </div>

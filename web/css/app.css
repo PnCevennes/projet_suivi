@@ -38,7 +38,7 @@
 }
 
 .map.large{
-    height: 92vh;
+    height: 100vh;
     width: 100%;
 }
 
@@ -207,8 +207,8 @@
     padding: 0;
     background-color: white;
     border: 1px inset #CCC;
-    max-height: 20em;
-    overflow: scroll;
+    /*max-height: 20em;*/
+    overflow: visible;
 }
 
 .spreadsheet td{
@@ -244,6 +244,29 @@
     clear: both;
 }
 
+.tab-content{
+    padding: 0.5em;
+    border-bottom: 1px solid #DDD;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+}
+
+/**********************************************************
+ * * Table wrapper
+ * *******************************************************/
+.select-column {
+  left:auto;
+  right:0;
+}
+
+table.tablewrapper>tbody>tr.odd>td {
+  background-color:rgba(167, 167, 167, 0.72)
+}
+
+table.tablewrapper>tbody>tr.active>td{
+  background-color:rgb(117, 227, 118);
+}
+
 /*******************************************************
  * Balises génériques
  *******************************************************/
@@ -256,3 +279,23 @@
 .float-left {
   float:left;
 }
+
+.center {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.padding-20 {
+  padding:20px
+}
+
+.sub-schema {
+  border-top: 1px solid;
+  margin-top: 20px;
+}
+
+.sub-schema h1 {
+  font-size: 28px;
+}
+

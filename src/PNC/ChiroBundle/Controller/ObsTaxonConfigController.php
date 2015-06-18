@@ -44,18 +44,9 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
-        // Mode d'observation
-        $mods = $repo->findBy(array('id_type'=>4));
-        $typeMod = array();
-        foreach($mods as $tl){
-            if($tl->getFkParent() != 0){
-                $typeMod[] = $norm->normalize($tl, array());
-            }
-        }
-
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array();
+        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($acts as $tl){
             if($tl->getFkParent() != 0){
                 $typeAct[] = $norm->normalize($tl, array());
@@ -64,7 +55,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Preuves de reproduction
         $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array();
+        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($prvs as $tl){
             if($tl->getFkParent() != 0){
                 $typePrv[] = $norm->normalize($tl, array());
@@ -83,17 +74,15 @@ class ObsTaxonConfigController extends Controller{
                     $field['options']['choices'] = $typesVal;
                     $field['default'] = 56;
                 }
-                if($field['name'] == 'modId'){
-                    $field['options']['choices'] = $typeMod;
-                    $field['default'] = 18;
-                }
                 if($field['name'] == 'actId'){
                     $field['options']['choices'] = $typeAct;
-                    $field['default'] = 25;
+                    $field['default'] = '__NULL__';
+                    //$field['default'] = 25;
                 }
                 if($field['name'] == 'prvId'){
                     $field['options']['choices'] = $typePrv;
-                    $field['default'] = 32;
+                    $field['default'] = '__NULL__';
+                    //$field['default'] = 32;
                 }
             }
         }
@@ -107,18 +96,9 @@ class ObsTaxonConfigController extends Controller{
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
         $types = $repo->findBy(array('id_type'=>9));
 
-        // Mode d'observation
-        $mods = $repo->findBy(array('id_type'=>4));
-        $typeMod = array(array('id'=>null, 'libelle'=>''));
-        foreach($mods as $tl){
-            if($tl->getFkParent() != 0){
-                $typeMod[] = $norm->normalize($tl, array());
-            }
-        }
-
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array(array('id'=>null, 'libelle'=>''));
+        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($acts as $tl){
             if($tl->getFkParent() != 0){
                 $typeAct[] = $norm->normalize($tl, array());
@@ -127,7 +107,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Preuves de reproduction
         $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array(array('id'=>null, 'libelle'=>''));
+        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
         foreach($prvs as $tl){
             if($tl->getFkParent() != 0){
                 $typePrv[] = $norm->normalize($tl, array());
@@ -141,17 +121,13 @@ class ObsTaxonConfigController extends Controller{
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['name'] == 'modId'){
-                $field['options']['choices'] = $typeMod;
-                $field['default'] = 18;
-            }
             if($field['name'] == 'actId'){
                 $field['options']['choices'] = $typeAct;
-                $field['default'] = 25;
+                $field['default'] = '__NULL__';
             }
             if($field['name'] == 'prvId'){
                 $field['options']['choices'] = $typePrv;
-                $field['default'] = 32;
+                $field['default'] = '__NULL__';
             }
         }
 
@@ -170,14 +146,6 @@ class ObsTaxonConfigController extends Controller{
             }
         }
 
-        // Mode d'observation
-        $mods = $repo->findBy(array('id_type'=>4));
-        $typeMod = array();
-        foreach($mods as $tl){
-            if($tl->getFkParent() != 0){
-                $typeMod[] = $norm->normalize($tl, array());
-            }
-        }
 
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
@@ -207,9 +175,6 @@ class ObsTaxonConfigController extends Controller{
                 }
                 if($field['name'] == 'obsObjStatusValidation'){
                     $field['options']['choices'] = $typesVal;
-                }
-                if($field['name'] == 'modId'){
-                    $field['options']['choices'] = $typeMod;
                 }
                 if($field['name'] == 'actId'){
                     $field['options']['choices'] = $typeAct;

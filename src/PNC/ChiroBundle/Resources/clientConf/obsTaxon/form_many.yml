@@ -3,6 +3,7 @@ fields:
         label: "Nom taxon"
         type: xhr
         options:
+            primary: true
             url: "chiro/taxons"
             reverseurl: "chiro/taxons/id"
             ref: cdNom
@@ -12,15 +13,33 @@ fields:
     -   name: obsEspeceIncertaine
         label: "Espece incertaine"
         type: bool
-    -   name: modId
-        label: "Mode d'observation"
-        type: select
     -   name: actId
         label: "Activité"
         type: select
     -   name: prvId
         label: "Preuves de reproduction"
         type: select
+    -   name: obsNbIndetermineIndetermine
+        label: "Indéterminés"
+        type: num
+    -   name: obsNbMaleIndetermine
+        label: "Mâles indeterminés"
+        type: num
+    -   name: obsNbFemelleIndetermine
+        label: "Femelles indeterminés"
+        type: num
+    -   name: obsNbMaleAdulte
+        label: "Mâles adultes"
+        type: num
+    -   name: obsNbFemelleAdulte
+        label: "Femelles adultes"
+        type: num
+    -   name: obsNbMaleJuvenile
+        label: "Mâles juveniles"
+        type: num
+    -   name: obsNbFemelleJuvenile
+        label: "Femelles juveniles"
+        type: num
     -   name: obsEffectifAbs
         label: Effectif total
         type: sum
@@ -34,26 +53,4 @@ fields:
                 -   obsNbFemelleIndetermine
                 -   obsNbIndetermineIndetermine
             modifiable: true
-    -   name: obsNbMaleAdulte
-        label: "Mâles adultes"
-        type: num
-    -   name: obsNbFemelleAdulte
-        label: "Femelles adultes"
-        type: num
-    -   name: obsNbMaleJuvenile
-        label: "Mâles juveniles"
-        type: num
-    -   name: obsNbFemelleJuvenile
-        label: "Femelles juveniles"
-        type: num
-    -   name: obsNbMaleIndetermine
-        label: "Mâles indeterminés"
-        type: num
-    -   name: obsNbFemelleIndetermine
-        label: "Femelles indeterminés"
-        type: num
-    -   name: obsNbIndetermineIndetermine
-        label: "Indéterminés"
-        type: num
-        help: "Âge et sexe indéterminés"
 

@@ -62,16 +62,17 @@ app.config(function (localStorageServiceProvider) {
 app.controller('baseController', function($scope, $location, dataServ, configServ, mapService, userMessages, userServ){
     $scope._appName = null;
     $scope.app = {name: "Suivi des protocoles", menu: []};
-    $scope.user = userServ.getUser();
     configServ.bcShown = false;
-    if(!$scope.user){
-        $location.url('login');
-    }
     $scope.success = function(resp){
+        $scope.user = userServ.getUser();
+        if(!$scope.user){
+            $location.url('login');
+        }
+        var _app = userServ.getCurrentApp();
         $scope.data = resp;
 
         // FIXME DEBUG
-        configServ.put('debug', true);
+        configServ.put('debug', false);
         /*
         userServ.login('as_test', 'test');
         */
@@ -82,7 +83,19 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
-            $location.url('apps');
+            var _appId = userServ.getCurrentApp();
+            if(_appId){
+                $scope.data.forEach(function(item){
+                    if(item.appId == _appId){
+                        $scope.app = item;
+                        configServ.bcShown = true;
+                        $scope.setActive(item.menu[0]);
+                    }
+                });
+            }
+            else{
+                $location.url('apps');
+            }
         });
 
         $scope.$on('user:logout', function(ev){
@@ -96,7 +109,6 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
             $scope.app = app;
             $scope.setActive(app.menu[0]);
         });
-
     };
 
     $scope.setActive = function(item){

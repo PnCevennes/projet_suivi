@@ -115,6 +115,7 @@ app.directive('detailDisplay', function(){
             updateUrl: '@updateurl',
             dataId: '@dataid'
         },
+        transclude: true,
         templateUrl: 'js/templates/display/detail.htm',
         controller: function($scope, $rootScope, dataServ, configServ, userServ, $loading, $q){
             $scope.subEditing = false;
@@ -228,6 +229,7 @@ app.directive('tablewrapper', function(){
             schema: '=',
             data: '=',
         },
+        transclude: true,
         templateUrl: 'js/templates/display/tableWrapper.htm',
         controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
@@ -290,12 +292,6 @@ app.directive('tablewrapper', function(){
                 $scope.__init__();
             }
 
-            $scope.$watch('data', function(newval){
-                if(newval){
-                    $scope.tableParams.reload();
-                }
-            });
-
             /*
              *  initialisation des parametres du tableau
              */
@@ -309,9 +305,8 @@ app.directive('tablewrapper', function(){
                 counts: [10, 25, 50],
                 total: $scope.data.length, // length of data
                 getData: function ($defer, params) {
-                    // use build-in angular filter
-                    console.log(params.filter());
                     /*
+                    // use build-in angular filter
                     var filteredData = params.filter() ?
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;
@@ -378,6 +373,19 @@ app.directive('tablewrapper', function(){
                     $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
                 }
             };
+
+            $scope.$watch('data', function(newval){
+                if(newval){
+                    $scope.data.forEach(function(item){
+                        if(item.$selected){
+                            $scope.currentItem = item;
+                            $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                        }
+                    });
+                    $scope.tableParams.reload();
+                }
+            });
+
 
             /*
              * Listeners

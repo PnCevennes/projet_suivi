@@ -1,5 +1,6 @@
+<ng-transclude></ng-transclude>
 <form name="Simpleform" novalidate class="css-form">
-    <div id='form-container'>
+    <div id="form-container" class="container-fluid">
         <tabset justified="true" ng-if="schema.groups.length>1">
             <tab ng-repeat="group in schema.groups" heading="{{group.name}}" active="isActive[$index]" disabled="isDisabled[$index]">
 
@@ -13,8 +14,9 @@
                 <button type="button" class="btn btn-primary" ng-click="nextPage()" ng-disabled="(sub_{{$index}}.$invalid) || !($index<isActive.length-1)">Suivant<span class="glyphicon glyphicon-chevron-right"></span></button>
               </div>
               <div id ="btn-action" class=" btn-toolbox float-right">
-                <button class="btn btn-success" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Enregistrer</button>
                 <button class="btn btn-danger" type="button" ng-if="data.id && deleteAccess" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-ban-circle"></span> Annuler</button>
+                <button class="btn btn-success" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Enregistrer</button>
               </div>
             </div> 
             </tab>
@@ -23,8 +25,9 @@
             <dynform group="schema.groups[0]" data="data" errors="errors"></dynform>
             <div id="formToolbox" class="row">
               <div id ="btn-action" class=" btn-toolbox float-right">
-                <button class="btn btn-success" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Enregistrer</button>
                 <button class="btn btn-danger" type="button" ng-if="data.id && deleteAccess" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-ban-circle"></span>Annuler</button>
+                <button class="btn btn-success" type="button" ng-disabled="!Simpleform.$valid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Enregistrer</button>
               </div>
             </div> 
         </div>

@@ -29,6 +29,9 @@ groups:
             options:
                 multi: true
                 url: "users/id"
+          - name: modId
+            label: "Mode d'observation"
+            type: select
           - name: obsCommentaire
             label: Commentaires
             type: string

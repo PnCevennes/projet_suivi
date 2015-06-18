@@ -32,6 +32,14 @@ fields:
           nbTaxons: text
       options:
           visible: true
+    - name: abondance
+      label: Abondance
+      filter:
+          abondance: text
+      options:
+          visible: true
+
+
 
 
 

@@ -25,6 +25,10 @@ PNC\ChiroBundle\Entity\ObservationSsSiteView:
             type: float
         nb_taxons:
             type: integer
+        abondance:
+            type: integer
+        mod_id:
+            type: integer
 
     manyToMany:
         observateurs:

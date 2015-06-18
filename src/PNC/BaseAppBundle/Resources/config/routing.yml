@@ -29,7 +29,7 @@ pnc_config_upload:
 
 
 pnc_config_delete_file:
-    path: /upload_file/{id}
+    path: /upload_file/{file_id}
     defaults: {_controller: PNCBaseAppBundle:Config:deleteFile }
     requirements:
         _method: DELETE

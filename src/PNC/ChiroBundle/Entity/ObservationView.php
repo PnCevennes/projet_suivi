@@ -49,6 +49,16 @@ class ObservationView
      */
     private $nb_taxons;
 
+    private $mod_id;
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
+    }
+
 
     /**
      * Set id
@@ -361,5 +371,33 @@ class ObservationView
     public function getNumerisateur()
     {
         return $this->numerisateur;
+    }
+    /**
+     * @var integer
+     */
+    private $abondance;
+
+
+    /**
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationView
+     */
+    public function setAbondance($abondance)
+    {
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
     }
 }

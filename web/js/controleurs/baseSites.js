@@ -97,7 +97,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     };
 
     configServ.getUrl($scope._appName + '/config/site/list', $scope.setSchema);
-    
 
 });
 
@@ -161,6 +160,10 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
             $scope.title = 'Nouveau site';
             configServ.addBc(2, $scope.title, ''); 
         }
+    });
+
+    $scope.$on('form:cancel', function(ev, data){
+        $location.url($scope._appName + '/site/');
     });
 
     $scope.$on('form:create', function(ev, data){

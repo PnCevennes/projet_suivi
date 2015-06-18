@@ -198,6 +198,7 @@ class ObservationService{
     private function hydrate($obj, $data){
         $obj->setObsTemperature($data['obsTemperature']);
         $obj->setObsHumidite($data['obsHumidite']);
+        $obj->setModId($data['modId']);
         if($obj->errors()){
             throw new DataObjectException($obj->errors());
         }

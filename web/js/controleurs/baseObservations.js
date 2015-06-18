@@ -169,6 +169,15 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
         }
     });
 
+    $scope.$on('form:cancel', function(ev, data){
+        if(data.id){
+            $location.url($scope._appName + '/observation/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/site/' + data.siteId);
+        }
+    });
+
     $scope.$on('form:create', function(ev, data){
         userMessages.infoMessage = "La visite n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
         $location.url($scope._appName + '/observation/' + data.id);
@@ -276,6 +285,15 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
         else{
             $scope.title = 'Nouvel inventaire';
             configServ.addBc(2, $scope.title, '');
+        }
+    });
+
+    $scope.$on('form:cancel', function(ev, data){
+        if(data.id){
+            $location.url($scope._appName + '/observation/sans-site/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/observation');
         }
     });
 

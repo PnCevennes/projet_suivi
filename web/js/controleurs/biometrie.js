@@ -73,6 +73,15 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
         }
     });
 
+    $scope.$on('form:cancel', function(ev, data){
+        if(data.id){
+            $location.url($scope._appName + '/biometrie/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/taxons/' + data.obsTxId);
+        }
+    });
+
     $scope.$on('form:create', function(ev, data){
         userMessages.infoMessage = "La biométrie n°" + data.id + ' a été créée avec succès.'
         $location.url($scope._appName + '/biometrie/' + data.id);

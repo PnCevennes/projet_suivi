@@ -37,6 +37,9 @@ groups:
                 type: date
                 options:
                     required: true
+            -   name: modId
+                label: "Mode d'observation"
+                type: select
             -   name: obsCommentaire
                 label: Commentaires
                 type: text

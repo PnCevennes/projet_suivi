@@ -16,4 +16,6 @@ PNC\ChiroBundle\Entity\ConditionsObservation:
             type: float
         obs_humidite:
             type: float
+        mod_id:
+            type: integer
 

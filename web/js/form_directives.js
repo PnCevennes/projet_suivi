@@ -14,6 +14,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
         restrict: 'E',
         scope: {
             inputclass: '@',
+            decorated: '@',
             selectedobject: '=',
             ngBlur: '=',
             url: '@',
@@ -21,10 +22,10 @@ app.directive('angucompletewrapper', function(dataServ, $http){
             reverseurl: '@',
             ngrequired: '=',
         },
+        transclude: true,
         templateUrl: 'js/templates/form/autoComplete.htm',
         link: function($scope, elem){
             $scope.localselectedobject = '';
-
             $scope.test = function(){
                 if($('#aw')[0].value == ''){
                     $scope.selectedobject = null;
@@ -357,6 +358,10 @@ app.directive('simpleform', function(){
                 dfd.resolve('loading form');
             };
 
+            $scope.cancel = function(){
+                $rootScope.$broadcast('form:cancel', $scope.data);
+            };
+
             $scope.save = function(){
                 var errors = null;
                 var confirm_save = true;
@@ -408,6 +413,7 @@ app.directive('simpleform', function(){
             }
 
             $scope.removed = function(resp){
+                dirty = false;
                 $rootScope.$broadcast('form:delete', $scope.data);
             }
 
@@ -636,7 +642,7 @@ app.directive('spreadsheet', function(){
             $scope.setSchema = function(schema){
                 $scope.schema = schema;
                 $scope.schema.fields.forEach(function(item){
-                    defaultLine[item.name] = null;
+                    defaultLine[item.name] = item.default || null;
                 });
                 $scope.data = lines;
                 $scope.addLines();
@@ -659,10 +665,10 @@ app.directive('spreadsheet', function(){
                     var line_valid = true;
                     var line_empty = true;
                     $scope.schema.fields.forEach(function(field){
-                        if(line[field.name]){
+                        if(line[field.name] && line[field.name] != '__NULL__'){
                             line_empty = false;
                         }
-                        if((field.options.required || field.options.primary) && !line[field.name]){
+                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == '__NULL__')){
                             line_valid = false;
                         }
                         if(field.options.primary && line_valid){
@@ -717,14 +723,19 @@ app.directive('subeditform', function(){
             saveUrl: "=saveurl",
             refId: "=refid",
         },
-        template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button><pre>{{data|json}}</pre>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet){
+        template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button>',
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
             $scope.save = function(){
                 errors = SpreadSheet.hasErrors[$scope.dataRef]();
-                dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                if(errors){
+                    userMessages.errorMessage = SpreadSheet.errorMessage[$scope.dataRef];
+                }
+                else{
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                }
             };
 
             $scope.saved = function(resp){

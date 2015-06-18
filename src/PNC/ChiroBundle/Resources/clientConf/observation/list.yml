@@ -27,9 +27,15 @@ fields:
           visible: true
           type: list
     - name: nbTaxons
-      label: Taxons
+      label: Richesse
       filter:
           nbTaxons: text
+      options:
+          visible: true
+    - name: abondance
+      label: Abondance
+      filter:
+          abondance: text
       options:
           visible: true
 

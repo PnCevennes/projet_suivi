@@ -88,6 +88,15 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
         }
     });
 
+    $scope.$on('form:cancel', function(ev, data){
+        if(data.id){
+            $location.url($scope._appName + '/taxons/' + data.id);
+        }
+        else{
+            $location.url($scope._appName + '/observation/' + data.obsId);
+        }
+    });
+
     $scope.$on('form:create', function(ev, data){
         userMessages.infoMessage = "l'observation a été créée avec succès.";
         $location.url($scope._appName + '/taxons/' + data.id);

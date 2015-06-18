@@ -64,6 +64,17 @@ class ObservationSsSiteView
      */
     private $observateurs;
 
+
+    private $mod_id;
+
+    public function setModId($mod_id){
+        $this->mod_id = $mod_id;
+    }
+
+    public function getModId(){
+        return $this->mod_id;
+    }
+
     /**
      * Constructor
      */
@@ -333,5 +344,33 @@ class ObservationSsSiteView
     public function getObservateurs()
     {
         return $this->observateurs;
+    }
+    /**
+     * @var integer
+     */
+    private $abondance;
+
+
+    /**
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationSsSiteView
+     */
+    public function setAbondance($abondance)
+    {
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
     }
 }

@@ -37,9 +37,6 @@ groups:
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: modId
-                label: "Mode d'observation"
-                type: select
             -   name: actId
                 label: "Activité"
                 type: select
