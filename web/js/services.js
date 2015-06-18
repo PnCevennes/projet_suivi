@@ -107,13 +107,10 @@ app.service('configServ', function(dataServ){
 
     this.bc = null;
 
-    this.setBc = function(app, view, id){
+    this.addBc= function(app, view, id){
         if(!id){
             id=null;
         }
-        dataServ.get(app + '/config/breadcrumb?view='+view+'&id='+id, angular.bind(this, function(resp){
-            this.bc = resp
-        });
     }
 
     /*

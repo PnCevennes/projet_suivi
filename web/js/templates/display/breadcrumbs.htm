@@ -1,6 +1,14 @@
-<ol class="breadcrumb" ng-show="bc.length>0 && bcShown">
+<ol class="breadcrumb" ng-if="!_edit">
     <li ng-repeat="item in bc">
         <a ng-if="$index<bc.length-1" ng-href="{{item.link}}"><span class="glyphicon glyphicon-chevron-left"></span>{{item.label}}</a>
         <span class="text-muted" ng-if="$index==bc.length-1">{{item.label}}</span>
+    </li>
+</ol>
+<ol class="breadcrumb" ng-if="_edit">
+    <li ng-repeat="item in bc">
+        <a ng-href="{{item.link}}"><span class="glyphicon glyphicon-chevron-left"></span>{{item.label}}</a>
+    </li>
+    <li>
+        <span class="text-muted">Edition</span>
     </li>
 </ol>

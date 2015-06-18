@@ -29,7 +29,7 @@ class ConfigController extends Controller{
                 $res = $res[0];
                 $out[] = array('id'=>$res['id'], 'label'=>'Biometrie n°'.$id, 'link'=>'#/chiro/biometrie/'.$id);
                 $id = $res['obs_tx_id'];
-            case 'taxon':
+            case 'taxons':
                 $req = $manager->prepare('SELECT id, nom_complet as label, obs_id FROM chiro.chiro_observation_taxon WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
@@ -46,13 +46,13 @@ class ConfigController extends Controller{
                 $req->execute();
                 $res = $req->fetchAll();
                 if(!isset($res[0])){
-                    return new JsonResponse(array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation'));
+                    return new JsonResponse(array(array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation')));
                 }
                 $res = $res[0];
                 $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/observation/sans-site/'.$id);
                 if($res['site_id']==null){
                     $out[] = array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation');
-                    return new JsonResponse($out);
+                    return new JsonResponse(array_reverse($out));
                 }
                 $id = $res['site_id'];
             case 'site':
@@ -61,12 +61,12 @@ class ConfigController extends Controller{
                 $req->execute();
                 $res = $req->fetchAll();
                 if(!isset($res[0])){
-                    return new JsonResponse(array('id'=>null, 'label'=>'Sites', 'link'=>'#/chiro/site'));
+                    return new JsonResponse(array(array('id'=>null, 'label'=>'Sites', 'link'=>'#/chiro/site')));
                 }
                 $res = $res[0];
                 $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/site/'.$id);
                 $out[] = array('id'=>null, 'label'=>'Sites', 'link'=>'#/chiro/site');
         }
-        return new JsonResponse($out);
+        return new JsonResponse(array_reverse($out));
     }
 }

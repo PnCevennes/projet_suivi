@@ -200,22 +200,30 @@ app.directive('fieldDisplay', function(){
 app.directive('breadcrumbs', function(){
     return {
         restrict: 'A',
-        scope: {_appName: '@appname'},
+        scope: {},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ, $location){
             $scope.bc = [];
-            $scope.$watch(
-                function(){return configServ.bc},
-                function(newval, oldval){
-                    if(newval !== oldval){
-                        $scope.bc = [];
-                        var bclength = newval.length;
-                        for(i=bclength-1; i>=0; i--){
-                            $scope.bc.push(newval[i]);
-                        }
-                    }
-                }
-            );
+            $scope._edit = false;
+            var _url = null;
+            var params = $location.path().slice(1).split('/');
+            if(params.indexOf('edit') >= 0){
+                params.splice(params.indexOf('edit'), 1);
+                $scope._edit = true;
+            }
+            if(params.length == 4){
+                url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+            }
+            else if(params.length == 3){
+                url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[2];           }
+            else if(params.length == 2){
+                url = params[0] + '/config/breadcrumb?view=' + params[1];
+            }
+            console.log(url);
+            configServ.getUrl(url, function(resp){
+                $scope.bc = resp;
+                console.log($scope.bc);
+            });
         },
     };
 });
