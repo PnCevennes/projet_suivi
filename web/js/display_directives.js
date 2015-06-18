@@ -212,7 +212,12 @@ app.directive('breadcrumbs', function(){
                 $scope._edit = true;
             }
             if(params.length == 4){
-                url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+                if($scope._edit){
+                    url = params[0] + '/config/breadcrumb?view=' + params[2] + '&id=' + params[3];
+                }
+                else{
+                    url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+                }
             }
             else if(params.length == 3){
                 url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[2];           }
