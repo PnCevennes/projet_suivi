@@ -173,10 +173,9 @@ app.service('configServ', function(dataServ){
  * service utilisateur
  */
 app.service('userServ', function(dataServ, $rootScope, localStorageService){
-    var _user = null; //FIXME idApp
+    var _user = null;
     var _tmp_password = '';
-    
-    
+
     this.getUser = function(){
         if(!_user){
             var tmp_user = localStorageService.get('user');
@@ -192,7 +191,7 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
         localStorageService.set('user', _user);
     };
     
-    this.getCurrentApp = function(appId){
+    this.getCurrentApp = function(){
         return localStorageService.get('currentApp');
     };
     
@@ -240,6 +239,8 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
     this.error = function(resp){
         $rootScope.$broadcast('user:error');
     };
+
+    
 });
 
 
