@@ -18,3 +18,6 @@ License
 
 * OpenSource - GPL V3
 * Copyleft 2015 - Parc national des Cévennes
+
+.. image:: docs/img/logo_pnc_orange.tif
+    :target: http://www.cevennes-parcnational.fr
