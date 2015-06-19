@@ -112,6 +112,12 @@ pnc_observation_taxon_suppr:
     requirements:
         _method: DELETE
 
+pnc_observation_taxon_validate:
+    path:   /validate_taxon
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:validate }
+    requirements:
+        _method: POST
+
 #
 # Vues biometrie
 #

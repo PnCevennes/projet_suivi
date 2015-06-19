@@ -350,7 +350,6 @@ app.directive('tablewrapper', function(){
                     params.total(orderedData.length); // set total for recalc pagination
                     $scope.currentSel = {total: $scope.data.length, current: orderedData.length};
 
-                    
                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                 } 
             });
@@ -366,6 +365,21 @@ app.directive('tablewrapper', function(){
                 $scope.tableParams.sorting(sorting);
             });
 
+            $scope.checkItem = function(item){
+                $rootScope.$broadcast($scope.refName + ':ngTable:itemChecked', item);
+            }
+            $scope._checkall = false;
+            $scope.checkAll = function(){
+                $scope._checkall = !$scope._checkall;
+
+                var page = $scope.tableParams.page();
+                var count = $scope.tableParams.count();
+                var to_check = orderedData.slice((page-1) * count, page * count);
+                to_check.forEach(function(item){
+                    item._checked = $scope._checkall;
+                    $scope.checkItem(item);
+                });
+            }
 
             /*
              * Fonctions

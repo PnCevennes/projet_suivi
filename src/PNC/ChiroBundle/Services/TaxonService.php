@@ -129,6 +129,19 @@ class TaxonService{
         return true;
     }
 
+    public function setValidationStatus($data){
+        $valid = $data['action']==1 ? 54 : 56;
+        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
+        $manager = $this->db->getManager();
+        $manager->getConnection()->beginTransaction();
+        foreach($data['selection'] as $id){
+            $tx = $repo->findOneBy(array('id'=>$id));
+            $tx->setObsObjStatusValidation($valid);
+            $manager->flush();
+        }
+        $manager->getConnection()->commit();
+    }
+
     private function hydrate($obj, $data){
         $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
         $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));

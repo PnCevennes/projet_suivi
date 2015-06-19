@@ -18,8 +18,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     $scope._appName = $routeParams.appName;
     $scope.geoms = [];
     $scope.data = [];
+    $scope.selection = [];
+    $scope.action = 1;
     var data = [];
-    configServ.addBc(0, 'Validation', '#/'+$scope._appName+'/validation');
+    var checked = [];
     
     /*
      * Spinner
@@ -30,6 +32,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     promise.then(function(result) {
         $loading.finish('spinner-1');
     });
+
+    $scope.send = function(){
+        var act = {action: $scope.action, selection: $scope.selection};
+    };
  
     $scope.schema = {
         title: 'Taxons en attente de validation',
@@ -37,13 +43,15 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         detailUrl: '#/'+$scope._appName+'/taxons/',
         editUrl: '#/'+$scope._appName+'/edit/taxons/',
         editAccess: 5,
+        checkable: true,
         fields: [
             {
                 name: 'id',
                 label: 'Id',
-                filter: {id: 'text'}, 
-                filterFunc: 'integer',
-                options: {visible: false}
+                options: {
+                    visible: true,
+                    type: 'checkable'
+                }
             },
             {
                 name: 'cdNom',
@@ -106,6 +114,24 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
                     ids.push(item.id);
                 });
                 mapService.filterData(ids);
+            });
+
+            $scope.$on('chiro/validation:ngTable:itemChecked', function(ev, item){
+                if(item._checked){
+                    if(checked.indexOf(item)==-1){
+                        checked.push(item);
+                    }
+                }
+                else{
+                    if(checked.indexOf(item)>=-1){
+                        checked.splice(checked.indexOf(item), 1);
+                    }
+                }
+                var checked_ids = [];
+                checked.forEach(function(item){
+                    checked_ids.push(item.id);
+                });
+                $scope.selection = checked_ids;
             });
 
             var tmp = [];
