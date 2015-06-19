@@ -12,6 +12,15 @@ Le projet se décline en deux bundles :
 *PNC/ChiroBundle* la mise en application de cette base pour fournir une interface de saisie des protocoles de suivi des chiroptères.
 
 
+Auteurs
+-------
+
+Parc national des Cévennes
+
+* Frédéric Fidon
+* Amandine SAHL
+
+
 
 License
 -------
