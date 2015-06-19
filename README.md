@@ -17,7 +17,7 @@ Auteurs
 
 Parc national des Cévennes
 
-* Frédéric Fidon
+* Frédéric FIDON
 * Amandine SAHL
 
 
