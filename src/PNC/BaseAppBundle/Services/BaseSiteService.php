@@ -48,7 +48,7 @@ class BaseSiteService{
         }
         $obj->setSiteDate($date);
         $obj->setSiteDescription($data['siteDescription']);
-        $obj->setSiteCode($data['siteCode']);
+        //$obj->setSiteCode($data['siteCode']);
         $obj->setObservateurId($data['observateurId']);
         $obj->setGeom($geom);
 

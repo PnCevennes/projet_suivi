@@ -6,7 +6,7 @@ use CrEOF\Spatial\PHP\Types\Geometry\Point;
 class GeometryService{
 
     public function getPoint($coords){
-        return new Point($coords[0][0], $coords[0][1]);
+        return new Point($coords[0][0], $coords[0][1], 4326);
     }
 
     /*

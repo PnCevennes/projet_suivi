@@ -160,11 +160,6 @@ class Site
      */
     public function setSiteCode($siteCode)
     {
-        if(strlen($siteCode)<5 || strlen($siteCode)>25){
-            $this->_errors['siteCode'] = "le code doit faire entre 5 et 25 caractères";
-        }
-        $this->site_code = $siteCode;
-
         return $this;
     }
 

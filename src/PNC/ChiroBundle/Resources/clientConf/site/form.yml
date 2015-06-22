@@ -24,12 +24,6 @@ groups:
                 label: Type
                 type: select
                 help: Type de lieu
-            -   name: siteCode
-                label: Code site
-                type: string
-                options:
-                    minLength: 5
-                    maxLength: 250
             -   name: observateurId
                 label: Observateur
                 type: xhr
