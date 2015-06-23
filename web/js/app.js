@@ -149,7 +149,6 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
         userMessages.infoMessage = user.nom_complet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
         
         configServ.bcShown = true;
-        var curBc = configServ.getBc();
         $location.url('apps'); 
     });
 
@@ -169,7 +168,6 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
 app.controller('logoutController', function($scope, $location, userServ, userMessages, configServ){
     $scope.$on('user:logout', function(ev){
         userMessages.infoMessage = "Tchuss !";
-        var curBc = configServ.getBc();
         $location.url('login');
     });
 
