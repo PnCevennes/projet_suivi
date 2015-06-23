@@ -3,20 +3,21 @@
 <div class="col-md-9 col-sm-12 padded">
     <div breadcrumbs></div>
     <h1>{{title}}</h1>
-<div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/validation"></div>
-<div ng-class="{'panel panel-success': action, 'panel panel-danger': !action}">
-    <div class="panel-heading">
-        <label for="valid">{{action ? 'Validation' : 'Invalidation'}} de {{selection.length}} éléments  </label>
-    </div>
-    <div class="panel-body">
-        <div class="input-group">
-            <select class="form-control" id="valid" ng-options="item.id as item.label for item in [{label: 'Valide', id:1}, {label: 'Non valide', id: 0}]" ng-model="action"></select>
-            <span class="input-group-btn">
-                <button ng-class="{'btn btn-success': action, 'btn btn-danger': !action}" type="button" ng-click="send()" ng-disabled="!selection.length">Envoyer</button>
-            </span>
+    <filterform url="{{data_url}}" schema="schema.filtering" callback="setData"></filterform>
+    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/validation"></div>
+    <div ng-class="{'panel panel-success': action, 'panel panel-danger': !action}">
+        <div class="panel-heading">
+            <label for="valid">{{action ? 'Validation' : 'Invalidation'}} de {{selection.length}} éléments  </label>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <select class="form-control" id="valid" ng-options="item.id as item.label for item in [{label: 'Valide', id:1}, {label: 'Non valide', id: 0}]" ng-model="action"></select>
+                <span class="input-group-btn">
+                    <button ng-class="{'btn btn-success': action, 'btn btn-danger': !action}" type="button" ng-click="send()" ng-disabled="!selection.length">Envoyer</button>
+                </span>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 

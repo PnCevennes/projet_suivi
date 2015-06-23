@@ -66,29 +66,36 @@ app.directive('leafletMap', function(){
                     }, 0 );
                 }
                 var dfd = $q.defer();
-                map = L.map('mapd', {maxZoom: 17});
-                layer = L.markerClusterGroup();
-                layer.addTo(map);
-                configServ.getUrl(configUrl, function(res){
-                    resource = res[0];
-                    if(!resource.clustering){
-                        layer.options.disableClusteringAtZoom = 13;
-                    }
-                    resource.layers.baselayers.forEach(function(layer, name){
-                        var layerData = LeafletServices.loadData(layer);
-                        tileLayers[layerData.name] = layerData.map;
-                        if(layerData.active){
-                            layerData.map.addTo(map);
+                try{
+                    map = L.map('mapd', {maxZoom: 17});
+                    layer = L.markerClusterGroup();
+                    layer.addTo(map);
+                    configServ.getUrl(configUrl, function(res){
+                        resource = res[0];
+                        if(!resource.clustering){
+                            layer.options.disableClusteringAtZoom = 13;
                         }
+                        resource.layers.baselayers.forEach(function(layer, name){
+                            var layerData = LeafletServices.loadData(layer);
+                            tileLayers[layerData.name] = layerData.map;
+                            if(layerData.active){
+                                layerData.map.addTo(map);
+                            }
+                        });
+                        map.setView(
+                            [resource.center.lat, resource.center.lng], 
+                            resource.center.zoom);
+                        layerControl = L.control.layers(tileLayers, {'Données': layer});
+                        
+                        layerControl.addTo(map);
+                        dfd.resolve();
                     });
-                    map.setView(
-                        [resource.center.lat, resource.center.lng], 
-                        resource.center.zoom);
-                    layerControl = L.control.layers(tileLayers, {'Données': layer});
-                    
-                    layerControl.addTo(map);
+                }
+                catch(e){
+                    layer.clearLayers();
+                    geoms.splice(0);
                     dfd.resolve();
-                });
+                }
 
                 var getLayerControl = function(){
                     return layerControl;

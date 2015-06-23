@@ -20,6 +20,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     $scope.data = [];
     $scope.selection = [];
     $scope.action = 1;
+    $scope.data_url = $routeParams.appName + '/obs_taxon';
     var data = [];
     var checked = [];
     
@@ -44,6 +45,42 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         editUrl: '#/'+$scope._appName+'/edit/taxons/',
         editAccess: 5,
         checkable: true,
+        filtering:{
+            fields: [
+                {
+                    name: 'taxon',
+                    label: 'Taxon',
+                    type: 'xhr',
+                    options:{
+                        url: 'chiro/taxons',
+                        reverseurl: 'chiro/taxons/id',
+                        ref: 'taxon'
+                    }
+                },
+                {
+                    name: 'period_start',
+                    label: 'Observation la plus ancienne',
+                    type: 'date'
+                },
+                {
+                    name: 'period_end',
+                    label: 'Observation la plus récente',
+                    type: 'date'
+                },
+                {
+                    name: 'st_valid',
+                    label: 'Statut validation',
+                    type: 'select',
+                    options: {
+                        choices:[
+                            {id: '54', libelle: 'Valide'},
+                            {id: '55', libelle: 'A valider'},
+                            {id: '56', libelle: 'Non valide'}
+                        ]
+                    },
+                }
+            ]
+        },
         fields: [
             {
                 name: 'id',
@@ -88,6 +125,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     };
    
     $scope.setData = function(resp){
+        console.log('data recu');
 
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
 
@@ -147,5 +185,4 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         });
     };
 
-    dataServ.get($scope._appName + '/obs_taxon/observation', $scope.setData);
 });

@@ -424,3 +424,51 @@ app.directive('tablewrapper', function(){
         },
     };
 });
+
+
+app.directive('filterform', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            url: '@',
+            schema: '=',
+            callback: '=',
+        },
+        templateUrl: 'js/templates/form/filterForm.htm',
+        controller: function($scope, dataServ){
+            $scope.filterData = {};
+            $scope.schema.fields.forEach(function(item){
+                if(item.default){
+                    $scope.filterData[item.name] = item.default;
+                }
+                else{
+                    $scope.filterData[item.name] = null;
+                }
+            });
+
+            $scope.send = function(){
+                var _qs = [];
+                $scope.schema.fields.forEach(function(item){
+                    if($scope.filterData[item.name]){
+                        if(item.type == 'date'){
+                            _qs.push(item.name + '=' + $scope.filterData[item.name].getTime());
+                        }
+                        else{
+                            _qs.push(item.name + '=' + $scope.filterData[item.name]);
+                        }
+                    }
+                });
+                if(_qs.length){
+                    var _url = encodeURI($scope.url + '?' + _qs.join('&')); 
+                }
+                else{
+                    var _url = $scope.url;
+                }
+                dataServ.get(_url, $scope.callback);
+            };
+
+            console.log($scope.filterData);
+            $scope.send();
+        }
+    };
+});

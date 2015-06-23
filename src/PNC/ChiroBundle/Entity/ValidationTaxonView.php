@@ -45,6 +45,16 @@ class ValidationTaxonView
     private $geom;
 
 
+    private $obs_obj_status_validation;
+
+    public function getObsObjStatusValidation(){
+        return $this->obs_obj_status_validation;
+    }
+
+    public function setObsObjStatusValidation($v){
+        $this->obs_obj_status_validation = $v;
+    }
+
     /**
      * Get id
      *

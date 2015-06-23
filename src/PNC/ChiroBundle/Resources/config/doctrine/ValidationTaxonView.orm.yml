@@ -17,6 +17,8 @@ PNC\ChiroBundle\Entity\ValidationTaxonView:
             type: integer
         obs_date:
             type: date
+        obs_obj_status_validation:
+            type: integer
         site_nom:
             type: text
         geom:

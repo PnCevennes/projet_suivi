@@ -22,6 +22,13 @@ class ObsTaxonController extends Controller
         return new JsonResponse($ts->getList($obs_id));
     }
 
+
+    // path: GET chiro/obs_taxon
+    public function listTaxonsAction(Request $req){
+        $ts = $this->get('taxonService');
+        return new JsonResponse($ts->getFilteredList($req));
+    }
+
     // path: GET chiro/obs_taxon/{id}
     public function detailAction($id){
         /*

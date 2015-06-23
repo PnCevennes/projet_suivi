@@ -32,19 +32,51 @@ class TaxonService{
                 $out[] = $this->norm->normalize($item);
             }
         }
-        else{
-            $repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
-            $data = $repo->findAll();
-            foreach($data as $item){
-                $out_item = array(
-                    'type'=>'Feature', 
-                    'properties'=>$this->norm->normalize($item, array('obsDate', 'geom')),
-                    'geometry'=>$item->getGeom()
-                    );
-            
-                $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
-                $out[] = $out_item;
-            }
+        return $out;
+    }
+
+    public function getFilteredList($request){
+        $out = array();
+        //$repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
+        $qb = $this->db->getEntityManager()->createQueryBuilder();
+        $qr = $qb->select('v')->from('PNCChiroBundle:ValidationTaxonView', 'v')->setMaxResults(200);
+        $tx = $request->query->get('taxon');
+        if($tx){
+            $qb->where('v.cd_nom=:cdnom')->setParameter('cdnom', $tx);
+        }
+        $date_start = $request->query->get('period_start');
+        if($date_start){
+            $ds = new \DateTime();
+            $ds->setTimestamp($date_start / 1000);
+            $qb->andWhere(
+                'v.obs_date > :date_st'
+            )->setParameter('date_st', $ds);//->format('Y-m-d'));
+        }
+
+        $date_end = $request->query->get('period_end');
+        if($date_end){
+            $ds = new \DateTime();
+            $ds->setTimestamp($date_end / 1000);
+            $qb->andWhere(
+                'v.obs_date < :date_end'
+            )->setParameter('date_end', $ds);//->format('Y-m-d'));
+        }
+
+        $st_valid = $request->query->get('st_valid');
+        if($st_valid){
+            $qb->andWhere('v.obs_obj_status_validation=:st_valid')->setParameter('st_valid', $st_valid);
+        }
+
+        $data = $qr->getQuery()->getResult();
+        foreach($data as $item){
+            $out_item = array(
+                'type'=>'Feature', 
+                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom')),
+                'geometry'=>$item->getGeom()
+                );
+        
+            $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
+            $out[] = $out_item;
         }
         return $out;
     }
