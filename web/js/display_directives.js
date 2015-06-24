@@ -255,6 +255,12 @@ app.directive('tablewrapper', function(){
                         return function(x){return true};
                     }
                     return function(filtered){
+                        if(!filtered[key]){
+                            if(filterTxt == '-'){
+                                return true;
+                            }
+                            return false;
+                        }
                         return filtered[key].toLowerCase().indexOf(filterTxt.toLowerCase())===0;
                     }
                 },
