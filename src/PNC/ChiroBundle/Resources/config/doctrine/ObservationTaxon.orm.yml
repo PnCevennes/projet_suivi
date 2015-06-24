@@ -53,3 +53,5 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         num_id:
             type: integer
+        date_validation:
+            type: date

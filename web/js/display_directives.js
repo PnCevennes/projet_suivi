@@ -246,6 +246,7 @@ app.directive('tablewrapper', function(){
         templateUrl: 'js/templates/display/tableWrapper.htm',
         controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
+            $scope._checkall = false;
             var orderedData;
 
             var filterFuncs = {
@@ -339,6 +340,8 @@ app.directive('tablewrapper', function(){
                             }
                         }
                     }
+                    $scope._checkall = false;
+                    //$scope.clearChecked();
                     orderedData = params.sorting() ?
                             $filter('orderBy')(filteredData, params.orderBy()) :
                             $scope.data;
@@ -368,7 +371,9 @@ app.directive('tablewrapper', function(){
             $scope.checkItem = function(item){
                 $rootScope.$broadcast($scope.refName + ':ngTable:itemChecked', item);
             }
-            $scope._checkall = false;
+
+
+            // selection case à cocher
             $scope.checkAll = function(){
                 $scope._checkall = !$scope._checkall;
 
@@ -380,6 +385,20 @@ app.directive('tablewrapper', function(){
                     $scope.checkItem(item);
                 });
             }
+
+            $scope.$on($scope.refName + ':clearChecked', function(){
+                $scope.clearChecked();
+            });
+
+            $scope.clearChecked = function(){
+                $scope.data.forEach(function(item){
+                    $scope._checkall = false;
+                    if(item._checked){
+                        item._checked = false;
+                    }
+                });
+                $rootScope.$broadcast($scope.refName + ':cleared');
+            };
 
             /*
              * Fonctions
@@ -437,14 +456,7 @@ app.directive('filterform', function(){
         templateUrl: 'js/templates/form/filterForm.htm',
         controller: function($scope, dataServ){
             $scope.filterData = {};
-            $scope.schema.fields.forEach(function(item){
-                if(item.default){
-                    $scope.filterData[item.name] = item.default;
-                }
-                else{
-                    $scope.filterData[item.name] = null;
-                }
-            });
+            $scope.schema_initialized = false;
 
             $scope.send = function(){
                 var _qs = [];
@@ -467,8 +479,26 @@ app.directive('filterform', function(){
                 dataServ.get(_url, $scope.callback);
             };
 
-            console.log($scope.filterData);
-            $scope.send();
+            $scope.init_schema = function(){
+                if(!$scope.schema_initialized){
+                    $scope.schema.fields.forEach(function(item){
+                        $scope.filterData[item.name] = item.default;
+                    });
+                }
+                $scope.schema_initialized = true;
+                $scope.send();
+            };
+
+            if($scope.schema){
+                $scope.init_schema();
+            }
+            else{
+                $scope.$watch('schema', function(newval){
+                    if(newval){
+                        $scope.init_schema();
+                    }
+                });
+            }
         }
     };
 });

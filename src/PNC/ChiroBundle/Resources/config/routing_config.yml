@@ -75,6 +75,12 @@ suivi_chiro_config_observation_sanssite_detail:
 #
 # configurations obs taxon
 #
+suivi_chiro_config_obstaxon_validation:
+    path: obstaxon/validation
+    defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getValidation }
+    requirements:
+        _method: GET
+
 suivi_chiro_config_obstaxon_form:
     path: obstaxon/form
     defaults: { _controller: PNCChiroBundle:ObsTaxonConfig:getForm }

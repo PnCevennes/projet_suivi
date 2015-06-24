@@ -163,13 +163,13 @@ class ObsTaxonController extends Controller
     // path: POST chiro/validate_taxon
     public function validateAction(Request $req){
         $user = $this->get('userServ');
-        $data = json_decode($req->getContent());
+        $data = json_decode($req->getContent(), true);
         if(!$user->checkLevel(5)){
             throw new AccessDeniedHttpException();
         }
         $ts = $this->get('taxonService');
         try{
-            $ts->setValidationStatus($data);
+            $ts->setValidationStatus($data, $user->getUser());
             return new JsonResponse($data);
         }
         catch(DataObjectException $e){

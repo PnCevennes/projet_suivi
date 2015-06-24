@@ -575,4 +575,32 @@ class ObservationTaxon
     public function getObsValidateur(){
         return $this->obs_validateur;
     }
+    /**
+     * @var \DateTime
+     */
+    private $date_validation;
+
+
+    /**
+     * Set date_validation
+     *
+     * @param \DateTime $dateValidation
+     * @return ObservationTaxon
+     */
+    public function setDateValidation($dateValidation)
+    {
+        $this->date_validation = $dateValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get date_validation
+     *
+     * @return \DateTime 
+     */
+    public function getDateValidation()
+    {
+        return $this->date_validation;
+    }
 }

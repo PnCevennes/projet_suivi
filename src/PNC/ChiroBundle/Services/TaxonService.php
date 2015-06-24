@@ -71,11 +71,12 @@ class TaxonService{
         foreach($data as $item){
             $out_item = array(
                 'type'=>'Feature', 
-                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom')),
+                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation')),
                 'geometry'=>$item->getGeom()
                 );
         
             $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
+            $out_item['properties']['dateValidation'] = $item->getDateValidation() ? $item->getDateValidation()->format('Y-m-d') : '';
             $out[] = $out_item;
         }
         return $out;
@@ -161,15 +162,19 @@ class TaxonService{
         return true;
     }
 
-    public function setValidationStatus($data){
-        $valid = $data['action']==1 ? 54 : 56;
+    public function setValidationStatus($data, $user){
+        $valid = $data['action'];
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
         foreach($data['selection'] as $id){
             $tx = $repo->findOneBy(array('id'=>$id));
-            $tx->setObsObjStatusValidation($valid);
-            $manager->flush();
+            if($tx->getObsObjStatusValidation() != $valid){
+                $tx->setObsObjStatusValidation($valid);
+                $tx->setDateValidation(new \DateTime());
+                $tx->setObsValidateur($user['id_role']);
+                $manager->flush();
+            }
         }
         $manager->getConnection()->commit();
     }

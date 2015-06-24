@@ -13,16 +13,17 @@ app.config(function($routeProvider){
 });
 
 
-app.controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, dataServ, configServ, mapService){
+app.controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, dataServ, configServ, userServ, mapService){
 
     $scope._appName = $routeParams.appName;
     $scope.geoms = [];
     $scope.data = [];
     $scope.selection = [];
-    $scope.action = 1;
+    $scope.action = 55;
     $scope.data_url = $routeParams.appName + '/obs_taxon';
     var data = [];
     var checked = [];
+    $scope.checkedSelection = checked;
     
     /*
      * Spinner
@@ -34,98 +35,37 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         $loading.finish('spinner-1');
     });
 
+    console.log(userServ.getUser());
+
     $scope.send = function(){
         var act = {action: $scope.action, selection: $scope.selection};
+        dataServ.post($scope._appName + '/validate_taxon', act, function(resp){
+            console.log(resp);
+            checked.forEach(function(item){
+                item.obsObjStatusValidation = $scope.action;
+                item.validateur = userServ.getUser().nom_complet;
+                var today = new Date();
+                item.dateValidation = today.getFullYear() + '-' + ('00'+(today.getMonth()+1)).slice(-2) + '-' + today.getDate();
+            });
+        });
     };
  
-    $scope.schema = {
-        title: 'Taxons en attente de validation',
-        emptyMsg: 'Aucun taxon en attente',
-        detailUrl: '#/'+$scope._appName+'/taxons/',
-        editUrl: '#/'+$scope._appName+'/edit/taxons/',
-        editAccess: 5,
-        checkable: true,
-        filtering:{
-            fields: [
-                {
-                    name: 'taxon',
-                    label: 'Taxon',
-                    type: 'xhr',
-                    options:{
-                        url: 'chiro/taxons',
-                        reverseurl: 'chiro/taxons/id',
-                        ref: 'taxon'
-                    }
-                },
-                {
-                    name: 'period_start',
-                    label: 'Observation la plus ancienne',
-                    type: 'date'
-                },
-                {
-                    name: 'period_end',
-                    label: 'Observation la plus récente',
-                    type: 'date'
-                },
-                {
-                    name: 'st_valid',
-                    label: 'Statut validation',
-                    type: 'select',
-                    options: {
-                        choices:[
-                            {id: '54', libelle: 'Valide'},
-                            {id: '55', libelle: 'A valider'},
-                            {id: '56', libelle: 'Non valide'}
-                        ]
-                    },
-                }
-            ]
-        },
-        fields: [
-            {
-                name: 'id',
-                label: 'Id',
-                options: {
-                    visible: true,
-                    type: 'checkable'
-                }
-            },
-            {
-                name: 'cdNom',
-                label: 'CdNom',
-                filter: {cdNom: 'text'},
-                options: {visible: false}
-            },
-            {
-                name: 'nomComplet',
-                label: 'Nom complet',
-                filter: {nomComplet: 'text'},
-                filterFunc: 'starting',
-                options: {visible: true}
-            },
-            {
-                name: 'obsEffectifAbs',
-                label: 'Effectif total',
-                filter: {obsEffectifAbs: 'text'},
-                options: {visible: true}
-            },
-            {
-                name: 'siteNom',
-                label: 'Nom du site',
-                filter: {siteNom: 'text'},
-                options: {visible: true}
-            },
-            {
-                name: 'obsDate',
-                label: "Date d'observation",
-                filter: {obsDate: 'text'},
-                options: {visible: true, type: 'date'}
-            },
-        ]
+    $scope.clear = function(emit){
+        $scope.selection.splice(0);
+        checked.splice(0);
+        if(emit===true){
+            $rootScope.$broadcast('chiro/validation:clearChecked');
+        }
     };
+
+    $scope.$on('chiro/validation:cleared', function(){
+        $scope.clear();
+    });
    
     $scope.setData = function(resp){
         console.log('data recu');
+        $scope.selection.splice(0);
+        checked.splice(0);
 
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
 
@@ -184,5 +124,9 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
             dfd.resolve('loading data');
         });
     };
+
+    configServ.getUrl($scope._appName + '/config/obstaxon/validation', function(resp){
+        $scope.schema = resp;
+    });
 
 });

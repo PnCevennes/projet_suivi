@@ -30,6 +30,44 @@ class ObsTaxonConfigController extends Controller{
         return new JsonResponse($out);
     }
 
+    // path : GET chiro/config/obstaxon/validation
+    public function getValidationAction(){
+        $norm = $this->get('normalizer');
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
+
+        // Statut validation
+        $types = $repo->findBy(array('id_type'=>9));
+        $typesVal = array(array('id'=>0, 'libelle'=>'Tout statut'));
+        foreach($types as $tl){
+            if($tl->getFkParent() != 0){
+                $typesVal[] = $norm->normalize($tl, array());
+            }
+        }
+
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/validation.yml');
+        $out = Yaml::parse($file);
+
+        foreach($out['fields'] as &$field){
+            if(!isset($field['options'])){
+                $field['options'] = array();
+            }
+            if($field['name'] == 'obsObjStatusValidation'){
+                $field['options']['choices'] = $typesVal;
+                $field['default'] = 0;
+            }
+        }
+        foreach($out['filtering']['fields'] as &$field){
+            if($field['name'] == 'st_valid'){
+                if(!isset($field['options'])){
+                    $field['options'] = array();
+                }
+                $field['options']['choices'] = $typesVal;
+                $field['default'] = 0;
+            }
+        }
+        return new JsonResponse($out);
+    }
+
     // path : GET chiro/config/obstaxon/form
     public function getFormAction(){
         $norm = $this->get('normalizer');

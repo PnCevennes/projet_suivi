@@ -1,0 +1,90 @@
+title: "Taxons en attente de validation"
+emptyMsg: "Aucun taxon en attente"
+detailUrl: "#/chiro/taxons/"
+editUrl: "#/chiro/edit/taxons/"
+editAccess: 5
+checkable: true
+filtering:
+    fields: 
+        -   name: "taxon"
+            label: "Taxon"
+            type: "xhr"
+            options:
+                url: "chiro/taxons"
+                reverseurl: "chiro/taxons/id"
+                ref: "taxon"
+        -   name: "period_start"
+            label: "Observation la plus ancienne"
+            type: "date"
+        -   name: "period_end"
+            label: "Observation la plus récente"
+            type: "date"
+        -   name: "st_valid"
+            label: "Statut validation"
+            type: "select"
+fields: 
+    -   name: "id"
+        label: "Id"
+        options: 
+            visible: true
+            type: "checkable"
+    -   name: "cdNom"
+        label: "CdNom"
+        filter: 
+            cdNom: "text"
+        options: 
+            visible: false
+    -   name: "nomComplet"
+        label: "Nom complet"
+        filter: 
+            nomComplet: "text"
+        filterFunc: "starting"
+        options: 
+            visible: true
+    -   name: "numerisateur"
+        label: "Numérisateur"
+        filter: 
+            numerisateur: "text"
+        filterFunc: "starting"
+        options: 
+            visible: false
+    -   name: "obsObjStatusValidation"
+        label: "Validation"
+        filter: 
+            obsObjStatusValidation: "text"
+        options: 
+            visible: true
+            type: "select"
+    -   name: "validateur"
+        label: "Validateur"
+        filter: 
+            validateur: "text"
+        filterFunc: "starting"
+        options: 
+            visible: false
+    -   name: "dateValidation"
+        label: "Date de validation"
+        filter: 
+            dateValidation: "text"
+        options: 
+            visible: false
+            type: "date"
+    -   name: "obsEffectifAbs"
+        label: "Effectif total"
+        filter: 
+            obsEffectifAbs: "text"
+        options: 
+            visible: true
+    -   name: "siteNom"
+        label: "Nom du site"
+        filter: 
+            siteNom: "text"
+        options: 
+            visible: true
+    -   name: "obsDate"
+        label: "Date d'observation"
+        filter: 
+            obsDate: "text"
+        options: 
+            visible: true 
+            type: "date"

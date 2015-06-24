@@ -202,4 +202,88 @@ class ValidationTaxonView
     {
         return $this->geom;
     }
+    /**
+     * @var \DateTime
+     */
+    private $date_validation;
+
+    /**
+     * @var string
+     */
+    private $validateur;
+
+    /**
+     * @var string
+     */
+    private $numerisateur;
+
+
+    /**
+     * Set date_validation
+     *
+     * @param \DateTime $dateValidation
+     * @return ValidationTaxonView
+     */
+    public function setDateValidation($dateValidation)
+    {
+        $this->date_validation = $dateValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get date_validation
+     *
+     * @return \DateTime 
+     */
+    public function getDateValidation()
+    {
+        return $this->date_validation;
+    }
+
+    /**
+     * Set validateur
+     *
+     * @param string $validateur
+     * @return ValidationTaxonView
+     */
+    public function setValidateur($validateur)
+    {
+        $this->validateur = $validateur;
+
+        return $this;
+    }
+
+    /**
+     * Get validateur
+     *
+     * @return string 
+     */
+    public function getValidateur()
+    {
+        return $this->validateur;
+    }
+
+    /**
+     * Set numerisateur
+     *
+     * @param string $numerisateur
+     * @return ValidationTaxonView
+     */
+    public function setNumerisateur($numerisateur)
+    {
+        $this->numerisateur = $numerisateur;
+
+        return $this;
+    }
+
+    /**
+     * Get numerisateur
+     *
+     * @return string 
+     */
+    public function getNumerisateur()
+    {
+        return $this->numerisateur;
+    }
 }

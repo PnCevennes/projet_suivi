@@ -6,7 +6,9 @@
         <thead>
             <tr>
                 <th ng-if="schema.checkable">
-                    <input type="checkbox" ng-model="_checkall" ng-click="checkAll(_checkall)"></input>
+                    <!--<input type="checkbox" ng-model="_checkall" ng-click="checkAll(_checkall)"></input>-->
+                    <!--<button type="button" class="btn btn-xs" ng-click="checkAll(_checkall)" tooltip="Tout cocher/décocher"><span class="glyphicon glyphicon-check"></span></button>-->
+                    <span class="glyphicon glyphicon-check" style="cursor: pointer;" ng-click="checkAll(_checkall)" tooltip="Tout cocher/décocher"></span>
                 </th>
                 <th ng-repeat="column in schema.fields" 
                     ng-show="column.options.visible && column.options.type!='checkable'" 
