@@ -29,7 +29,7 @@ class TaxonService{
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
             $data = $repo->findBy(array('obs_id'=>$obs_id));
             foreach($data as $item){
-                $out[] = $this->norm->normalize($item);
+                $out[] = $this->norm->normalize($item, array('dateValidation'));
             }
         }
         return $out;
@@ -86,7 +86,9 @@ class TaxonService{
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $data = $repo->findOneBy(array('id'=>$id));
         if($data){
-            return $this->norm->normalize($data);
+            $out = $this->norm->normalize($data, array('dateValidation'));
+            $out['dateValidation'] = $data->getDateValidation() ? $data->getDateValidation()->format('Y-m-d') : '';
+            return $out;
         }
         return null;
     }

@@ -41,6 +41,10 @@ class ConfigController extends Controller{
                 $res = $res[0];
                 $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/taxons/'.$id);
                 $id = $res['obs_id'];
+            case 'validation':
+                if($view == 'validation'){
+                    return new JsonResponse(array(array('id'=>null, 'label'=>'Validation', 'link'=>'#/chiro/validation')));
+                }
             case 'observation':
                 $req = $manager->prepare('SELECT id, obs_date as label, site_id FROM pnc.base_observation WHERE id=:id');
                 $req->bindValue('id', $id);
