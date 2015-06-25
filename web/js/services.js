@@ -187,8 +187,8 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
         localStorageService.set('currentApp', appId);
     };
     
-    this.checkLevel = angular.bind(this,function(level){
-        return this.getUser().apps[this.getCurrentApp()] >= level;
+    this.checkLevel = angular.bind(this, function(level){
+        return this.getUser().apps[this.getCurrentApp().appId] >= level;
     });
 
     this.isOwner = angular.bind(this,function(ownerId){

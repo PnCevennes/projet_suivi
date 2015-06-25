@@ -35,12 +35,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         $loading.finish('spinner-1');
     });
 
-    console.log(userServ.getUser());
 
     $scope.send = function(){
         var act = {action: $scope.action, selection: $scope.selection};
         dataServ.post($scope._appName + '/validate_taxon', act, function(resp){
-            console.log(resp);
             checked.forEach(function(item){
                 item.obsObjStatusValidation = $scope.action;
                 item.validateur = userServ.getUser().nom_complet;
@@ -63,7 +61,6 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
     });
    
     $scope.setData = function(resp){
-        console.log('data recu');
         $scope.selection.splice(0);
         checked.splice(0);
 

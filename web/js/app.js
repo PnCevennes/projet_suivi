@@ -53,7 +53,7 @@ app.config(function($routeProvider){
 });
 
 app.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider.setPrefix('projetSuivis');
+    localStorageServiceProvider.setPrefix('projetSuivis');
 })
 
 /*
@@ -62,13 +62,11 @@ app.config(function (localStorageServiceProvider) {
 app.controller('baseController', function($scope, $location, dataServ, configServ, mapService, userMessages, userServ){
     $scope._appName = null;
     $scope.app = {name: "Suivi des protocoles", menu: []};
-    configServ.bcShown = false;
     $scope.success = function(resp){
         $scope.user = userServ.getUser();
         if(!$scope.user){
             $location.url('login');
         }
-        var _app = userServ.getCurrentApp();
         $scope.data = resp;
 
         // FIXME DEBUG
@@ -83,29 +81,28 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
-            var _appId = userServ.getCurrentApp();
-            if(_appId){
-                $scope.data.forEach(function(item){
-                    if(item.appId == _appId){
-                        $scope.app = item;
-                        configServ.bcShown = true;
-                        $scope.setActive(item.menu[0]);
-                    }
-                });
+            
+            var app = userServ.getCurrentApp();
+            if(!app){
+                $location.url('apps');
             }
             else{
-                $location.url('apps');
+                $scope.app = app;
+                console.log($location.path());
+                if($location.path() == '/'){
+                    $scope.setActive(app.menu[0]);
+                    $location.url(app.menu[0].url.slice(2));
+                }
             }
         });
 
         $scope.$on('user:logout', function(ev){
-            configServ.bcShown = false;
             $scope.app = {name: "Suivi des protocoles", menu: []};
             $scope.user = null;
         });
 
         $scope.$on('app:select', function(ev, app){
-            configServ.bcShown = true;
+            console.log('app:select');
             $scope.app = app;
             $scope.setActive(app.menu[0]);
         });
@@ -120,6 +117,7 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
                 elem.__active__ = false;
             }
         });
+        userServ.setCurrentApp($scope.app);
     };
 
     $scope.check = function(val){
@@ -143,12 +141,10 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
     else{
         $scope.data = {login: null, pass: null};
     }
-    configServ.bcShown = false;
 
     $scope.$on('user:login', function(ev, user){
         userMessages.infoMessage = user.nom_complet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
         
-        configServ.bcShown = true;
         $location.url('apps'); 
     });
 
@@ -191,7 +187,7 @@ app.controller('appsController', function($scope, $location, configServ, userSer
     $scope.select = function(id){
         $scope.apps.forEach(function(item){
             if(item.id == id){
-                userServ.setCurrentApp(item.appId);
+                userServ.setCurrentApp(item);
                 $scope.$emit('app:select', item);
             }
         });

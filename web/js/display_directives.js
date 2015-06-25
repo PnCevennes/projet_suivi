@@ -224,10 +224,8 @@ app.directive('breadcrumbs', function(){
             else if(params.length == 2){
                 url = params[0] + '/config/breadcrumb?view=' + params[1];
             }
-            console.log(url);
             configServ.getUrl(url, function(resp){
                 $scope.bc = resp;
-                console.log($scope.bc);
             });
         },
     };
