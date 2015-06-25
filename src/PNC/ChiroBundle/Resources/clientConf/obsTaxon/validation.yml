@@ -41,6 +41,39 @@ fields:
         filterFunc: "starting"
         options: 
             visible: true
+    -   name: "observateurs"
+        label: "Observateurs"
+        filter:
+            observateurs: text
+        options:
+            type: list
+            visible: true
+    -   name: "obsObjStatusValidation"
+        label: "Validation"
+        filter: 
+            obsObjStatusValidation: "text"
+        options: 
+            visible: false 
+            type: "select"
+    -   name: "siteNom"
+        label: "Nom du site"
+        filter: 
+            siteNom: "text"
+        options: 
+            visible: true
+    -   name: "obsDate"
+        label: "Date d'observation"
+        filter: 
+            obsDate: "text"
+        options: 
+            visible: true 
+            type: "date"
+    -   name: "obsEffectifAbs"
+        label: "Effectif total"
+        filter: 
+            obsEffectifAbs: "text"
+        options: 
+            visible: true
     -   name: "numerisateur"
         label: "Numérisateur"
         filter: 
@@ -48,13 +81,6 @@ fields:
         filterFunc: "starting"
         options: 
             visible: false
-    -   name: "obsObjStatusValidation"
-        label: "Validation"
-        filter: 
-            obsObjStatusValidation: "text"
-        options: 
-            visible: true
-            type: "select"
     -   name: "validateur"
         label: "Validateur"
         filter: 
@@ -68,23 +94,4 @@ fields:
             dateValidation: "text"
         options: 
             visible: false
-            type: "date"
-    -   name: "obsEffectifAbs"
-        label: "Effectif total"
-        filter: 
-            obsEffectifAbs: "text"
-        options: 
-            visible: true
-    -   name: "siteNom"
-        label: "Nom du site"
-        filter: 
-            siteNom: "text"
-        options: 
-            visible: true
-    -   name: "obsDate"
-        label: "Date d'observation"
-        filter: 
-            obsDate: "text"
-        options: 
-            visible: true 
             type: "date"

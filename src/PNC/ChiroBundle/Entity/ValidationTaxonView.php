@@ -286,4 +286,32 @@ class ValidationTaxonView
     {
         return $this->numerisateur;
     }
+    /**
+     * @var array
+     */
+    private $observateurs;
+
+
+    /**
+     * Set observateurs
+     *
+     * @param array $observateurs
+     * @return ValidationTaxonView
+     */
+    public function setObservateurs($observateurs)
+    {
+        $this->observateurs = $observateurs;
+
+        return $this;
+    }
+
+    /**
+     * Get observateurs
+     *
+     * @return array 
+     */
+    public function getObservateurs()
+    {
+        return $this->observateurs;
+    }
 }

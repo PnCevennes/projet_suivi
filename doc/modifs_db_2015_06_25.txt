@@ -1,0 +1,32 @@
+DROP VIEW chiro.vue_chiro_validation;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_validation AS 
+    SELECT 
+        tx.id,
+        tx.cd_nom,
+        tx.nom_complet,
+        tx.obs_effectif_abs,
+        tx.obs_obj_status_validation,
+        tx.date_validation,
+        obs.obs_date,
+        site.site_nom,
+        pnc.fct_get_user_name(obs.numerisateur_id) as numerisateur,
+        pnc.fct_get_user_name(tx.obs_validateur) as validateur,
+        array_to_json(array(select pnc.fct_get_user_name(obr_id) from (select obr_id from pnc.rel_obs_obr WHERE obs_id=obs.id) as x))::text as observateurs,
+        st_asgeojson(COALESCE(obs.geom, site.geom)) AS geom
+    FROM chiro.chiro_observation_taxon tx
+    JOIN pnc.base_observation obs ON obs.id = tx.obs_id
+    LEFT JOIN pnc.base_site site ON site.id = obs.site_id;
+
+
+
+-- DROP FUNCTION pnc.fct_get_user_name(integer);
+
+CREATE OR REPLACE FUNCTION pnc.fct_get_user_name(id integer) RETURNS text AS
+$BODY$
+begin
+    return (select upper(nom_role::text) || ' '::text || prenom_role::TEXT as txt from utilisateurs.t_roles WHERE id_role=id);
+end
+$BODY$
+LANGUAGE plpgsql IMMUTABLE
+COST 100;

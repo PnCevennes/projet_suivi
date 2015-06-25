@@ -25,6 +25,8 @@ PNC\ChiroBundle\Entity\ValidationTaxonView:
             type: text
         numerisateur:
             type: text
+        observateurs:
+            type: json_array
         site_nom:
             type: text
         geom:

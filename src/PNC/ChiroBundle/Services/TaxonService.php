@@ -71,12 +71,13 @@ class TaxonService{
         foreach($data as $item){
             $out_item = array(
                 'type'=>'Feature', 
-                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation')),
+                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation', 'observateurs')),
                 'geometry'=>$item->getGeom()
                 );
         
             $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
             $out_item['properties']['dateValidation'] = $item->getDateValidation() ? $item->getDateValidation()->format('Y-m-d') : '';
+            $out_item['properties']['observateurs'] = $item->getObservateurs();
             $out[] = $out_item;
         }
         return $out;
