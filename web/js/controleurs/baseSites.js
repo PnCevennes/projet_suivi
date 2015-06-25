@@ -31,12 +31,10 @@ app.config(function($routeProvider){
 app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading, userServ, $q){
 
     var data = [];
-    $rootScope._function='site'; 
     $scope._appName = $routeParams.appName;
     $scope.createAccess = userServ.checkLevel(3);
     $scope.editAccess = userServ.checkLevel(3);
     $scope.data = [];
-    configServ.addBc(0, 'Sites', '#/' + $scope._appName + '/site'); 
 
     
     /*
@@ -65,33 +63,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
         mapService.initialize('js/resources/chiro_site.json').then(function(){
-
-            /*
-             * initialisation des listeners d'évenements carte 
-             */
-
-            // click sur la carte
-            $scope.$on('mapService:itemClick', function(ev, item){
-                mapService.selectItem(item.feature.properties.id);
-                $rootScope.$broadcast('chiro/site:select', item.feature.properties);
-            });
-
-            // sélection dans la liste
-            $scope.$on('chiro/site:ngTable:ItemSelected', function(ev, item){
-                var geom = mapService.selectItem(item.id);
-                geom.openPopup();
-            });
-
-            // filtrage de la liste
-            $scope.$on('chiro/site:ngTable:Filtered', function(ev, data){
-                ids = [];
-                data.forEach(function(item){
-                    ids.push(item.id);
-                });
-                mapService.filterData(ids);
-            });
-
-
             dataServ.get($scope._appName + '/site', $scope.setData);
         });
     };
@@ -106,7 +77,6 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
  */
 app.controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ, mapService){
 
-    $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/site/detail';
     $scope.dataUrl = $scope._appName + '/site/' + $routeParams.id;
@@ -121,7 +91,6 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
                 }
                 );
             $scope.title = data.siteNom;
-            configServ.addBc(1, data.siteNom, '#/'+$scope._appName+'/site/'+$routeParams.id);
         });
     });
 
@@ -137,7 +106,6 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
 app.controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
 
     $scope._appName = $routeParams.appName;
-    $rootScope.$broadcast('map:show');
     $scope.configUrl = $scope._appName + '/config/site/form';
 
     if($routeParams.id){
@@ -153,12 +121,9 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     $scope.$on('form:init', function(ev, data){
         if(data.siteNom){
             $scope.title = 'Modification du site ' + data.siteNom;
-            configServ.addBc(1, data.siteNom, '#/' + $scope._appName + '/site/' + data.id);
-            configServ.addBc(2, 'Modification');
         }
         else{
             $scope.title = 'Nouveau site';
-            configServ.addBc(2, $scope.title, ''); 
         }
     });
 

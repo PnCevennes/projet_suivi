@@ -226,3 +226,42 @@ app.directive('leafletMap', function(){
         }
     };
 });
+
+app.directive('maplist', function($rootScope, mapService){
+    return {
+        restrict: 'A',
+        transclude: true,
+        template: '<ng-transclude></ng-transclude>',
+        link: function(scope, elem, attrs){
+            // récupération de l'identificateur d'événements de la liste
+            var target = attrs['maplist'];
+            /*
+             * initialisation des listeners d'évenements carte 
+             */
+
+            // click sur la carte
+            scope.$on('mapService:itemClick', function(ev, item){
+                mapService.selectItem(item.feature.properties.id);
+                $rootScope.$broadcast(target + ':select', item.feature.properties);
+            });
+
+            // sélection dans la liste
+            scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
+                var geom = mapService.selectItem(item.id);
+                geom.openPopup();
+            });
+
+            // filtrage de la liste
+            scope.$on(target + ':ngTable:Filtered', function(ev, data){
+                ids = [];
+                data.forEach(function(item){
+                    ids.push(item.id);
+                });
+                mapService.filterData(ids);
+            });
+
+
+
+        }
+    };
+});

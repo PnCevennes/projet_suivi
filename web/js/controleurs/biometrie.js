@@ -28,12 +28,6 @@ app.controller('biometrieDetailController', function($scope, $rootScope, $routeP
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = "Biométrie n°" + data.id;
-        if($rootScope._function == 'site'){
-            configServ.addBc(4, $scope.title, '#/'+$scope._appName+'/biometrie/'+data.id);
-        }
-        else{
-            configServ.addBc(3, $scope.title, '#/'+$scope._appName+'/biometrie/'+data.id);
-        }
     });
 
 });
@@ -54,22 +48,9 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
     $scope.$on('form:init', function(ev, data){
         if($routeParams.id){
             $scope.title = "Modification de la biométrie";
-            // breadcrumbs
-            if($rootScope._function == 'site'){
-                configServ.addBc(5, 'Modification', '');
-            }
-            else{
-                configServ.addBc(4, 'Modification', '');
-            }
         }
         else{
             $scope.title = 'Nouvelle biométrie';
-            if($rootScope._function == 'site'){
-                configServ.addBc(5, $scope.title, '');
-            }
-            else{
-                configServ.addBc(4, $scope.title, '');
-            }
         }
     });
 

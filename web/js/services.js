@@ -107,11 +107,6 @@ app.service('configServ', function(dataServ){
 
     this.bc = null;
 
-    this.addBc= function(app, view, id){
-        if(!id){
-            id=null;
-        }
-    }
 
     /*
      * charge des informations depuis une url si elles ne sont pas déja en cache

@@ -65,32 +65,6 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         checked.splice(0);
 
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
-
-            /*
-             * initialisation des listeners d'évenements carte 
-             */
-
-            // click sur la carte
-            $scope.$on('mapService:itemClick', function(ev, item){
-                mapService.selectItem(item.feature.properties.id);
-                $rootScope.$broadcast('chiro/validation:select', item.feature.properties);
-            });
-
-            // sélection dans la liste
-            $scope.$on('chiro/validation:ngTable:ItemSelected', function(ev, item){
-                var geom = mapService.selectItem(item.id);
-                geom.openPopup();
-            });
-
-            // filtrage de la liste
-            $scope.$on('chiro/validation:ngTable:Filtered', function(ev, data){
-                ids = [];
-                data.forEach(function(item){
-                    ids.push(item.id);
-                });
-                mapService.filterData(ids);
-            });
-
             $scope.$on('chiro/validation:ngTable:itemChecked', function(ev, item){
                 if(item._checked){
                     if(checked.indexOf(item)==-1){

@@ -50,7 +50,6 @@ app.config(function($routeProvider){
  */
 app.controller('observationListController', function($scope, $rootScope, $routeParams, $filter, dataServ, mapService, configServ, userMessages, $loading, ngTableParams, userServ, $q){
     $scope._appName = $routeParams.appName;
-    $rootScope._function='observation';
 
 
     var data = [];
@@ -58,7 +57,6 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
     $scope.createAccess = userServ.checkLevel(2);
     $scope.editAccess = userServ.checkLevel(3);
     $scope.data = [];
-    configServ.addBc(0, 'Inventaires', '#/' + $scope._appName + '/observation'); 
 
     
     /*
@@ -87,33 +85,6 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
     $scope.setSchema = function(schema){
         $scope.schema = schema;
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
-
-            /*
-             * initialisation des listeners d'évenements carte 
-             */
-
-            // click sur la carte
-            $scope.$on('mapService:itemClick', function(ev, item){
-                mapService.selectItem(item.feature.properties.id);
-                $rootScope.$broadcast('chiro/observation:select', item.feature.properties);
-            });
-
-            // sélection dans la liste
-            $scope.$on('chiro/observation:ngTable:ItemSelected', function(ev, item){
-                var geom = mapService.selectItem(item.id);
-                geom.openPopup();
-            });
-
-            // filtrage de la liste
-            $scope.$on('chiro/observation:ngTable:Filtered', function(ev, data){
-                ids = [];
-                data.forEach(function(item){
-                    ids.push(item.id);
-                });
-                mapService.filterData(ids);
-            });
-
-
             dataServ.get($scope._appName + '/observation', $scope.setData);
         });
     };
@@ -124,17 +95,9 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
 });
 
 /*
-app.controller('observationSiteListController', function($scope, $routeParams){
-    $scope._appName = $routeParams.appName;
-});
-*/
-
-
-/*
  * Edition d'une observation associée à un site
  */
 app.controller('observationEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
-    $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/observation/form';
     if($routeParams.id){
@@ -160,12 +123,9 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
         if(data.obsDate){
             $scope.title = "Modification de la visite du " + frDate(data.obsDate);
             // breadcrumbs
-            configServ.addBc(2, frDate(data.obsDate), '#/' + $scope._appName + '/observation/' + data.id);
-            configServ.addBc(3, $scope.title, '');
         }
         else{
             $scope.title = 'Nouvelle visite';
-            configServ.addBc(3, $scope.title, '');
         }
     });
 
@@ -201,15 +161,12 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
 app.controller('observationDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ, mapService){
     $scope._appName = $routeParams.appName;
 
-    $rootScope.$broadcast('map:show');
-
     $scope.schemaUrl = $scope._appName + '/config/observation/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        configServ.addBc(2, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/' + data.id);
         $scope.title = "Visite du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
 
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
@@ -228,7 +185,6 @@ app.controller('observationDetailController', function($scope, $rootScope, $rout
 app.controller('observationSsSiteDetailController', function($scope, $rootScope, $routeParams, dataServ, configServ, mapService){
     $scope._appName = $routeParams.appName;
 
-    $rootScope.$broadcast('map:show');
 
     $scope.schemaUrl = $scope._appName + '/config/observation/sans-site/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
@@ -236,7 +192,6 @@ app.controller('observationSsSiteDetailController', function($scope, $rootScope,
     $scope.dataId = $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        configServ.addBc(1, data.obsDate.replace(/(\w+)-(\w+)-(\w+)/, '$3/$2/$1'), '#/' + $scope._appName + '/observation/sans-site/' + data.id);
         $scope.title = "Inventaire du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
         
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
@@ -253,7 +208,6 @@ app.controller('observationSsSiteDetailController', function($scope, $rootScope,
  * Edition d'une observation sans site
  */
 app.controller('observationSsSiteEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
-    $rootScope.$broadcast('map:show');
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/observation/sans-site/form';
     if($routeParams.id){
@@ -279,12 +233,9 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
         if(data.obsDate){
             $scope.title = "Modification de l'inventaire du " + frDate(data.obsDate)
             // breadcrumbs
-            configServ.addBc(1, frDate(data.obsDate), '#/' + $scope._appName + '/observation/sans-site/' + data.id);
-            configServ.addBc(2, $scope.title, '');
         }
         else{
             $scope.title = 'Nouvel inventaire';
-            configServ.addBc(2, $scope.title, '');
         }
     });
 

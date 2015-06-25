@@ -41,12 +41,6 @@ app.controller('taxonDetailController', function($scope, $rootScope, $routeParam
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = 'Observation du taxon "' + data.nomComplet + '"';
-        if($rootScope._function == 'site'){
-            configServ.addBc(3, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
-        }
-        else{
-            configServ.addBc(2, data.nomComplet, '#/'+$scope._appName+'/taxons/'+data.id); 
-        }
     });
 });
 
@@ -69,22 +63,9 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
     $scope.$on('form:init', function(ev, data){
         if(data.cdNom){
             $scope.title = "Modification de l'observation du taxon";
-            // breadcrumbs
-            if($rootScope._function == 'site'){
-                configServ.addBc(4, 'Modification', '');
-            }
-            else{
-                configServ.addBc(3, 'Modification', '');
-            }
         }
         else{
             $scope.title = 'Nouveau taxon';
-            if($rootScope._function == 'site'){
-                configServ.addBc(4, $scope.title, '');
-            }
-            else{
-                configServ.addBc(3, $scope.title, '');
-            }
         }
     });
 
