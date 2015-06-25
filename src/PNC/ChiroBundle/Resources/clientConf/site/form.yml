@@ -49,6 +49,7 @@ groups:
                 type: file
                 help: "Aménagement du site"
                 options:
+                    target: "chiro/site"
                     maxSize: 2048000
                     accepted:
                         - "png"

@@ -165,11 +165,15 @@ app.directive('fileinput', function(){
         templateUrl: 'js/templates/form/fileinput.htm',
         controller: function($scope, $rootScope, $upload, dataServ, userMessages){
             var maxSize = $scope.options.maxSize || 2048000;
+            var getOptions = '';
+            if($scope.options.target){
+                getOptions = '?target=' + $scope.options.target;
+            }
             if($scope.fileids == undefined){
                 $scope.fileids = [];
             }
             $scope.delete_file = function(f_id){
-                dataServ.delete('upload_file/'+f_id, function(resp){
+                dataServ.delete('upload_file/' + f_id + getOptions, function(resp){
                     $scope.fileids.splice($scope.fileids.indexOf(resp.id), 1);
                 });
             };
@@ -183,7 +187,7 @@ app.directive('fileinput', function(){
                         if(item.size < maxSize){
                             $scope.lock = true;
                             $upload.upload({
-                                url: 'upload_file',
+                                url: 'upload_file' + getOptions,
                                 file: item,
                                 })
                                 .progress(function(evt){

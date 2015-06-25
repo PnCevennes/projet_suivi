@@ -28,6 +28,8 @@ groups:
                 label: Aménagement
                 type: file
                 help: "Aménagement du site"
+                options:
+                    target: "chiro/site/"
             -   name: siteFrequentation
                 label: Fréquentation
                 type: select
