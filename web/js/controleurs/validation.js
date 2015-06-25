@@ -13,7 +13,7 @@ app.config(function($routeProvider){
 });
 
 
-app.controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, dataServ, configServ, userServ, mapService){
+app.controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, $timeout, dataServ, configServ, userServ, mapService){
 
     $scope._appName = $routeParams.appName;
     $scope.geoms = [];
@@ -96,8 +96,9 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         });
     };
 
-    configServ.getUrl($scope._appName + '/config/obstaxon/validation', function(resp){
-        $scope.schema = resp;
-    });
-
+    $timeout(function(){
+        configServ.getUrl($scope._appName + '/config/obstaxon/validation', function(resp){
+            $scope.schema = resp;
+        });
+    }, 0);
 });

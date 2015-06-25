@@ -28,7 +28,7 @@ app.config(function($routeProvider){
 /*
  * controleur pour la carte et la liste des sites
  */
-app.controller('siteListController', function($scope, $rootScope, $routeParams, $filter, dataServ, ngTableParams, mapService, configServ, userMessages, $loading, userServ, $q){
+app.controller('siteListController', function($scope, $routeParams, dataServ, mapService, configServ, $loading, userServ, $q, $timeout){
 
     var data = [];
     $scope._appName = $routeParams.appName;
@@ -63,11 +63,14 @@ app.controller('siteListController', function($scope, $rootScope, $routeParams, 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
         mapService.initialize('js/resources/chiro_site.json').then(function(){
+
             dataServ.get($scope._appName + '/site', $scope.setData);
         });
     };
 
-    configServ.getUrl($scope._appName + '/config/site/list', $scope.setSchema);
+    $timeout(function(){
+        configServ.getUrl($scope._appName + '/config/site/list', $scope.setSchema);
+    }, 0);
 
 });
 

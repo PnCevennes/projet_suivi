@@ -48,7 +48,7 @@ app.config(function($routeProvider){
 /*
  *  Liste des observations sans site
  */
-app.controller('observationListController', function($scope, $rootScope, $routeParams, $filter, dataServ, mapService, configServ, userMessages, $loading, ngTableParams, userServ, $q){
+app.controller('observationListController', function($scope, $routeParams, dataServ, mapService, configServ, $loading, userServ, $q, $timeout){
     $scope._appName = $routeParams.appName;
 
 
@@ -89,9 +89,9 @@ app.controller('observationListController', function($scope, $rootScope, $routeP
         });
     };
 
-    configServ.getUrl($scope._appName + '/config/observation/sans-site/list', $scope.setSchema);
-    
-
+    $timeout(function(){
+        configServ.getUrl($scope._appName + '/config/observation/sans-site/list', $scope.setSchema);
+    }, 0);
 });
 
 /*

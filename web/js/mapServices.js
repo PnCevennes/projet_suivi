@@ -227,7 +227,7 @@ app.directive('leafletMap', function(){
     };
 });
 
-app.directive('maplist', function($rootScope, mapService){
+app.directive('maplist', function($rootScope, $timeout, mapService){
     return {
         restrict: 'A',
         transclude: true,
@@ -238,29 +238,34 @@ app.directive('maplist', function($rootScope, mapService){
             /*
              * initialisation des listeners d'évenements carte 
              */
-
-            // click sur la carte
-            scope.$on('mapService:itemClick', function(ev, item){
-                mapService.selectItem(item.feature.properties.id);
-                $rootScope.$broadcast(target + ':select', item.feature.properties);
-            });
-
-            // sélection dans la liste
-            scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
-                var geom = mapService.selectItem(item.id);
-                geom.openPopup();
-            });
-
-            // filtrage de la liste
-            scope.$on(target + ':ngTable:Filtered', function(ev, data){
-                ids = [];
-                data.forEach(function(item){
-                    ids.push(item.id);
+            var connect = function(){
+                // click sur la carte
+                scope.$on('mapService:itemClick', function(ev, item){
+                    mapService.selectItem(item.feature.properties.id);
+                    $rootScope.$broadcast(target + ':select', item.feature.properties);
                 });
-                mapService.filterData(ids);
-            });
 
+                // sélection dans la liste
+                scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
+                    var geom = mapService.selectItem(item.id);
+                    geom.openPopup();
+                });
 
+                // filtrage de la liste
+                scope.$on(target + ':ngTable:Filtered', function(ev, data){
+                    ids = [];
+                    data.forEach(function(item){
+                        ids.push(item.id);
+                    });
+                    if(mapService.filterData){
+                        mapService.filterData(ids);
+                    }
+                });
+            };
+
+            $timeout(function(){
+                connect();
+            }, 0);
 
         }
     };
