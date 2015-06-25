@@ -55,11 +55,11 @@ class ConfigController extends Controller{
                 }
                 $res = $res[0];
                 if($res['site_id']==null){
-                    $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/observation/sans-site/'.$id);
+                    $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/observation/sans-site/'.$id);
                     $out[] = array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation');
                     return new JsonResponse(array_reverse($out));
                 }
-                $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/observation/'.$id);
+                $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/observation/'.$id);
                 $id = $res['site_id'];
             case 'site':
                 $req = $manager->prepare('SELECT id, site_nom as label FROM pnc.base_site WHERE id=:id');
