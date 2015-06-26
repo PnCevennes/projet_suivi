@@ -5,7 +5,7 @@ var app = angular.module('DisplayDirectives');
 /*
  * messages utilisateurs
  */
-app.service('userMessages', function(){
+app.service('userMessages', function($modal){
     this.infoMessage = '';
     this.errorMessage = '';
     this.successMessage = '';
@@ -35,7 +35,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.infoMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-default';
+                        $scope.msgStyle = 'alert-info';
                         $scope.showMsg(newval);
                     }
                 }
@@ -45,7 +45,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.errorMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-error';
+                        $scope.msgStyle = 'alert-danger';
                         $scope.showMsg(newval);
                     }
                 }
@@ -55,7 +55,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.successMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-success';
+                        $scope.msgStyle = 'alert-success';
                         $scope.showMsg(newval);
                     }
                 }
@@ -70,9 +70,8 @@ app.directive('usermsg', function(userMessages, $timeout){
                     userMessages.infoMessage = '';
                     userMessages.errorMessage = '';
                     userMessages.successMessage = '';
-                }, 3500);
-
-            }
+                }, 5500);
+            };
         }
     };
 });

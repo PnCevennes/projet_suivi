@@ -276,7 +276,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet, $modal, $location){
             var dirty = true;
             $scope.errors = {};
             $scope.currentPage = 0;
@@ -295,6 +295,23 @@ app.directive('simpleform', function(){
             promise.then(function(result) {
                 $loading.finish('spinner-form');
             });
+
+            $scope.openConfirm = function(txt){
+                var modInstance = $modal.open({
+                    templateUrl: 'js/templates/modalConfirm.htm',
+                    resolve: {txt: function(){return txt}},
+                    controller: function($modalInstance, $scope, txt){
+                        $scope.txt = txt;
+                        $scope.ok = function(){
+                            $modalInstance.close();
+                        };
+                        $scope.cancel = function(){
+                            $modalInstance.dismiss('cancel');
+                        }
+                    }
+                });
+                return modInstance.result;
+            }
             
             
             $scope.prevPage = function(){
@@ -366,9 +383,26 @@ app.directive('simpleform', function(){
                 $rootScope.$broadcast('form:cancel', $scope.data);
             };
 
+
+            $scope.saveConfirmed = function(){
+                $loading.start('spinner-send');
+                var dfd = $q.defer();
+                var promise = dfd.promise;
+                promise.then(function(result) {
+                    $loading.finish('spinner-form');
+                });
+                
+                if($scope.dataUrl){
+                    dataServ.post($scope.saveUrl, $scope.data, $scope.updated(dfd), $scope.error(dfd));
+                }
+                else{
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.created(dfd), $scope.error(dfd));
+                }
+            };
+
+
             $scope.save = function(){
                 var errors = null;
-                var confirm_save = true;
                 if($scope.schema.subDataRef){
                     if(SpreadSheet.hasErrors[$scope.schema.subDataRef]){
                         errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
@@ -377,25 +411,18 @@ app.directive('simpleform', function(){
                         errors = null;
                     }
                     if(errors){
-                        userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
-                        var confirm_save = userMessages.confirm("Il y a des erreurs dans le sous formulaire de saisie rapide.\n\nSi vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées");
-                    }
-                }
-                if(confirm_save){
-                    $loading.start('spinner-send');
-                    var dfd = $q.defer();
-                    var promise = dfd.promise;
-                    promise.then(function(result) {
-                        $loading.finish('spinner-form');
-                    });
-                    
-                    if($scope.dataUrl){
-                        dataServ.post($scope.saveUrl, $scope.data, $scope.updated(dfd), $scope.error(dfd));
+                        $scope.openConfirm(["Il y a des erreurs dans le sous formulaire de saisie rapide.", "Si vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées"]).then(function(){
+                            scope.saveConfirmed();
+                        },
+                        function(){
+                            userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
+                        });
                     }
                     else{
-                        dataServ.put($scope.saveUrl, $scope.data, $scope.created(dfd), $scope.error(dfd));
+                        $scope.saveConfirmed();
                     }
                 }
+                $scope.saveConfirmed();
             };
 
             $scope.updated = function(dfd){
@@ -433,9 +460,9 @@ app.directive('simpleform', function(){
                 promise.then(function(result) {
                     $loading.finish('spinner-form');
                 });
-                if(userMessages.confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
+                $scope.openConfirm(["Êtes vous certain de vouloir supprimer cet élément ?"]).then(function(){
                     dataServ.delete($scope.saveUrl, $scope.removed(dfd));
-                }
+                });
             };
 
             $scope.removed = function(dfd){
@@ -446,13 +473,19 @@ app.directive('simpleform', function(){
                 };
             };
 
-            $scope.$on('$locationChangeStart', function(ev){
+            var locationBlock = $scope.$on('$locationChangeStart', function(ev, newUrl){
                 if(!dirty){
+                    locationBlock();
+                    $location.path(newUrl.slice(newUrl.indexOf('#')+1));
                     return;
                 }
-                if(!userMessages.confirm("Etes vous certain de vouloir quitter cette page ?\n\nLes données non enregistrées pourraient être perdues.")){
-                    ev.preventDefault();
-                }
+                ev.preventDefault();
+                $scope.openConfirm(["Etes vous certain de vouloir quitter cette page ?", "Les données non enregistrées pourraient être perdues."]).then(
+                    function(){
+                        locationBlock();
+                        $location.path(newUrl.slice(newUrl.indexOf('#')+1));
+                    }
+                    );
             });
 
             configServ.getUrl($scope.schemaUrl, $scope.setSchema);

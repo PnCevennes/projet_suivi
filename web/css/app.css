@@ -64,15 +64,14 @@
     position: fixed;
     top: 4.5em;
     right: 1em;
-    color: white;
-    padding: 1em;
-    padding-left: 2em;
-    padding-right: 2em;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #CCC;
+    min-width: 20em;
+    box-shadow: 3px 3px 5px #AAA;
     z-index: 9999;
 }
 
+.suivi-popover-txt{
+    margin-right: 2em;
+}
 
 /********************************************************
  *  Messages utilisateurs

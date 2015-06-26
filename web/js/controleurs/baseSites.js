@@ -135,19 +135,19 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
+        userMessages.successMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
         $location.url($scope._appName + '/site/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
 
-        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été mis à jour avec succès.'
+        userMessages.successMessage = 'le site ' + data.siteNom + ' a été mis à jour avec succès.'
         $location.url($scope._appName + '/site/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
 
-        userMessages.infoMessage = 'le site ' + data.siteNom + ' a été supprimé avec violence.'
+        userMessages.successMessage = 'le site ' + data.siteNom + ' a été supprimé.'
         dataServ.forceReload = true;
         $location.url($scope._appName + '/site/');
     });
