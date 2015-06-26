@@ -11,7 +11,7 @@ from (
 	from pnc.base_site a 
 	join ref_geographique.communes_france b on st_within(a.geom, st_transform(b.geom, 4326))
 	)as test) as t
-where pnc.base_site.id=t.id
+where pnc.base_site.id=t.id;
 
 
 
