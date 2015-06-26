@@ -1,3 +1,17 @@
+
+
+-- DROP FUNCTION pnc.fct_get_user_name(integer);
+
+CREATE OR REPLACE FUNCTION pnc.fct_get_user_name(id integer) RETURNS text AS
+$BODY$
+begin
+    return (select upper(nom_role::text) || ' '::text || prenom_role::TEXT as txt from utilisateurs.t_roles WHERE id_role=id);
+end
+$BODY$
+LANGUAGE plpgsql IMMUTABLE
+COST 100;
+
+
 DROP VIEW chiro.vue_chiro_validation;
 
 CREATE OR REPLACE VIEW chiro.vue_chiro_validation AS 
@@ -18,15 +32,3 @@ CREATE OR REPLACE VIEW chiro.vue_chiro_validation AS
     JOIN pnc.base_observation obs ON obs.id = tx.obs_id
     LEFT JOIN pnc.base_site site ON site.id = obs.site_id;
 
-
-
--- DROP FUNCTION pnc.fct_get_user_name(integer);
-
-CREATE OR REPLACE FUNCTION pnc.fct_get_user_name(id integer) RETURNS text AS
-$BODY$
-begin
-    return (select upper(nom_role::text) || ' '::text || prenom_role::TEXT as txt from utilisateurs.t_roles WHERE id_role=id);
-end
-$BODY$
-LANGUAGE plpgsql IMMUTABLE
-COST 100;
