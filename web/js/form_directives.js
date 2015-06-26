@@ -382,44 +382,69 @@ app.directive('simpleform', function(){
                     }
                 }
                 if(confirm_save){
+                    $loading.start('spinner-send');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-form');
+                    });
+                    
                     if($scope.dataUrl){
-                        dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
+                        dataServ.post($scope.saveUrl, $scope.data, $scope.updated(dfd), $scope.error(dfd));
                     }
                     else{
-                        dataServ.put($scope.saveUrl, $scope.data, $scope.created, $scope.error);
+                        dataServ.put($scope.saveUrl, $scope.data, $scope.created(dfd), $scope.error(dfd));
                     }
                 }
             };
 
-            $scope.updated = function(resp){
-                dataServ.forceReload = true;
-                $scope.data.id = resp.id;
-                dirty = false;
-                $rootScope.$broadcast('form:update', $scope.data);
-            }
+            $scope.updated = function(dfd){
+                return function(resp){
+                    dataServ.forceReload = true;
+                    $scope.data.id = resp.id;
+                    dirty = false;
+                    dfd.resolve('updated');
+                    $rootScope.$broadcast('form:update', $scope.data);
+                };
+            };
 
-            $scope.created = function(resp){
-                dataServ.forceReload = true;
-                $scope.data.id = resp.id;
-                dirty = false;
-                $rootScope.$broadcast('form:create', $scope.data);
-            }
+            $scope.created = function(dfd){
+                return function(resp){
+                    dataServ.forceReload = true;
+                    $scope.data.id = resp.id;
+                    dirty = false;
+                    dfd.resolve('created');
+                    $rootScope.$broadcast('form:create', $scope.data);
+                };
+            };
 
-            $scope.error = function(resp){
-                userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
-                $scope.errors = angular.copy(resp);
-            }
+            $scope.error = function(dfd){
+                return function(resp){
+                    dfd.resolve('errors');
+                    userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
+                    $scope.errors = angular.copy(resp);
+                }
+            };
 
             $scope.remove = function(){
+                $loading.start('spinner-send');
+                var dfd = $q.defer();
+                var promise = dfd.promise;
+                promise.then(function(result) {
+                    $loading.finish('spinner-form');
+                });
                 if(userMessages.confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
-                    dataServ.delete($scope.saveUrl, $scope.removed);
+                    dataServ.delete($scope.saveUrl, $scope.removed(dfd));
                 }
-            }
+            };
 
-            $scope.removed = function(resp){
-                dirty = false;
-                $rootScope.$broadcast('form:delete', $scope.data);
-            }
+            $scope.removed = function(dfd){
+                return function(resp){
+                    dirty = false;
+                    dfd.resolve('removed');
+                    $rootScope.$broadcast('form:delete', $scope.data);
+                };
+            };
 
             $scope.$on('$locationChangeStart', function(ev){
                 if(!dirty){
