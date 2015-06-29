@@ -14,6 +14,12 @@ groups:
             -   name: biomCommentaire
                 label: "Commentaires"
                 type: string
+            -   name: created
+                label: "Création donnée"
+                type: date
+            -   name: updated
+                label: "Dernière mise à jour"
+                type: date
     -   name: "Membre"
         fields:
             -   name: biomAb

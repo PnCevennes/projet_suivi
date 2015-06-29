@@ -46,6 +46,12 @@ groups:
             -   name: obsEffectifAbs
                 label: "Effectif total"
                 type: num
+            -   name: created
+                label: "Création donnée"
+                type: date
+            -   name: updated
+                label: "Dernière mise à jour"
+                type: date
     -   name: "Détail"
         fields:
             -   name: obsNbMaleAdulte

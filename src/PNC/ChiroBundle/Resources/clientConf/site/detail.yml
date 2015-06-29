@@ -20,7 +20,7 @@ groups:
                 type: select
                 help: "Type de lieu"
             -   name: created
-                label: "Création enregistrement"
+                label: "Création donnée"
                 type: date
             -   name: updated
                 label: "Dernière mise à jour"

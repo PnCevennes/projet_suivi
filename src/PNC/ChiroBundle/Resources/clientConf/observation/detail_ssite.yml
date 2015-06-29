@@ -41,6 +41,12 @@ groups:
           - name: obsHumidite
             label: "Humidité (%)"
             type: string
+          - name: created
+            label: "Création donnée"
+            type: date
+          - name: updated
+            label: "Dernière mise à jour"
+            type: date
 
 
 
