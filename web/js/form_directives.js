@@ -276,7 +276,7 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet, $modal, $location){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet, $modal, $location, $timeout){
             var dirty = true;
             $scope.errors = {};
             $scope.currentPage = 0;
@@ -422,7 +422,9 @@ app.directive('simpleform', function(){
                         $scope.saveConfirmed();
                     }
                 }
-                $scope.saveConfirmed();
+                else{
+                    $scope.saveConfirmed();
+                }
             };
 
             $scope.updated = function(dfd){
@@ -488,7 +490,9 @@ app.directive('simpleform', function(){
                     );
             });
 
-            configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+            $timeout(function(){
+                configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+            },0);
         }
     }
 });
