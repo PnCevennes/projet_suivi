@@ -43,8 +43,8 @@ app.directive('leafletMap', function(){
         scope: {
             data: '=',
         },
-        template: '<div id="mapd"></div>',
-        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout){
+        template: '<div dw-loading="map-loading" dw-loading-options="{text: \'Chargement des données\'}" ng-options="{ text: \'\', className: \'custom-loading\', spinnerOptions: {radius:30, width:8, length: 16, color: \'#f0f\', direction: -1, speed: 3}}"></div><div id="mapd"></div>',
+        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout, $loading){
             /*
              */
 
@@ -198,6 +198,7 @@ app.directive('leafletMap', function(){
 
                 var loadData = function(url){
                     var defd = $q.defer();
+                    $loading.start('map-loading');
                     dataServ.get(url, dataLoad(defd));
                     return defd.promise;
                 };
@@ -210,6 +211,7 @@ app.directive('leafletMap', function(){
                             addGeom(geom);
                         });
                         $rootScope.$broadcast('mapService:dataLoaded');
+                        $loading.finish('map-loading');
                         deferred.resolve();
                     };
                 };
