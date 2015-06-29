@@ -338,4 +338,88 @@ class Site
     {
         return $this->geom;
     }
+    /**
+     * @var string
+     */
+    private $ref_commune;
+
+    /**
+     * @var \DateTime
+     */
+    private $created;
+
+    /**
+     * @var \DateTime
+     */
+    private $updated;
+
+
+    /**
+     * Set ref_commune
+     *
+     * @param string $refCommune
+     * @return Site
+     */
+    public function setRefCommune($refCommune)
+    {
+        $this->ref_commune = $refCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get ref_commune
+     *
+     * @return string 
+     */
+    public function getRefCommune()
+    {
+        return $this->ref_commune;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Site
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Site
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
 }

@@ -29,6 +29,10 @@ PNC\ChiroBundle\Entity\ObservationSsSiteView:
             type: integer
         mod_id:
             type: integer
+        created:
+            type: date
+        updated:
+            type: date
 
     manyToMany:
         observateurs:

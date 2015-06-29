@@ -38,7 +38,7 @@ class ObservationService{
         }
         $out = array();
         foreach($infos as $info){
-            $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
+            $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs', 'created', 'updated'));
             $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
             $out_item['observateurs'] = array();
             foreach($info->getObservateurs() as $obr){
@@ -71,8 +71,10 @@ class ObservationService{
                 return null;
             }
         }
-        $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
+        $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs', 'created', 'updated'));
         $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+        $out_item['created'] = !is_null($info->getCreated()) ? $info->getCreated()->format('Y-m-d'): '';
+        $out_item['updated'] = !is_null($info->getUpdated()) ? $info->getUpdated()->format('Y-m-d'): '';
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
             if($observateur->getRole() == 'observateur'){

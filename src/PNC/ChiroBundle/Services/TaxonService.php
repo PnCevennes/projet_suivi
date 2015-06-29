@@ -29,7 +29,7 @@ class TaxonService{
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
             $data = $repo->findBy(array('obs_id'=>$obs_id));
             foreach($data as $item){
-                $out[] = $this->norm->normalize($item, array('dateValidation'));
+                $out[] = $this->norm->normalize($item, array('dateValidation', 'created', 'updated'));
             }
         }
         return $out;
@@ -71,7 +71,7 @@ class TaxonService{
         foreach($data as $item){
             $out_item = array(
                 'type'=>'Feature', 
-                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation', 'observateurs')),
+                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation', 'observateurs', 'created', 'updated')),
                 'geometry'=>$item->getGeom()
                 );
         
@@ -87,8 +87,10 @@ class TaxonService{
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $data = $repo->findOneBy(array('id'=>$id));
         if($data){
-            $out = $this->norm->normalize($data, array('dateValidation'));
+            $out = $this->norm->normalize($data, array('dateValidation', 'created', 'updated'));
             $out['dateValidation'] = $data->getDateValidation() ? $data->getDateValidation()->format('Y-m-d') : '';
+            $out['created'] = $data->getCreated() ? $data->getCreated()->format('Y-m-d'): '';
+            $out['updated'] = $data->getUpdated() ? $data->getUpdated()->format('Y-m-d'): '';
             return $out;
         }
         return null;

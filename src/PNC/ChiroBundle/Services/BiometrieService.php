@@ -28,7 +28,7 @@ class BiometrieService{
 
         $out = array();
         foreach($data as $item){
-            $out[] = $this->norm->normalize($item);
+            $out[] = $this->norm->normalize($item, array('created', 'updated'));
         }
         return $out;
     }
@@ -42,7 +42,10 @@ class BiometrieService{
         $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
         $data = $repo->findOneBy(array('id'=>$id));
         if($data){
-            return $this->norm->normalize($data);
+            $out = $this->norm->normalize($data, array('created', 'updated'));
+            $out['created'] = $data->getCreated() ? $data->getCreated()->format('Y-m-d'): '';
+            $out['updated'] = $data->getUpdated() ? $data->getUpdated()->format('Y-m-d'): '';
+            return $out;
         }
         return null;
     }

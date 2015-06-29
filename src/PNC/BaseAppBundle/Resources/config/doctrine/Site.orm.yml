@@ -28,7 +28,16 @@ PNC\BaseAppBundle\Entity\Site:
             type: text
             nullable: true
         geom:
-           type: geometry
+            type: geometry
+        ref_commune:
+            type: string
+            nullable: true
+        created:
+            type: date
+            nullable: true
+        updated:
+            type: date
+            nullable: true
     manyToMany:
         site_app:
             targetEntity: PNC\ExtBundle\Entity\Application

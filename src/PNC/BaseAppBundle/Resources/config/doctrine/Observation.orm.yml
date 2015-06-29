@@ -22,6 +22,15 @@ PNC\BaseAppBundle\Entity\Observation:
             type: integer
         geom:
             type: geometry
+        ref_commune:
+            type: string
+            nullable: true
+        created:
+            type: date
+            nullable: true
+        updated:
+            type: date
+            nullable: true
 
     manyToMany:
         observateurs:

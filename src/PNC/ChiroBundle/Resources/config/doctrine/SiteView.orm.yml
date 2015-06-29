@@ -63,5 +63,9 @@ PNC\ChiroBundle\Entity\SiteView:
             type: date
         nb_obs:
             type: integer
+        created: 
+            type: date
+        updated:
+            type: date
 
 

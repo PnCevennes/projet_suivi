@@ -54,4 +54,8 @@ PNC\ChiroBundle\Entity\Biometrie:
         biom_commentaire:
             type: text 
             nullable: true
+        created: 
+            type: date
+        updated:
+            type: date
 
