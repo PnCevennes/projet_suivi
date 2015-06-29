@@ -17,15 +17,19 @@ where pnc.base_site.id=t.id;
 
 
 -- TRIGGER
+-- Function: pnc.fct_trg_gen_site_code()
 
-CREATE OR REPLACE FUNCTION pnc.fct_trg_gen_site_code() RETURNS TRIGGER AS $gen_site_code$
+-- DROP FUNCTION pnc.fct_trg_gen_site_code();
+
+CREATE OR REPLACE FUNCTION pnc.fct_trg_gen_site_code()
+  RETURNS trigger AS
+$BODY$
 DECLARE new_site_code varchar;
-
 BEGIN
 
-	new_site_code = (SELECT DISTINCT (unique_code || '_' || prochain_id)::varchar
+	new_site_code = (SELECT DISTINCT (unique_code || '_' ||  COALESCE(prochain_id, 1))::varchar
 		FROM (SELECT * FROM ref_geographique.communes_france  ) c
-		JOIN (
+		LEFT OUTER JOIN (
 			SELECT DISTINCT max(split_part(site_code, '_', 3)::int+1) OVER (PARTITION BY (regexp_matches(a.site_code, '(.*?)(_\d+)$'))[1])  as prochain_id  ,
 				(regexp_matches(a.site_code, '(.*?)(_\d+)$'))[1] as commune
 			FROM pnc.base_site a
@@ -36,13 +40,18 @@ BEGIN
 	IF (TG_OP = 'INSERT') THEN
 		NEW.site_code := new_site_code;
 	ELSIF(TG_OP = 'UPDATE') THEN
-		IF (select (regexp_matches(NEW.site_code, '(.*?)(_\d+)$'))[1] <> (select (regexp_matches(new_site_code, '(.*?)(_\d+)$'))[1])) THEN
+		IF (select (regexp_matches(NEW.site_code, '(.*?)(_\d+)$'))[1] <> (select (regexp_matches(new_site_code, '(.*?)(_\d+)$'))[1])) OR NEW.site_code is null THEN
 			NEW.site_code := new_site_code;
 		END IF;
 	END IF;
 	RETURN NEW;
 END;
-$gen_site_code$ language plpgsql;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION pnc.fct_trg_gen_site_code()
+  OWNER TO geonatadmin;
+
 
 --drop trigger trg_gen_site_code on pnc.base_site;
 
