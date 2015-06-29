@@ -16,6 +16,9 @@ Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
  * postgis (>=2)
  * apache
 
+* Autres : 
+ * php-cli 
+ * php-curl
 
 Installation et configuration du serveur
 ========================================
@@ -40,3 +43,22 @@ Installation et configuration de PosgreSQL
         CREATE ROLE simpleuser WITH LOGIN PASSWORD 'monpassachanger';
         CREATE ROLE dbadmin WITH SUPERUSER LOGIN PASSWORD 'monpassachanger';
         \q
+
+
+
+Installation et configuration de l'application
+==============================================
+
+* Configuration de symphony
+
+```{r, engine='bash', count_lines}
+      #Droits sur les répertoires log et cache
+      sudo chmod -R 777 app/cache app/log
+      
+      #Installation du composer
+      curl -s https://getcomposer.org/installer | php
+      #Mise à jour et téléchargement des dépendances
+      php composer.phar update
+```
+
+* 
