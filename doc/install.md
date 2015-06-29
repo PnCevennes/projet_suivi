@@ -12,7 +12,8 @@ Prérequis
 Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
 
 * Applications : 
- * postgresl
+ * postgresl (>= 9.3) 
+ * postgis (>=2)
  * apache
 
 
