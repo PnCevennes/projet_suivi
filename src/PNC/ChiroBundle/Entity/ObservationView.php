@@ -456,4 +456,32 @@ class ObservationView
     {
         return $this->updated;
     }
+    /**
+     * @var array
+     */
+    private $ref_commune;
+
+
+    /**
+     * Set ref_commune
+     *
+     * @param array $refCommune
+     * @return ObservationView
+     */
+    public function setRefCommune($refCommune)
+    {
+        $this->ref_commune = $refCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get ref_commune
+     *
+     * @return array 
+     */
+    public function getRefCommune()
+    {
+        return $this->ref_commune;
+    }
 }

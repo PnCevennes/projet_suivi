@@ -101,4 +101,18 @@ class ConfigController extends Controller{
             'deleted'=>$deleted
         ));
     }
+
+    // path: GET /commune/{insee}
+    public function getCommuneAction(Request $req, $insee){
+        $db = $this->getDoctrine()->getConnection();
+        $req = $db->prepare('SELECT nom_reel FROM ref_geographique.communes_france WHERE insee_com=:insee');
+        $req->bindParam('insee', $insee);
+        $req->execute();
+        $res = $req->fetchAll();
+        if($res[0]){
+            $result = $res[0]['nom_reel'];
+            return new JsonResponse(array('id'=>$insee, 'label'=>$result));
+        }
+        return new JsonResponse(array('id'=>$insee), 404);
+    }
 }

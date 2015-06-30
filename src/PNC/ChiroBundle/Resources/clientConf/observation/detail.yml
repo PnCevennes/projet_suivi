@@ -15,6 +15,11 @@ groups:
           - name: siteNom
             label: Site
             type: string
+          - name: refCommune
+            label: "Commune"
+            type: string
+            options:
+                multi: true
           - name: obsDate
             label: Date
             type: date

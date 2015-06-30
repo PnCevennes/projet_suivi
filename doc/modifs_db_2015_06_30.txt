@@ -1,0 +1,149 @@
+ALTER TABLE pnc.base_site ADD COLUMN ref_commune VARCHAR[];
+ALTER TABLE pnc.base_observation ADD COLUMN ref_commune VARCHAR[];
+
+CREATE OR REPLACE FUNCTION pnc.fct_trg_commune_from_geom() RETURNS TRIGGER AS $comgeom$
+BEGIN
+    if(NEW.geom is not NULL) THEN
+        NEW.ref_commune = ARRAY(SELECT a.nom_reel FROM ref_geographique.communes_france a WHERE st_intersects(st_transform(NEW.geom, 2154), a.geom) ORDER BY a.insee_com);
+    END IF;
+RETURN NEW;
+END;
+$comgeom$ language plpgsql;
+
+
+
+-- View: chiro.vue_chiro_site
+
+DROP VIEW chiro.vue_chiro_site;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_site AS 
+    SELECT s.id,
+        s.site_nom,
+        s.site_code,
+        s.site_date,
+        s.site_description,
+        s.observateur_id,
+        s.created,
+        s.updated,
+        array_to_json(s.ref_commune)::text as ref_commune,
+        st_asgeojson(s.geom) AS geom,
+        (((obr.nom_role::text || ' '::text) || obr.prenom_role::text))::character varying(255) AS nom_observateur,
+        s.type_id,
+        l.code AS type_lieu,
+        c.site_schema,
+        c.site_frequentation,
+        c.site_menace,
+        c.site_menace_cmt,
+        c.site_commentaire,
+        c.contact_nom,
+        c.contact_prenom,
+        c.contact_adresse,
+        c.contact_code_postal,
+        c.contact_ville,
+        c.contact_telephone,
+        c.contact_portable,
+        c.contact_commentaire,
+        array_to_json(ARRAY( SELECT (rcf.fichier_id::text || '_'::text) || ups.path::text
+            FROM chiro.rel_chirosite_fichiers rcf
+            LEFT JOIN pnc.uploads ups ON ups.id = rcf.fichier_id WHERE rcf.site_id = s.id)) AS site_amenagement,
+        ( SELECT max(obs.obs_date) AS max FROM pnc.base_observation obs WHERE obs.site_id = s.id) AS dern_obs, 
+        ( SELECT count(*) AS count FROM pnc.base_observation WHERE base_observation.site_id = s.id) AS nb_obs
+    FROM chiro.chiro_infos_site c
+    JOIN pnc.base_site s ON c.site_id = s.id
+    LEFT JOIN utilisateurs.t_roles obr ON obr.id_role = s.observateur_id
+    LEFT JOIN ext.t_thesaurus l ON l.id = s.type_id
+    ORDER BY s.id;
+
+
+
+
+-- View: chiro.vue_chiro_obs_ss_site
+
+DROP VIEW chiro.vue_chiro_obs_ss_site;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_obs_ss_site AS 
+    SELECT obs.id,
+        st_asgeojson(obs.geom) AS geom,
+        obs.obs_date,
+        obs.obs_commentaire,
+        obs.obs_id_table_src,
+        obs.numerisateur_id,
+        obs.created,
+        obs.updated,
+        array_to_json(obs.ref_commune) as ref_commune,
+        (upper(num.nom_role::text) || ' '::text) || num.prenom_role::text AS numerisateur,
+        cco.obs_temperature,
+        cco.obs_humidite,
+        cco.mod_id,
+        ( SELECT count(*) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS nb_taxons,
+        ( SELECT sum(a.obs_effectif_abs) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS abondance
+    FROM pnc.base_observation obs
+    JOIN chiro.chiro_conditions_observ cco ON cco.obs_id = obs.id
+    LEFT JOIN utilisateurs.t_roles num ON num.id_role = obs.numerisateur_id
+    WHERE obs.site_id IS NULL AND NOT obs.geom IS NULL
+    ORDER BY obs.obs_date DESC;
+
+
+
+
+-- View: chiro.vue_chiro_obs
+
+DROP VIEW chiro.vue_chiro_obs;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_obs AS 
+    SELECT obs.id,
+        obs.site_id,
+        sit.site_nom,
+        obs.obs_date,
+        obs.obs_commentaire,
+        obs.obs_id_table_src,
+        obs.created,
+        obs.updated,
+        obs.numerisateur_id,
+        (upper(num.nom_role::text) || ' '::text) || num.prenom_role::text AS numerisateur,
+        array_to_json(obs.ref_commune) as ref_commune,
+        cco.obs_temperature,
+        cco.obs_humidite,
+        cco.mod_id,
+        ( SELECT count(*) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS nb_taxons,
+        ( SELECT sum(a.obs_effectif_abs) AS count FROM chiro.chiro_observation_taxon a WHERE a.obs_id = obs.id) AS abondance
+    FROM pnc.base_observation obs
+    JOIN chiro.chiro_conditions_observ cco ON cco.obs_id = obs.id
+    JOIN pnc.base_site sit ON sit.id = obs.site_id
+    LEFT JOIN utilisateurs.t_roles num ON num.id_role = obs.numerisateur_id
+    ORDER BY obs.obs_date DESC;
+
+
+
+-- ajout du numéro insee des communes touchées par la geometrie
+
+CREATE OR REPLACE FUNCTION pnc.fct_trg_commune_from_geom() RETURNS trigger AS
+$BODY$
+BEGIN
+    IF(NEW.geom is not NULL) THEN
+        NEW.ref_commune = ARRAY(SELECT a.insee_com FROM ref_geographique.communes_france a WHERE st_intersects(st_transform(NEW.geom, 2154), a.geom) ORDER BY a.insee_com);
+    ELSIF(TG_TABLE_NAME = 'base_observation') THEN
+        NEW.ref_commune = (SELECT ref_commune FROM pnc.base_site WHERE id=NEW.site_id);
+    END IF;
+    RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
+
+
+
+-- ajout automatique de la géométrie du site aux observations qui lui sont liées
+
+CREATE OR REPLACE FUNCTION pnc.fct_trg_add_obs_geom() RETURNS TRIGGER AS $addobsgeom$
+BEGIN
+    if(NEW.geom IS NULL AND NEW.site_id IS NOT NULL) THEN
+        NEW.geom = (SELECT geom FROM pnc.base_site WHERE id=NEW.site_id);
+    END IF;
+    RETURN NEW;
+END;
+$addobsgeom$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trg_add_obs_geom BEFORE INSERT OR UPDATE ON pnc.base_observation
+FOR EACH ROW EXECUTE PROCEDURE pnc.fct_trg_add_obs_geom();

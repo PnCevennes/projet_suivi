@@ -19,6 +19,12 @@ groups:
                 label: "Type"
                 type: select
                 help: "Type de lieu"
+            -   name: refCommune
+                label: "Commune"
+                type: xhr
+                options:
+                    multi: true
+                    url: "commune"
             -   name: created
                 label: "Création donnée"
                 type: date

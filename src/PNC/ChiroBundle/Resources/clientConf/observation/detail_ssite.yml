@@ -18,6 +18,11 @@ groups:
           - name: obsDate
             label: Date
             type: date
+          - name: refCommune
+            label: "Commune"
+            type: string
+            options:
+                multi: true
           - name: numerisateurId
             label: Numérisateur
             type: xhr

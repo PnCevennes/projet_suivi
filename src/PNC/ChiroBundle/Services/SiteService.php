@@ -61,8 +61,9 @@ class SiteService{
             throw new NotFoundHttpException();
         }
 
-        $out_item = $this->norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement', 'created', 'updated'));
+        $out_item = $this->norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement', 'created', 'updated', 'refCommune'));
         $out_item['siteAmenagement'] = $info->getSiteAmenagement();
+        $out_item['refCommune'] = $info->getRefCommune();
         $out_item['siteDate'] = !is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
         $out_item['created'] = !is_null($info->getCreated()) ? $info->getCreated()->format('Y-m-d'): '';
         $out_item['updated'] = !is_null($info->getUpdated()) ? $info->getUpdated()->format('Y-m-d'): '';

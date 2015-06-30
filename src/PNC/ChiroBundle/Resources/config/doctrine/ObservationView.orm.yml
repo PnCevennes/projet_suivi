@@ -36,6 +36,8 @@ PNC\ChiroBundle\Entity\ObservationView:
             type: date
         updated:
             type: date
+        ref_commune:
+            type: json_array
 
     manyToMany:
         observateurs:
