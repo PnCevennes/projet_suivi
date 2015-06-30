@@ -43,6 +43,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
             $scope.$watch('localselectedobject', function(newval){
                 if(newval && newval.id){
                     $scope.selectedobject = newval.id;
+                    elem[0].firstChild.children[1].focus();
                 }
             });
 
@@ -87,7 +88,7 @@ app.directive('dynform', function(){
  *  refer: la valeur source/cible du champ (une liste)
  *  schema: le schema descripteur du champ (cf. doc schemas)
  */
-app.directive('multi', function(){
+app.directive('multi', function(userMessages, $timeout){
     return {
         restrict: 'E',
         scope: {
@@ -95,7 +96,7 @@ app.directive('multi', function(){
             schema: '=',
         },
         templateUrl: 'js/templates/form/multi.htm',
-        controller: function($scope, userMessages){
+        link: function($scope, elem){
             $scope.addDisabled = true;
             if(!$scope.refer){
                 $scope.refer = [];
@@ -133,6 +134,17 @@ app.directive('multi', function(){
                         }
                     }
                 );
+                $timeout(function(){
+                    // passage du focus à la ligne créée
+                    var name = $scope.schema.name+($scope.data.length-1);
+                    try{
+                        //cas angucomplete
+                        document.getElementById(name).children[0].children[1].focus();
+                    }
+                    catch(e){
+                        document.getElementById(name).focus();
+                    }
+                }, 0);
             };
             $scope.remove = function(idx){
                 $scope.data.splice(idx, 1);
