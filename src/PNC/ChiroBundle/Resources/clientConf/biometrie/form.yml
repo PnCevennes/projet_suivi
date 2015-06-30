@@ -15,6 +15,9 @@ groups:
             -   name: biomPoids
                 label: "Poids (g)"
                 type: num
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomCommentaire
                 label: "Commentaires"
                 type: text
@@ -27,38 +30,65 @@ groups:
                 label: "D3MF1 (mm)"
                 type: num
                 help: "Mesure du 3ème doigt, métacarpe + 1ère phalange"
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomD3f2f3
                 label: "D3F2F3 (mm)"
                 type: num
                 help: "Mesure du 3ème doigt, 2ème et 3ème phalanges"
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomD3total
                 label: "D3 total (mm)"
                 type: num
                 help: "Longueur totale du 3ème doigt"
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomD5
                 label: "D5 (mm)"
                 type: num
                 help: "Mesure du 5ème doigt"
+                options:
+                    min: 0
+                    step: 0.1
     -   name: "Crane"
         fields:
             -   name: biomCm3sup
                 label: "CM3SUP (mm)"
                 type: num
                 help: "Mesure canine - 3ème molaire (mandibule supérieure)"
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomCm3inf
                 label: "CM3INF (mm)"
                 type: num
                 help: "Mesure canine - 3ème molaire (mandibule inférieure)"
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomCb
                 label: "CB (mm)"
                 help: "Mesure condylobasale"
                 type: num
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomLm
                 label: "LM (mm)"
                 help: "Mesure mandibule inférieure"
                 type: num
+                options:
+                    min: 0
+                    step: 0.1
             -   name: biomOreille
                 label: "Oreille (mm)"
                 help: "Mesure de l'oreille"
                 type: num
+                options:
+                    min: 0
+                    step: 0.1
 

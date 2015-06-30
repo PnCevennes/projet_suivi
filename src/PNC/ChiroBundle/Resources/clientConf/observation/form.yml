@@ -38,10 +38,12 @@ groups:
           - name: obsTemperature
             label: "Température (°C)"
             options:
-                max: "100"
+                max: 100
+                step: 0.1
             type: num
           - name: obsHumidite
             label: "Humidité (%)"
-            options:
-                max: "100"
             type: num
+            options:
+                max: 100
+                step: 0.1

@@ -12,35 +12,68 @@ fields:
     -   name: biomPoids
         label: "Poids (g)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomAb
         label: "AB (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomD3mf1
         label: "D3MF1 (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomD3f2f3
         label: "D3F2F3 (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomD3total
         label: "D3 total (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomD5
         label: "D5 (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomCm3sup
         label: "CM3SUP (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomCm3inf
         label: "CM3INF (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomCb
         label: "CB (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomLm
         label: "LM (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
     -   name: biomOreille
         label: "Oreille (mm)"
         type: num
+        options:
+            min: 0
+            step: 0.1
 
 

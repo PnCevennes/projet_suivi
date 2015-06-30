@@ -22,24 +22,38 @@ fields:
     -   name: obsNbIndetermineIndetermine
         label: "Indéterminés"
         type: num
+        options:
+            min: 0
     -   name: obsNbMaleIndetermine
         label: "Mâles indeterminés"
         type: num
+        options:
+            min: 0
     -   name: obsNbFemelleIndetermine
         label: "Femelles indeterminés"
         type: num
+        options:
+            min: 0
     -   name: obsNbMaleAdulte
         label: "Mâles adultes"
         type: num
+        options:
+            min: 0
     -   name: obsNbFemelleAdulte
         label: "Femelles adultes"
         type: num
+        options:
+            min: 0
     -   name: obsNbMaleJuvenile
         label: "Mâles juveniles"
         type: num
+        options:
+            min: 0
     -   name: obsNbFemelleJuvenile
         label: "Femelles juveniles"
         type: num
+        options:
+            min: 0
     -   name: obsEffectifAbs
         label: Effectif total
         type: sum
@@ -53,4 +67,4 @@ fields:
                 -   obsNbFemelleIndetermine
                 -   obsNbIndetermineIndetermine
             modifiable: true
-
+            min: 0
