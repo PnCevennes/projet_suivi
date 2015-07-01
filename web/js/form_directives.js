@@ -468,13 +468,13 @@ app.directive('simpleform', function(){
             };
 
             $scope.remove = function(){
-                $loading.start('spinner-send');
-                var dfd = $q.defer();
-                var promise = dfd.promise;
-                promise.then(function(result) {
-                    $loading.finish('spinner-form');
-                });
                 $scope.openConfirm(["Êtes vous certain de vouloir supprimer cet élément ?"]).then(function(){
+                    $loading.start('spinner-send');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-send');
+                    });
                     dataServ.delete($scope.saveUrl, $scope.removed(dfd));
                 });
             };
