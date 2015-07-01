@@ -8,4 +8,6 @@ services:
     baseObservationService:
         class: PNC\BaseAppBundle\Services\BaseObservationService
         arguments: [@geometry]
-
+    pagination:
+        class: PNC\BaseAppBundle\Services\PaginationService
+        arguments: [@doctrine]

@@ -17,10 +17,11 @@ class TaxonService{
     // service biometrie
     private $biometrieService;
 
-    public function __construct($db, $norm, $biomServ){
+    public function __construct($db, $norm, $biomServ, $pagination){
         $this->db = $db;
         $this->norm = $norm;
         $this->biometrieService = $biomServ;
+        $this->pagination = $pagination;
     }
 
     public function getList($obs_id){
@@ -38,36 +39,72 @@ class TaxonService{
     public function getFilteredList($request){
         $out = array();
         //$repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
+        /*
         $qb = $this->db->getEntityManager()->createQueryBuilder();
-        $qr = $qb->select('v')->from('PNCChiroBundle:ValidationTaxonView', 'v')->setMaxResults(200);
+        $qr = $qb->select('v')->from('PNCChiroBundle:ValidationTaxonView', 'v')->setMaxResults(200);*/
+
+        $entity = 'PNCChiroBundle:ValidationTaxonView';
+        $page = 0;
+        $limit = 200;
         $tx = $request->query->get('taxon');
+        $fields = array();
         if($tx){
-            $qb->where('v.cd_nom=:cdnom')->setParameter('cdnom', $tx);
+            //$qb->where('v.cd_nom=:cdnom')->setParameter('cdnom', $tx);
+            $fields[] = array(
+                'compare'=>'=',
+                'name'=>'cd_nom',
+                'value'=>$tx
+            );
+
         }
         $date_start = $request->query->get('period_start');
         if($date_start){
             $ds = new \DateTime();
             $ds->setTimestamp($date_start / 1000);
+            /*
             $qb->andWhere(
                 'v.obs_date > :date_st'
             )->setParameter('date_st', $ds);//->format('Y-m-d'));
+             */
+            $fields[] = array(
+                'compare'=>'>',
+                'name'=>'obs_date',
+                'value'=>$ds//->format('Y-m-d')
+            );
         }
 
         $date_end = $request->query->get('period_end');
         if($date_end){
             $ds = new \DateTime();
             $ds->setTimestamp($date_end / 1000);
+            /*
             $qb->andWhere(
                 'v.obs_date < :date_end'
             )->setParameter('date_end', $ds);//->format('Y-m-d'));
+             */
+            $fields[] = array(
+                'compare'=>'<',
+                'name'=>'obs_date',
+                'value'=>$ds//->format('Y-m-d')
+            );
         }
 
         $st_valid = $request->query->get('st_valid');
         if($st_valid){
-            $qb->andWhere('v.obs_obj_status_validation=:st_valid')->setParameter('st_valid', $st_valid);
+            /*
+                $qb->andWhere('v.obs_obj_status_validation=:st_valid')->setParameter('st_valid', $st_valid);
+             */
+            $fields[] = array(
+                'compare'=>'=',
+                'name'=>'obs_obj_status_validation',
+                'value'=>$st_valid,
+            );
+
         }
 
-        $data = $qr->getQuery()->getResult();
+        //$data = $qr->getQuery()->getResult();
+        $res = $this->pagination->filter($entity, $fields, $page, $limit);
+        $data = $res['filtered'];
         foreach($data as $item){
             $out_item = array(
                 'type'=>'Feature', 
