@@ -802,7 +802,7 @@ app.directive('subeditform', function(){
             refId: "=refid",
         },
         template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, $loading){
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, $loading, $q){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
