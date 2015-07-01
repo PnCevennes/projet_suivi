@@ -812,15 +812,28 @@ app.directive('subeditform', function(){
                     userMessages.errorMessage = SpreadSheet.errorMessage[$scope.dataRef];
                 }
                 else{
-                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                    /*
+                     * Spinner
+                     * */
+                    $loading.start('spinner-detail');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-detail');
+                    });
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved(dfd));
                 }
             };
 
-            $scope.saved = function(resp){
-                resp.ids.forEach(function(item, key){
-                    $scope.data.__items__[key].id = item;
-                });
-                $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+            $scope.saved = function(deferred){
+                return function(resp){
+                    resp.ids.forEach(function(item, key){
+                        $scope.data.__items__[key].id = item;
+                    });
+                    deferred.resolve();
+                    userMessages.successMessage = "Données ajoutées";
+                    $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+                };
             };
         }
     };
