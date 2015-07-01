@@ -35,6 +35,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         $loading.finish('spinner-1');
     });
 
+    $scope.changed = function(actID){
+        $scope.action = actID;
+    };
+
 
     $scope.send = function(){
         var act = {action: $scope.action, selection: $scope.selection};
