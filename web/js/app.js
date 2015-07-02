@@ -76,7 +76,6 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
         */
         
         //configServ.put('app', $scope.data[0]);
-        userMessages.infoMessage = "bienvenue !";
         //$scope._appName = $scope.data[0].name;
 
         $scope.$on('user:login', function(ev, user){
