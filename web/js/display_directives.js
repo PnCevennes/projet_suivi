@@ -204,23 +204,39 @@ app.directive('breadcrumbs', function(){
         controller: function($scope, configServ, $location){
             $scope.bc = [];
             $scope._edit = false;
+            $scope._create = false;
             var _url = null;
             var params = $location.path().slice(1).split('/');
             if(params.indexOf('edit') >= 0){
                 params.splice(params.indexOf('edit'), 1);
                 $scope._edit = true;
+                if(!parseInt(params[params.length-1])){
+                    $scope._create = true;
+                }
             }
             if(params.length == 4){
-                if($scope._edit){
-                    url = params[0] + '/config/breadcrumb?view=' + params[2] + '&id=' + params[3];
+                if(!parseInt(params[3])){
+                    url = params[0] + '/config/breadcrumb?view=' + params[1]
                 }
                 else{
-                    url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+                    if($scope._edit){
+                        url = params[0] + '/config/breadcrumb?view=' + params[2] + '&id=' + params[3];
+                    }
+                    else{
+                        url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+                    }
                 }
             }
             else if(params.length == 3){
-                url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[2];           }
+                if(!parseInt(params[2])){
+                    url = params[0] + '/config/breadcrumb?view=' + params[1]
+                }
+                else{
+                    url = params[0] + '/config/breadcrumb?view=' + params[1]+ '&id=' + params[2];           
+                }
+            }
             else if(params.length == 2){
+                console.log(parseInt(params[1]));
                 url = params[0] + '/config/breadcrumb?view=' + params[1];
             }
             configServ.getUrl(url, function(resp){

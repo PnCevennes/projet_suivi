@@ -468,13 +468,13 @@ app.directive('simpleform', function(){
             };
 
             $scope.remove = function(){
-                $loading.start('spinner-send');
-                var dfd = $q.defer();
-                var promise = dfd.promise;
-                promise.then(function(result) {
-                    $loading.finish('spinner-form');
-                });
                 $scope.openConfirm(["Êtes vous certain de vouloir supprimer cet élément ?"]).then(function(){
+                    $loading.start('spinner-send');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-send');
+                    });
                     dataServ.delete($scope.saveUrl, $scope.removed(dfd));
                 });
             };
@@ -802,7 +802,7 @@ app.directive('subeditform', function(){
             refId: "=refid",
         },
         template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages){
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, $loading, $q){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
@@ -812,15 +812,28 @@ app.directive('subeditform', function(){
                     userMessages.errorMessage = SpreadSheet.errorMessage[$scope.dataRef];
                 }
                 else{
-                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                    /*
+                     * Spinner
+                     * */
+                    $loading.start('spinner-detail');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-detail');
+                    });
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved(dfd));
                 }
             };
 
-            $scope.saved = function(resp){
-                resp.ids.forEach(function(item, key){
-                    $scope.data.__items__[key].id = item;
-                });
-                $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+            $scope.saved = function(deferred){
+                return function(resp){
+                    resp.ids.forEach(function(item, key){
+                        $scope.data.__items__[key].id = item;
+                    });
+                    deferred.resolve();
+                    userMessages.successMessage = "Données ajoutées";
+                    $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+                };
             };
         }
     };

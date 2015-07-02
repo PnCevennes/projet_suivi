@@ -9,6 +9,7 @@
         <a ng-href="{{item.link}}"><span class="glyphicon glyphicon-chevron-left"></span>{{item.label}}</a>
     </li>
     <li>
-        <span class="text-muted">Edition</span>
+        <span ng-if="!_create" class="text-muted">Edition</span>
+        <span ng-if="_create" class="text-muted">Ajout</span>
     </li>
 </ol>

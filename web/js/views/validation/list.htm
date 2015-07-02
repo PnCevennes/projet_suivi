@@ -18,7 +18,7 @@
                 </ul>
             </div>
             <div class="input-group">
-                <select class="form-control" id="valid" ng-options="item.id as item.label for item in [{label: 'Valide', id: 54}, {label: 'Non valide', id: 56}, {label: 'A valider', id: 55}]" ng-model="action"></select>
+                <select class="form-control" id="valid" ng-options="item.id as item.label for item in [{label: 'Valide', id: 54}, {label: 'Non valide', id: 56}, {label: 'A valider', id: 55}]" ng-model="action" ng-change="changed(action)"></select>
                 <span class="input-group-btn">
                     <button ng-class="{'btn btn-success': action==54, 'btn btn-danger': action==56, 'btn btn-warning': action==55}" type="button" ng-click="send()" ng-disabled="!selection.length">Envoyer</button>
                 </span>

@@ -75,8 +75,8 @@ app.directive('leafletMap', function(){
                         if(!resource.clustering){
                             layer.options.disableClusteringAtZoom = 13;
                         }
-                        resource.layers.baselayers.forEach(function(layer, name){
-                            var layerData = LeafletServices.loadData(layer);
+                        resource.layers.baselayers.forEach(function(_layer, name){
+                            var layerData = LeafletServices.loadData(_layer);
                             tileLayers[layerData.name] = layerData.map;
                             if(layerData.active){
                                 layerData.map.addTo(map);
