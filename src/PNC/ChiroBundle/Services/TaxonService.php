@@ -38,10 +38,6 @@ class TaxonService{
 
     public function getFilteredList($request){
         $out = array();
-        //$repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
-        /*
-        $qb = $this->db->getEntityManager()->createQueryBuilder();
-        $qr = $qb->select('v')->from('PNCChiroBundle:ValidationTaxonView', 'v')->setMaxResults(200);*/
 
         $entity = 'PNCChiroBundle:ValidationTaxonView';
         $page = 0;

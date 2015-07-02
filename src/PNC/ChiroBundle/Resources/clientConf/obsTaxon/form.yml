@@ -12,7 +12,7 @@ groups:
             -   name: numId
                 type: hidden
             -   name: obsId
-                label: hidden
+                type: hidden
             -   name: obsValidateur
                 type: hidden
             -   name: cdNom
