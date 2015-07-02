@@ -75,6 +75,16 @@ groups:
                 type: num
                 options:
                     min: 0
+            -   name: obsNbIndetermineAdulte
+                label: "Indeterminés adultes"
+                type: num
+                options:
+                    min: 0
+            -   name: obsNbIndetermineJuvenile
+                label: "Indeterminés juvéniles"
+                type: num
+                options:
+                    min: 0
             -   name: obsNbIndetermineIndetermine
                 label: "Indéterminés"
                 type: num
@@ -92,6 +102,8 @@ groups:
                         -   obsNbFemelleJuvenile
                         -   obsNbMaleIndetermine
                         -   obsNbFemelleIndetermine
+                        -   obsNbIndetermineAdulte
+                        -   obsNbIndetermineJuvenile   
                         -   obsNbIndetermineIndetermine
                     modifiable: true
                     min: 0

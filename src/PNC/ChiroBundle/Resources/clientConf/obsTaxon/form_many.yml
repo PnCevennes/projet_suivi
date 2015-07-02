@@ -54,6 +54,16 @@ fields:
         type: num
         options:
             min: 0
+    -   name: obsNbIndetermineAdulte
+        label: "Indeterminés adultes"
+        type: num
+        options:
+            min: 0
+    -   name: obsNbIndetermineJuvenile
+        label: "Indeterminés juvéniles"
+        type: num
+        options:
+            min: 0
     -   name: obsEffectifAbs
         label: Effectif total
         type: sum
@@ -66,5 +76,7 @@ fields:
                 -   obsNbMaleIndetermine
                 -   obsNbFemelleIndetermine
                 -   obsNbIndetermineIndetermine
+                -   obsNbIndetermineAdulte
+                -   obsNbIndetermineJuvenile
             modifiable: true
             min: 0

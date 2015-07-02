@@ -49,7 +49,6 @@ class TaxonService{
         $tx = $request->query->get('taxon');
         $fields = array();
         if($tx){
-            //$qb->where('v.cd_nom=:cdnom')->setParameter('cdnom', $tx);
             $fields[] = array(
                 'compare'=>'=',
                 'name'=>'cd_nom',
@@ -61,11 +60,6 @@ class TaxonService{
         if($date_start){
             $ds = new \DateTime();
             $ds->setTimestamp($date_start / 1000);
-            /*
-            $qb->andWhere(
-                'v.obs_date > :date_st'
-            )->setParameter('date_st', $ds);//->format('Y-m-d'));
-             */
             $fields[] = array(
                 'compare'=>'>',
                 'name'=>'obs_date',
@@ -77,11 +71,6 @@ class TaxonService{
         if($date_end){
             $ds = new \DateTime();
             $ds->setTimestamp($date_end / 1000);
-            /*
-            $qb->andWhere(
-                'v.obs_date < :date_end'
-            )->setParameter('date_end', $ds);//->format('Y-m-d'));
-             */
             $fields[] = array(
                 'compare'=>'<',
                 'name'=>'obs_date',
@@ -91,9 +80,6 @@ class TaxonService{
 
         $st_valid = $request->query->get('st_valid');
         if($st_valid){
-            /*
-                $qb->andWhere('v.obs_obj_status_validation=:st_valid')->setParameter('st_valid', $st_valid);
-             */
             $fields[] = array(
                 'compare'=>'=',
                 'name'=>'obs_obj_status_validation',
@@ -117,7 +103,7 @@ class TaxonService{
             $out_item['properties']['observateurs'] = $item->getObservateurs();
             $out[] = $out_item;
         }
-        return $out;
+        return array('total'=>$res['total'], 'filtered'=>$out);
     }
 
     public function getOne($id){
@@ -236,6 +222,8 @@ class TaxonService{
         $obj->setObsNbFemelleJuvenile($data['obsNbFemelleJuvenile']);
         $obj->setObsNbMaleIndetermine($data['obsNbMaleIndetermine']);
         $obj->setObsNbFemelleIndetermine($data['obsNbFemelleIndetermine']);
+        $obj->setObsNbIndetermineAdulte($data['obsNbIndetermineAdulte']);
+        $obj->setObsNbIndetermineJuvenile($data['obsNbIndetermineJuvenile']);
         $obj->setObsNbIndetermineIndetermine($data['obsNbIndetermineIndetermine']);
         $obj->setObsObjStatusValidation($data['obsObjStatusValidation']);
         $obj->setObsCommentaire($data['obsCommentaire']);

@@ -33,6 +33,10 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         obs_nb_femelle_indetermine:
             type: integer
+        obs_nb_indetermine_adulte:
+            type: integer
+        obs_nb_indetermine_juvenile:
+            type: integer
         obs_nb_indetermine_indetermine:
             type: integer
         obs_obj_status_validation:

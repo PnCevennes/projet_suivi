@@ -74,6 +74,14 @@ groups:
                 label: "Femelles indéterminées"
                 help: "Âge indéterminé"
                 type: num
+            -   name: obsNbIndetermineAdulte
+                label: "Indéterminés adultes"
+                help: "Sexe indéterminé"
+                type: num
+            -   name: obsNbIndetermineJuvenile
+                label: "Indéterminés juvéniles"
+                help: "Sexe indéterminé"
+                type: num
             -   name: obsNbIndetermineIndetermine
                 label: "Indéterminé indéterminé"
                 help: "Âge et sexe indéterminés"

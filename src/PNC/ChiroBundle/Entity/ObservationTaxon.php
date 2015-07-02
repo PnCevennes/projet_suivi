@@ -659,4 +659,60 @@ class ObservationTaxon
     {
         return $this->updated;
     }
+    /**
+     * @var integer
+     */
+    private $obs_nb_indetermine_adulte;
+
+    /**
+     * @var integer
+     */
+    private $obs_nb_indetermine_juvenile;
+
+
+    /**
+     * Set obs_nb_indetermine_adulte
+     *
+     * @param integer $obsNbIndetermineAdulte
+     * @return ObservationTaxon
+     */
+    public function setObsNbIndetermineAdulte($obsNbIndetermineAdulte)
+    {
+        $this->obs_nb_indetermine_adulte = $obsNbIndetermineAdulte;
+
+        return $this;
+    }
+
+    /**
+     * Get obs_nb_indetermine_adulte
+     *
+     * @return integer 
+     */
+    public function getObsNbIndetermineAdulte()
+    {
+        return $this->obs_nb_indetermine_adulte;
+    }
+
+    /**
+     * Set obs_nb_indetermine_juvenile
+     *
+     * @param integer $obsNbIndetermineJuvenile
+     * @return ObservationTaxon
+     */
+    public function setObsNbIndetermineJuvenile($obsNbIndetermineJuvenile)
+    {
+        $this->obs_nb_indetermine_juvenile = $obsNbIndetermineJuvenile;
+
+        return $this;
+    }
+
+    /**
+     * Get obs_nb_indetermine_juvenile
+     *
+     * @return integer 
+     */
+    public function getObsNbIndetermineJuvenile()
+    {
+        return $this->obs_nb_indetermine_juvenile;
+    }
 }
