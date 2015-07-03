@@ -45,52 +45,63 @@ groups:
                 help: "Informations complémentaires sur l'observation"
     -   name: Enumération
         fields:
-            -   name: obsNbMaleAdulte
-                label: "Mâles adultes"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbFemelleAdulte
-                label: "Femelles adultes"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbMaleJuvenile
-                label: "Mâles juveniles"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbFemelleJuvenile
-                label: "Femelles juveniles"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbMaleIndetermine
-                label: "Mâles indeterminés"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbFemelleIndetermine
-                label: "Femelles indeterminés"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbIndetermineAdulte
-                label: "Indeterminés adultes"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbIndetermineJuvenile
-                label: "Indeterminés juvéniles"
-                type: num
-                options:
-                    min: 0
-            -   name: obsNbIndetermineIndetermine
-                label: "Indéterminés"
-                type: num
-                help: "Âge et sexe indéterminés"
-                options:
-                    min: 0
+            -   name: "males"
+                label: "Mâles"
+                type: group
+                fields:
+                    -   name: obsNbMaleAdulte
+                        label: "Adultes"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbMaleJuvenile
+                        label: "Juveniles"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbMaleIndetermine
+                        label: "Age indeterminé"
+                        type: num
+                        options:
+                            min: 0
+            -   name: "femelles"
+                label: "Femelles"
+                type: group
+                fields:
+                    -   name: obsNbFemelleAdulte
+                        label: "Adultes"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbFemelleJuvenile
+                        label: "Juveniles"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbFemelleIndetermine
+                        label: "Age indeterminé"
+                        type: num
+                        options:
+                            min: 0
+            -   name: "indetermines"
+                label: "Sexe indéterminé"
+                type: group
+                fields:
+                    -   name: obsNbIndetermineAdulte
+                        label: "Adultes"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbIndetermineJuvenile
+                        label: "Juvéniles"
+                        type: num
+                        options:
+                            min: 0
+                    -   name: obsNbIndetermineIndetermine
+                        label: "Age indeterminé"
+                        type: num
+                        options:
+                            min: 0
             -   name: obsEffectifAbs
                 label: Effectif total
                 type: sum

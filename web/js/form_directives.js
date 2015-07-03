@@ -81,6 +81,18 @@ app.directive('dynform', function(){
     };
 });
 
+app.directive('tableFieldset', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            group: '=',
+            data: '=',
+            errors: '=',
+        },
+        templateUrl: 'js/templates/form/tableFieldset.htm',
+        controller: function($scope){},
+    };
+});
 
 /**
  * génération d'un champ formulaire de type multivalué
@@ -377,10 +389,18 @@ app.directive('simpleform', function(){
             $scope.setData = function(resp){
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
-                        $scope.data[field.name] = angular.copy(resp[field.name]) || field.default || null;
-                        if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
-                            $scope.data[field.name] = userServ.getUser().idRole;
+                        if(field.type != 'group'){
+                            $scope.data[field.name] = angular.copy(resp[field.name]) || field.default || null;
+                            if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
+                                $scope.data[field.name] = userServ.getUser().idRole;
+                            }
                         }
+                        else{
+                            field.fields.forEach(function(grField){
+                                $scope.data[grField.name] = angular.copy(resp[grField.name]) || grField.default || null;
+                            });
+                        }
+
                     });
                 });
                 $scope.deleteAccess = userServ.checkLevel($scope.schema.deleteAccess);
