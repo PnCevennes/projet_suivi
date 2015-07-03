@@ -1,6 +1,6 @@
 <div class="tb-wrapper">
     <h1>
-        <ng-transclude></ng-transclude> {{currentSel.current}}/{{currentSel.total}}
+        <ng-transclude></ng-transclude> 
     </h1>
     <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected tablewrapper">
         <thead>
@@ -18,6 +18,11 @@
                         'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
                     ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
                     {{column.label}}
+                </th>
+                <th>
+                    <div>Filtrage local</div>
+                        {{currentSel.current}} / {{currentSel.total}}
+                    </div>
                 </th>
             </tr>
             <tr class="ng-table-filters" ng-init="tableParams">

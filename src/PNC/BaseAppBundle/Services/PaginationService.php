@@ -22,20 +22,36 @@ class PaginationService{
          */
         $qa = $this->db->getEntityManager()->createQueryBuilder();
         $qb = $this->db->getEntityManager()->createQueryBuilder();
+        $qj = $this->db->getEntityManager()->createQueryBuilder();
 
+        //nombre total d'entités
         $qc = $qa->select('count(x)')->from($entity, 'x');
         $nb = $qa->getQuery()->getSingleResult();
 
+        //nombre filtré d'entités
+        $qk = $qj->select('count(x)')->from($entity, 'x');
+        foreach($fields as $key=>$field){
+            $_filter = $this->createFilter($qk, $key, $field);
+            if($_filter){
+                $qk->andWhere($_filter);
+            }
+        }
+        $nbFiltered = $qk->getQuery()->getSingleResult();
+
+        //entités paginées
         $qr = $qb->select('x')->from($entity, 'x');
-        if($curPage && $maxPage){
+        if($curPage !== null && $maxResults !== null){
             $qr->setFirstResult($curPage*$maxResults);
             $qr->setMaxResults($maxResults);
         }
         foreach($fields as $key=>$field){
-            $qr->andWhere($this->createFilter($qr, $key, $field));
+            $_filter = $this->createFilter($qr, $key, $field);
+            if($_filter){
+                $qr->andWhere($_filter);
+            }
         }
         $result = $qr->getQuery()->getResult();
-        return array('total'=>$nb[1], 'filtered'=>$result);
+        return array('total'=>$nb[1], 'filteredCount'=>$nbFiltered[1], 'filtered'=>$result);
     }
 
     public function createFilter($qr, $key, $field){
@@ -56,12 +72,15 @@ class PaginationService{
                         break;
             case 'like': $qi = $qr->expr()->like($name, ':v'.$key);
                         break;
-            case 'between': $qi = $qr->expr()->between($name, $field['value'][0], $field['value'][1]);
-                            break;
+            case 'between': if($field['value'][0] && $field['value'][1]){
+                                $qi = $qr->expr()->between($name, "'".$field['value'][0]."'", "'".$field['value'][1]."'");
+                                return $qi;
+                            }
+                            return;
             case 'in': $qi = $qr->expr()->in($name, ':v'.$key);
                         break;
 
-            default: $qr->expr()->eq($name, ':v'.$key);
+            default: $qi = $qr->expr()->eq($name, ':v'.$key);
         }
         $qr->setParameter('v'.$key, $field['value']);
         return $qi;

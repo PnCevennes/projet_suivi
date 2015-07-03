@@ -685,11 +685,16 @@ app.directive('datepick', function(){
             $scope.$watch('date', function(newval){
                 try{
                     newval.setHours(12);
-                    $scope.date = newval;
+                    $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
                 }
                 catch(e){
                     if(newval){
-                        $scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                        try{
+                            $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+                        }
+                        catch(e){
+                            $scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                        }
                     }
                 }
             });

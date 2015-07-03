@@ -40,48 +40,18 @@ class TaxonService{
         $out = array();
 
         $entity = 'PNCChiroBundle:ValidationTaxonView';
-        $page = 0;
-        $limit = 200;
-        $tx = $request->query->get('taxon');
+        $filters = json_decode($request->query->get('filters'), true);
+        $page = $request->query->get('page', 0);
+        $limit = $request->query->get('limit', 30);
         $fields = array();
-        if($tx){
-            $fields[] = array(
-                'compare'=>'=',
-                'name'=>'cd_nom',
-                'value'=>$tx
-            );
-
-        }
-        $date_start = $request->query->get('period_start');
-        if($date_start){
-            $ds = new \DateTime();
-            $ds->setTimestamp($date_start / 1000);
-            $fields[] = array(
-                'compare'=>'>',
-                'name'=>'obs_date',
-                'value'=>$ds//->format('Y-m-d')
-            );
-        }
-
-        $date_end = $request->query->get('period_end');
-        if($date_end){
-            $ds = new \DateTime();
-            $ds->setTimestamp($date_end / 1000);
-            $fields[] = array(
-                'compare'=>'<',
-                'name'=>'obs_date',
-                'value'=>$ds//->format('Y-m-d')
-            );
-        }
-
-        $st_valid = $request->query->get('st_valid');
-        if($st_valid){
-            $fields[] = array(
-                'compare'=>'=',
-                'name'=>'obs_obj_status_validation',
-                'value'=>$st_valid,
-            );
-
+        if($filters){
+            foreach($filters as $filter){
+                $fields[] = array(
+                    'name'=>$filter['item'],
+                    'compare'=>$filter['filter'],
+                    'value'=>$filter['value']
+                );
+            }
         }
 
         //$data = $qr->getQuery()->getResult();
@@ -99,7 +69,7 @@ class TaxonService{
             $out_item['properties']['observateurs'] = $item->getObservateurs();
             $out[] = $out_item;
         }
-        return array('total'=>$res['total'], 'filtered'=>$out);
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getOne($id){

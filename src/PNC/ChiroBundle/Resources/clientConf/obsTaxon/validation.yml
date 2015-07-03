@@ -5,21 +5,19 @@ editUrl: "#/chiro/edit/taxons/"
 editAccess: 5
 checkable: true
 filtering:
+    limit: 20
     fields: 
-        -   name: "taxon"
+        -   name: "cd_nom"
             label: "Taxon"
             type: "xhr"
             options:
                 url: "chiro/taxons"
                 reverseurl: "chiro/taxons/id"
                 ref: "taxon"
-        -   name: "period_start"
-            label: "Observation la plus ancienne"
+        -   name: "obs_date"
+            label: "Date de l'observation"
             type: "date"
-        -   name: "period_end"
-            label: "Observation la plus récente"
-            type: "date"
-        -   name: "st_valid"
+        -   name: "obs_obj_status_validation"
             label: "Statut validation"
             type: "select"
 fields: 

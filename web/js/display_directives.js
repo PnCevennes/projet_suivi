@@ -475,33 +475,66 @@ app.directive('filterform', function(){
         templateUrl: 'js/templates/form/filterForm.htm',
         controller: function($scope, dataServ){
             $scope.filterData = {};
+            $scope.counts = {};
+            $scope.filters = {};
+            $scope.pageNum = 0;
+            $scope.maxCount = 0;
             $scope.schema_initialized = false;
 
-            $scope.send = function(){
+            $scope.setArray = function(field, setArray){
+                if(setArray){
+                    var val = $scope.filterData[field].value;
+                    $scope.filterData[field].value = [val, null];
+                }
+                else{
+                    if(Array.isArray($scope.filterData[field].value)){
+                        var val = $scope.filterData[field].value[0];
+                        $scope.filterData[field].value = val;
+                   }
+                }
+            };
+
+            $scope.nextPage = function(){
+                $scope.pageNum += 1;
+                $scope.send();
+            };
+
+            $scope.prevPage = function(){
+                $scope.pageNum -= 1;
+                $scope.send();
+            };
+
+            $scope.send = function(resetPage){
+                if(resetPage){
+                    $scope.pageNum = 0;
+                }
                 var _qs = [];
                 $scope.schema.fields.forEach(function(item){
-                    if($scope.filterData[item.name]){
-                        if(item.type == 'date'){
-                            _qs.push(item.name + '=' + $scope.filterData[item.name].getTime());
-                        }
-                        else{
-                            _qs.push(item.name + '=' + $scope.filterData[item.name]);
-                        }
+                    if($scope.filterData[item.name].value){
+                        var _val = $scope.filterData[item.name].value;
+                        var _filter = $scope.filterData[item.name].filter;
+                        _qs.push({item: item.name, filter: _filter, value: _val});
                     }
                 });
                 if(_qs.length){
-                    var _url = encodeURI($scope.url + '?' + _qs.join('&')); 
+                    var _url = $scope.url + "?page="+$scope.pageNum+"&limit="+$scope.schema.limit+"&filters=" + angular.toJson(_qs);
                 }
                 else{
-                    var _url = $scope.url;
+                    var _url = $scope.url + "?page="+$scope.pageNum+"&limit="+$scope.schema.limit;
                 }
-                dataServ.get(_url, $scope.callback);
+                dataServ.get(_url, function(resp){
+                    //envoi des données filtrées à la vue
+                    $scope.counts.total = resp.total;
+                    $scope.counts.current = resp.filteredCount;
+                    $scope.maxCount = Math.min(($scope.pageNum+1) * $scope.schema.limit, $scope.counts.current);
+                    $scope.callback(resp.filtered);
+                });
             };
 
             $scope.init_schema = function(){
                 if(!$scope.schema_initialized){
                     $scope.schema.fields.forEach(function(item){
-                        $scope.filterData[item.name] = item.default;
+                        $scope.filterData[item.name] = {filter: '=', value: item.default};
                     });
                 }
                 $scope.schema_initialized = true;

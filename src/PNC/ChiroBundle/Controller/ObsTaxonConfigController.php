@@ -57,7 +57,7 @@ class ObsTaxonConfigController extends Controller{
             }
         }
         foreach($out['filtering']['fields'] as &$field){
-            if($field['name'] == 'st_valid'){
+            if($field['name'] == 'obs_obj_status_validation'){
                 if(!isset($field['options'])){
                     $field['options'] = array();
                 }
