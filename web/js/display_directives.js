@@ -236,7 +236,6 @@ app.directive('breadcrumbs', function(){
                 }
             }
             else if(params.length == 2){
-                console.log(parseInt(params[1]));
                 url = params[0] + '/config/breadcrumb?view=' + params[1];
             }
             configServ.getUrl(url, function(resp){
@@ -260,6 +259,8 @@ app.directive('tablewrapper', function(){
         controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
             $scope._checkall = false;
+            filterIds = [];
+            extFilter = false;
             var orderedData;
 
             var filterFuncs = {
@@ -344,7 +345,12 @@ app.directive('tablewrapper', function(){
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;
                     */
-                    filteredData = $scope.data;
+                    if(extFilter){
+                        var filteredData = $scope.data.filter(function(item){return filterIds.indexOf(item.id) !== -1});
+                    }
+                    else{
+                        var filteredData = $scope.data;
+                    }
                     reqFilter = params.filter();
                     if(reqFilter){
                         for(filterKey in reqFilter){
@@ -457,6 +463,17 @@ app.directive('tablewrapper', function(){
              */
             $scope.$on($scope.refName + ':select', function(evt, item){
                 $scope.selectItem(item, false);
+            });
+
+            $scope.$on($scope.refName + ':filterIds', function(ev, itemIds, filter){
+                filterIds = itemIds;
+                extFilter = filter;
+                $scope.tableParams.reload();
+                if($scope.currentItem && filterIds.indexOf($scope.currentItem.id) !== -1){
+                    var idx = orderedData.indexOf($scope.currentItem);
+                    var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
+                    $scope.tableParams.page(pgnum);
+                }
             });
 
         },

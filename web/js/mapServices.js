@@ -88,6 +88,18 @@ app.directive('leafletMap', function(){
                         layerControl = L.control.layers(tileLayers, {'Données': layer});
                         
                         layerControl.addTo(map);
+
+                        /*
+                         * déplacement carte récupération de la zone d'affichage
+                         */
+                        map.on('moveend', function(ev){
+                            $rootScope.$apply(
+                                $rootScope.$broadcast('mapService:pan')
+                            );
+                        });
+
+
+
                         dfd.resolve();
                     });
                 }
@@ -96,6 +108,25 @@ app.directive('leafletMap', function(){
                     geoms.splice(0);
                     dfd.resolve();
                 }
+
+                var getVisibleItems = function(){
+                    var bounds = map.getBounds();
+                    var visibleItems = [];
+                    geoms.forEach(function(item){
+                        try{
+                            if(bounds.intersects(item.getLatLng())){
+                                visibleItems.push(item.feature.properties.id);
+                            }
+                        }
+                        catch(e){
+                            if(bounds.contains(item.getLatLng())){
+                                visibleItems.push(item.feature.properties.id);
+                            }
+                        }
+                    });
+                    return visibleItems;
+                };
+                mapService.getVisibleItems = getVisibleItems;
 
                 var getLayerControl = function(){
                     return layerControl;
@@ -215,9 +246,11 @@ app.directive('leafletMap', function(){
                         deferred.resolve();
                     };
                 };
+
                 return dfd.promise;
             };
             mapService.initialize = initialize;
+
 
             $scope.$on('$destroy', function(evt){
                 if(map){
@@ -233,10 +266,14 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
     return {
         restrict: 'A',
         transclude: true,
-        template: '<ng-transclude></ng-transclude>',
+        //templateUrl: 'js/templates/display/mapList.htm',
+        template: '<div><div tooltip="Ne lister que les éléments visibles sur la carte" tooltip-placement="right" id="mapAsFilter" class="checkbox"><label ng-show="toolBoxOpened"><input type="checkbox" ng-model="mapAsFilter" ng-click="filter()"/> Elements visibles uniquement </label><span ng-class="{\'glyphicon glyphicon-chevron-left\': toolBoxOpened, \'glyphicon glyphicon-chevron-right\': !toolBoxOpened}" ng-click="toolBoxOpened = !toolBoxOpened"></span></div><ng-transclude></ng-transclude></div>',
         link: function(scope, elem, attrs){
             // récupération de l'identificateur d'événements de la liste
             var target = attrs['maplist'];
+            scope.mapAsFilter = false;
+            scope.toolBoxOpened = true;
+            var visibleItems = [];
             /*
              * initialisation des listeners d'évenements carte 
              */
@@ -246,6 +283,15 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
                     mapService.selectItem(item.feature.properties.id);
                     $rootScope.$broadcast(target + ':select', item.feature.properties);
                 });
+
+                scope.$on('mapService:pan', function(ev){
+                    scope.filter();
+                });
+
+                scope.filter = function(){
+                    visibleItems = mapService.getVisibleItems();
+                    $rootScope.$broadcast(target + ':filterIds', visibleItems, scope.mapAsFilter);
+                }
 
                 // sélection dans la liste
                 scope.$on(target + ':ngTable:ItemSelected', function(ev, item){

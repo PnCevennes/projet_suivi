@@ -87,7 +87,6 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
             }
             else{
                 $scope.app = app;
-                console.log($location.path());
                 if($location.path() == '/'){
                     $scope.setActive(app.menu[0]);
                     $location.url(app.menu[0].url.slice(2));
@@ -101,7 +100,6 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
         });
 
         $scope.$on('app:select', function(ev, app){
-            console.log('app:select');
             $scope.app = app;
             $scope.setActive(app.menu[0]);
         });

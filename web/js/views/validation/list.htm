@@ -4,7 +4,7 @@
     <div breadcrumbs></div>
     <h1>{{title}}</h1>
     <filterform url="{{data_url}}" schema="schema.filtering" callback="setData"></filterform>
-    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/validation"></div>
+    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/validation">Taxons</div>
     <div ng-class="{'panel panel-success': action==54, 'panel panel-danger': action==56, 'panel panel-warning': action==55}">
         <div class="panel-heading">
             <label for="valid">{{action ? 'Validation' : 'Invalidation'}} de {{selection.length}} éléments  </label>
