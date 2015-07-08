@@ -93,7 +93,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
                 tmp.push(item.properties);
                 mapService.addGeom(item);
             });
-            $scope.geoms = resp;
+            //$scope.geoms = resp;
             $scope.data = tmp;
 
             dfd.resolve('loading data');
