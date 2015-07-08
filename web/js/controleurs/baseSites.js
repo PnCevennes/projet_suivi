@@ -32,7 +32,6 @@ app.controller('siteListController', function($scope, $routeParams, dataServ, ma
 
     var data = [];
     $scope._appName = $routeParams.appName;
-    $scope.createAccess = userServ.checkLevel(3);
     $scope.editAccess = userServ.checkLevel(3);
     $scope.data = [];
 

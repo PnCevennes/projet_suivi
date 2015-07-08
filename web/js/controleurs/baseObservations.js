@@ -54,8 +54,7 @@ app.controller('observationListController', function($scope, $routeParams, dataS
 
     var data = [];
     $scope._appName = $routeParams.appName;
-    $scope.createAccess = userServ.checkLevel(2);
-    $scope.editAccess = userServ.checkLevel(3);
+    $scope.editAccess = userServ.checkLevel(2);
     $scope.data = [];
 
     
