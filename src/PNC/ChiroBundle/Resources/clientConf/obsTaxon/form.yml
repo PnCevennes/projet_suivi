@@ -116,5 +116,5 @@ groups:
                         -   obsNbIndetermineAdulte
                         -   obsNbIndetermineJuvenile   
                         -   obsNbIndetermineIndetermine
-                    modifiable: true
-                    min: 0
+                    modifiable: false
+                    min: 1

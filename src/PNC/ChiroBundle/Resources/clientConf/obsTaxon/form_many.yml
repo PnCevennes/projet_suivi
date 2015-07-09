@@ -78,5 +78,5 @@ fields:
                 -   obsNbIndetermineIndetermine
                 -   obsNbIndetermineAdulte
                 -   obsNbIndetermineJuvenile
-            modifiable: true
-            min: 0
+            modifiable: false
+            min: 1
