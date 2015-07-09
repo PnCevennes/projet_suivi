@@ -2,9 +2,9 @@
 
 ##Démarrage serveur en dev
 
-    $ app/console server:run
+    $ app/console server:run [ip:port]
 
-le serveur tourne sur le port 8000
+par défaut le serveur répond sur 127.0.0.1:8000 
 
 
 ##Mise a jour des entités
@@ -19,7 +19,10 @@ NB: Lors de la mise à jour des entités : les champs et accesseurs ajoutés le 
 
     $ app/console doctrine:schema:update
 
-Opinion : Moyen glop. il est peut-être préférable de créer la base manuellement et de mapper ensuite.
+
+## A retenir divers PHP
+
+passer 'true' en deuxième parametre de json_decode pour récupérer un tableau associatif et non une StdClass
 
 
 
@@ -35,7 +38,7 @@ puis
 
 #Utils
 
-Services utilitaires
+Services utilitaires génériques
 
 **GeomertryService** est un raccourci pour créer les instances géométriques utilisées par le plugin doctrine2-spatial
 
@@ -52,6 +55,7 @@ Limitations : Certains types de champs ne sont pas normalisables.
 
 - date (Objet DateTime qui peut être réinjecté tel quel dans le dictionnaire (directement sérialisable), ou alors converti en str via DateTime::format())
 - geometry (normalement inutilisé en lecture -> lecture via vue DB)
+- listes
 - relations suivant le type de relation (et celles qui le sont peuvent parfois engendrer des boucles infinies)
 
 depuis un controleur :
@@ -61,107 +65,66 @@ depuis un controleur :
     $norm->normalize($entite, array('ignore1', 'ignore2');
     ...
 
-#BaseAppBundle
+
+#/Commons
+
+Modules communs pouvant être partagés par plusieurs applications
+
+##/Commons/Users
+
+Module d'identification des utilisateurs et gestion des sessions
+
+###Entités
+
+ - Login : Entité fournissant les données relatives aux utilisateurs
+
+###Vues 
+
+ - POST /users/login : Identification des utilisateurs et ouverture de session utilisateur
+ - GET /users/logout : Cloture d'une session utilisateur
+ - GET /users/name/{app}/{droit}/{q} : retourne une liste d'utilisateurs d'une application {app} filtrée par le niveau de droits {droit} et par des éléments du nom {q} - utilisée par les autocomplétions
+ - GET /users/id/{id} : retourne un nom d'utilisateur identifié par l'id fourni {id}
+
+###Services
+
+ - UserService : Service utilisé par les différents modules pour gérer les différents niveaux de droits de l'utilisateur connecté.
+
+
+##/Commons/Exceptions
+
+Définition des types d'exceptions utilisables par les différentes applications
+
+ - CascadeException : Exception levée en cas d'interdiction de suppression d'un élément relative à un problème de hiérarchie des éléments et des droits de l'utilisateur
+ - DataObjectException : Exception levée lors de l'hydratation des entités en cas de valeur invalide
+
+
+
+#/PNC
+
+Modules regroupant les bundles spécifiques à l'application suivi_protocoles
+
+
+##/PNC/BaseAppBundle
 
 Module servant de base aux autres modules.
 
-##Entités définies:
+###Entités
 
-- Site
-- Observation
-- Thésaurus
+ - Site : Entité abstraite définissant les éléments communs aux différents types de sites
+ - Observation : Entité abstraite définissant les éléments communs aux différents types d'observations
+ - Thésaurus : Mapping de la table de vocabulaire controlé utilisé par les listes à choix multiples
+ - Fichiers : Metadonnées d'identification des fichiers téléchargés
+ - Observateurs : Mapping de la table des utilisateurs utilisé par les autocomplétions
+ - Taxons : Mapping de taxref utilisé par les autocomplétions
 
-##Entités à définir: ::TODO
+###Vues
 
-- Observateur
-- Taxonomie
-
-
-##Routes
-
-**GET /**
-*ConfigController::indexAction*
-
-retourne la page suivi.html - base de l'application JS
-
-**POST /observateurs**
-*ConfigController::getObservateursAction*
-
-Retourne une liste d'objets {id, label} adaptée pour la directive JS xhrinput
-
-**GET /apps**
-*ConfigController::getAppsAction*
-
-Retourne la liste des applications utilisables
+ - GET config/apps : retourne le schéma d'initialisation des applications
+ - POST upload_file : réception des fichiers uploadés -Enregistre en base les métadonnées et déplace le fichier dans le dossier adéquat - retourne l'identifiant généré pour le fichier
+ - DELETE upload_file/{file_id} : supprime le fichier identifié par {file_id}
+ - GET commune/{insee} : retourne le nom d'une commune identifiée par son numéro insee {insee}
 
 
+###Services
 
-#ChiroBundle
-
-Module spécifique aux protocoles Chiro
-
-##Entités définies:
-
-- SiteView -- mapping de la vue spécifique aux lieux "chiro"
-- InfoSite -- complément de *BaseApp:Site* spécifique aux chiro
-- ConditionsObservation -- complément de *BaseApp:Observation* spécifique aux chiro
-- ObservationTaxon 
-- Biometrie 
-
-
-##Routes
-
-
-**GET /chiro/siteConfig**
-*ConfigController::getSiteConfigAction*
-
-retourne les différents schémas de configuration des vues *Site*
-[définition des schémas](schemas.md)
-
-
-
-**GET /chiro/site**
-*SiteController::listAction*
-
-Retourne la liste des sites "chiro" via la vue DB "chiro.vue_chiro_site" 
-
-
-**GET /chiro/site/{id}**
-*SiteController::detailAction*
-
-Retourne 1 site identifié par ID via la vue DB "chiro.vue_chiro_site" 
-
-
-**PUT /chiro/site**
-*SiteController::createAction*
-
-Ajoute un nouveau site
-retourne une erreur 422 en cas d'échec
-
-
-**POST /chiro/site/{id}**
-*SiteController::updateAction*
-
-Met à jour un site 
-retourne une erreur 422 en cas d'échec
-
-
-**DELETE /chiro/site/{id}**
-*SiteController::deleteAction* 
-
-Supprime un site
-
-
-##Notes
-
-les fonctions *SiteController::hydrateSite()* et *SiteController::hydrateInfoSite()* permettent de "peupler" les objets "Site" et "InfoSite"
-
-###Récupération des données POST en provenance d'angular
-
-La fonction "vue" doit recevoir l'objet 'Request' -> *Symfony\Component\HttpFoundation\Request*
-
-    public function trucAction(Request $req){
-        $post_data = json_decode($req->getContent(), true);
-    }
-
-NB: penser a passer 'true' en deuxième parametre de json_decode pour récupérer un tableau associatif et non une StdClass
+ - BaseSiteService

@@ -58,7 +58,7 @@ S'il y a plus d'un groupe, l'affichage du formulaire est scindé en différents 
 
 ####hidden
 crée un input type `hidden`
-les champs label et help ne sont plus visibles non plus
+les champs label et help ne sont pas affichés.
 
 aucune option définie
 
@@ -67,7 +67,10 @@ aucune option définie
 
 crée un input type `text`
 
-les options possibles sont `minLength` et `maxLength`
+options : 
+ - minLength : longueur minimum du texte 
+ - maxLength : longueur maximum du texte
+
 un champ dont la minlength est supérieure à 0 est automatiquement passé en "required"
 
 
@@ -97,9 +100,9 @@ format de date : yyyy-MM-dd
 
 ####select
 
-crée un select
+crée une liste déroulante
 
-option obligatoire : `choices` sous la forme d'une liste de dicos [{id: ?, libelle: ?}]
+option obligatoire : `choices` sous la forme d'une liste de d'objets [{id: ?, libelle: ?}]
 
 
 ####file
@@ -115,8 +118,8 @@ options à définir : filtre d'extensions acceptées + voir les possibilité de 
 crée un champ texte avec autocompletion ajax
 
 options obligatoires : 
-- `url` pour indiquer l'url à contacter pour obtenir les possibilités de completion
-- `reverseurl` pour indiquer l'url à contacter pour obtenir le label lié à la donnée fournie (cas d'un formulaire de modification)
+- url : pour indiquer l'url à contacter pour obtenir les possibilités de completion
+- reverseurl : pour indiquer l'url à contacter pour obtenir le label lié à la donnée fournie (cas d'un formulaire de modification)
 
 les url contactées doivent renvoyer une liste de dicos [{id: x, label: y}] où x est la valeur souhaitée, et y les libellés de réponse.
 

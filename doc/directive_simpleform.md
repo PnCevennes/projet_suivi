@@ -1,7 +1,7 @@
 #Directive simpleform
 
-La directive `simpleform` est destinée à générer automatiquement des formulaires de création/édition/suppression de données à partir d'un schema fourni par le serveur.
-Elle accepte 4 parametres, tous passés par référence:
+La directive `simpleform` sert à générer automatiquement des formulaires de création/édition/suppression de données à partir d'un schema fourni par le serveur.
+
 Elle utilise les services 
 
 - *dataServ* pour la récupération et l'envoi des données au serveur
@@ -11,31 +11,22 @@ Elle utilise les services
 - *$loading* (librairie angular-loading-1.0)
 - *SpreadSheet* pour la gestion des sous formulaires de saisie rapide
 
-Elle s'appuie aussi sur certaines directives de la librairie Angular-bootstrap-ui
+Elle s'appuie sur la directive dynform pour la génération des champs.
 
 
-###schemaurl
+Elle prend 4 parametres, passés par référence:
 
-L'url du schéma du formulaire
-
-###dataurl: 
-
-L'url des données (Pour un formulaire d'édition. À ne pas fournir pour un formulaire de création)
-Fournir cette url fait aussi apparaitre le bouton supprimer (url: `DELETE saveurl`)
-
-###saveurl: 
-
-Url où envoyer les données en cas de validation (données envoyées en POST si `dataurl` a été fourni, en PUT dans le cas contraire)
-
-###data:
-
-Un conteneur de référence pour les données (un simple {} suffit, il sera "rempli" grace au schéma du formulaire)
+ - schemaurl : L'url du schéma du formulaire
+ - dataurl: L'url des données (Pour un formulaire d'édition. À ne pas fournir pour un formulaire de création). Fournir cette url fait aussi apparaitre le bouton supprimer (url: `DELETE saveurl`)
+ - saveurl: Url où envoyer les données en cas de validation (données envoyées en POST si `dataurl` a été fourni, en PUT dans le cas contraire)
+ - data: Un conteneur de référence pour les données (un simple {} suffit, il sera "rempli" grace au schéma du formulaire) qui permet au controleur "hôte" d'accéder aux données si nécessaire.
 
 
 ##Schéma de configuration du formulaire
 
 les schémas sont envoyés par le serveur sous forme de JSON qui doivent respecter la forme suivante:
 
+```json
     {
         "deleteAccess": valeur,
         "groups": [
@@ -56,6 +47,7 @@ les schémas sont envoyés par le serveur sous forme de JSON qui doivent respect
             }
         ]
     }
+```
 
 
 ###Explication de la structure
@@ -158,11 +150,16 @@ Exemple de configuration : PNC/ChiroBundle/Resources/clientConf/observation/form
 ###Exemple d'utilisation de la directive coté JS
 
 ###template.htm
-    <h1>{{title}}</h1>
-    <div simpleform schemaurl="schemaUrl" dataurl="dataUrl" data="data" saveurl="saveUrl"></div>
+
+```html
+    <div simpleform schemaurl="schemaUrl" dataurl="dataUrl" data="data" saveurl="saveUrl">
+        <h1>{{title}}</h1>
+    </div>
+```
 
 ###controller.js
-    
+
+```javascript
     app.controller('trucMucheController', function($scope){
         $scope.schemaUrl = "monAppServeur/maVueSchema";
         $scope.dataUrl = "monAppServeur/maVueQuiEnvoieLesDonnéesAModifier";
@@ -174,7 +171,7 @@ Exemple de configuration : PNC/ChiroBundle/Resources/clientConf/observation/form
          */
         $scope.$on('form:init', function(ev, data){
             /*
-             * trucs qu'on peut faire à l'initialisation du formulaire
+         * trucs qu'on peut faire à l'initialisation du formulaire
              * le param ev reçoit l'évenement angular, qui n'a pas grand intérêt
              * le param data reçoit les données qui ont été chargées par simpleform au cas où elles devraient $etre affichées
              * ex :
@@ -205,3 +202,4 @@ Exemple de configuration : PNC/ChiroBundle/Resources/clientConf/observation/form
              */
         })
     });
+```
