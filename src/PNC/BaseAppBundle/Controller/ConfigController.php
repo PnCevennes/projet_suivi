@@ -71,8 +71,8 @@ class ConfigController extends Controller{
                 $manager->getConnection()->rollback();
                 return new JsonResponse(array('err'=>$e->getMessage()), 400);
             }
-          return new JsonResponse(array('err'=>'No files'));
         }
+        return new JsonResponse(array('err'=>'No files'), 400);
     }
 
     // path: DELETE /upload_file/{file_id}

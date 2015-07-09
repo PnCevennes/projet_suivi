@@ -11,3 +11,8 @@ services:
     pagination:
         class: PNC\BaseAppBundle\Services\PaginationService
         arguments: [@doctrine]
+    geometry:
+        class: PNC\Utils\GeometryService
+    normalizer:
+        class: PNC\Utils\NormalizeService
+

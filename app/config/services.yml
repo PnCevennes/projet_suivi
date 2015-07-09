@@ -8,12 +8,6 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
-    geometry:
-        class: PNC\Utils\GeometryService
-
-    normalizer:
-        class: PNC\Utils\NormalizeService
-
     commons.check_auth:
         class: Commons\UsersBundle\EventListeners\SecurityListener
         tags:
