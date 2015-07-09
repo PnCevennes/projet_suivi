@@ -64,8 +64,6 @@ app.directive('angucompletewrapper', function(dataServ, $http){
  * params:
  *  schema: le squelette du formulaire (cf. doc schémas)
  *  data: le dictionnaire de données source/cible
- *  onsave: la callback de sauvegarde du controleur
- *  onremove: la callback de suppression du controleur
  *  errors: liste d'erreurs de saisie (dictionnaire {nomChamp: errMessage})
  */
 app.directive('dynform', function(){

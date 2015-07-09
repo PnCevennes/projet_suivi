@@ -5,7 +5,7 @@ var app = angular.module('DisplayDirectives');
 /*
  * messages utilisateurs
  */
-app.service('userMessages', function($modal){
+app.service('userMessages', function(){
     this.infoMessage = '';
     this.errorMessage = '';
     this.successMessage = '';
