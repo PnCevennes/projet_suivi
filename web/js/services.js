@@ -167,7 +167,7 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
                 _user = tmp_user;
             }
         }
-        return _user
+        return _user;
     };
 
     this.setUser = function(){
@@ -229,7 +229,6 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
 
 /**
  * filtre basique - transforme une date yyyy-mm-dd en dd/mm/yyyy pour l'affichage
- * Utilisé comme un formateur de date
  */
 app.filter('datefr', function(){
     return function(input){
