@@ -17,8 +17,9 @@ groups:
             type: string
           - name: refCommune
             label: "Commune"
-            type: string
+            type: xhr
             options:
+                url: commune
                 multi: true
           - name: obsDate
             label: Date

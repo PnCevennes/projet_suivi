@@ -20,8 +20,9 @@ groups:
             type: date
           - name: refCommune
             label: "Commune"
-            type: string
+            type: xhr
             options:
+                url: commune
                 multi: true
           - name: numerisateurId
             label: Numérisateur
