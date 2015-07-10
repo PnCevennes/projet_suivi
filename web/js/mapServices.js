@@ -114,12 +114,18 @@ app.directive('leafletMap', function(){
                     var visibleItems = [];
                     geoms.forEach(function(item){
                         try{
-                            if(bounds.intersects(item.getLatLng())){
+                            var _coords = item.getLatLng();
+                        }
+                        catch(e){
+                            var _coords = item.getLatLngs();
+                        }
+                        try{
+                            if(bounds.intersects(_coords)){
                                 visibleItems.push(item.feature.properties.id);
                             }
                         }
                         catch(e){
-                            if(bounds.contains(item.getLatLng())){
+                            if(bounds.contains(_coords)){
                                 visibleItems.push(item.feature.properties.id);
                             }
                         }
@@ -165,46 +171,63 @@ app.directive('leafletMap', function(){
                 mapService.filterData = filterData;
 
                 var getItem = function(_id){
-                    var res = $filter('filter')(geoms, {feature: {properties: {id: _id}}}, function(act, exp){return act==exp;});
-                    try{
-                        map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
-                        return res[0];
+                    var res = geoms.filter(function(item){
+                        return item.feature.properties.id == _id;
+                    });
+                    if(res.length){
+                        try{
+                            /*
+                             * centre la carte sur le point sélectionné
+                             */
+                            map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
+                            return res[0];
+                        }
+                        catch(e){
+                            /*
+                             * centre la carte sur la figure sélectionnée
+                             */
+                            map.fitBounds(res[0].getBounds());
+                            return res[0];
+                        }
                     }
-                    catch(e){
-                        return null;
-                    }
+                    return null;
                 };
                 mapService.getItem = getItem;
 
-
-                var selectItem = function(_id){
-                    var geom = getItem(_id);
-                    
+                var _set_selected = function(item, _status){
+                    var iconUrl = 'js/lib/leaflet/images/marker-icon.png';
+                    var polygonColor = '#03F'; 
+                    var zOffset = 0;
+                    if(_status){
+                        iconUrl = 'js/lib/leaflet/images/marker-rouge.png';
+                        polygonColor = '#F00'; 
+                        zOffset = 1000;
+                    }
                     try{
-                        if(currentSel){
-                            currentSel.setIcon(L.icon({
-                                iconUrl: 'js/lib/leaflet/images/marker-icon.png', 
-                                shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
-                                iconSize: [25, 41], 
-                                iconAnchor: [13, 41],
-                                popupAnchor: [0, -41],
-                            }));
-                            currentSel.setZIndexOffset(0);
-                        }
-                        geom.setIcon(L.icon({
-                            iconUrl: 'js/lib/leaflet/images/marker-rouge.png', 
+                        item.setIcon(L.icon({
+                            iconUrl: iconUrl, 
                             shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
                             iconSize: [25, 41], 
                             iconAnchor: [13, 41],
                             popupAnchor: [0, -41],
                         }));
-                        geom.setZIndexOffset(1000);
-                        currentSel = geom;
-                        return geom;
+                        item.setZIndexOffset(zOffset);
                     }
                     catch(e){
-                        return null;
+                        item.setStyle({
+                            color: polygonColor,
+                        });
                     }
+                };
+
+                var selectItem = function(_id){
+                    var geom = getItem(_id);
+                    if(currentSel){
+                        _set_selected(currentSel, false);
+                    }
+                    _set_selected(geom, true);
+                    currentSel = geom;
+                    return geom;
                 };
                 mapService.selectItem = selectItem;
 
@@ -219,7 +242,10 @@ app.directive('leafletMap', function(){
                     if(jsonData.properties.geomLabel){
                         geom.bindPopup(jsonData.properties.geomLabel);
                     }
-                    geom.setZIndexOffset(0);
+                    try{
+                        geom.setZIndexOffset(0);
+                    }
+                    catch(e){}
                     geoms.push(geom);
                     layer.addLayer(geom);
                     return geom;
@@ -296,7 +322,10 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
                 // sélection dans la liste
                 scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
                     var geom = mapService.selectItem(item.id);
-                    geom.openPopup();
+                    try{
+                        geom.openPopup();
+                    }
+                    catch(e){}
                 });
 
                 // filtrage de la liste

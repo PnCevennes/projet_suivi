@@ -544,7 +544,7 @@ app.directive('geometry', function($timeout){
             origin: '=',
         },
         templateUrl:  'js/templates/form/geometry.htm',
-        controller: function($scope, $rootScope, mapService){
+        controller: function($scope, $rootScope, $timeout, mapService){
             $scope.editLayer = new L.FeatureGroup();
 
             var current = null;
@@ -570,10 +570,12 @@ app.directive('geometry', function($timeout){
                 mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
                 mapService.loadData($scope.options.dataUrl).then(function(){
                     if($scope.origin){
-                        var layer = mapService.selectItem($scope.origin);
-                        if(layer){
-                            setEditLayer(layer);
-                        }
+                        $timeout(function(){
+                            var layer = mapService.selectItem($scope.origin);
+                            if(layer){
+                                setEditLayer(layer);
+                            }
+                        }, 0);
                     }
                     mapService.getMap().addLayer($scope.editLayer);
                     mapService.getMap().removeLayer(mapService.getLayer());
