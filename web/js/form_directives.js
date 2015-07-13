@@ -362,8 +362,18 @@ app.directive('simpleform', function(){
                     $scope.isActive.push(false);
                     $scope.isDisabled.push(!$scope.dataUrl);
                     group.fields.forEach(function(field){
-                        if(!field.options){
-                            field.options = {};
+                        if(field.type=='group'){
+                            field.fields.forEach(function(sub){
+                                if(!sub.options){
+                                    sub.options = {};
+                                }
+                            });
+
+                        }
+                        else{
+                            if(!field.options){
+                                field.options = {};
+                            }
                         }
                         field.options.readOnly = !userServ.checkLevel(field.options.editLevel || 0);
                         field.options.dismissed = !userServ.checkLevel(field.options.restrictLevel || 0);
@@ -394,8 +404,10 @@ app.directive('simpleform', function(){
                             }
                         }
                         else{
-                            field.fields.forEach(function(grField){
-                                $scope.data[grField.name] = angular.copy(resp[grField.name]) || grField.default || null;
+                            field.fields.forEach(function(line){
+                                line.fields.forEach(function(grField){
+                                    $scope.data[grField.name] = resp[grField.name] != undefined ? angular.copy(resp[grField.name]) : grField.default != undefined ? grField.default : null;
+                                });
                             });
                         }
 

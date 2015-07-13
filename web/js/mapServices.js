@@ -321,11 +321,13 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
 
                 // sélection dans la liste
                 scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
-                    var geom = mapService.selectItem(item.id);
-                    try{
-                        geom.openPopup();
-                    }
-                    catch(e){}
+                    $timeout(function(){
+                        try{
+                            var geom = mapService.selectItem(item.id);
+                            geom.openPopup();
+                        }
+                        catch(e){}
+                    }, 0);
                 });
 
                 // filtrage de la liste
