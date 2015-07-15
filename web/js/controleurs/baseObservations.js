@@ -6,7 +6,7 @@ var app = angular.module('baseObservations');
  */
 app.config(function($routeProvider){
     $routeProvider
-        .when('/:appName/observation', {
+        .when('/:appName/inventaire', {
             controller: 'observationListController',
             templateUrl: 'js/views/observation/list.htm'
         })
@@ -14,7 +14,7 @@ app.config(function($routeProvider){
             controller: 'observationSiteListController',
             templateUrl: 'js/views/observation/list.htm'
         })
-        .when('/:appName/observation/sans-site/:id', {
+        .when('/:appName/inventaire/:id', {
             controller: 'observationSsSiteDetailController',
             templateUrl: 'js/views/observation/detailSsSite.htm'
         })
@@ -26,11 +26,11 @@ app.config(function($routeProvider){
             controller: 'observationEditController',
             templateUrl: 'js/views/observation/edit.htm'
         })
-        .when('/:appName/edit/observation/sans-site', {
+        .when('/:appName/edit/inventaire', {
             controller: 'observationSsSiteEditController',
             templateUrl: 'js/views/observation/edit.htm'
         })
-        .when('/:appName/edit/observation/sans-site/:id', {
+        .when('/:appName/edit/inventaire/:id', {
             controller: 'observationSsSiteEditController',
             templateUrl: 'js/views/observation/edit.htm'
         })
@@ -187,7 +187,7 @@ app.controller('observationSsSiteDetailController', function($scope, $rootScope,
 
     $scope.schemaUrl = $scope._appName + '/config/observation/sans-site/detail';
     $scope.dataUrl = $scope._appName + '/observation/' + $routeParams.id;
-    $scope.updateUrl = '#/' + $scope._appName + '/edit/observation/sans-site/' + $routeParams.id;
+    $scope.updateUrl = '#/' + $scope._appName + '/edit/inventaire/' + $routeParams.id;
     $scope.dataId = $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
@@ -240,27 +240,27 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
 
     $scope.$on('form:cancel', function(ev, data){
         if(data.id){
-            $location.url($scope._appName + '/observation/sans-site/' + data.id);
+            $location.url($scope._appName + '/inventaire/' + data.id);
         }
         else{
-            $location.url($scope._appName + '/observation');
+            $location.url($scope._appName + '/inventaire');
         }
     });
 
     $scope.$on('form:create', function(ev, data){
         userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
-        $location.url($scope._appName + '/observation/sans-site/' + data.id);
+        $location.url($scope._appName + '/inventaire/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
         userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.';
-        $location.url($scope._appName + '/observation/sans-site/' + data.id);
+        $location.url($scope._appName + '/inventaire/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
         userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + " a été supprimé.";
         dataServ.forceReload = true;
-        $location.url($scope._appName + '/observation');
+        $location.url($scope._appName + '/inventaire');
     });
 });
 

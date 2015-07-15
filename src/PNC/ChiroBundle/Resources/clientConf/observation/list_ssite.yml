@@ -1,9 +1,9 @@
 title: Inventaire
 emptyMsg: "Aucun inventaire pour le moment"
 createBtnLabel: "Nouvel inventaire"
-createUrl: "#/chiro/edit/observation/sans-site/"
-editUrl: "#/chiro/edit/observation/sans-site/"
-detailUrl: "#/chiro/observation/sans-site/"
+createUrl: "#/chiro/edit/inventaire"
+editUrl: "#/chiro/edit/inventaire/"
+detailUrl: "#/chiro/inventaire/"
 editAccess: 2
 fields:
     - name: id

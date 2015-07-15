@@ -45,18 +45,19 @@ class ConfigController extends Controller{
                 if($view == 'validation'){
                     return new JsonResponse(array(array('id'=>null, 'label'=>'Validation', 'link'=>'#/chiro/validation')));
                 }
+            case 'inventaire':
             case 'observation':
                 $req = $manager->prepare('SELECT id, obs_date as label, site_id FROM pnc.base_observation WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();
                 if(!isset($res[0])){
-                    return new JsonResponse(array(array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation')));
+                    return new JsonResponse(array(array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/inventaire')));
                 }
                 $res = $res[0];
                 if($res['site_id']==null){
-                    $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/observation/sans-site/'.$id);
-                    $out[] = array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/observation');
+                    $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/inventaire/'.$id);
+                    $out[] = array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/inventaire');
                     return new JsonResponse(array_reverse($out));
                 }
                 $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/observation/'.$id);
