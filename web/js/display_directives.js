@@ -388,6 +388,7 @@ app.directive('tablewrapper', function(){
             configServ.get($scope.refName + ':ngTable:Filter', function(filter){
                 $scope.tableParams.filter(filter);
             });
+
             // récupération du tri utilisé sur le tableau 
             configServ.get($scope.refName + ':ngTable:Sorting', function(sorting){
                 $scope.tableParams.sorting(sorting);
@@ -396,7 +397,7 @@ app.directive('tablewrapper', function(){
 
             $scope.checkItem = function(item){
                 $rootScope.$broadcast($scope.refName + ':ngTable:itemChecked', item);
-            }
+            };
 
 
             // selection case à cocher
@@ -411,10 +412,6 @@ app.directive('tablewrapper', function(){
                     $scope.checkItem(item);
                 });
             }
-
-            $scope.$on($scope.refName + ':clearChecked', function(){
-                $scope.clearChecked();
-            });
 
             $scope.clearChecked = function(){
                 $scope.data.forEach(function(item){
@@ -442,6 +439,10 @@ app.directive('tablewrapper', function(){
                 var idx = orderedData.indexOf(item);
                 var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
                 $scope.tableParams.page(pgnum);
+                $timeout(function(){
+                    var _elem = document.getElementById('item'+item.id);
+                    _elem.focus();
+                }, 0);
                 if(broadcast){
                     $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
                 }
@@ -480,7 +481,9 @@ app.directive('tablewrapper', function(){
                 }
             });
 
-
+            $scope.$on($scope.refName + ':clearChecked', function(){
+                $scope.clearChecked();
+            });
         },
     };
 });
