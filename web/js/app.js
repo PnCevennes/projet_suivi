@@ -103,6 +103,10 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
             $scope.app = app;
             $scope.setActive(app.menu[0]);
         });
+
+        $scope.$on('app:selection', function(ev){
+            $scope.app = {name: "Suivi des protocoles", menu: []};
+        });
     };
 
     $scope.setActive = function(item){
@@ -176,6 +180,8 @@ app.controller('appsController', function($scope, $location, configServ, userSer
     if(!userServ.getUser()){
         $location.url('login');
     }
+
+    $scope.$emit('app:selection');
 
     $scope.setData = function(resp){
         $scope.apps = resp;
