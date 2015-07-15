@@ -325,3 +325,32 @@ table.rc-table-resizing {
     cursor: ew-resize; }
 table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-table-resizing thead > th > a {
     cursor: ew-resize; }
+
+.table-xlarge{
+    min-width: 20em;
+}
+
+.table-large{
+    min-width: 10em;
+}
+
+.table-small{
+    width: 5em;
+}
+
+.table-xsmall{
+    max-width: 10em;
+}
+
+.opaque{
+    background-color: white;
+}
+/*
+.ng-table th.sortable.sort-asc{
+    background-color: #CCF;
+}
+
+.ng-table th.sortable.sort-desc{
+    background-color: #FCC;
+}
+*/

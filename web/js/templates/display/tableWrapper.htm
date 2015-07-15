@@ -15,13 +15,17 @@
                     class="text-center sortable"
                     ng-class="
                         {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
-                        'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
+                        'sort-desc': tableParams.isSortBy(column.name, 'desc'),
+                        'table-xlarge': column.options.style == 'xl',
+                        'table-large': column.options.style == 'l',
+                        'table-xsmall': columo.options.style == 'xs'
+                        }"
                     ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);"
                     data-resizable-column-id="{{column.name}}"
                     >
                     {{column.label}}
                 </th>
-                <th>
+                <th class="table-small">
                     <div>Filtrage local</div>
                         {{currentSel.current}} / {{currentSel.total}}
                     </div>
@@ -38,7 +42,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Colonnes<span class="caret"></span></button>
                         <ul class="dropdown-menu select-column" role="menu">
-                            <li ng-repeat="column in schema.fields"><input id="sel[{{$index}}]" type="checkbox" ng-model="column.options.visible" ng-disabled="column.options.type=='checkable'" /><label for="sel[{{$index}}]">{{column.label}}</label></li>
+                            <li ng-repeat="column in schema.fields"><input style="margin-right: 5px;" id="sel[{{$index}}]" type="checkbox" ng-model="column.options.visible" ng-disabled="column.options.type=='checkable'" /><label for="sel[{{$index}}]">{{column.label}}</label></li>
                         </ul>
                     </div>
                 </th>

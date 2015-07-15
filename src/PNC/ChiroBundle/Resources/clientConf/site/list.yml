@@ -19,12 +19,13 @@ fields:
             siteNom: text
         options:
             visible: true
+            style: xl
     -   name: siteCode
         label: Code site
         filter: 
             siteCode: text
         options:
-            visible: true
+            visible: false
     -   name: nomObservateur
         label: Observateur
         filter:
@@ -38,24 +39,27 @@ fields:
         options:
             visible: false
     -   name: dernObs
-        label: Dernière observation
+        label: "Dern. obs."
         filter:
             dernObs: text
         options:
             type: date
             visible: true 
+            style: xs
     -   name: nbObs
-        label: Nombre de visites
+        label: "Nb visites"
         filter:
             nbObs: text
         options:
             visible: true
+            style: xs
     -   name: typeLieu
         label: Type
         filter:
             typeLieu: text
         options:
             visible: true
+            style: l
 
 
 
