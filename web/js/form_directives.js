@@ -688,6 +688,8 @@ app.directive('datepick', function(){
         templateUrl: 'js/templates/form/datepick.htm',
         controller: function($scope){
             $scope.opened = false;
+            //$scope.date = new Date();
+            console.log($scope.date);
             $scope.toggle = function($event){
                 $event.preventDefault();
                 $event.stopPropagation();
@@ -697,15 +699,17 @@ app.directive('datepick', function(){
             $scope.$watch('date', function(newval){
                 try{
                     newval.setHours(12);
-                    $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+                    //$scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+                    $scope.date = newval;
                 }
                 catch(e){
                     if(newval){
                         try{
-                            $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+                            $scope.date = newval;
+                            //$scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
                         }
                         catch(e){
-                            $scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                            //$scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
                         }
                     }
                 }
@@ -740,7 +744,7 @@ app.directive('spreadsheet', function(){
             dataIn: '=data',
         },
         templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function($scope, configServ, SpreadSheet){
+        controller: function($scope, configServ, SpreadSheet, ngTableParams){
             var defaultLine = {};
             var lines = [];
             $scope.data = [];
@@ -769,6 +773,14 @@ app.directive('spreadsheet', function(){
                     lines.push(line);
                 }
             };
+
+            $scope.tableParams = new ngTableParams({},
+                {
+                    getData: function($defer, params){
+                        return $scope.data;
+                    }
+                }
+            );
 
             $scope.check = function(){
                 var out = [];

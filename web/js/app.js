@@ -1,4 +1,4 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule']);
+var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule', 'ngTableResizableColumns']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);

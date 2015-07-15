@@ -256,7 +256,7 @@ app.directive('tablewrapper', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/display/tableWrapper.htm',
-        controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
+        controller: function($scope, $rootScope, $timeout, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
             $scope._checkall = false;
             filterIds = [];
@@ -393,6 +393,7 @@ app.directive('tablewrapper', function(){
                 $scope.tableParams.sorting(sorting);
             });
 
+
             $scope.checkItem = function(item){
                 $rootScope.$broadcast($scope.refName + ':ngTable:itemChecked', item);
             }
@@ -437,6 +438,7 @@ app.directive('tablewrapper', function(){
                 }
                 item.$selected = true;
                 $scope.currentItem = item;
+                configServ.put($scope.refName + ':ngTable:ItemSelected', item);
                 var idx = orderedData.indexOf(item);
                 var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
                 $scope.tableParams.page(pgnum);
@@ -447,10 +449,12 @@ app.directive('tablewrapper', function(){
 
             $scope.$watch('data', function(newval){
                 if(newval){
-                    $scope.data.forEach(function(item){
-                        if(item.$selected){
+                    configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
+                        if(item){
                             $scope.currentItem = item;
-                            $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                            $timeout(function(){
+                                $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                            }, 0);
                         }
                     });
                     $scope.tableParams.reload();
@@ -475,6 +479,7 @@ app.directive('tablewrapper', function(){
                     $scope.tableParams.page(pgnum);
                 }
             });
+
 
         },
     };

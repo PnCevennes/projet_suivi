@@ -207,11 +207,12 @@
     background-color: white;
     border: 1px inset #CCC;
     /*max-height: 20em;*/
-    overflow: visible;
+    overflow: scroll;
 }
 
 .spreadsheet td{
     border: 1px dotted #CCC;
+    min-width: 10em;
 }
 
 .spreadsheet input{
@@ -259,7 +260,7 @@
 }
 
 table.tablewrapper>tbody>tr.odd>td {
-  background-color:rgba(167, 167, 167, 0.72)
+  background-color:rgba(207, 207, 207, 0.72)
 }
 
 table.tablewrapper>tbody>tr.active>td{
@@ -309,3 +310,18 @@ table.tablewrapper>tbody>tr.active>td{
     border-radius: 4px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 }
+
+.rc-handle-container {
+    position: relative; }
+
+.rc-handle {
+    position: absolute;
+    width: 7px;
+    cursor: ew-resize;
+    margin-left: -3px;
+    z-index: 2; }
+
+table.rc-table-resizing {
+    cursor: ew-resize; }
+table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-table-resizing thead > th > a {
+    cursor: ew-resize; }

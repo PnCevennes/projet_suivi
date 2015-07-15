@@ -2,7 +2,7 @@
     <h1>
         <ng-transclude></ng-transclude> 
     </h1>
-    <table ng-table="tableParams" show-filter="true" class="table table-condensed ng-table-rowselected tablewrapper">
+    <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected ng-table-resizable-columns table-bordered tablewrapper">
         <thead>
             <tr>
                 <th ng-if="schema.checkable">
@@ -16,7 +16,9 @@
                     ng-class="
                         {'sort-asc': tableParams.isSortBy(column.name, 'asc'),
                         'sort-desc': tableParams.isSortBy(column.name, 'desc')}"
-                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);">
+                    ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);"
+                    data-resizable-column-id="{{column.name}}"
+                    >
                     {{column.label}}
                 </th>
                 <th>
@@ -44,14 +46,16 @@
         </thead>
         <tbody>
           <tr ng-repeat="item in $data" ng-click="selectItem(item)" ng-class="{'active': item.$selected}" ng-class-odd="'odd'" ng-class-even="'even'">
-            <td ng-repeat="column in schema.fields" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">
-                <input type="checkbox" ng-click="checkItem(item)" ng-model="item._checked" ng-if="column.options.type=='checkable'"></input>
-                <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
-                <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
-                <ul ng-if="column.options.type=='list'" class="list list-inline">
-                    <li ng-repeat="name in item[column.name]">{{name}}</li>
-                </ul>
-                <span ng-if="!column.options.type || column.options.type=='text'">{{item[column.name]}}</span>
+              <td ng-repeat="column in schema.fields" ng-show="column.options.visible" sortable="column.name" class="site-list-col-{{column.name}}">
+                <div id="item{{item.id}}" class="anchor">
+                    <input type="checkbox" ng-click="checkItem(item)" ng-model="item._checked" ng-if="column.options.type=='checkable'"></input>
+                    <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
+                    <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
+                    <ul ng-if="column.options.type=='list'" class="list list-inline">
+                        <li ng-repeat="name in item[column.name]">{{name}}</li>
+                    </ul>
+                    <span ng-if="!column.options.type || column.options.type=='text'">{{item[column.name]}}</span>
+                </div>
             </td>
             <td> 
               <a class="btn btn-primary btn-xs" tooltip="Afficher" ng-href="{{schema.detailUrl}}{{item.id}}"><span class="glyphicon glyphicon-info-sign"></span></a>

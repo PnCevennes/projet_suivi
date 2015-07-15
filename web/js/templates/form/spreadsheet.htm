@@ -2,11 +2,11 @@
     <h2>{{subTitle}}</h2>
     <div class="spreadsheet">
         <form name="spreadSheet" novalidate>
-            <table class="table table-condensed">
+            <table ng-table="tableParams" class="table table-condensed ng-table-resizable-columns table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th ng-repeat="field in schema.fields" tooltip="{{field.help}}">{{field.label}}</th>
+                        <th ng-repeat="field in schema.fields" data-resizable-column-id="{{field.name}}">{{field.label}}</th>
                     </tr>
                 </thead>
                 <tbody>
