@@ -349,6 +349,18 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 }
 */
 
+.filter-container{
+    background-color: white;
+    border: 1px solid #CCF;
+    border-radius: 0 8px 8px 8px;
+    padding: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.25);
+}
+
+.filter-container div{
+    margin-bottom: 5px;
+}
+
 .filter-form-nav{
     background-color: #CCC;
     border-top: 2px solid #AAA;

@@ -53,6 +53,9 @@ app.directive('angucompletewrapper', function(dataServ, $http){
                         $scope.localselectedobject = resp;
                     });
                 }
+                else{
+                    $scope.localselectedobject = null;
+                }
             });
         }
     };

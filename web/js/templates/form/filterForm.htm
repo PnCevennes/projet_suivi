@@ -3,14 +3,13 @@
     <span ng-class="{'glyphicon glyphicon-chevron-right': !collapseFilters, 'glyphicon glyphicon-chevron-down': collapseFilters}"></span>
 </button>
 <div class="filter-form-nav">
-<span ng-if="counts.current != counts.total" class="badge">{{counts.current}} / {{counts.total}}</span> 
-<span ng-if="counts.current == counts.total" class="badge">Non filtré : {{counts.current}} / {{counts.total}}</span> 
-<button class="btn btn-sm btn-default float-right" ng-disabled="((pageNum + 1) * schema.limit) >= counts.current" ng-click="nextPage()"><span class="glyphicon glyphicon-chevron-right"></span></button>
-<span class="text-muted float-right">{{pageNum*schema.limit}}...{{maxCount}}</span>
-<button class="btn btn-sm btn-default float-right" ng-disabled="pageNum == 0" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span></button> 
+    <span ng-if="counts.current != counts.total" class="badge">{{counts.current}} / {{counts.total}}</span> 
+    <span ng-if="counts.current == counts.total" class="badge">Non filtré : {{counts.current}} / {{counts.total}}</span> 
+    <button class="btn btn-sm btn-default float-right" ng-disabled="((pageNum + 1) * schema.limit) >= counts.current" ng-click="nextPage()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    <span class="text-muted float-right">{{pageNum*schema.limit}}...{{maxCount}}</span>
+    <button class="btn btn-sm btn-default float-right" ng-disabled="pageNum == 0" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span></button> 
 </div>
-<div ng-show="collapseFilters">
-    <hr />
+<div ng-show="collapseFilters" class="filter-container">
     <div class="form-inline">
         <label for="limitResults">Nombre de résultats </label>
         <input id="limitResults" class="form-control" type="number" ng-model="schema.limit">
@@ -57,7 +56,8 @@
         </div>
         <input id="{{field.name}}" type="checkbox" ng-if="field.type=='bool' && !field.options.multi" ng-model="filterData[field.name].value" ng-disabled="field.options.readOnly">
     </div>
-    <button type="button" class="btn btn-success float-right" ng-click="send(true)">Filtrer</button>
-    <button type="button" class="btn btn-warning float-right" ng-click="clear()" ng-disabled="counts.current == counts.total">Supprimer les filtres</button> 
-    <hr />
+    <div style="margin-bottom: 40px">
+        <button type="button" class="btn btn-success float-right" ng-click="send(true)">Filtrer</button>
+        <button type="button" class="btn btn-warning float-right" ng-click="clear()" ng-disabled="counts.current == counts.total">Supprimer les filtres</button> 
+    </div>
 </div>
