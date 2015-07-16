@@ -50,7 +50,7 @@ class ObservationService{
                 $out_item['geom'] = $info->getGeom();
             }
 
-            $out_item['geomLabel'] = sprintf('<a href="#/chiro/observation/sans-site/%s">Observation du %s</a>',
+            $out_item['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
                 $info->getId(), $info->getObsDate()->format('d/m/Y'));
 
             $out[] = $out_item;
