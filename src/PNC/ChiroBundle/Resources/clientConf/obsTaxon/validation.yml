@@ -26,12 +26,14 @@ fields:
         options: 
             visible: true
             type: "checkable"
+            style: s
     -   name: "cdNom"
         label: "CdNom"
         filter: 
             cdNom: "text"
         options: 
             visible: false
+            style: s
     -   name: "nomComplet"
         label: "Nom complet"
         filter: 
@@ -39,6 +41,7 @@ fields:
         filterFunc: "starting"
         options: 
             visible: true
+            style: xl
     -   name: "observateurs"
         label: "Observateurs"
         filter:
@@ -46,6 +49,7 @@ fields:
         options:
             type: list
             visible: true
+            style: l
     -   name: "obsObjStatusValidation"
         label: "Validation"
         filter: 
@@ -53,12 +57,14 @@ fields:
         options: 
             visible: false 
             type: "select"
+            style: l
     -   name: "siteNom"
         label: "Nom du site"
         filter: 
             siteNom: "text"
         options: 
             visible: true
+            style: xl
     -   name: "obsDate"
         label: "Date d'observation"
         filter: 
@@ -66,12 +72,14 @@ fields:
         options: 
             visible: true 
             type: "date"
+            style: l
     -   name: "obsEffectifAbs"
         label: "Effectif total"
         filter: 
             obsEffectifAbs: "text"
         options: 
             visible: true
+            style: s
     -   name: "numerisateur"
         label: "Numérisateur"
         filter: 
@@ -79,6 +87,7 @@ fields:
         filterFunc: "starting"
         options: 
             visible: false
+            style: l
     -   name: "validateur"
         label: "Validateur"
         filter: 
@@ -86,6 +95,7 @@ fields:
         filterFunc: "starting"
         options: 
             visible: false
+            style: l
     -   name: "dateValidation"
         label: "Date de validation"
         filter: 
@@ -93,3 +103,4 @@ fields:
         options: 
             visible: false
             type: "date"
+            style: l

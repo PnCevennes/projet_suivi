@@ -26,18 +26,21 @@ fields:
             siteCode: text
         options:
             visible: false
+            style: xl
     -   name: nomObservateur
         label: Observateur
         filter:
             nomObservateur: text
         option:
             visible: true
+            style: xl
     -   name: siteDate
         label: Date créa.
         filter:
             siteDate: text
         options:
             visible: false
+            style: l
     -   name: dernObs
         label: "Dern. obs."
         filter:

@@ -18,12 +18,14 @@ fields:
             nomComplet: text
         options:
             visible: true
+            style: xl 
     -   name: obsEffectifAbs
         label: "Effectif total"
         filter:
             obsEffectifAbs: text
         options:
             visible: true
+            style: xs 
     -   name: obsObjStatusValidation
         label: "Validation"
         filter:
@@ -31,3 +33,4 @@ fields:
         options:
             visible: true
             type: select
+            style: l 

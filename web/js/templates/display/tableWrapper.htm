@@ -18,6 +18,7 @@
                         'sort-desc': tableParams.isSortBy(column.name, 'desc'),
                         'table-xlarge': column.options.style == 'xl',
                         'table-large': column.options.style == 'l',
+                        'table-small': column.options.style == 's',
                         'table-xsmall': columo.options.style == 'xs'
                         }"
                     ng-click="tableParams.sorting(column.name, tableParams.isSortBy(column.name, 'asc') ? 'desc' : 'asc'); tableParams.page(1);"
@@ -25,8 +26,8 @@
                     >
                     {{column.label}}
                 </th>
-                <th class="table-small">
-                    <div>Filtrage local</div>
+                <th class="table-toolbox">
+                    <div>Filtrage local<br />
                         {{currentSel.current}} / {{currentSel.total}}
                     </div>
                 </th>

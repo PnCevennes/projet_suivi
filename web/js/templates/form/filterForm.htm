@@ -1,12 +1,11 @@
-<button type="button" ng-class="{'btn filter-inactive': counts.current == counts.total, 'btn filter-active': counts.current != counts.total}" ng-click="collapseFilters = !collapseFilters">
+<button type="button" ng-class="{'btn filter-inactive float-right': counts.current == counts.total, 'btn filter-active float-right': counts.current != counts.total}" ng-click="collapseFilters = !collapseFilters">
     Filtres 
     <span ng-class="{'glyphicon glyphicon-chevron-right': !collapseFilters, 'glyphicon glyphicon-chevron-down': collapseFilters}"></span>
 </button>
 <div class="filter-form-nav">
-    <span ng-if="counts.current != counts.total" class="badge">{{counts.current}} / {{counts.total}}</span> 
-    <span ng-if="counts.current == counts.total" class="badge">Non filtré : {{counts.current}} / {{counts.total}}</span> 
+    <span ng-class="{'badge filter-active': counts.current != counts.total,'badge filter-inactive': counts.current == counts.total}">{{counts.current}} / {{counts.total}}</span> 
     <button class="btn btn-sm btn-default float-right" ng-disabled="((pageNum + 1) * schema.limit) >= counts.current" ng-click="nextPage()"><span class="glyphicon glyphicon-chevron-right"></span></button>
-    <span class="text-muted float-right">{{pageNum*schema.limit}}...{{maxCount}}</span>
+    <span class="float-right">{{pageNum*schema.limit}}...{{maxCount}}</span>
     <button class="btn btn-sm btn-default float-right" ng-disabled="pageNum == 0" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span></button> 
 </div>
 <div ng-show="collapseFilters" class="filter-container">

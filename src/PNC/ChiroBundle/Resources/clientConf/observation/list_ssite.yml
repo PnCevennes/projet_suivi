@@ -12,6 +12,7 @@ fields:
           id: text
       options:
           visible: false
+          style: xs
     - name: obsDate
       label: "Date d'inventaire"
       filter:
@@ -19,6 +20,7 @@ fields:
       options:
           visible: true
           type: date
+          style: l 
     - name: observateurs
       label: Observateurs
       filter:
@@ -26,18 +28,21 @@ fields:
       options:
           visible: true
           type: list
+          style: l 
     - name: nbTaxons
       label: Taxons
       filter:
           nbTaxons: text
       options:
           visible: true
+          style: xs 
     - name: abondance
       label: Abondance
       filter:
           abondance: text
       options:
           visible: true
+          style: xs 
 
 
 

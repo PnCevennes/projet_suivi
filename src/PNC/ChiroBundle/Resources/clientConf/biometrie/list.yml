@@ -12,6 +12,7 @@ fields:
             id: text
         options:
             visible: false
+            style: xl 
     -   name: ageId
         label: "Âge"
         filter:
@@ -19,6 +20,7 @@ fields:
         options:
             visible: true
             type: select
+            style: xl 
     -   name: sexeId
         label: "Sexe"
         filter:
@@ -26,9 +28,11 @@ fields:
         options:
             visible: true
             type: select
+            style: s 
     -   name: biomPoids
         label: "Poids"
         filter: 
             biomPoids: text
         options:
             visible: true
+            style: xs 

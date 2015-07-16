@@ -562,7 +562,7 @@ app.directive('filterform', function(){
                     $scope.counts.current = resp.filteredCount;
                     $scope.maxCount = Math.min(($scope.pageNum+1) * $scope.schema.limit, $scope.counts.current);
                     $scope.callback(resp.filtered);
-                });
+                }, null, true);
             };
 
             $scope.init_schema = function(){
