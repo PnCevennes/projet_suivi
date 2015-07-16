@@ -434,7 +434,7 @@ app.directive('simpleform', function(){
                 var dfd = $q.defer();
                 var promise = dfd.promise;
                 promise.then(function(result) {
-                    $loading.finish('spinner-form');
+                    $loading.finish('spinner-send');
                 });
                 
                 if($scope.dataUrl){
@@ -494,9 +494,9 @@ app.directive('simpleform', function(){
 
             $scope.error = function(dfd){
                 return function(resp){
-                    dfd.resolve('errors');
                     userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
                     $scope.errors = angular.copy(resp);
+                    dfd.resolve('errors');
                 }
             };
 
