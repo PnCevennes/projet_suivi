@@ -441,7 +441,9 @@ app.directive('tablewrapper', function(){
                 $scope.tableParams.page(pgnum);
                 $timeout(function(){
                     var _elem = document.getElementById('item'+item.id);
-                    _elem.focus();
+                    if(_elem){
+                        _elem.focus();
+                    }
                 }, 0);
                 if(broadcast){
                     $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
