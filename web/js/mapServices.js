@@ -293,7 +293,7 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
         restrict: 'A',
         transclude: true,
         //templateUrl: 'js/templates/display/mapList.htm',
-        template: '<div><div tooltip="Ne lister que les éléments visibles sur la carte" tooltip-placement="right" id="mapAsFilter" class="checkbox"><label ng-show="toolBoxOpened"><input type="checkbox" ng-model="mapAsFilter" ng-click="filter()"/> Elements visibles uniquement </label><span ng-class="{\'glyphicon glyphicon-chevron-left\': toolBoxOpened, \'glyphicon glyphicon-chevron-right\': !toolBoxOpened}" ng-click="toolBoxOpened = !toolBoxOpened"></span></div><ng-transclude></ng-transclude></div>',
+        template: '<div><div id="mapAsFilter" class="checkbox"><label ng-show="toolBoxOpened"><input type="checkbox" ng-model="mapAsFilter" ng-click="filter()"/> filtrer avec la carte </label><span ng-class="{\'glyphicon glyphicon-chevron-left\': toolBoxOpened, \'glyphicon glyphicon-chevron-right\': !toolBoxOpened}" ng-click="toolBoxOpened = !toolBoxOpened"></span></div><ng-transclude></ng-transclude></div>',
         link: function(scope, elem, attrs){
             // récupération de l'identificateur d'événements de la liste
             var target = attrs['maplist'];
