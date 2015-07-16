@@ -183,28 +183,7 @@
 /*
  *Spreadsheet
  */
-.spreadsheet-container{
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-bottom: 0.5em;
-    margin-bottom: 4em;
-}
-.spreadsheet-container table{
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-}   
-.spreadsheet-container th{
-    background-color: #DDD;
-    text-align: center;
-}
-.spreadsheet-container td{
-    min-width: 10em;
-}
-.spreadsheet-container tbody th{
-    min-width: 3em;
-    max-width: 3em;
-}
+
 .spreadsheet{
     padding: 0;
     background-color: white;
@@ -218,11 +197,21 @@
     min-width: 10em;
 }
 
-.spreadsheet input{
+.spreadsheet input, select{
     border: none;
+    height: 100%;
     width: 100%;
+    margin: 0;
 }
 
+.spreadsheet select{
+    background-color: white;
+}
+
+.spreadsheet input:focus, select:focus{
+    outline: 1px solid #CCF;
+    outline-offset: 2px;
+}
 
 /*
  * Barre d'action des formulaires
@@ -348,6 +337,7 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 .opaque{
     background-color: white;
     z-index: 100;
+    padding-bottom: 20px;
 }
 /*
 .ng-table th.sortable.sort-asc{
@@ -358,3 +348,44 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
     background-color: #FCC;
 }
 */
+
+.filter-form-nav{
+    background-color: #CCC;
+    border-top: 2px solid #AAA;
+    position: fixed;
+    bottom: 0px;
+    width: 73%;
+    height: 35px;
+    z-index: 100;
+}
+
+.filter-form-nav span{
+    margin: 5px;
+}
+
+.filter-form-nav .badge{
+    margin: 5px;
+}
+
+.filter-inactive{}
+
+.filter-active{
+    background-color: lightgreen;
+}
+
+
+.table-fieldset th{
+    background-color: #EFEFEF;
+}
+
+.table-fieldset input{
+    border: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.table-fieldset input:focus{
+    outline: 0;
+    height: 100%;
+    width: 100%;
+}

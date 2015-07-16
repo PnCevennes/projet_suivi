@@ -531,6 +531,13 @@ app.directive('filterform', function(){
                 $scope.send();
             };
 
+            $scope.clear = function(){
+                $scope.schema.fields.forEach(function(item){
+                    $scope.filterData[item.name] = {filter: '=', value: item.default};
+                });
+                $scope.send();
+            };
+
             $scope.send = function(resetPage){
                 if(resetPage){
                     $scope.pageNum = 0;
