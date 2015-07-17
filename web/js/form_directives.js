@@ -795,10 +795,10 @@ app.directive('spreadsheet', function(){
                     var line_valid = true;
                     var line_empty = true;
                     $scope.schema.fields.forEach(function(field){
-                        if(line[field.name] && line[field.name] != '__NULL__'){
+                        if(line[field.name] && line[field.name] != null){
                             line_empty = false;
                         }
-                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == '__NULL__')){
+                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == null)){
                             line_valid = false;
                         }
                         if(field.options.primary && line_valid){
