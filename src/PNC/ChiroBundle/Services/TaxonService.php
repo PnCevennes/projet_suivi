@@ -11,26 +11,24 @@ class TaxonService{
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
-
     // service biometrie
     private $biometrieService;
 
-    public function __construct($db, $norm, $biomServ, $pagination){
+    public function __construct($db, $biomServ, $pagination, $es){
         $this->db = $db;
-        $this->norm = $norm;
         $this->biometrieService = $biomServ;
         $this->pagination = $pagination;
+        $this->entityService = $es;
     }
 
     public function getList($obs_id){
         $out = array();
         if($obs_id){
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
             $data = $repo->findBy(array('obs_id'=>$obs_id));
             foreach($data as $item){
-                $out[] = $this->norm->normalize($item, array('dateValidation', 'created', 'updated'));
+                $out[] = $this->entityService->normalize($item, $schema);
             }
         }
         return $out;
@@ -40,6 +38,7 @@ class TaxonService{
         $out = array();
 
         $entity = 'PNCChiroBundle:ValidationTaxonView';
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ValidationTaxonView.orm.yml';
         $filters = json_decode($request->query->get('filters'), true);
         $page = $request->query->get('page', 0);
         $limit = $request->query->get('limit', 30);
@@ -60,32 +59,27 @@ class TaxonService{
         foreach($data as $item){
             $out_item = array(
                 'type'=>'Feature', 
-                'properties'=>$this->norm->normalize($item, array('obsDate', 'geom', 'dateValidation', 'observateurs', 'created', 'updated')),
+                'properties'=>$this->entityService->normalize($item, $schema),
                 'geometry'=>$item->getGeom()
                 );
-        
-            $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
-            $out_item['properties']['dateValidation'] = $item->getDateValidation() ? $item->getDateValidation()->format('Y-m-d') : '';
-            $out_item['properties']['observateurs'] = $item->getObservateurs();
             $out[] = $out_item;
         }
         return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getOne($id){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $data = $repo->findOneBy(array('id'=>$id));
         if($data){
-            $out = $this->norm->normalize($data, array('dateValidation', 'created', 'updated'));
-            $out['dateValidation'] = $data->getDateValidation() ? $data->getDateValidation()->format('Y-m-d') : '';
-            $out['created'] = $data->getCreated() ? $data->getCreated()->format('Y-m-d'): '';
-            $out['updated'] = $data->getUpdated() ? $data->getUpdated()->format('Y-m-d'): '';
+            $out = $this->entityService->normalize($data, $schema);
             return $out;
         }
         return null;
     }
     
     public function create($data, $db=null, $commit=true){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         if($db){
             $manager = $db;
         }
@@ -97,7 +91,12 @@ class TaxonService{
         }
         try{
             $obsTx = new ObservationTaxon();
-            $this->hydrate($obsTx, $data);
+            $this->entityService->hydrate($obsTx, $schema, $data);
+
+            $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
+            $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
+            $obsTx->setNomComplet($tx->getNomComplet());
+            
             $manager->persist($obsTx);
             $manager->flush();
             if(isset($data['__biometries__'])){
@@ -121,13 +120,19 @@ class TaxonService{
     }
 
     public function update($id, $data){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
         $manager = $this->db->getManager();
         $obsTx = $repo->findOneBy(array('id'=>$id));
         if(!$obsTx){
             return null;
         }
-        $this->hydrate($obsTx, $data);
+        $this->entityService->hydrate($obsTx, $schema, $data);
+
+        $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
+        $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
+        $obsTx->setNomComplet($tx->getNomComplet());
+        
         $manager->flush();
         return array('id'=>$obsTx->getId());
     }
@@ -172,35 +177,6 @@ class TaxonService{
         }
         $manager->getConnection()->commit();
     }
-
-    private function hydrate($obj, $data){
-        $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
-        $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
-        $obj->setObsId($data['obsId']);
-        $obj->setActId($data['actId'] == '__NULL__' ? null : $data['actId']);
-        $obj->setPrvId($data['prvId'] == '__NULL__' ? null : $data['prvId']);
-        $obj->setObsTxInitial($data['obsTxInitial']);
-        $obj->setObsEspeceIncertaine($data['obsEspeceIncertaine']);
-        $obj->setObsEffectifAbs($data['obsEffectifAbs']);
-        $obj->setObsNbMaleAdulte($data['obsNbMaleAdulte']);
-        $obj->setObsNbFemelleAdulte($data['obsNbFemelleAdulte']);
-        $obj->setObsNbMaleJuvenile($data['obsNbMaleJuvenile']);
-        $obj->setObsNbFemelleJuvenile($data['obsNbFemelleJuvenile']);
-        $obj->setObsNbMaleIndetermine($data['obsNbMaleIndetermine']);
-        $obj->setObsNbFemelleIndetermine($data['obsNbFemelleIndetermine']);
-        $obj->setObsNbIndetermineAdulte($data['obsNbIndetermineAdulte']);
-        $obj->setObsNbIndetermineJuvenile($data['obsNbIndetermineJuvenile']);
-        $obj->setObsNbIndetermineIndetermine($data['obsNbIndetermineIndetermine']);
-        $obj->setObsObjStatusValidation($data['obsObjStatusValidation']);
-        $obj->setObsCommentaire($data['obsCommentaire']);
-        $obj->setCdNom($data['cdNom']);
-        $obj->setNomComplet($tx->getNomComplet());
-        $obj->setObsValidateur($data['obsValidateur']);
-        if($obj->errors()){
-            throw new \Exception($obj->errors()); 
-        }
-    }
-
 }
 
 

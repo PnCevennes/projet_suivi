@@ -84,7 +84,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
+        $typeAct = array(array('id'=>null, 'libelle'=>''));
         foreach($acts as $tl){
             if($tl->getFkParent() != 0){
                 $typeAct[] = $norm->normalize($tl, array());
@@ -93,7 +93,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Preuves de reproduction
         $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
+        $typePrv = array(array('id'=>null, 'libelle'=>''));
         foreach($prvs as $tl){
             if($tl->getFkParent() != 0){
                 $typePrv[] = $norm->normalize($tl, array());
@@ -114,12 +114,12 @@ class ObsTaxonConfigController extends Controller{
                 }
                 if($field['name'] == 'actId'){
                     $field['options']['choices'] = $typeAct;
-                    $field['default'] = '__NULL__';
+                    $field['default'] = null;
                     //$field['default'] = 25;
                 }
                 if($field['name'] == 'prvId'){
                     $field['options']['choices'] = $typePrv;
-                    $field['default'] = '__NULL__';
+                    $field['default'] = null;
                     //$field['default'] = 32;
                 }
             }
@@ -136,7 +136,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Activité
         $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
+        $typeAct = array(array('id'=>null, 'libelle'=>''));
         foreach($acts as $tl){
             if($tl->getFkParent() != 0){
                 $typeAct[] = $norm->normalize($tl, array());
@@ -145,7 +145,7 @@ class ObsTaxonConfigController extends Controller{
 
         // Preuves de reproduction
         $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
+        $typePrv = array(array('id'=>null, 'libelle'=>''));
         foreach($prvs as $tl){
             if($tl->getFkParent() != 0){
                 $typePrv[] = $norm->normalize($tl, array());
@@ -161,11 +161,11 @@ class ObsTaxonConfigController extends Controller{
             }
             if($field['name'] == 'actId'){
                 $field['options']['choices'] = $typeAct;
-                $field['default'] = '__NULL__';
+                $field['default'] = null;
             }
             if($field['name'] == 'prvId'){
                 $field['options']['choices'] = $typePrv;
-                $field['default'] = '__NULL__';
+                $field['default'] = null;
             }
         }
 

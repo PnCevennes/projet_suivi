@@ -12,20 +12,43 @@ use PNC\ChiroBundle\Entity\SiteFichiers;
 
 
 class SiteService{
+
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
-
-    public function __construct($db, $norm, $obsServ, $parentServ){
+    public function __construct($db, $obsServ, $parentServ, $es){
         $this->db = $db;
-        $this->norm = $norm;
         $this->obsService = $obsServ;
         $this->parentService = $parentServ;
+        $this->entityService = $es;
+        $this->schema = array(
+            'siteFrequentation'=>null,
+            'siteMenace'=>null,
+            'siteMenaceCmt'=>null,
+            'contactNom'=>null,
+            'contactPrenom'=>null,
+            'contactAdresse'=>null,
+            'contactCodePostal'=>null,
+            'contactVille'=>null,
+            'contactTelephone'=>null,
+            'contactPortable'=>null,
+            'contactCommentaire'=>null
+        );
+
     }
 
     public function getList(){
+        $schema = array(
+            'id'=>null,
+            'siteNom'=>null,
+            'siteDate'=>'date',
+            'dernObs'=>'date',
+            'nbObs'=>null,
+            'nomObservateur'=>null,
+            'siteCode'=>null,
+            'typeLieu'=>null,
+        );
+
         $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
         $infos = $repo->findAll();
         $out = array();
@@ -33,20 +56,14 @@ class SiteService{
         // definition de la structure de données sous form GeoJson
         foreach($infos as $info){
             $out_item = array('type'=>'Feature');
-            $out_item['properties'] = array(
-                'id'=>$info->getId(),
-                'siteNom'=>$info->getSiteNom(),
-                'siteDate'=>!is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '',
-                'dernObs'=>!is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '',
-                'nbObs'=>$info->getNbObs(),
-                'nomObservateur'=>$info->getNomObservateur(),
-                'siteCode'=>$info->getSiteCode(),
-                'typeLieu'=>$info->getTypeLieu(),
-            );
+            $out_item['properties'] = $this->entityService->normalize($info, $schema);
             $out_item['geometry'] = $info->getGeom();
 
-            $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/site/%s">%s</a>',
-                $info->getId(), $info->getSiteNom());
+            $out_item['properties']['geomLabel'] = sprintf(
+                '<a href="#/chiro/site/%s">%s</a>',
+                $info->getId(), 
+                $info->getSiteNom()
+            );
             $out[] = $out_item;
         }
         return $out;
@@ -60,16 +77,11 @@ class SiteService{
         if(!$info){
             throw new NotFoundHttpException();
         }
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/SiteView.orm.yml';
+        $data = $this->entityService->normalize($info, $schema);
 
-        $out_item = $this->norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement', 'created', 'updated', 'refCommune'));
-        $out_item['siteAmenagement'] = $info->getSiteAmenagement();
-        $out_item['refCommune'] = $info->getRefCommune();
-        $out_item['siteDate'] = !is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-        $out_item['created'] = !is_null($info->getCreated()) ? $info->getCreated()->format('Y-m-d'): '';
-        $out_item['updated'] = !is_null($info->getUpdated()) ? $info->getUpdated()->format('Y-m-d'): '';
-        $out_item['dernObs'] = !is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
-        $out_item['geom'] = array($info->getGeom()['coordinates']);
-        return $out_item;
+        $data['geom'] = array($data['geom']['coordinates']);
+        return $data;
     }
 
     public function create($data){
@@ -86,7 +98,7 @@ class SiteService{
             $errors = $e->getErrors();
         }
         try{
-            $this->hydrate($infoSite, $data);
+            $this->entityService->hydrate($infoSite, $this->schema, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors());
@@ -126,7 +138,7 @@ class SiteService{
             $errors = $e->getErrors();
         }
         try{
-            $this->hydrate($infoSite, $data);
+            $this->entityService->hydrate($infoSite, $this->schema, $data);
             $manager->flush();
             $manager->getConnection()->commit();
         }
@@ -197,22 +209,5 @@ class SiteService{
         $this->parentService->remove($this->db, $site);
         return true;
 
-    }
-
-    private function hydrate($obj, $data){
-        $obj->setSiteFrequentation($data['siteFrequentation']);
-        $obj->setSiteMenace($data['siteMenace']);
-        $obj->setSiteMenaceCmt($data['siteMenaceCmt']);
-        $obj->setContactNom($data['contactNom']);
-        $obj->setContactPrenom($data['contactPrenom']);
-        $obj->setContactAdresse($data['contactAdresse']);
-        $obj->setContactCodePostal($data['contactCodePostal']);
-        $obj->setContactVille($data['contactVille']);
-        $obj->setContactTelephone($data['contactTelephone']);
-        $obj->setContactPortable($data['contactPortable']);
-        $obj->setContactCommentaire($data['contactCommentaire']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors()); 
-        }
     }
 }

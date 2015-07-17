@@ -9,12 +9,54 @@ class BiometrieService{
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
+    // hydrate
+    private $entityService;
 
-    public function __construct($db, $norm){
+    // schema
+    private $schema;
+
+    public function __construct($db, $es){
         $this->db = $db;
-        $this->norm = $norm;
+        $this->entityService = $es;
+        $this->schema = array(
+            'id'=>null,
+            'obsTxId'=>null,
+            'ageId'=>null,
+            'sexeId'=>null,
+            'biomAb'=>null,
+            'biomPoids'=>null,
+            'biomD3mf1'=>null,
+            'biomD3f2f3'=>null,
+            'biomD3total'=>null,
+            'biomD5'=>null,
+            'biomCm3sup'=>null,
+            'biomCm3inf'=>null,
+            'biomCb'=>null,
+            'biomLm'=>null,
+            'biomOreille'=>null,
+            'biomCommentaire'=>null,
+        );
+
+        $this->normalize_schema = array(
+            'id'=>null,
+            'obsTxId'=>null,
+            'ageId'=>null,
+            'sexeId'=>null,
+            'biomAb'=>null,
+            'biomPoids'=>null,
+            'biomD3mf1'=>null,
+            'biomD3f2f3'=>null,
+            'biomD3total'=>null,
+            'biomD5'=>null,
+            'biomCm3sup'=>null,
+            'biomCm3inf'=>null,
+            'biomCb'=>null,
+            'biomLm'=>null,
+            'biomOreille'=>null,
+            'biomCommentaire'=>null,
+            'created'=>'date',
+            'updated'=>'date'
+        );
     }
 
     /*
@@ -28,7 +70,7 @@ class BiometrieService{
 
         $out = array();
         foreach($data as $item){
-            $out[] = $this->norm->normalize($item, array('created', 'updated'));
+            $out[] = $this->entityService->normalize($item, $this->normalize_schema);
         }
         return $out;
     }
@@ -42,10 +84,7 @@ class BiometrieService{
         $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
         $data = $repo->findOneBy(array('id'=>$id));
         if($data){
-            $out = $this->norm->normalize($data, array('created', 'updated'));
-            $out['created'] = $data->getCreated() ? $data->getCreated()->format('Y-m-d'): '';
-            $out['updated'] = $data->getUpdated() ? $data->getUpdated()->format('Y-m-d'): '';
-            return $out;
+            return $this->entityService->normalize($data, $this->normalize_schema);
         }
         return null;
     }
@@ -71,7 +110,7 @@ class BiometrieService{
         }
         try{
             $biom = new Biometrie();
-            $this->hydrate($biom, $data);
+            $this->entityService->hydrate($biom, $this->schema, $data);
             $manager->persist($biom);
             $manager->flush();
         }
@@ -105,7 +144,7 @@ class BiometrieService{
         if(!$biom){
             return null;
         }
-        $this->hydrate($biom, $data);
+        $this->entityService->hydrate($biom, $this->schema, $data);
         $manager->flush();
         return array('id'=>$biom->getId());
     }
@@ -127,36 +166,6 @@ class BiometrieService{
             return true;
         }
         return false;
-    }
-
-    /*
-     *  Factorisation de l'affectation des champs aux objets Biométrie
-     *  Aucune valeur de retour, la méthode agit sur la référence à l'objet
-     *  params:
-     *      obj: l'objet cible
-     *      data: le dictionnaire de données
-     *  raise:
-     *      DataObjectException en cas de données invalides
-     */
-    private function hydrate($obj, $data){
-        $obj->setObsTxId($data['obsTxId']);
-        $obj->setAgeId($data['ageId']);
-        $obj->setSexeId($data['sexeId']);
-        $obj->setBiomAb($data['biomAb']);
-        $obj->setBiomPoids($data['biomPoids']);
-        $obj->setBiomD3mf1($data['biomD3mf1']);
-        $obj->setBiomD3f2f3($data['biomD3f2f3']);
-        $obj->setBiomD3total($data['biomD3total']);
-        $obj->setBiomD5($data['biomD5']);
-        $obj->setBiomCm3sup($data['biomCm3sup']);
-        $obj->setBiomCm3inf($data['biomCm3inf']);
-        $obj->setBiomCb($data['biomCb']);
-        $obj->setBiomLm($data['biomLm']);
-        $obj->setBiomOreille($data['biomOreille']);
-        $obj->setBiomCommentaire($data['biomCommentaire']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors());
-        }
     }
 }
 

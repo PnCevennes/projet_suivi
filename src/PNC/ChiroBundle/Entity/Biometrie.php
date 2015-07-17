@@ -193,7 +193,12 @@ class Biometrie
         if($biomPoids && !is_numeric($biomPoids)){
             $this->_errors['biomPoids'] = "Cette valeur est numérique !";
         }
-        else $this->biom_poids = $biomPoids;
+        else{
+            if($biomPoids > 1000){
+                $this->_errors['biomPoids'] = "Poids improbable";
+            }
+            $this->biom_poids = $biomPoids;
+        }
 
         return $this;
     }
