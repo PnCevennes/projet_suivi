@@ -15,31 +15,7 @@ class SiteConfigController extends Controller{
         /*
          * récupération du vocabulaire type lieu
          */
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $typeL = $repo->findBy(array('id_type'=>7));
-        $typesLieu = array();
-        foreach($typeL as $tl){
-            if($tl->getFkParent() != 0){
-                $typesLieu[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $typeM = $repo->findBy(array('id_type'=>11));
-        $typesMenaces = array();
-        foreach($typeM as $tl){
-            if($tl->getFkParent() != 0){
-                $typesMenaces[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $typeF = $repo->findBy(array('id_type'=>10));
-        $typesFrequentation = array();
-        foreach($typeF as $tl){
-            if($tl->getFkParent() != 0){
-                $typesFrequentation[] = $norm->normalize($tl, array());
-            }
-        }
+        $thesaurus = $this->get('thesaurusService');
 
         $file = file_get_contents(__DIR__ . '/../Resources/clientConf/site/form.yml');
         $out = Yaml::parse($file);
@@ -50,15 +26,15 @@ class SiteConfigController extends Controller{
                     $field['options'] = array();
                 }
                 if($field['name'] == 'typeId'){
-                    $field['options']['choices'] = $typesLieu;
+                    $field['options']['choices'] = $thesaurus->get_list(7);
                     $field['default'] = 37;
                 }
                 if($field['name'] == 'siteFrequentation'){
-                    $field['options']['choices'] = $typesFrequentation;
+                    $field['options']['choices'] = $thesaurus->get_list(11);
                     $field['default'] = 59;
                 }
                 if($field['name'] == 'siteMenace'){
-                    $field['options']['choices'] = $typesMenaces;
+                    $field['options']['choices'] = $thesaurus->get_list(10);
                     $field['default'] = 64;
                 }
             }
@@ -80,31 +56,7 @@ class SiteConfigController extends Controller{
         /*
          * récupération du vocabulaire type lieu
          */
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $types = $repo->findBy(array('id_type'=>7));
-        $typesLieu = array();
-        foreach($types as $tl){
-            if($tl->getFkParent() != 0){
-                $typesLieu[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $typeM = $repo->findBy(array('id_type'=>11));
-        $typesMenaces = array();
-        foreach($typeM as $tl){
-            if($tl->getFkParent() != 0){
-                $typesMenaces[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $typeF = $repo->findBy(array('id_type'=>10));
-        $typesFrequentation = array();
-        foreach($typeF as $tl){
-            if($tl->getFkParent() != 0){
-                $typesFrequentation[] = $norm->normalize($tl, array());
-            }
-        }
+        $thesaurus = $this->get('thesaurusService');
 
         $file = file_get_contents(__DIR__ . '/../Resources/clientConf/site/detail.yml');
         $out = Yaml::parse($file);
@@ -115,19 +67,19 @@ class SiteConfigController extends Controller{
                     if(!isset($field['options'])){
                         $field['options'] = array();
                     }
-                    $field['options']['choices'] = $typesLieu;
+                    $field['options']['choices'] = $thesaurus->get_list(7);
                 }
                 if($field['name'] == 'siteFrequentation'){
                     if(!isset($field['options'])){
                         $field['options'] = array();
                     }
-                    $field['options']['choices'] = $typesFrequentation;
+                    $field['options']['choices'] = $thesaurus->get_list(11);
                 }
                 if($field['name'] == 'siteMenace'){
                     if(!isset($field['options'])){
                         $field['options'] = array();
                     }
-                    $field['options']['choices'] = $typesMenaces;
+                    $field['options']['choices'] = $thesaurus->get_list(10);
                 }
             }
         }

@@ -18,3 +18,6 @@ services:
     entityService:
         class: PNC\Utils\EntityService
         arguments: [@geometry, @kernel]
+    thesaurusService:
+        class: PNC\Utils\ThesaurusService
+        arguments: [@doctrine, @normalizer]           

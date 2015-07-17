@@ -4,7 +4,6 @@ namespace PNC\Utils;
 
 use Commons\Exceptions\DataObjectException;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 class EntityService{
 

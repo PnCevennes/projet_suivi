@@ -401,7 +401,7 @@ app.directive('simpleform', function(){
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
                         if(field.type != 'group'){
-                            $scope.data[field.name] = angular.copy(resp[field.name]) || field.default || null;
+                            $scope.data[field.name] = resp[field.name] != undefined ? angular.copy(resp[field.name]) : field.default != undefined ? field.default : null;
                             if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
                                 $scope.data[field.name] = userServ.getUser().idRole;
                             }
