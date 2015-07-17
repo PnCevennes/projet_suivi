@@ -16,9 +16,11 @@ fields:
     -   name: actId
         label: "Activité"
         type: select
+        thesaurusID: 5
     -   name: prvId
         label: "Preuves de reproduction"
         type: select
+        thesaurusID: 6
     -   name: obsNbIndetermineIndetermine
         label: "Indéterminés"
         type: num

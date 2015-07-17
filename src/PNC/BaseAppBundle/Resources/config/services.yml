@@ -21,3 +21,6 @@ services:
     thesaurusService:
         class: PNC\Utils\ThesaurusService
         arguments: [@doctrine, @normalizer]           
+    configService:
+        class: PNC\Utils\ConfigService
+        arguments: [@thesaurusService]

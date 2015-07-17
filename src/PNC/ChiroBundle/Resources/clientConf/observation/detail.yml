@@ -38,6 +38,7 @@ groups:
           - name: modId
             label: "Mode d'observation"
             type: select
+            thesaurusID: 4
           - name: obsCommentaire
             label: Commentaires
             type: string

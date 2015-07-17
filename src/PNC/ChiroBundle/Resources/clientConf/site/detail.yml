@@ -18,6 +18,7 @@ groups:
             -   name: typeId
                 label: "Type"
                 type: select
+                thesaurusID: 7
                 help: "Type de lieu"
             -   name: refCommune
                 label: "Commune"
@@ -45,10 +46,12 @@ groups:
             -   name: siteFrequentation
                 label: Fréquentation
                 type: select
+                thesaurusID: 10
                 help: "Fréquentation du site"
             -   name: siteMenace
                 label: Menaces
                 type: select
+                thesaurusID: 11
                 help: "Menaces pesant sur le site"
             -   name: siteMenaceCmt
                 label: "Description menaces"

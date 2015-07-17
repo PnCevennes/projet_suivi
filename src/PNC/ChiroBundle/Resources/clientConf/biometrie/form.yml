@@ -9,9 +9,11 @@ groups:
             -   name: ageId
                 label: "Âge"
                 type: select
+                thesaurusID: 1
             -   name: sexeId
                 label: "Sexe"
                 type: select
+                thesaurusID: 2
             -   name: biomPoids
                 label: "Poids (g)"
                 type: num

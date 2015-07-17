@@ -21,7 +21,9 @@ class ThesaurusService{
         }
         foreach($res as $elem){
             if($elem->getFkParent() != 0){
-                $data[] = $this->norm->normalize($elem);
+                $data[] = array(
+                    'id'=>$elem->getId(),
+                    'libelle'=>$elem->getLibelle());
             }
         }
         return $data;

@@ -2,11 +2,13 @@ fields:
     -   name: ageId
         label: "Âge"
         type: select
+        thesaurusID: 1
         options:
             required: true
     -   name: sexeId
         label: "Sexe"
         type: select
+        thesaurusID: 2
         options:
             required: true
     -   name: biomPoids

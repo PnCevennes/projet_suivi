@@ -28,14 +28,18 @@ groups:
             -   name: obsObjStatusValidation
                 label: Validation
                 type: select
+                thesaurusID: 9
                 options:
                     editLevel: 5
+                default: 55
             -   name: actId
                 label: "Activité"
                 type: select
+                thesaurusID: 5
             -   name: prvId
                 label: "Preuves de reproduction"
                 type: select
+                thesaurusID: 6
             -   name: obsEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool

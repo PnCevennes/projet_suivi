@@ -32,6 +32,7 @@ groups:
             -   name: obsObjStatusValidation
                 label: "Statut validation"
                 type: select
+                thesaurusID: 9
             -   name: obsValidateur
                 label: "Validateur"
                 type: xhr
@@ -40,9 +41,11 @@ groups:
             -   name: actId
                 label: "Activité"
                 type: select
+                thesaurusID: 5
             -   name: prvId
                 label: "Preuves de reproduction"
                 type: select
+                thesaurusID: 6
             -   name: obsEffectifAbs
                 label: "Effectif total"
                 type: num

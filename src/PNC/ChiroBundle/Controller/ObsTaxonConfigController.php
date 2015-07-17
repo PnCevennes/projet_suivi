@@ -64,32 +64,9 @@ class ObsTaxonConfigController extends Controller{
 
     // path : GET chiro/config/obstaxon/form
     public function getFormAction(){
-        $thesaurus = $this->get('thesaurusService');
+        $conf = $this->get('configService');
 
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form.yml');
-        $out = Yaml::parse($file);
-
-        foreach($out['groups'] as &$group){
-            foreach($group['fields'] as &$field){
-                if(!isset($field['options'])){
-                    $field['options'] = array();
-                }
-                if($field['name'] == 'obsObjStatusValidation'){
-                    $field['options']['choices'] = $thesaurus->get_list(9, false);
-                    $field['default'] = 55;
-                }
-                if($field['name'] == 'actId'){
-                    $field['options']['choices'] = $thesaurus->get_list(5);
-                    $field['default'] = 0;
-                    //$field['default'] = 25;
-                }
-                if($field['name'] == 'prvId'){
-                    $field['options']['choices'] = $thesaurus->get_list(6);
-                    $field['default'] = 0;
-                    //$field['default'] = 32;
-                }
-            }
-        }
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/form.yml');
 
         return new JsonResponse($out);
     }
@@ -97,55 +74,18 @@ class ObsTaxonConfigController extends Controller{
     // path : GET chiro/config/obstaxon/form/many
     public function getFormManyAction(){
 
-        $thesaurus = $this->get('thesaurusService');
+        $conf = $this->get('configService');
 
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form_many.yml');
-        $out = Yaml::parse($file);
-
-        foreach($out['fields'] as &$field){
-            if(!isset($field['options'])){
-                $field['options'] = array();
-            }
-            if($field['name'] == 'actId'){
-                $field['options']['choices'] = $thesaurus->get_list(5);
-                $field['default'] = 0;
-                //$field['default'] = 25;
-            }
-            if($field['name'] == 'prvId'){
-                $field['options']['choices'] = $thesaurus->get_list(6);
-                $field['default'] = 0;
-                //$field['default'] = 32;
-            }
-        }
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/form_many.yml');
 
         return new JsonResponse($out);
     }
 
     // path : GET chiro/config/obstaxon/detail
     public function getDetailAction(){
-        $thesaurus = $this->get('thesaurusService');
 
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/detail.yml');
-        $out = Yaml::parse($file);
-
-        foreach($out['groups'] as &$group){
-            foreach($group['fields'] as &$field){
-                if(!isset($field['options'])){
-                    $field['options'] = array();
-                }
-                if($field['name'] == 'obsObjStatusValidation'){
-                    $field['options']['choices'] = $thesaurus->get_list(9, false);
-                }
-                if($field['name'] == 'actId'){
-                    $field['options']['choices'] = $thesaurus->get_list(5);
-                }
-                if($field['name'] == 'prvId'){
-                    $field['options']['choices'] = $thesaurus->get_list(6);
-                }
-            }
-        }
-
-
+        $conf = $this->get('configService');
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/detail.yml');
 
         return new JsonResponse($out);
     }
