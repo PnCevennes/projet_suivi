@@ -281,6 +281,7 @@ app.directive('leafletMap', function(){
             $scope.$on('$destroy', function(evt){
                 if(map){
                     map.remove();
+                    mapService.initialize = null;
                     geoms = [];
                 }
             });

@@ -581,78 +581,82 @@ app.directive('geometry', function($timeout){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
-            mapService.initialize($scope.configUrl).then(function(){
-                mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
-                mapService.loadData($scope.options.dataUrl).then(function(){
-                    if($scope.origin){
-                        $timeout(function(){
-                            var layer = mapService.selectItem($scope.origin);
-                            if(layer){
-                                setEditLayer(layer);
-                            }
-                        }, 0);
-                    }
-                    mapService.getMap().addLayer($scope.editLayer);
-                    mapService.getMap().removeLayer(mapService.getLayer());
-                });
+            var initialize = function(){
+                mapService.initialize($scope.configUrl).then(function(){
+                    mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
+                    mapService.loadData($scope.options.dataUrl).then(function(){
+                        if($scope.origin){
+                            $timeout(function(){
+                                var layer = mapService.selectItem($scope.origin);
+                                if(layer){
+                                    setEditLayer(layer);
+                                }
+                            }, 0);
+                        }
+                        mapService.getMap().addLayer($scope.editLayer);
+                        mapService.getMap().removeLayer(mapService.getLayer());
+                    });
 
-                $scope.controls = new L.Control.Draw({
-                    edit: {featureGroup: $scope.editLayer},
-                    draw: {
-                        circle: false,
-                        rectangle: false,
-                        marker: $scope.options.geometryType == 'point',
-                        polyline: $scope.options.geometryType == 'linestring',
-                        polygon: $scope.options.geometryType == 'polygon',
-                    },
-                });
+                    $scope.controls = new L.Control.Draw({
+                        edit: {featureGroup: $scope.editLayer},
+                        draw: {
+                            circle: false,
+                            rectangle: false,
+                            marker: $scope.options.geometryType == 'point',
+                            polyline: $scope.options.geometryType == 'linestring',
+                            polygon: $scope.options.geometryType == 'polygon',
+                        },
+                    });
 
-                mapService.getMap().addControl($scope.controls);
+                    mapService.getMap().addControl($scope.controls);
 
-                /*
-                 * affichage coords curseur en edition 
-                 * TODO confirmer le maintien
-                 */
-                coordsDisplay = L.control({position: 'bottomleft'});
-                coordsDisplay.onAdd = function(map){
-                    this._dsp = L.DomUtil.create('div', 'coords-dsp');
-                    return this._dsp;
-                };
-                coordsDisplay.update = function(evt){
-                    this._dsp.innerHTML = '<span>Long. : ' + evt.latlng.lng + '</span><span>Lat. : ' + evt.latlng.lat + '</span>';
-                };
+                    /*
+                     * affichage coords curseur en edition 
+                     * TODO confirmer le maintien
+                     */
+                    coordsDisplay = L.control({position: 'bottomleft'});
+                    coordsDisplay.onAdd = function(map){
+                        this._dsp = L.DomUtil.create('div', 'coords-dsp');
+                        return this._dsp;
+                    };
+                    coordsDisplay.update = function(evt){
+                        this._dsp.innerHTML = '<span>Long. : ' + evt.latlng.lng + '</span><span>Lat. : ' + evt.latlng.lat + '</span>';
+                    };
 
-                mapService.getMap().on('mousemove', function(e){
-                    coordsDisplay.update(e);
-                });
+                    mapService.getMap().on('mousemove', function(e){
+                        coordsDisplay.update(e);
+                    });
 
-                coordsDisplay.addTo(mapService.getMap());
-                /*
-                 * ---------------------------------------
-                 */
+                    coordsDisplay.addTo(mapService.getMap());
+                    /*
+                     * ---------------------------------------
+                     */
 
 
-                mapService.getMap().on('draw:created', function(e){
-                    if(!current){
-                        $scope.editLayer.addLayer(e.layer);
-                        current = e.layer;
+                    mapService.getMap().on('draw:created', function(e){
+                        if(!current){
+                            $scope.editLayer.addLayer(e.layer);
+                            current = e.layer;
+                            $rootScope.$apply($scope.updateCoords(current));
+                        }
+                    });
+
+                    mapService.getMap().on('draw:edited', function(e){
+                        $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
+                    });
+
+                    mapService.getMap().on('draw:deleted', function(e){
+                        current = null;
                         $rootScope.$apply($scope.updateCoords(current));
-                    }
+                    });
+                    $timeout(function() {
+                        mapService.getMap().invalidateSize();
+                    }, 0 );
+                
                 });
+            };
 
-                mapService.getMap().on('draw:edited', function(e){
-                    $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
-                });
-
-                mapService.getMap().on('draw:deleted', function(e){
-                    current = null;
-                    $rootScope.$apply($scope.updateCoords(current));
-                });
-                $timeout(function() {
-                    mapService.getMap().invalidateSize();
-                }, 0 );
-            
-            });
+            $timeout(initialize, 0);
 
             $scope.geom = $scope.geom || [];
 
