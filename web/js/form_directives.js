@@ -656,6 +656,7 @@ app.directive('geometry', function($timeout){
                 });
             };
 
+            // initialisation de la carte
             $timeout(initialize, 0);
 
             $scope.geom = $scope.geom || [];

@@ -75,11 +75,22 @@ app.directive('leafletMap', function(){
                         if(!resource.clustering){
                             layer.options.disableClusteringAtZoom = 13;
                         }
+                        var curlayer = null;
+                        configServ.get('map:currentLayer', function(_curlayer){
+                            curlayer = _curlayer
+                        });
                         resource.layers.baselayers.forEach(function(_layer, name){
                             var layerData = LeafletServices.loadData(_layer);
                             tileLayers[layerData.name] = layerData.map;
-                            if(layerData.active){
-                                layerData.map.addTo(map);
+                            if(curlayer){
+                                if(layerData.name == curlayer){
+                                    layerData.map.addTo(map);
+                                }
+                            }
+                            else{
+                                if(layerData.active){
+                                    layerData.map.addTo(map);
+                                }
                             }
                         });
                         map.setView(
@@ -96,6 +107,12 @@ app.directive('leafletMap', function(){
                             $rootScope.$apply(
                                 $rootScope.$broadcast('mapService:pan')
                             );
+                        });
+
+                        map.on('baselayerchange', function(ev){
+                            $rootScope.$apply(function(){
+                                configServ.put('map:currentLayer', ev.name);
+                            })
                         });
 
 
