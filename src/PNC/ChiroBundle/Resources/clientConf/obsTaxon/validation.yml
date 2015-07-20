@@ -41,6 +41,7 @@ fields:
         filterFunc: "starting"
         options: 
             visible: true
+            primary: true
             style: xl
     -   name: "observateurs"
         label: "Observateurs"

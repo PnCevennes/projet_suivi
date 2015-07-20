@@ -93,6 +93,9 @@ class EntityService{
     }
 
 
+    /*
+     * retourne la donnée fournie transformée selon la méthode passée en parametre
+     */
     private function transform_to($method, $data){
         if(is_null($data)){
             return $data;

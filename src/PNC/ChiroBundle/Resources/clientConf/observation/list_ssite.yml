@@ -18,6 +18,7 @@ fields:
       filter:
           obsDate: text
       options:
+          primary: true
           visible: true
           type: date
           style: l 
@@ -28,7 +29,7 @@ fields:
       options:
           visible: true
           type: list
-          style: l 
+          style: xl 
     - name: nbTaxons
       label: Taxons
       filter:
