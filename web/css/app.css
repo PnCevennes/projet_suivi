@@ -303,19 +303,24 @@ table.tablewrapper>tbody>tr.active>td{
 }
 
 .rc-handle-container {
-    position: relative; }
+    position: relative;
+}
 
 .rc-handle {
     position: absolute;
     width: 7px;
     cursor: ew-resize;
     margin-left: -3px;
-    z-index: 2; }
+    z-index: 2;
+}
 
 table.rc-table-resizing {
-    cursor: ew-resize; }
+    cursor: ew-resize;
+}
+
 table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-table-resizing thead > th > a {
-    cursor: ew-resize; }
+    cursor: ew-resize;
+}
 
 .table-xlarge{
     min-width: 20em;
@@ -326,15 +331,11 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 }
 
 .table-small{
-    max-width: 5em;
+    max-width: 10em;
 }
 
 .table-xsmall{
-    max-width: 10em;
-}
-
-.table-toolbox{
-    max-width: 10em;
+    max-width: 5em;
 }
 
 .opaque{
@@ -413,3 +414,13 @@ span.filter-active{
     width: 100%;
     overflow-x: scroll;
 }
+
+.link-mute{
+    text-decoration: none;
+}
+
+.link-mute:focus{
+    text-decoration: none;
+    outline: 0;
+}
+
