@@ -281,9 +281,16 @@ app.directive('leafletMap', function(){
 
                 var dataLoad = function(deferred){
                     return function(resp){
-                        resp.forEach(function(geom){
-                            addGeom(geom);
-                        });
+                        if(resp.filtered){
+                            resp.filtered.forEach(function(geom){
+                                addGeom(geom);
+                            });
+                        }
+                        else{
+                            resp.forEach(function(geom){
+                                addGeom(geom);
+                            });
+                        }
                         $rootScope.$broadcast('mapService:dataLoaded');
                         $loading.finish('map-loading');
                         deferred.resolve();

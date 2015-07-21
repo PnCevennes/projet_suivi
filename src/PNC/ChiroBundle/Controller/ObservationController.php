@@ -14,20 +14,22 @@ use Commons\Exceptions\CascadeException;
 class ObservationController extends Controller{
 
     // path: GET /chiro/observation
-    public function listAction(){
+    public function listAction(Request $request){
         /*
          * retourne la liste complete des observations
          */
         $os = $this->get('observationService');
+        /*
         $out = array();
-        foreach($os->getList() as $item){
+        foreach( as $item){
             $geoJson = array(
                 'type'=>'Feature',
                 'geometry'=>$item['geom'],
                 'properties'=>$item);
             $out[] = $geoJson;
         }
-
+        */
+        $out = $os->getFilteredList($request);
         return new JsonResponse($out);
     }
 

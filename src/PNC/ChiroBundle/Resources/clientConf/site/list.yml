@@ -5,9 +5,27 @@ createUrl: "#/chiro/edit/site/"
 editUrl: "#/chiro/edit/site/"
 detailUrl: "#/chiro/site/"
 editAccess: 5
+filtering:
+    limit: null
+    fields:
+        -   name: "dern_obs"
+            label: "Dernière observation"
+            type: date
+        -   name: nb_obs
+            label: "Nombre d'observations"
+            type: "num"
+        -   name: "type_id"
+            label: "Type de site"
+            type: select
+            thesaurusID: 7
+            default: 0
+        -   name: site_date
+            label: "Création du site"
+            type: date
 fields: 
     -   name: id 
         label: ID
+        type: text
         filter: 
             id: text
         options: 
@@ -15,6 +33,7 @@ fields:
 
     -   name: siteNom
         label: Nom
+        type: text
         filter: 
             siteNom: text
         options:
@@ -23,6 +42,7 @@ fields:
             style: xl
     -   name: siteCode
         label: Code site
+        type: text
         filter: 
             siteCode: text
         options:
@@ -30,6 +50,7 @@ fields:
             style: xl
     -   name: nomObservateur
         label: Observateur
+        type: text
         filter:
             nomObservateur: text
         option:
@@ -37,6 +58,7 @@ fields:
             style: xl
     -   name: siteDate
         label: Date créa.
+        type: date
         filter:
             siteDate: text
         options:
@@ -45,6 +67,7 @@ fields:
             style: l
     -   name: dernObs
         label: "Dern. obs."
+        type: date
         filter:
             dernObs: text
         options:
@@ -53,6 +76,7 @@ fields:
             style: xs
     -   name: nbObs
         label: "Nb visites"
+        type: text
         filter:
             nbObs: text
         options:
@@ -60,6 +84,8 @@ fields:
             style: xs
     -   name: typeLieu
         label: Type
+        type: select
+        thesaurusID: 7
         filter:
             typeLieu: text
         options:

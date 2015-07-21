@@ -33,6 +33,7 @@ app.controller('siteListController', function($scope, $routeParams, dataServ, ma
     var data = [];
     $scope._appName = $routeParams.appName;
     $scope.editAccess = userServ.checkLevel(3);
+    $scope.data_url = $routeParams.appName + '/site';
     $scope.data = [];
 
     
@@ -48,23 +49,20 @@ app.controller('siteListController', function($scope, $routeParams, dataServ, ma
     });
     
     $scope.setData = function(resp){
-        var tmp = [];
         $scope.items = resp;
-        resp.forEach(function(item){
-            tmp.push(item.properties);
-            mapService.addGeom(item);
+        mapService.initialize('js/resources/chiro_site.json').then(function(){
+            $scope.data = resp.map(function(item){
+                mapService.addGeom(item); 
+                return item.properties;
+            });
         });
         $scope.geoms = resp;
-        $scope.data = tmp;
         dfd.resolve('loading data');
     };
 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
-        mapService.initialize('js/resources/chiro_site.json').then(function(){
 
-            dataServ.get($scope._appName + '/site', $scope.setData);
-        });
     };
 
     $timeout(function(){

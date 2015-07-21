@@ -40,9 +40,11 @@ class PaginationService{
 
         //entités paginées
         $qr = $qb->select('x')->from($entity, 'x');
-        if($curPage !== null && $maxResults !== null){
-            $qr->setFirstResult($curPage*$maxResults);
-            $qr->setMaxResults($maxResults);
+        if($maxResults !== 'null'){
+            if($curPage !== 'null'){
+                $qr->setFirstResult($curPage*$maxResults);
+                $qr->setMaxResults($maxResults);
+            }
         }
         foreach($fields as $key=>$field){
             $_filter = $this->createFilter($qr, $key, $field);

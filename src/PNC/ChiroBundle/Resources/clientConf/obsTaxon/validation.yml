@@ -5,7 +5,7 @@ editUrl: "#/chiro/edit/taxons/"
 editAccess: 5
 checkable: true
 filtering:
-    limit: 20
+    limit: 200
     fields: 
         -   name: "cd_nom"
             label: "Taxon"

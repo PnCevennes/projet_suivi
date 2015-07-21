@@ -5,6 +5,19 @@ createUrl: "#/chiro/edit/inventaire"
 editUrl: "#/chiro/edit/inventaire/"
 detailUrl: "#/chiro/inventaire/"
 editAccess: 2
+filtering:
+    limit: null
+    fields:
+        -   name: obs_date
+            label: "Date d'observation"
+            type: date
+        -   name: nb_taxons
+            label: "Taxons"
+            type: num
+        -   name: abondance
+            label: Abondance
+            type: num
+
 fields:
     - name: id
       label: Id

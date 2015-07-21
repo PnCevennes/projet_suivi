@@ -696,8 +696,6 @@ app.directive('datepick', function(){
         templateUrl: 'js/templates/form/datepick.htm',
         controller: function($scope){
             $scope.opened = false;
-            //$scope.date = new Date();
-            console.log($scope.date);
             $scope.toggle = function($event){
                 $event.preventDefault();
                 $event.stopPropagation();

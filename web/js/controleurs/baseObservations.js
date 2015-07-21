@@ -55,6 +55,7 @@ app.controller('observationListController', function($scope, $routeParams, dataS
     var data = [];
     $scope._appName = $routeParams.appName;
     $scope.editAccess = userServ.checkLevel(2);
+    $scope.data_url = $routeParams.appName + '/observation';
     $scope.data = [];
 
     
@@ -70,22 +71,19 @@ app.controller('observationListController', function($scope, $routeParams, dataS
     });
     
     $scope.setData = function(resp){
-        var tmp = [];
         $scope.items = resp;
-        resp.forEach(function(item){
-            tmp.push(item.properties);
-            mapService.addGeom(item);
+        mapService.initialize('js/resources/chiro_obs.json').then(function(){
+            $scope.data = resp.map(function(item){
+                mapService.addGeom(item);
+                return item.properties;
+            });
         });
         $scope.geoms = resp;
-        $scope.data = tmp;
         dfd.resolve('loading data');
     };
 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
-        mapService.initialize('js/resources/chiro_obs.json').then(function(){
-            dataServ.get($scope._appName + '/observation', $scope.setData);
-        });
     };
 
     $timeout(function(){

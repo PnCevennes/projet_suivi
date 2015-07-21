@@ -53,7 +53,6 @@ class TaxonService{
             }
         }
 
-        //$data = $qr->getQuery()->getResult();
         $res = $this->pagination->filter($entity, $fields, $page, $limit);
         $data = $res['filtered'];
         foreach($data as $item){

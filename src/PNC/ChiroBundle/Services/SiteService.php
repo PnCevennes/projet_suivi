@@ -16,11 +16,12 @@ class SiteService{
     // doctrine
     private $db;
 
-    public function __construct($db, $obsServ, $parentServ, $es){
+    public function __construct($db, $obsServ, $parentServ, $es, $pg){
         $this->db = $db;
         $this->obsService = $obsServ;
         $this->parentService = $parentServ;
         $this->entityService = $es;
+        $this->pagination = $pg;
         $this->schema = array(
             'siteFrequentation'=>null,
             'siteMenace'=>null,
@@ -37,7 +38,7 @@ class SiteService{
 
     }
 
-    public function getList(){
+    public function getFilteredList($request){
         $schema = array(
             'id'=>null,
             'siteNom'=>null,
@@ -49,8 +50,29 @@ class SiteService{
             'typeLieu'=>null,
         );
 
-        $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
-        $infos = $repo->findAll();
+        $entity = 'PNCChiroBundle:SiteView';
+        $filters = json_decode($request->query->get('filters'), true);
+        $page = $request->query->get('page', 0);
+        $limit = $request->query->get('limit', null);
+        $fields = array();
+
+        if($filters){
+            foreach($filters as $filter){
+                if($filter['item'] == 'type_id' && $filter['value'] == 0){
+                    continue;
+                }
+                $fields[] = array(
+                    'name'=>$filter['item'],
+                    'compare'=>$filter['filter'],
+                    'value'=>$filter['value']
+                );
+            }
+        }
+
+        $res = $this->pagination->filter($entity, $fields, $page, $limit);
+
+        $infos = $res['filtered'];
+
         $out = array();
 
         // definition de la structure de données sous form GeoJson
@@ -66,9 +88,7 @@ class SiteService{
             );
             $out[] = $out_item;
         }
-        return $out;
-
-
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getOne($id){

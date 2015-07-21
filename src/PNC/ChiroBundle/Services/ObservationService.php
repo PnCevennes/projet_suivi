@@ -20,11 +20,58 @@ class ObservationService{
     // baseObservation
     private $parentService;
 
-    public function __construct($db, $taxonServ, $parentServ, $es){
+    public function __construct($db, $taxonServ, $parentServ, $es, $pg){
         $this->db = $db;
         $this->taxonService = $taxonServ;
         $this->parentService = $parentServ;
         $this->entityService = $es;
+        $this->pagination = $pg;
+    }
+
+    public function getFilteredList($request){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
+        $entity = 'PNCChiroBundle:ObservationSsSiteView';
+
+        $filters = json_decode($request->query->get('filters'), true);
+        $page = $request->query->get('page', 0);
+        $limit = $request->query->get('limit', null);
+        $fields = array();
+
+        if($filters){
+            foreach($filters as $filter){
+                $fields[] = array(
+                    'name'=>$filter['item'],
+                    'compare'=>$filter['filter'],
+                    'value'=>$filter['value']
+                );
+            }
+        }
+
+        $res = $this->pagination->filter($entity, $fields, $page, $limit);
+
+        $infos = $res['filtered'];
+
+        $out = array();
+        foreach($infos as $info){
+            $data = $this->entityService->normalize($info, $schema);
+            $out_item = array(
+                'type'=>'Feature',
+                'geometry'=>$info->getGeom(),
+                'properties'=>$data);
+            $out_item['properties']['observateurs'] = array();
+            foreach($info->getObservateurs() as $obr){
+                if($obr->getRole() == 'observateur'){
+                    $out_item['properties']['observateurs'][] = $obr->getNomComplet();
+                }
+            }
+
+            $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
+                $info->getId(), $info->getObsDate()->format('d/m/Y'));
+
+            $out[] = $out_item;
+        }
+
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getList($siteId=null){

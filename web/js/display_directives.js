@@ -351,6 +351,9 @@ app.directive('tablewrapper', function(){
                     else{
                         var filteredData = $scope.data;
                     }
+                    if(!filteredData.length){
+                        return;
+                    }
                     reqFilter = params.filter();
                     if(reqFilter){
                         for(filterKey in reqFilter){
@@ -378,7 +381,8 @@ app.directive('tablewrapper', function(){
                     params.total(orderedData.length); // set total for recalc pagination
                     $scope.currentSel = {total: $scope.data.length, current: orderedData.length};
 
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    var curPg = params.page() || 1;
+                    $defer.resolve(orderedData.slice((curPg - 1) * params.count(), curPg * params.count()));
                 } 
             });
             
@@ -451,7 +455,7 @@ app.directive('tablewrapper', function(){
             };
 
             $scope.$watch('data', function(newval){
-                if(newval){
+                if(newval.length){
                     configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
                         if(item){
                             $scope.currentItem = item;
@@ -498,6 +502,7 @@ app.directive('filterform', function(){
             url: '@',
             schema: '=',
             callback: '=',
+            paginate: '=',
         },
         templateUrl: 'js/templates/form/filterForm.htm',
         controller: function($scope, dataServ){
@@ -544,7 +549,7 @@ app.directive('filterform', function(){
                 }
                 var _qs = [];
                 $scope.schema.fields.forEach(function(item){
-                    if($scope.filterData[item.name].value){
+                    if($scope.filterData[item.name].value != null){
                         var _val = $scope.filterData[item.name].value;
                         var _filter = $scope.filterData[item.name].filter;
                         _qs.push({item: item.name, filter: _filter, value: _val});

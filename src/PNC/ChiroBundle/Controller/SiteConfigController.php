@@ -19,9 +19,11 @@ class SiteConfigController extends Controller{
 
     // path : GET chiro/config/site/list
     public function getListAction(){
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/site/list.yml');
+        $conf = $this->get('configService');
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/site/list.yml');
+        /*$file = file_get_contents(__DIR__ . '/../Resources/clientConf/site/list.yml');
         $out = Yaml::parse($file);
-
+         */
         return new JsonResponse($out);
     }
 

@@ -1,14 +1,15 @@
 <div maplist="chiro/observation">
-<div class="col-md-6 col-sm-12 fixed-map">
-  <div class="map large col-md-5 col-sm-12" leaflet-map data="geoms"></div>
-</div>
-<div class="col-md-6  col-md-offset-6 col-sm-12 opaque">
-  <div breadcrumbs appname="{{_appName}}"></div>
-  <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
-  <div>
-    <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/observation">
-        Inventaires
+    <div class="col-md-6 col-sm-12 fixed-map">
+        <div class="map large col-md-5 col-sm-12" leaflet-map data="geoms"></div>
     </div>
-  </div>
-</div>
+    <div class="col-md-6  col-md-offset-6 col-sm-12 opaque">
+        <div breadcrumbs appname="{{_appName}}"></div>
+        <filterform url="{{data_url}}" schema="schema.filtering" callback="setData" paginate="false"></filterform>
+        <div>
+            <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/observation">
+                Inventaires
+            </div>
+            <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
+        </div>
+    </div>
 </div>

@@ -21,7 +21,8 @@ class ConfigService{
             }
         }
         if(isset($yaml['filtering'])){
-            $this->parse_list($yaml['filtering']['fields']);
+            $f = &$yaml['filtering'];
+            $this->parse_list($f['fields']);
         }
         if(isset($yaml['fields'])){
             $this->parse_list($yaml['fields']);
