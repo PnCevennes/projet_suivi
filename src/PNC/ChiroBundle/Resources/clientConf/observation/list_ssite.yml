@@ -6,7 +6,7 @@ editUrl: "#/chiro/edit/inventaire/"
 detailUrl: "#/chiro/inventaire/"
 editAccess: 2
 filtering:
-    limit: null
+    limit: 200
     fields:
         -   name: obs_date
             label: "Date d'observation"

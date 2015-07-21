@@ -505,7 +505,7 @@ app.directive('filterform', function(){
             paginate: '=',
         },
         templateUrl: 'js/templates/form/filterForm.htm',
-        controller: function($scope, dataServ){
+        controller: function($scope, dataServ, configServ){
             $scope.filterData = {};
             $scope.counts = {};
             $scope.filters = {};
@@ -561,6 +561,14 @@ app.directive('filterform', function(){
                 else{
                     var _url = $scope.url + "?page="+$scope.pageNum+"&limit="+$scope.schema.limit;
                 }
+                configServ.put($scope.url, 
+                    {
+                        page: $scope.pageNum,
+                        limit: $scope.schema.limit,
+                        qs: _qs,
+                        url: _url
+                    }
+                );
                 dataServ.get(_url, function(resp){
                     //envoi des données filtrées à la vue
                     $scope.counts.total = resp.total;
@@ -577,6 +585,18 @@ app.directive('filterform', function(){
                     });
                 }
                 $scope.schema_initialized = true;
+                configServ.get($scope.url, function(resp){
+                    if(resp){
+                        $scope.page = resp.page;
+                        $scope.schema.limit = resp.limit;
+                        resp.qs.forEach(function(item){
+                            $scope.filterData[item.item] = {
+                                filter: item.filter, 
+                                value: item.value
+                            };
+                        });
+                    }
+                });
                 $scope.send();
             };
 

@@ -40,7 +40,7 @@ class PaginationService{
 
         //entités paginées
         $qr = $qb->select('x')->from($entity, 'x');
-        if($maxResults !== 'null'){
+        if($maxResults !== 'null' && $maxResults !== 'undefined'){
             if($curPage !== 'null'){
                 $qr->setFirstResult($curPage*$maxResults);
                 $qr->setMaxResults($maxResults);

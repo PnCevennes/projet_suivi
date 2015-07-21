@@ -273,6 +273,11 @@ app.directive('leafletMap', function(){
                 var loadData = function(url){
                     var defd = $q.defer();
                     $loading.start('map-loading');
+                    configServ.get(url, function(resp){
+                        if(resp){
+                            url = resp.url;
+                        }
+                    });
                     dataServ.get(url, dataLoad(defd));
                     return defd.promise;
                 };

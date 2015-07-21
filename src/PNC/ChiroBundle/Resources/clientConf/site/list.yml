@@ -6,7 +6,6 @@ editUrl: "#/chiro/edit/site/"
 detailUrl: "#/chiro/site/"
 editAccess: 5
 filtering:
-    limit: null
     fields:
         -   name: "dern_obs"
             label: "Dernière observation"
