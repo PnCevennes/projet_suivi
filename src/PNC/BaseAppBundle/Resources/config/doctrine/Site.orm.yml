@@ -38,6 +38,9 @@ PNC\BaseAppBundle\Entity\Site:
         updated:
             type: date
             nullable: true
+        numerisateur_id:
+            type: integer
+            nullable: true
     manyToMany:
         site_app:
             targetEntity: PNC\ExtBundle\Entity\Application

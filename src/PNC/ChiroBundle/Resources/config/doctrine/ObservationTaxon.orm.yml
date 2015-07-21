@@ -63,3 +63,6 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: date
         updated:
             type: date
+        numerisateur_id:
+            type: integer
+            nullable: true

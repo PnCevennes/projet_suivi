@@ -67,6 +67,8 @@ PNC\ChiroBundle\Entity\SiteView:
             type: date
         updated:
             type: date
+        numerisateur_id:
+            type: integer
         ref_commune:
             type: json_array
 
