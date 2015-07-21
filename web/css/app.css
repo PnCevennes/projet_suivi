@@ -281,7 +281,7 @@ table.tablewrapper>tbody>tr.active>td{
 }
 
 .padding-20 {
-  padding:20px
+  padding-top: 20px;
 }
 
 .sub-schema {

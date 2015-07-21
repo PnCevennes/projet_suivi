@@ -19,6 +19,7 @@ fields:
         options:
             visible: true
             style: xl 
+            primary: true
     -   name: obsEffectifAbs
         label: "Effectif total"
         filter:

@@ -21,6 +21,7 @@ fields:
             visible: true
             type: select
             style: xl 
+            primary: true
     -   name: sexeId
         label: "Sexe"
         filter:

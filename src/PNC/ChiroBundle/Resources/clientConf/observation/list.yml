@@ -19,6 +19,7 @@ fields:
       options:
           visible: true
           type: date
+          primary: true
     - name: observateurs
       label: Observateurs
       filter:
