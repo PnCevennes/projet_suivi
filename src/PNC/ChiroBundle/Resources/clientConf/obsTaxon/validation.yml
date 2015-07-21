@@ -20,6 +20,7 @@ filtering:
         -   name: "obs_obj_status_validation"
             label: "Statut validation"
             type: "select"
+            zeroNull: true
 fields: 
     -   name: "id"
         label: "Id"

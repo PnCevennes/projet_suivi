@@ -552,7 +552,9 @@ app.directive('filterform', function(){
                     if($scope.filterData[item.name].value != null){
                         var _val = $scope.filterData[item.name].value;
                         var _filter = $scope.filterData[item.name].filter;
-                        _qs.push({item: item.name, filter: _filter, value: _val});
+                        if(!(item.zeroNull && _val === 0)){
+                            _qs.push({item: item.name, filter: _filter, value: _val});
+                        }
                     }
                 });
                 if(_qs.length){
