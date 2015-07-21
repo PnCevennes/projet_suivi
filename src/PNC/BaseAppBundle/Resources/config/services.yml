@@ -9,7 +9,7 @@ services:
         class: PNC\BaseAppBundle\Services\BaseObservationService
         arguments: [@geometry, @entityService]
     pagination:
-        class: PNC\BaseAppBundle\Services\PaginationService
+        class: PNC\Utils\PaginationService
         arguments: [@doctrine]
     geometry:
         class: PNC\Utils\GeometryService

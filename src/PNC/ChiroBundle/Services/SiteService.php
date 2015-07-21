@@ -51,25 +51,8 @@ class SiteService{
         );
 
         $entity = 'PNCChiroBundle:SiteView';
-        $filters = json_decode($request->query->get('filters'), true);
-        $page = $request->query->get('page', 0);
-        $limit = $request->query->get('limit', null);
-        $fields = array();
 
-        if($filters){
-            foreach($filters as $filter){
-                if($filter['item'] == 'type_id' && $filter['value'] == 0){
-                    continue;
-                }
-                $fields[] = array(
-                    'name'=>$filter['item'],
-                    'compare'=>$filter['filter'],
-                    'value'=>$filter['value']
-                );
-            }
-        }
-
-        $res = $this->pagination->filter($entity, $fields, $page, $limit);
+        $res = $this->pagination->filter_request($entity, $request);
 
         $infos = $res['filtered'];
 

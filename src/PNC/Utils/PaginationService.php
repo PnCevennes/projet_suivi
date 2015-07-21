@@ -1,6 +1,6 @@
 <?php
 
-namespace PNC\BaseAppBundle\Services;
+namespace PNC\Utils;
 
 
 class PaginationService{
@@ -8,6 +8,28 @@ class PaginationService{
 
     public function __construct($db){
         $this->db = $db;
+    }
+
+    public function filter_request($entity, $request){
+        $filters = json_decode($request->query->get('filters'), true);
+        $page = $request->query->get('page', 0);
+        $limit = $request->query->get('limit', null);
+        $fields = array();
+
+        if($filters){
+            foreach($filters as $filter){
+                if($filter['item'] == 'type_id' && $filter['value'] == 0){
+                    continue;
+                }
+                $fields[] = array(
+                    'name'=>$filter['item'],
+                    'compare'=>$filter['filter'],
+                    'value'=>$filter['value']
+                );
+            }
+        }
+
+        return $this->filter($entity, $fields, $page, $limit);
     }
 
     public function filter($entity, $fields, $curPage=null, $maxResults=null){
