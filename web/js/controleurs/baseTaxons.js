@@ -58,6 +58,7 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
         $scope.data = {obsId: $routeParams.obs_id};
     }
 
+
     $scope.$on('form:init', function(ev, data){
         if(data.cdNom){
             $scope.title = "Modification de l'observation du taxon";
@@ -89,7 +90,11 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
     $scope.$on('form:delete', function(ev, data){
         userMessages.infoMessage = "le taxon a été retiré avec succès";
         dataServ.forceReload = true;
-        $location.url($scope._appName + '/observation/' + data.obsId);
+        var link = null;
+        configServ.get('currentBc', function(resp){
+            link = resp[resp.length-2].link;
+            $location.url(link.slice(2));
+        });
     });
 });
 

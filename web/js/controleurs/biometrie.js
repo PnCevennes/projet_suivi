@@ -73,7 +73,7 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
     });
 
     $scope.$on('form:delete', function(ev, data){
-        userMessages.infoMessage = "Personne n'a jamais pris la moindre mesure sur quoi que ce soit.";
+        userMessages.infoMessage = "La biométrie n°" + data.id + "a été supprimée."; 
         dataServ.forceReload = true;
         $location.url($scope._appName + '/taxons/' + data.obsTxId);
     });

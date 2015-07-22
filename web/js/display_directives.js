@@ -240,6 +240,7 @@ app.directive('breadcrumbs', function(){
             }
             configServ.getUrl(url, function(resp){
                 $scope.bc = resp;
+                configServ.put('currentBc', resp);
             });
         },
     };
