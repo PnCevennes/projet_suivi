@@ -16,6 +16,8 @@ groups:
           - name: numerisateurId
             label: Numerisateur
             type: hidden
+            options:
+                ref: userId
           - name: observateurs
             label: Observateurs
             type: xhr

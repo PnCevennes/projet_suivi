@@ -5,6 +5,11 @@ fields:
         thesaurusID: 1
         options:
             required: true
+    -   name: numerisateurId
+        label: Numerisateur
+        type: hidden
+        options:
+            ref: userId
     -   name: sexeId
         label: "Sexe"
         type: select

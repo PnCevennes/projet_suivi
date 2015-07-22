@@ -35,6 +35,7 @@ class BiometrieService{
             'biomLm'=>null,
             'biomOreille'=>null,
             'biomCommentaire'=>null,
+            'numerisateurId'=>null,
         );
 
         $this->normalize_schema = array(
@@ -55,7 +56,8 @@ class BiometrieService{
             'biomOreille'=>null,
             'biomCommentaire'=>null,
             'created'=>'date',
-            'updated'=>'date'
+            'updated'=>'date',
+            'numerisateurId'=>null,
         );
     }
 

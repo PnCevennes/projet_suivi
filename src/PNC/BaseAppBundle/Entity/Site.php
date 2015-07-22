@@ -422,4 +422,32 @@ class Site
     {
         return $this->updated;
     }
+    /**
+     * @var integer
+     */
+    private $numerisateur_id;
+
+
+    /**
+     * Set numerisateur_id
+     *
+     * @param integer $numerisateurId
+     * @return Site
+     */
+    public function setNumerisateurId($numerisateurId)
+    {
+        $this->numerisateur_id = $numerisateurId;
+
+        return $this;
+    }
+
+    /**
+     * Get numerisateur_id
+     *
+     * @return integer 
+     */
+    public function getNumerisateurId()
+    {
+        return $this->numerisateur_id;
+    }
 }

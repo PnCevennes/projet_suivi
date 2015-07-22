@@ -13,6 +13,11 @@ groups:
             -   name: id
                 label: ID
                 type: hidden
+            -   name: numerisateurId
+                label: Numerisateur
+                type: hidden
+                options:
+                    ref: userId
             -   name: siteNom
                 label: Nom
                 type: string

@@ -403,7 +403,7 @@ app.directive('simpleform', function(){
                         if(field.type != 'group'){
                             $scope.data[field.name] = resp[field.name] != undefined ? angular.copy(resp[field.name]) : field.default != undefined ? field.default : null;
                             if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
-                                $scope.data[field.name] = userServ.getUser().idRole;
+                                $scope.data[field.name] = userServ.getUser().id_role;
                             }
                         }
                         else{
@@ -750,7 +750,7 @@ app.directive('spreadsheet', function(){
             dataIn: '=data',
         },
         templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function($scope, configServ, SpreadSheet, ngTableParams){
+        controller: function($scope, configServ, userServ, SpreadSheet, ngTableParams){
             var defaultLine = {};
             var lines = [];
             $scope.data = [];
@@ -798,21 +798,33 @@ app.directive('spreadsheet', function(){
                     var line_valid = true;
                     var line_empty = true;
                     $scope.schema.fields.forEach(function(field){
-                        if(line[field.name] && line[field.name] != null){
-                            line_empty = false;
-                        }
-                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == null)){
-                            line_valid = false;
-                        }
-                        if(field.options.primary && line_valid){
-                            //gestion des clés primaires pour la suppression des doublons
-                            if(primaries.indexOf(line[field.name])>-1){
-                                line_valid = false;
-                                errMsg = "Doublon";
-                                hasErrors = true
+                        if(field.type == "hidden"){
+                            if(field.options && field.options.ref == 'userId' && line[field.name] == null){
+                                /*
+                                 * ajout du numérisateur à la ligne
+                                 */
+                                line[field.name] = userServ.getUser().id_role;
                             }
-                            else{
-                                primaries.push(line[field.name]);
+                        }
+                        else{
+                            if(line[field.name] && line[field.name] != null){
+                                line_empty = false;
+                            }
+                            if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == null)){
+                                line_valid = false;
+                            }
+                            if(field.options.primary && line_valid){
+                                /*
+                                 * gestion des clés primaires pour la suppression des doublons
+                                 */
+                                if(primaries.indexOf(line[field.name])>-1){
+                                    line_valid = false;
+                                    errMsg = "Doublon";
+                                    hasErrors = true
+                                }
+                                else{
+                                    primaries.push(line[field.name]);
+                                }
                             }
                         }
                     });
@@ -857,7 +869,7 @@ app.directive('subeditform', function(){
             refId: "=refid",
         },
         template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, $loading, $q){
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, userServ, $loading, $q){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 

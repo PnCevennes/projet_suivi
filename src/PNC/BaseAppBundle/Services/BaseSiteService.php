@@ -20,7 +20,8 @@ class BaseSiteService{
             'typeId'=>null,
             'siteDate'=>'date',
             'siteDescription'=>null,
-            'observateurId'=>null
+            'observateurId'=>null,
+            'numerisateurId'=>null
         );
     }
 

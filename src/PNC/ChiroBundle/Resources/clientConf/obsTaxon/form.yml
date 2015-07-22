@@ -9,10 +9,13 @@ groups:
         fields:
             -   name: id
                 type: hidden
-            -   name: numId
-                type: hidden
             -   name: obsId
                 type: hidden
+            -   name: numerisateurId
+                label: Numerisateur
+                type: hidden
+                options:
+                    ref: userId
             -   name: obsValidateur
                 type: hidden
             -   name: cdNom

@@ -16,12 +16,6 @@ groups:
             -   name: biomCommentaire
                 label: "Commentaires"
                 type: string
-            -   name: created
-                label: "Création donnée"
-                type: date
-            -   name: updated
-                label: "Dernière mise à jour"
-                type: date
     -   name: "Membre"
         fields:
             -   name: biomAb
@@ -65,5 +59,18 @@ groups:
                 label: "Oreille (mm)"
                 help: "Mesure de l'oreille"
                 type: num
+    -   name: "Metadonnées"
+        fields:
+            -   name: numerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: created
+                label: "Création donnée"
+                type: date
+            -   name: updated
+                label: "Dernière mise à jour"
+                type: date
 
 

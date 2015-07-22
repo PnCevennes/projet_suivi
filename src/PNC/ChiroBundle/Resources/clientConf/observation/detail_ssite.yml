@@ -24,11 +24,6 @@ groups:
             options:
                 url: commune
                 multi: true
-          - name: numerisateurId
-            label: Numérisateur
-            type: xhr
-            options:
-                url: "users/id"
           - name: observateurs
             label: Observateurs
             type: xhr
@@ -48,6 +43,13 @@ groups:
           - name: obsHumidite
             label: "Humidité (%)"
             type: string
+    -   name: "Metadonnées"
+        fields:
+          - name: numerisateurId
+            label: Numérisateur
+            type: xhr
+            options:
+                url: "users/id"
           - name: created
             label: "Création donnée"
             type: date

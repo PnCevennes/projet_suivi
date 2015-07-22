@@ -24,11 +24,6 @@ groups:
             -   name: obsEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool
-            -   name: numId
-                label: "Numérisateur"
-                type: xhr
-                options:
-                    url: "users/id"
             -   name: obsObjStatusValidation
                 label: "Statut validation"
                 type: select
@@ -49,12 +44,6 @@ groups:
             -   name: obsEffectifAbs
                 label: "Effectif total"
                 type: num
-            -   name: created
-                label: "Création donnée"
-                type: date
-            -   name: updated
-                label: "Dernière mise à jour"
-                type: date
     -   name: "Détail"
         fields:
             -   name: obsNbMaleAdulte
@@ -92,4 +81,16 @@ groups:
             -   name: obsCommentaire
                 label: "Commentaires"
                 type: string
-
+    -   name: "Metadonnées"
+        fields:
+            -   name: numerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: created
+                label: "Création donnée"
+                type: date
+            -   name: updated
+                label: "Dernière mise à jour"
+                type: date

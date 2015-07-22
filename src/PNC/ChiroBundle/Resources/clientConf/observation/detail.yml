@@ -24,11 +24,6 @@ groups:
           - name: obsDate
             label: Date
             type: date
-          - name: numerisateurId
-            label: Numérisateur
-            type: xhr
-            options:
-                url: "users/id"
           - name: observateurs
             label: Observateurs
             type: xhr

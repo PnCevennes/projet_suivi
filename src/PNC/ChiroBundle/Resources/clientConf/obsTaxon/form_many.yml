@@ -7,6 +7,12 @@ fields:
             url: "chiro/taxons"
             reverseurl: "chiro/taxons/id"
             ref: cdNom
+
+    -   name: numerisateurId
+        label: Numerisateur
+        type: hidden
+        options:
+            ref: userId
     -   name: obsTxInitial
         label: "Taxon initial"
         type: string

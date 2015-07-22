@@ -26,12 +26,6 @@ groups:
                 options:
                     multi: true
                     url: "commune"
-            -   name: created
-                label: "Création donnée"
-                type: date
-            -   name: updated
-                label: "Dernière mise à jour"
-                type: date
     -   name: Détails
         fields:
             -   name: siteDescription
@@ -84,3 +78,16 @@ groups:
                 label: "Commentaires contact"
                 type: string
                 help: "Informations complémentaires contact"
+    -   name: "Metadonnées"
+        fields:
+            -   name: numerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: created
+                label: "Création donnée"
+                type: date
+            -   name: updated
+                label: "Dernière mise à jour"
+                type: date
