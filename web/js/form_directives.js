@@ -357,6 +357,28 @@ app.directive('simpleform', function(){
                 }
             };
 
+            $scope.hasNext = function(idx){
+                if($scope.addSubSchema){
+                    return idx < $scope.isActive.length;
+                }
+                return idx < ($scope.isActive.length - 1);
+            };
+
+            $scope.isFormValid = function(){
+                for(i=0; i<$scope.schema.groups.length; i++){
+                    if($scope.Simpleform['sub_'+i]){
+                        if(!$scope.Simpleform['sub_'+i].$valid){
+                            return false;
+                        }
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                return true;
+                //return $scope.Simpleform.$valid;
+            }
+
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
                 
@@ -391,6 +413,7 @@ app.directive('simpleform', function(){
                 else{
                     if($scope.schema.subSchemaAdd && userServ.checkLevel($scope.schema.subSchemaAdd)){
                         $scope.addSubSchema = true;
+                        $scope.isActive.push(false);
                     }
                     $scope.setData($scope.data || {});
                     dfd.resolve('loading form');
