@@ -5,22 +5,8 @@ createUrl: "#/chiro/edit/biometrie/taxon/"
 editUrl: "#/chiro/edit/biometrie/"
 detailUrl: "#/chiro/biometrie/"
 editAccess: 3
-filtering:
-    limit: 200
-    fields: 
-        -   name: age_id
-            label: Âge
-            type: select
-            zeroNull: true
-            thesaurusID: 1
-            default: 0
-        -   name: sexe_id
-            label: Sexe
-            type: select
-            zeroNull: true
-            thesaurusID: 2
-            default: 0
-
+#filtering: 
+#    limit: 200
 fields:
     -   name: id
         label: "Id"

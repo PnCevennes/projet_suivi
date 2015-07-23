@@ -582,6 +582,9 @@ app.directive('filterform', function(){
             };
 
             $scope.init_schema = function(){
+                if($scope.schema.fields == undefined){
+                    $scope.schema.fields = [];
+                }
                 if(!$scope.schema_initialized){
                     $scope.schema.fields.forEach(function(item){
                         $scope.filterData[item.name] = {filter: '=', value: item.default};
@@ -607,6 +610,9 @@ app.directive('filterform', function(){
                 $scope.init_schema();
             }
             else{
+                $scope.schema = {
+                    fields: []
+                };
                 $scope.$watch('schema', function(newval){
                     if(newval){
                         $scope.init_schema();

@@ -1,4 +1,4 @@
-<button type="button" ng-class="{'btn filter-inactive float-right': counts.current == counts.total, 'btn filter-active float-right': counts.current != counts.total}" ng-click="collapseFilters = !collapseFilters" ng-show="counts.total>0">
+<button type="button" ng-class="{'btn filter-inactive float-right': counts.current == counts.total, 'btn filter-active float-right': counts.current != counts.total}" ng-click="collapseFilters = !collapseFilters" ng-show="counts.total>0 && (schema.limit || schema.fields.length)">
     Filtres 
     <span ng-class="{'glyphicon glyphicon-chevron-right': !collapseFilters, 'glyphicon glyphicon-chevron-down': collapseFilters}"></span>
 </button>

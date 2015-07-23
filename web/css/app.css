@@ -371,6 +371,7 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 
 .filter-form-nav{
     background-color: #CCC;
+    opacity: 0.8;
     border-top: 2px solid #AAA;
     position: fixed;
     bottom: 0px;
