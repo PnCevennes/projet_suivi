@@ -501,7 +501,7 @@ app.directive('filterform', function(){
         restrict: 'E',
         scope: {
             url: '@',
-            schema: '=',
+            _schema: '=schema',
             callback: '=',
             paginate: '=',
         },
@@ -513,6 +513,9 @@ app.directive('filterform', function(){
             $scope.pageNum = 0;
             $scope.maxCount = 0;
             $scope.schema_initialized = false;
+            $scope.schema = {
+                fields: []
+            };
 
             $scope.setArray = function(field, setArray){
                 if(setArray){
@@ -582,6 +585,9 @@ app.directive('filterform', function(){
             };
 
             $scope.init_schema = function(){
+                if($scope._schema){
+                    $scope.schema = angular.copy($scope._schema);
+                }
                 if($scope.schema.fields == undefined){
                     $scope.schema.fields = [];
                 }
@@ -610,11 +616,9 @@ app.directive('filterform', function(){
                 $scope.init_schema();
             }
             else{
-                $scope.schema = {
-                    fields: []
-                };
-                $scope.$watch('schema', function(newval){
+                $scope.$watch('_schema', function(newval){
                     if(newval){
+                        console.log(newval);
                         $scope.init_schema();
                     }
                 });
