@@ -15,9 +15,10 @@ class BiometrieService{
     // schema
     private $schema;
 
-    public function __construct($db, $es){
+    public function __construct($db, $es, $pg){
         $this->db = $db;
         $this->entityService = $es;
+        $this->pagination = $pg;
         $this->schema = array(
             'id'=>null,
             'obsTxId'=>null,
@@ -66,15 +67,26 @@ class BiometrieService{
      * params:
      *      otx_id=>id de l'observation de taxon
      */
-    public function getList($otx_id){
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $data = $repo->findBy(array('obs_tx_id'=>$otx_id));
+    public function getList($request, $otx_id){
+        $entity = 'PNCChiroBundle:Biometrie';
+        //$data = $repo->findBy(array('obs_tx_id'=>$otx_id));
+        $cpl = array(
+            array(
+                'name'=>'obs_tx_id',
+                'compare'=>'=',
+                'value'=>$otx_id
+            )
+        );
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
+
+        $data = $res['filtered'];
 
         $out = array();
         foreach($data as $item){
             $out[] = $this->entityService->normalize($item, $this->normalize_schema);
         }
-        return $out;
+
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     /*

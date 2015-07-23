@@ -14,12 +14,12 @@ use Commons\Exceptions\CascadeException;
 class ObsTaxonController extends Controller
 {
     // path: GET chiro/obs_taxon/observation/{obs_id}
-    public function listAction($obs_id=null){
+    public function listAction(Request $request, $obs_id=null){
         /*
          * retourne la liste des observations taxon associées à une obs
          */
         $ts = $this->get('taxonService');
-        return new JsonResponse($ts->getList($obs_id));
+        return new JsonResponse($ts->getFilteredList($request, $obs_id));
     }
 
 

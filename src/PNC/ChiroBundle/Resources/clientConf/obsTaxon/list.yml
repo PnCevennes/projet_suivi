@@ -5,6 +5,16 @@ createUrl: "#/chiro/edit/taxons/observation/"
 editUrl: "#/chiro/edit/taxons/"
 detailUrl: "#/chiro/taxons/"
 editAccess: 3
+filtering:
+    limit: 200
+    fields: 
+        -   name: "cd_nom"
+            label: "Taxon"
+            type: "xhr"
+            options:
+                url: "chiro/taxons"
+                reverseurl: "chiro/taxons/id"
+                ref: "taxon"
 fields:
     -   name: id
         label: Id

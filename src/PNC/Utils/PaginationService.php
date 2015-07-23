@@ -10,7 +10,7 @@ class PaginationService{
         $this->db = $db;
     }
 
-    public function filter_request($entity, $request){
+    public function filter_request($entity, $request, $cpl=null){
         $filters = json_decode($request->query->get('filters'), true);
         $page = $request->query->get('page', 0);
         $limit = $request->query->get('limit', null);
@@ -27,12 +27,22 @@ class PaginationService{
                     'value'=>$filter['value']
                 );
             }
+            if($cpl){
+                foreach($cpl as $c){
+                    $fields[] = $c;
+                }
+            }
+        }
+        else{
+            if($cpl){
+                $fields = $cpl;
+            }
         }
 
-        return $this->filter($entity, $fields, $page, $limit);
+        return $this->filter($entity, $fields, $page, $limit, $cpl);
     }
 
-    public function filter($entity, $fields, $curPage=null, $maxResults=null){
+    public function filter($entity, $fields, $curPage=null, $maxResults=null, $cpl=null){
         /*
          * fields : array(
          *      array(
@@ -48,7 +58,15 @@ class PaginationService{
 
         //nombre total d'entités
         $qc = $qa->select('count(x)')->from($entity, 'x');
-        $nb = $qa->getQuery()->getSingleResult();
+        if($cpl){
+            foreach($cpl as $k=>$c){
+                $_f = $this->createFilter($qc, $k, $c);
+                if($_f){
+                    $qc->andWhere($_f);
+                }
+            }
+        }
+        $nb = $qc->getQuery()->getSingleResult();
 
         //nombre filtré d'entités
         $qk = $qj->select('count(x)')->from($entity, 'x');

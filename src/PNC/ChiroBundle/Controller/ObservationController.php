@@ -34,13 +34,13 @@ class ObservationController extends Controller{
     }
 
     // path: GET /chiro/observation/site/{id}
-    public function listSiteAction($id){
+    public function listSiteAction(Request $request, $id){
         /*
          * retourne la liste des observations associées à un site
          */
         $os = $this->get('observationService');
         
-        return new JsonResponse($os->getList($id));
+        return new JsonResponse($os->getFilteredList($request, $id));
     }
 
     // path: GET /chiro/observation/{id}

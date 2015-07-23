@@ -6,7 +6,7 @@ services:
 
     biometrieService:
         class: PNC\ChiroBundle\Services\BiometrieService
-        arguments: [@doctrine, @entityService]
+        arguments: [@doctrine, @entityService, @pagination]
             
     taxonService:
         class: PNC\ChiroBundle\Services\TaxonService

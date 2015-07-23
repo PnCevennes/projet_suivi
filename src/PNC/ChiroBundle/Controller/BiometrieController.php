@@ -15,10 +15,10 @@ use PNC\ChiroBundle\Entity\Biometrie;
 class BiometrieController extends Controller
 {
     // path: GET chiro/biometrie/taxon/{otx_id}
-    public function listAction($otx_id=null){
+    public function listAction(Request $request, $otx_id=null){
         $bs = $this->get('biometrieService');
         
-        return new JsonResponse($bs->getList($otx_id));
+        return new JsonResponse($bs->getList($request, $otx_id));
     }
 
     // path: GET chiro/biometrie/{id}

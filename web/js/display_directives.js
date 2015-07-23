@@ -158,7 +158,7 @@ app.directive('detailDisplay', function(){
             $scope.setSubSchema = function(resp){
                 $scope.subSchema = angular.copy(resp);
                 // récupération des données liées au sous-schéma (sous-protocole)
-                dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
+                //dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
             }
 
             $scope.setSubData = function(resp){

@@ -30,6 +30,12 @@ class BiometrieConfigController extends Controller{
     // path: GET chiro/config/biometrie/list
     public function getListAction(){
 
+        $conf = $this->get('configService');
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/biometrie/list.yml');
+        return new JsonResponse($out);
+
+
+        /*
         $thesaurus = $this->get('thesaurusService');
 
         $file = file_get_contents(__DIR__ . '/../Resources/clientConf/biometrie/list.yml');
@@ -48,6 +54,7 @@ class BiometrieConfigController extends Controller{
         }
 
         return new JsonResponse($out);
+         */
     }
 
     // path: GET chiro/config/biometrie/detail

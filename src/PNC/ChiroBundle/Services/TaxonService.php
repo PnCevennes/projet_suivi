@@ -34,34 +34,46 @@ class TaxonService{
         return $out;
     }
 
-    public function getFilteredList($request){
+    public function getFilteredList($request, $obsId=null){
         $out = array();
 
-        $entity = 'PNCChiroBundle:ValidationTaxonView';
-        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ValidationTaxonView.orm.yml';
+        if(!$obsId){
+            $entity = 'PNCChiroBundle:ValidationTaxonView';
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ValidationTaxonView.orm.yml';
+            $cpl = array();
+        }
+        else{
+            $entity = 'PNCChiroBundle:ObservationTaxon';
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+            $cpl = array(
+                array(
+                    'name'=>'obs_id',
+                    'compare'=>'=',
+                    'value'=>$obsId
+                )
+            );
+        }
         $filters = json_decode($request->query->get('filters'), true);
         $page = $request->query->get('page', 0);
         $limit = $request->query->get('limit', 30);
-        $fields = array();
-        if($filters){
-            foreach($filters as $filter){
-                $fields[] = array(
-                    'name'=>$filter['item'],
-                    'compare'=>$filter['filter'],
-                    'value'=>$filter['value']
-                );
+
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
+        $data = $res['filtered'];
+        
+        if($obsId){
+            foreach($data as $item){
+                $out[] = $this->entityService->normalize($item, $schema);
             }
         }
-
-        $res = $this->pagination->filter($entity, $fields, $page, $limit);
-        $data = $res['filtered'];
-        foreach($data as $item){
-            $out_item = array(
-                'type'=>'Feature', 
-                'properties'=>$this->entityService->normalize($item, $schema),
-                'geometry'=>$item->getGeom()
-                );
-            $out[] = $out_item;
+        else{
+            foreach($data as $item){
+                $out_item = array(
+                    'type'=>'Feature', 
+                    'properties'=>$this->entityService->normalize($item, $schema),
+                    'geometry'=>$item->getGeom()
+                    );
+                $out[] = $out_item;
+            }
         }
         return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }

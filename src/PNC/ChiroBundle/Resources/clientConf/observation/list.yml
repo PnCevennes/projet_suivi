@@ -5,6 +5,18 @@ createUrl: "#/chiro/edit/observation/site/"
 editUrl: "#/chiro/edit/observation/"
 detailUrl: "#/chiro/observation/"
 editAccess: 2
+filtering:
+    limit: 200
+    fields:
+        -   name: obs_date
+            label: "Date d'observation"
+            type: date
+        -   name: nb_taxons
+            label: "Taxons"
+            type: num
+        -   name: abondance
+            label: Abondance
+            type: num
 fields:
     - name: id
       label: Id

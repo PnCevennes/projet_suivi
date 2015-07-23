@@ -28,13 +28,43 @@ class ObservationService{
         $this->pagination = $pg;
     }
 
-    public function getFilteredList($request){
-        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
-        $entity = 'PNCChiroBundle:ObservationSsSiteView';
+    public function getFilteredList($request, $id=null){
+        if(!$id){
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
+            $entity = 'PNCChiroBundle:ObservationSsSiteView';
+            $cpl = null;
+        }
+        else{
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
+            $entity = 'PNCChiroBundle:ObservationView';
+            $cpl = array(
+                array(
+                    'name'=>'site_id',
+                    'compare'=>'=',
+                    'value'=>$id
+                )
+            );
+        }
 
-        $res = $this->pagination->filter_request($entity, $request);
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
 
         $infos = $res['filtered'];
+
+        if($id){
+            $out = array();
+            foreach($infos as $info){
+                $out_item = $this->entityService->normalize($info, $schema);
+                $out_item['observateurs'] = array();
+                foreach($info->getObservateurs() as $obr){
+                    if($obr->getRole() == 'observateur'){
+                        $out_item['observateurs'][] = $obr->getNomComplet();
+                    }
+                }
+                $out[] = $out_item;
+            }
+            return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
+        }
+
 
         $out = array();
         foreach($infos as $info){
