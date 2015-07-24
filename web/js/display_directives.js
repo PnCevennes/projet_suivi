@@ -612,13 +612,12 @@ app.directive('filterform', function(){
                 $scope.send();
             };
 
-            if($scope.schema){
+            if($scope._schema){
                 $scope.init_schema();
             }
             else{
                 $scope.$watch('_schema', function(newval){
                     if(newval){
-                        console.log(newval);
                         $scope.init_schema();
                     }
                 });
