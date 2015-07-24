@@ -5,7 +5,7 @@
 <div class="filter-form-nav" ng-show="counts.total>0">
     <span ng-class="{'badge filter-active': counts.current != counts.total,'badge filter-inactive': counts.current == counts.total}">{{counts.current}} / {{counts.total}}</span> 
     <button ng-if="paginate" class="btn btn-sm btn-default float-right" ng-disabled="((pageNum + 1) * schema.limit) >= counts.current" ng-click="nextPage()"><span class="glyphicon glyphicon-chevron-right"></span></button>
-    <span ng-if="paginate" class="float-right">{{pageNum*schema.limit}}...{{maxCount}}</span>
+    <span ng-if="paginate" class="float-right">{{(pageNum*schema.limit)||1}}...{{maxCount||1}}</span>
     <button ng-if="paginate" class="btn btn-sm btn-default float-right" ng-disabled="pageNum == 0" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span></button> 
 </div>
 <div class="filter-form-nav" ng-show="counts.total==0">

@@ -506,7 +506,7 @@ app.directive('filterform', function(){
             paginate: '=',
         },
         templateUrl: 'js/templates/form/filterForm.htm',
-        controller: function($scope, dataServ, configServ){
+        controller: function($scope, $timeout, dataServ, configServ){
             $scope.filterData = {};
             $scope.counts = {};
             $scope.filters = {};
@@ -514,7 +514,8 @@ app.directive('filterform', function(){
             $scope.maxCount = 0;
             $scope.schema_initialized = false;
             $scope.schema = {
-                fields: []
+                fields: [],
+                limit: null
             };
 
             $scope.setArray = function(field, setArray){
@@ -553,7 +554,7 @@ app.directive('filterform', function(){
                 }
                 var _qs = [];
                 $scope.schema.fields.forEach(function(item){
-                    if($scope.filterData[item.name].value != null){
+                    if($scope.filterData[item.name] && $scope.filterData[item.name].value != null){
                         var _val = $scope.filterData[item.name].value;
                         var _filter = $scope.filterData[item.name].filter;
                         if(!(item.zeroNull && _val === 0)){
@@ -591,37 +592,18 @@ app.directive('filterform', function(){
                 if($scope.schema.fields == undefined){
                     $scope.schema.fields = [];
                 }
-                if(!$scope.schema_initialized){
-                    $scope.schema.fields.forEach(function(item){
-                        $scope.filterData[item.name] = {filter: '=', value: item.default};
-                    });
-                }
-                $scope.schema_initialized = true;
-                configServ.get($scope.url, function(resp){
-                    if(resp){
-                        $scope.page = resp.page;
-                        $scope.schema.limit = resp.limit;
-                        resp.qs.forEach(function(item){
-                            $scope.filterData[item.item] = {
-                                filter: item.filter, 
-                                value: item.value
-                            };
-                        });
-                    }
+                $scope.schema.fields.forEach(function(item){
+                    $scope.filterData[item.name] = {filter: '=', value: item.default};
                 });
                 $scope.send();
             };
 
-            if($scope._schema){
-                $scope.init_schema();
-            }
-            else{
-                $scope.$watch('_schema', function(newval){
-                    if(newval){
-                        $scope.init_schema();
-                    }
-                });
-            }
+            $timeout($scope.init_schema, 0);
+            $scope.$watch('_schema', function(newval){
+                if(newval){
+                    $scope.init_schema();
+                }
+            });
         }
     };
 });
