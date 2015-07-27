@@ -595,10 +595,27 @@ app.directive('filterform', function(){
                 $scope.schema.fields.forEach(function(item){
                     $scope.filterData[item.name] = {filter: '=', value: item.default};
                 });
-                $scope.send();
+                configServ.get($scope.url, function(resp){
+                    if(resp){
+                        $scope.page = resp.page;
+                        if(resp.limit){
+                            $scope.schema.limit = resp.limit;
+                        }
+                        resp.qs.forEach(function(item){
+                            $scope.filterData[item.item] = {
+                                filter: item.filter, 
+                                value: item.value
+                            };
+                        });
+                        //console.log(resp);
+                    }
+                    $scope.send();
+                });
+                
             };
 
             $timeout($scope.init_schema, 0);
+
             $scope.$watch('_schema', function(newval){
                 if(newval){
                     $scope.init_schema();
