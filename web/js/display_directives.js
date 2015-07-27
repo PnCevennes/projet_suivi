@@ -157,6 +157,9 @@ app.directive('detailDisplay', function(){
 
             $scope.setSubSchema = function(resp){
                 $scope.subSchema = angular.copy(resp);
+                if(!$scope.subSchema.filtering){
+                    $scope.subSchema.filtering = {limit: null, fields: []};
+                }
                 // récupération des données liées au sous-schéma (sous-protocole)
                 //dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
             }
@@ -518,6 +521,7 @@ app.directive('filterform', function(){
                 limit: null
             };
 
+
             $scope.setArray = function(field, setArray){
                 if(setArray){
                     var val = $scope.filterData[field].value;
@@ -615,13 +619,14 @@ app.directive('filterform', function(){
                 
             };
 
-            $timeout($scope.init_schema, 0);
+            //$timeout($scope.init_schema, 0);
 
             $scope.$watch('_schema', function(newval){
                 if(newval){
                     $scope.init_schema();
                 }
             });
+
         }
     };
 });

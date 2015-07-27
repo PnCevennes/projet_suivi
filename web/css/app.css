@@ -366,6 +366,7 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 }
 
 .filter-container div{
+    margin-top: 5px;
     margin-bottom: 5px;
 }
 
