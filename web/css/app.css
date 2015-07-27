@@ -430,3 +430,21 @@ span.filter-active{
     outline: 0;
 }
 
+.ff-paginate{
+    float: left;
+}
+
+.ff-paginate label{
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    font-weight: 500;
+}
+
+.ff-paginate input{
+    outline: 0;
+    width: 5em;
+    margin-top: 2px;
+    border: 1px solid #AAA;
+    border-radius: 4px;
+    padding-left: 2px;
+}

@@ -1,20 +1,20 @@
 <button type="button" ng-class="{'btn filter-inactive float-right': counts.current == counts.total, 'btn filter-active float-right': counts.current != counts.total}" ng-click="collapseFilters = !collapseFilters" ng-show="counts.total>0 && (schema.limit || schema.fields.length)">
     Filtres 
+    <span ng-class="{'badge filter-active': counts.current != counts.total,'badge filter-inactive': counts.current == counts.total}">{{counts.current}} / {{counts.total}}</span> 
     <span ng-class="{'glyphicon glyphicon-chevron-right': !collapseFilters, 'glyphicon glyphicon-chevron-down': collapseFilters}"></span>
 </button>
 <div class="filter-form-nav" ng-show="counts.total>0">
-    <span ng-class="{'badge filter-active': counts.current != counts.total,'badge filter-inactive': counts.current == counts.total}">{{counts.current}} / {{counts.total}}</span> 
+    <div class="ff-paginate" ng-if="paginate">
+        <label for="limitResults">Données </label>
+        <input id="limitResults" type="number" ng-model="schema.limit" ng-model-options="{debounce: 200}" ng-change="send(true)">
+    </div>
     <button ng-if="paginate" class="btn btn-sm btn-default float-right" ng-disabled="((pageNum + 1) * schema.limit) >= counts.current" ng-click="nextPage()"><span class="glyphicon glyphicon-chevron-right"></span></button>
-    <span ng-if="paginate" class="float-right">{{(pageNum*schema.limit)||1}}...{{maxCount||1}}</span>
+    <span ng-if="paginate" class="float-right">Résultats de {{(pageNum*schema.limit)||1}} à {{maxCount||1}} sur {{counts.current}}</span>
     <button ng-if="paginate" class="btn btn-sm btn-default float-right" ng-disabled="pageNum == 0" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span></button> 
 </div>
 <div class="filter-form-nav" ng-show="counts.total==0">
 </div>
 <div ng-show="collapseFilters" class="filter-container">
-    <div class="form-inline" ng-if="paginate">
-        <label for="limitResults">Nombre de résultats </label>
-        <input id="limitResults" class="form-control" type="number" ng-model="schema.limit">
-    </div>
     <div ng-repeat="field in schema.fields">
         <label for="{{field.name}}" tooltip="{{field.help}}">{{field.label}}</label>
         <!-- texte simple -->

@@ -578,6 +578,7 @@ app.directive('filterform', function(){
                 );
                 dataServ.get(_url, function(resp){
                     //envoi des données filtrées à la vue
+                    $scope.collapseFilters = false;
                     $scope.counts.total = resp.total;
                     $scope.counts.current = resp.filteredCount;
                     $scope.maxCount = Math.min(($scope.pageNum+1) * $scope.schema.limit, $scope.counts.current);
