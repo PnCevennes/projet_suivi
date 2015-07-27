@@ -416,6 +416,7 @@ span.filter-active{
 }
 
 .tb-wrapper{
+    clear: both;
     width: 100%;
     overflow-x: scroll;
 }
