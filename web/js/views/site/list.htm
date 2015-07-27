@@ -4,12 +4,12 @@
     </div>
     <div class="col-md-6  col-md-offset-6 col-sm-12 opaque">
         <div breadcrumbs appname="{{_appName}}"></div>
-        <filterform url="{{data_url}}" schema="schema.filtering" callback="setData" paginate="false"></filterform>
         <div>
+            <filterform url="{{data_url}}" schema="schema.filtering" callback="setData" paginate="false"></filterform>
             <div tablewrapper class="table" schema="schema" data="data" refname="{{_appName}}/site">
-                Sites
+                <h1>Sites</h1>
+                <a class="btn btn-success float-left" style="margin-right: 1ex;" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
             </div>
-            <a class="btn btn-success float-right" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
         </div>
     </div>
 </div>

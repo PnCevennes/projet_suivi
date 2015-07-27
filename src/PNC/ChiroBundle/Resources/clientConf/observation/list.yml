@@ -1,5 +1,5 @@
 title: Visites
-emptyMsg: "Aucune visite pour le moment"
+emptyMsg: "Aucune visite"
 createBtnLabel: "Nouvelle visite"
 createUrl: "#/chiro/edit/observation/site/"
 editUrl: "#/chiro/edit/observation/"
