@@ -274,6 +274,10 @@ table.tablewrapper>tbody>tr.active>td{
   float:left;
 }
 
+.float-none {
+    float:none;
+}
+
 .center {
   float: none;
   margin-left: auto;
