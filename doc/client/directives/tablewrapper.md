@@ -73,10 +73,16 @@ Message émis lorsque la liste est triée ou filtrée afin de transmettre l'éta
 ##Listeners
 
 
-###{{refname}}:select reçoit un objet en parametre et sélectionne celui ci dans la liste.
+###{{refname}}:select 
+
+reçoit un objet en parametre et sélectionne celui ci dans la liste.
 
 
-###{{refname}}:filterIds reçoit une liste d'IDs et filtre la liste à partir de cette liste en ne gardant que les éléments dont l'ID est présent dans la liste.
+###{{refname}}:filterIds 
+
+reçoit une liste d'IDs et filtre la liste à partir de cette liste en ne gardant que les éléments dont l'ID est présent dans la liste.
 
 
-###{{refname}}:clearChecked permet de donner l'ordre à la liste de vider la sélection par checkbox. Aucun parametre requis. 
+###{{refname}}:clearChecked 
+
+permet de donner l'ordre à la liste de vider la sélection par checkbox. Aucun parametre requis. 
