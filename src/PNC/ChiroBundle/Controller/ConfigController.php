@@ -27,7 +27,11 @@ class ConfigController extends Controller{
                     return new JsonResponse(array('id'=>null), 404);
                 }
                 $res = $res[0];
-                $out[] = array('id'=>$res['id'], 'label'=>'Biometrie n°'.$id, 'link'=>'#/chiro/biometrie/'.$id);
+                $out[] = array(
+                    'id'=>$res['id'], 
+                    'label'=>'Biometrie n°'.$id, 
+                    'link'=>'#/chiro/biometrie/'.$id
+                );
                 $id = $res['obs_tx_id'];
             case 'taxons': 
             case 'taxon':
@@ -39,7 +43,11 @@ class ConfigController extends Controller{
                     return new JsonResponse(array('id'=>null), 404);
                 }
                 $res = $res[0];
-                $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/taxons/'.$id);
+                $out[] = array(
+                    'id'=>$res['id'], 
+                    'label'=>$res['label'], 
+                    'link'=>'#/chiro/taxons/'.$id
+                );
                 $id = $res['obs_id'];
             case 'validation':
                 if($view == 'validation'){
@@ -56,11 +64,20 @@ class ConfigController extends Controller{
                 }
                 $res = $res[0];
                 if($res['site_id']==null){
-                    $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/inventaire/'.$id);
-                    $out[] = array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/inventaire');
+                    $out[] = array(
+                        'id'=>$res['id'], 
+                        'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
+                        'link'=>'#/chiro/inventaire/'.$id);
+                    $out[] = array(
+                        'id'=>null, 
+                        'label'=>'Inventaire', 
+                        'link'=>'#/chiro/inventaire');
                     return new JsonResponse(array_reverse($out));
                 }
-                $out[] = array('id'=>$res['id'], 'label'=>implode('/', array_reverse(explode('-', $res['label']))), 'link'=>'#/chiro/observation/'.$id);
+                $out[] = array(
+                    'id'=>$res['id'], 
+                    'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
+                    'link'=>'#/chiro/observation/'.$id);
                 $id = $res['site_id'];
             case 'site':
                 $req = $manager->prepare('SELECT id, site_nom as label FROM pnc.base_site WHERE id=:id');
