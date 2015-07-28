@@ -39,8 +39,8 @@ Un groupe est caractérisé par son libellé (**name**) et une liste de champs (
 
 ```json
     {
-        deleteAccess: 5,
-        groups: [
+        "deleteAccess": 5,
+        "groups": [
             {
                 "name": "Personne",
                 "fields": [
@@ -169,7 +169,7 @@ options:
 
  - **choices** : liste de valeurs pour le select sous la forme d'un dictionnaire {id, libelle}
 
-note: pour les listes de choix faisant référence à la table thesaurus, il est possible de signaler la référence au type de données en ajoutant le descripteur **thesaurusID** (uniquement dans les schémas définis en YAML
+note: pour les listes de choix faisant référence à la table thesaurus, il est possible de signaler la référence au type de données en ajoutant le descripteur **thesaurusID** (uniquement dans les schémas définis en YAML)
 
 ex:
 
