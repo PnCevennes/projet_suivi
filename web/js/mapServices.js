@@ -306,6 +306,12 @@ app.directive('leafletMap', function(){
             };
             mapService.initialize = initialize;
 
+            $scope.$on('map:centerOnSelected', function(ev){
+                if(currentSel){
+                    mapService.getItem(currentSel.feature.properties.id);
+                }
+            });
+
 
             $scope.$on('$destroy', function(evt){
                 if(map){

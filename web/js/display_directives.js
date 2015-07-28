@@ -112,7 +112,8 @@ app.directive('detailDisplay', function(){
             schemaUrl: '@schemaurl',
             dataUrl: '@dataurl',
             updateUrl: '@updateurl',
-            dataId: '@dataid'
+            dataId: '@dataid',
+            mapConnect: '@',
         },
         transclude: true,
         templateUrl: 'js/templates/display/detail.htm',
@@ -177,6 +178,10 @@ app.directive('detailDisplay', function(){
 
             $scope.switchEditing = function(){
                 $scope.subEditing = !$scope.subEditing;
+            }
+
+            $scope.recenter = function(_id){
+                $rootScope.$broadcast('map:centerOnSelected', _id);
             }
 
             // récupération du schéma
