@@ -24,7 +24,7 @@ groups:
                 help: nom du site
                 options:
                     minLength: 5
-                    maxlength: 250
+                    maxLength: 250
             -   name: typeId
                 label: Type
                 type: select
