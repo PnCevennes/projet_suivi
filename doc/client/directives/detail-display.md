@@ -54,7 +54,9 @@ Message envoyé lorsque l'utilisateur clique sur le bouton de recentrage de la c
 
 ##Listeners
 
-###subEdit:dataAdded force le rechargement des données des sous protocoles.
+###subEdit:dataAdded 
+
+force le rechargement des données des sous protocoles.
 
 
 
