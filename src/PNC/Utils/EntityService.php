@@ -9,10 +9,223 @@ class EntityService{
 
     private $geometryService;
     private $kernel;
+    private $db;
 
-    public function __construct($geomService, $kernel){
+
+    public function __construct($geomService, $kernel, $db){
         $this->geometryService = $geomService;
         $this->kernel = $kernel;
+        $this->db = $db;
+    }
+
+
+    /*
+     * retourne un manager de base de données
+     */
+    public function getManager(){
+        return $this->db->getManager();
+    }
+
+
+    /*
+     * Retourne une entité
+     * params: 
+     *      $entityRepo => repository
+     *      $filters => filtres de requête
+     */
+    public function getOne($entityRepo, $filters){
+        $repo = $this->db->getRepository($entityRepo);
+        return $repo->findOneBy($filters);
+    }
+
+
+    /*
+     * Retourne une liste d'entités
+     * params: 
+     *      $entityRepo => repository
+     *      $filters => filtres de requête
+     */
+    public function getAll($entityRepo, $filters=null){
+        $repo = $this->db->getRepository($entityRepo);
+        if($filters){
+            return $repo->findBy($filters);
+        }
+        else{
+            return $repo->findAll();
+        }
+    }
+
+
+    /*
+     * insere une liste d'entités dans la DB
+     * params: 
+     *      $entityList : liste d'entités
+     *      [$manager] : manager d'entités 
+     *
+     * $entityList = array(
+     *          "chemin/vers/mapping.yml"=>array(
+     *              'entity'=>instance entité,
+     *              'data'=>jeu de données
+     *              'refer'=>array(
+     *                  'source'=>array('chemin/vers/mapping.yml', 'getter')
+     *                  'dest'=>'cle data'
+     *              )
+     *          )
+     *          ...
+     *      )
+     */
+    public function create($entityList, $_manager=null){
+        if(!$_manager){
+            $manager = $this->getManager();
+            $manager->getConnection()->beginTransaction();
+        }
+        else{
+            $manager = $_manager;
+        }
+        $out = array();
+        foreach($entityList as $schema=>$obj){
+            $entity = $obj['entity'];
+            $data = $obj['data'];
+            if(isset($obj['refer'])){
+                foreach($obj['refer'] as $ref){
+                    $data[$ref['dest'] = $out[$ref['source'][0]]->$ref['source'][1]();
+                }
+            }
+            try{
+                $this->hydrate($entity, $schema, $data);
+                $manager->persist($entity);
+                $manager->flush();
+                $out[$schema] = $entity;
+            }
+            catch(DataObjectException $e){
+                if(!isset($errors)){
+                    $errors = array();
+                }
+                $errors = array_merge($errors, $e->getErrors());
+            }
+        }
+        if(!isset($errors)){
+            if(!$_manager){
+                $manager->getConnection()->commit();
+            }
+            return $out;
+        }
+        else{
+            if(!$_manager){
+                $manager->getConnection()->rollback();
+            }
+            throw new DataObjectException($errors);
+        }
+    }
+
+
+    /*
+     * met à jour une liste d'entités
+     * params: 
+     *      $entityList : liste d'entités
+     *      [$manager] : manager d'entités
+     *
+     * $entityList = array(
+     *          'chemin/vers/mapping.yml'=>array(
+     *              'repo'=> repository
+     *              'filter' => filtre de requete de récupération
+     *              'data' => jeu de données
+     *          )
+     *          ...
+     *      )
+     */
+    public function update($entityList, $_manager=null){
+        if(!$_manager){
+            $manager = $this->getManager();
+            $manager->getConnection()->beginTransaction();
+        }
+        else{
+            $manager = $_manager;
+        }
+        $out = array();
+
+        foreach($entityList as $schema=>$obj){
+            $data = $obj['data'];
+            $entity = $this->getOne($obj['repo'], $obj['filter']);
+            if(isset($obj['refer'])){
+                foreach($obj['refer'] as $ref){
+                    $data[$ref['dest'] = $out[$ref['source'][0]]->$ref['source'][1]();
+                }
+            }
+            try{
+                $this->hydrate($entity, $schema, $data);
+                $manager->flush();
+                $out[$schema] = $entity;
+            }
+            catch(DataObjectException $e){
+                if(!isset($errors)){
+                    $errors = array();
+                }
+                $errors = array_merge($errors, $e->getErrors());
+            }
+        }
+
+        if(!isset($errors)){
+            if(!$_manager){
+                $manager->getConnection()->commit();
+            }
+            return $out;
+        }
+        else{
+            if(!$_manager){
+                $manager->getConnection()->rollback();
+            }
+            throw new DataObjectException($errors);
+        }
+    }
+
+
+    /*
+     * retire une liste d'entités de la DB
+     * params :
+     *      $entityList : liste d'entités
+     *      [$manager] : manager d'entités 
+     *
+     * $entityList = array(
+     *          "chemin/vers/mapping.yml"=>array(
+     *              'repo'=> repository
+     *              'filter' => filtre de requete de récupération
+     *          )
+     *          ...
+     *      )
+     */
+    public function delete($entityList, $_manager=null){
+        $out = array();
+        if(!$_manager){
+            $manager = $this->getManager();
+            $manager->getConnection()->beginTransaction();
+        }
+        else{
+            $manager = $_manager;
+        }
+        foreach($entityList as $schema=>$obj){
+            $entity = $this->getOne($obj['repo'], $obj['filter']);
+            if(!$entity){
+                $errors = array($obj['repo']=>'entité introuvable');
+            }
+            else{
+                $manager->remove($entity);
+                $manager->flush();
+                $out[$schema] = $entity;
+            }
+        }
+        if(!isset($errors)){
+            if(!$_manager){
+                $manager->getConnection()->commit();
+            }
+            return $out;
+        }
+        else{
+            if(!$_manager){
+                $manager->getConnection()->rollback();
+            }
+            throw new DataObjectException($errors);
+        }
     }
 
 
@@ -80,6 +293,7 @@ class EntityService{
         }
         return $out;
     }
+
 
     /*
      * transforme une chaine dont les mots sont séparés par des underscore

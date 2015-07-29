@@ -61,8 +61,79 @@ Service factorisant l'"hydratation" et la normalisation des entités.
 
 ###Methodes
 
-**public hydrate($object, $schema, $data)** insère les données issues de `$data` dans l'entité doctrine `$object` en
-suivant le schema fourni `$schema`
+####public getOne($entityRepo, $filters)
+
+retourne une entité requêtée sur `$entityRepo` identifiée par `$filters`. `$filters` est un dictionnaire {champ=>valeur}
+
+####public getAll($entityRepo, $filters) 
+
+retourne une liste d'entités requêtées sur `$entityRepo` filtrée par `$filters`. `$filters` est un dictionnaire {champ=>valeur}
+
+
+####public create($entityList [, $manager=null])
+
+insère une liste d'entités dans la base.
+
+`$manager` est une instance de connexion à la base de données (doctrine->getManager()) facultative, utilisable pour gérer des transactions sur des requêtes
+de différents types.
+
+`$entityList` est une liste de configuration:
+
+```php
+$entityList = array(
+    'chemin/vers/mapping.yml'=>array(
+        'entity'=>$instance_entite,
+        'data'=>$jeu_de_donnees
+        'refer'=>array(
+            'source'=>array('chemin/vers/mapping/source.yml', 'getter'),
+            'dest'=>'cle data'
+            )
+    ),
+    //...
+);
+```
+
+
+####public update($entityList [, $manager=null])
+
+met à jour une liste d'entités
+
+`$manager` cf. **create**
+
+`$entityList` est une liste de configuration:
+
+```
+$entityList = array(
+    'chemin/vers/mapping.yml'=>array(
+    'repo'=> repository
+    'filter' => filtre de requete de récupération (array(champ=>valeur))
+    'data' => jeu de données
+)
+```
+
+
+####public delete($entityList [, $manager=null])
+
+supprime une liste d'entités de la base de données
+
+`$manager` cf. **create**
+
+`$entityList` est une liste de configuration:
+
+```
+$entityList = array(
+    "chemin/vers/mapping.yml"=>array(
+        'repo'=> repository
+        'filter' => filtre de requete de récupération
+    )
+    ...
+)
+```
+
+
+####public hydrate($object, $schema, $data)
+
+insère les données issues de `$data` dans l'entité doctrine `$object` en suivant le schema fourni `$schema`
 
 le parametre schema peut être 
 
@@ -75,23 +146,35 @@ La validation des données de fait dans les setters de l'entité fournie.
 note : la méthode ne retourne rien, l'objet fourni est modifié par référence.
 
 
-**public normalize($object, $schema)** extrait les données d'une entité doctrine `$object` en suivant le schéma
-fourni `$schema` 
+####public normalize($object, $schema) 
+
+extrait les données d'une entité doctrine `$object` en suivant le schéma fourni `$schema` 
 
 - soit un dictionnaire avec comme clés les champs à insérer et comme valeurs les méthodes de transformation (null lorsque la donnée n'est pas à modifier)
 - soit le chemin du mapping doctrine de l'entité.
 
 
-**private read_mapping($path)** méthode utilisée par `hydrate` et `normalize`. Lit le fichier mapping dont le chemin
+####private read_mapping($path) 
+
+méthode utilisée par `hydrate` et `normalize`. Lit le fichier mapping dont le chemin
 est fourni et retourne le contenu sous forme de dictionnaire
 
-**private camelize($value)** transforme une chaîne utilisant une _ pour séparer les mots en chaîne camelCase.
 
-**private transform_to($method, $data)** methode utilisée par `normalize`. Transforme une donnée selon la méthode fournie.
+####private camelize($value) 
+
+transforme une chaîne utilisant une _ pour séparer les mots en chaîne camelCase.
+
+
+####private transform_to($method, $data) 
+
+methode utilisée par `normalize`. Transforme une donnée selon la méthode fournie.
 
 Par exemple un objet de type \DateTime sera transformé en chaîne "Y-m-d"
 
-**private transform_from($method, $data)** methode utilisée par `hydrate`. Transforme une donnée selon la méthode fournie.
+
+####private transform_from($method, $data)** 
+
+methode utilisée par `hydrate`. Transforme une donnée selon la méthode fournie.
 
 Par exemple une chaine "d/m/Y" sera transformée en objet \DateTime.
 
