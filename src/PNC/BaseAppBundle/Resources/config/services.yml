@@ -17,7 +17,7 @@ services:
         class: PNC\Utils\NormalizeService
     entityService:
         class: PNC\Utils\EntityService
-        arguments: [@geometry, @kernel]
+        arguments: [@geometry, @kernel, @doctrine]
     thesaurusService:
         class: PNC\Utils\ThesaurusService
         arguments: [@doctrine, @normalizer]           
