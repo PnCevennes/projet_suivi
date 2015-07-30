@@ -80,8 +80,10 @@ class TaxonService{
 
     public function getOne($id){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-        $data = $repo->findOneBy(array('id'=>$id));
+        $data = $this->entityService->getOne(
+            'PNCChiroBundle:ObservationTaxon', 
+            array('id'=>$id)
+        );
         if($data){
             $out = $this->entityService->normalize($data, $schema);
             return $out;
@@ -95,56 +97,60 @@ class TaxonService{
             $manager = $db;
         }
         else{
-            $manager = $this->db->getManager();
-        }
-        if($commit){
+            $manager = $this->entityService->getManager();
             $manager->getConnection()->beginTransaction();
         }
-        try{
-            $obsTx = new ObservationTaxon();
-            $this->entityService->hydrate($obsTx, $schema, $data);
 
-            $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
-            $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
-            $obsTx->setNomComplet($tx->getNomComplet());
-            
-            $manager->persist($obsTx);
-            $manager->flush();
-            if(isset($data['__biometries__'])){
-                foreach($data['__biometries__'] as $biom){
-                    $biom['obsTxId'] = $obsTx->getId();
-                    $biom['biomCommentaire'] = '';
-                    $this->biometrieService->create($biom, false);
-                }
+        $tx = $this->entityService->getOne(
+            'PNCBaseAppBundle:Taxons', 
+            array('cd_nom'=>$data['cdNom'])
+        );
+        $data['nomComplet'] = $tx->getNomComplet();
+
+        $result = $this->entityService->create(
+            array(
+                $schema=>array(
+                    'entity'=>new ObservationTaxon(),
+                    'data'=>$data
+                )
+            ),
+            $manager
+        );
+        $obsTx = $result[$schema];
+
+        if(isset($data['__biometries__'])){
+            foreach($data['__biometries__'] as $biom){
+                $biom['obsTxId'] = $obsTx->getId();
+                $biom['biomCommentaire'] = '';
+                $this->biometrieService->create($biom, $manager);
             }
         }
-        catch(DataObjectException $e){
-            if($commit){
-                $manager->getConnection()->rollback();
-                throw new DataObjectException($e->getErrors());
-            }
-        }
-        if($commit){
+        if(!$db){
             $manager->getConnection()->commit();
         }
+
         return array('id'=>$obsTx->getId());
     }
 
     public function update($id, $data){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-        $manager = $this->db->getManager();
-        $obsTx = $repo->findOneBy(array('id'=>$id));
-        if(!$obsTx){
-            return null;
-        }
-        $this->entityService->hydrate($obsTx, $schema, $data);
+        $tx = $this->entityService->getOne(
+            'PNCBaseAppBundle:Taxons', 
+            array('cd_nom'=>$data['cdNom'])
+        );
+        $data['nomComplet'] = $tx->getNomComplet();
 
-        $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
-        $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
-        $obsTx->setNomComplet($tx->getNomComplet());
-        
-        $manager->flush();
+        $result = $this->entityService->update(
+            array(
+                $schema=>array(
+                    'repo'=>'PNCChiroBundle:ObservationTaxon',
+                    'filter'=>array('id'=>$id),
+                    'data'=>$data
+                )
+            )
+        );
+
+        $obsTx = $result[$schema];
         return array('id'=>$obsTx->getId());
     }
 

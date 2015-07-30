@@ -124,13 +124,15 @@ class ObservationService{
 
     public function getOne($id){
         $has_geom = false;
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
-        $info = $repo->findOneById($id);
+        $info = $this->entityService->getOne(
+            'PNCChiroBundle:ObservationView',
+            array('id'=>$id));
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
         if(!$info){
             $has_geom = true;
-            $repo = $this->db->getRepository('PNCChiroBundle:ObservationSsSiteView');
-            $info = $repo->findOneById($id);
+            $info = $this->entityService->getOne(
+                'PNCChiroBundle:ObservationSsSiteView',
+                array('id'=>$id));
             $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
             if(!$info){
                 return null;

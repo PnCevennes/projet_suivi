@@ -75,8 +75,7 @@ class SiteService{
     }
 
     public function getOne($id){
-        $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
-        $info = $repo->findOneById($id);
+        $info = $this->entityService->getOne('PNCChiroBundle:SiteView', array('id'=>$id));
         if(!$info){
             throw new NotFoundHttpException();
         }

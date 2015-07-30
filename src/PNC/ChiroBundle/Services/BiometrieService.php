@@ -95,8 +95,11 @@ class BiometrieService{
      *      id: l'id de la biometrie
      */
     public function getOne($id){
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $data = $repo->findOneBy(array('id'=>$id));
+        $data = $this->entityService->getOne(
+            'PNCChiroBundle:Biometrie',
+            array('id'=>$id)
+        );
+
         if($data){
             return $this->entityService->normalize($data, $this->normalize_schema);
         }
@@ -112,33 +115,21 @@ class BiometrieService{
      *  raise:
      *      DataObjectException si les données sont invalides
      */
-    public function create($data, $db=null, $commit=true){
-        if(!$db){
-            $manager = $this->db->getManager();
+    public function create($data, $db=null){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+        $result = $this->entityService->create(
+            array(
+                $schema=>array(
+                    'entity'=>new Biometrie(), 
+                    'data'=>$data
+                )
+            ),
+            $db
+        );
+        if($result){
+            $biom = $result[$schema];
+            return array('id'=>$biom->getId());
         }
-        else{
-            $manager = $db;
-        }
-        if($commit){
-            $manager->getConnection()->beginTransaction();
-        }
-        try{
-            $biom = new Biometrie();
-            $this->entityService->hydrate($biom, $this->schema, $data);
-            $manager->persist($biom);
-            $manager->flush();
-        }
-        catch(DataObjectException $e){
-            if($commit){
-                $manager->getConnection()->rollback();
-            }
-            throw new DataObjectException($e->getErrors());
-        }
-        if($commit){
-            $manager->getConnection()->commit();
-        }
-        return array('id'=>$biom->getId());
-
     }
 
     /*
@@ -152,15 +143,21 @@ class BiometrieService{
      *      DataObjectException si les données sont invalides
      */
     public function update($id, $data){
-        $manager = $this->db->getManager();
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->findOneBy(array('id'=>$id));
-        if(!$biom){
-            return null;
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+
+        $result = $this->entityService->update(
+            array(
+                $schema=>array(
+                    'repo'=>'PNCChiroBundle:Biometrie',
+                    'filter'=>array('id'=>$id),
+                    'data'=>$data
+                )
+            )
+        );
+        if($result){
+            $biom = $result[$schema];
+            return array('id'=>$biom->getId());
         }
-        $this->entityService->hydrate($biom, $this->schema, $data);
-        $manager->flush();
-        return array('id'=>$biom->getId());
     }
 
     /*
@@ -171,15 +168,22 @@ class BiometrieService{
      *      bool succès
      */
     public function remove($id){
-        $manager = $this->db->getManager();
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->findOneBy(array('id'=>$id));
-        if($biom){
-            $manager->remove($biom);
-            $manager->flush();
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+
+        try{
+            $result = $this->entityService->delete(
+                array(
+                    $schema=>array(
+                        'repo'=>'PNCChiroBundle:Biometrie',
+                        'filter'=>array('id'=>$id)
+                    )
+                )
+            );
             return true;
         }
-        return false;
+        catch(DataObjectException $e){
+            return false;
+        }
     }
 }
 
