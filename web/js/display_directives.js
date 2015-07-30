@@ -113,7 +113,6 @@ app.directive('detailDisplay', function(){
             dataUrl: '@dataurl',
             updateUrl: '@updateurl',
             dataId: '@dataid',
-            mapConnect: '@',
         },
         transclude: true,
         templateUrl: 'js/templates/display/detail.htm',

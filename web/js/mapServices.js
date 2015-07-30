@@ -43,7 +43,8 @@ app.directive('leafletMap', function(){
         scope: {
             data: '=',
         },
-        template: '<div dw-loading="map-loading" dw-loading-options="{text: \'Chargement des données\'}" ng-options="{ text: \'\', className: \'custom-loading\', spinnerOptions: {radius:30, width:8, length: 16, color: \'#f0f\', direction: -1, speed: 3}}"></div><div id="mapd"></div>',
+        templateUrl: 'js/templates/display/map.htm',
+        //template: '<div dw-loading="map-loading" dw-loading-options="{text: \'Chargement des données\'}" ng-options="{ text: \'\', className: \'custom-loading\', spinnerOptions: {radius:30, width:8, length: 16, color: \'#f0f\', direction: -1, speed: 3}}"></div><div id="mapd"></div>',
         controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout, $loading){
             /*
              */
@@ -99,6 +100,24 @@ app.directive('leafletMap', function(){
                         layerControl = L.control.layers(tileLayers, {'Données': layer});
                         
                         layerControl.addTo(map);
+
+
+                        var recenterCtrl = L.control({position: 'topleft'});
+                        recenterCtrl.onAdd = function(map){
+                            this._rectCtrl = L.DomUtil.create('div', 'recenterBtn');
+                            this.update();
+                            return this._rectCtrl;
+                        }
+                        recenterCtrl.update = function(){
+                            this._rectCtrl.innerHTML = '<button type="button" onclick="recenter();"><span class="glyphicon glyphicon-move"></span></button>';
+                        };
+                        recenterCtrl.addTo(map);
+
+                        document.recenter = function(){
+                            $rootScope.$apply(
+                                $rootScope.$broadcast('map:centerOnSelected')
+                            );
+                        }
 
                         /*
                          * déplacement carte récupération de la zone d'affichage
@@ -196,7 +215,9 @@ app.directive('leafletMap', function(){
                             /*
                              * centre la carte sur le point sélectionné
                              */
-                            map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
+                            $timeout(function(){
+                                map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
+                            }, 0);
                             return res[0];
                         }
                         catch(e){
@@ -305,6 +326,12 @@ app.directive('leafletMap', function(){
                 return dfd.promise;
             };
             mapService.initialize = initialize;
+
+            $scope.recenter = function(){
+                if(currentSel){
+                    mapService.getItem(currentSel.feature.properties.id);
+                }
+            };
 
             $scope.$on('map:centerOnSelected', function(ev){
                 if(currentSel){
