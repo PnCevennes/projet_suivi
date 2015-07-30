@@ -115,7 +115,7 @@ app.directive('leafletMap', function(){
 
                         document.recenter = function(){
                             $rootScope.$apply(
-                                $rootScope.$broadcast('map:centerOnSelected')
+                                $rootScope.$broadcast('mapService:centerOnSelected')
                             );
                         }
 
@@ -332,7 +332,7 @@ app.directive('leafletMap', function(){
                 }
             };
 
-            $scope.$on('map:centerOnSelected', function(ev){
+            $scope.$on('mapService:centerOnSelected', function(ev){
                 if(currentSel){
                     mapService.getItem(currentSel.feature.properties.id);
                 }
