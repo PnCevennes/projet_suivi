@@ -211,22 +211,21 @@ app.directive('leafletMap', function(){
                         return item.feature.properties.id == _id;
                     });
                     if(res.length){
-                        try{
-                            /*
-                             * centre la carte sur le point sélectionné
-                             */
-                            $timeout(function(){
+                        $timeout(function(){
+                            try{
+                                /*
+                                 * centre la carte sur le point sélectionné
+                                 */
                                 map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
-                            }, 0);
-                            return res[0];
-                        }
-                        catch(e){
-                            /*
-                             * centre la carte sur la figure sélectionnée
-                             */
-                            map.fitBounds(res[0].getBounds());
-                            return res[0];
-                        }
+                            }
+                            catch(e){
+                                /*
+                                 * centre la carte sur la figure sélectionnée
+                                 */
+                                map.fitBounds(res[0].getBounds());
+                            }
+                        }, 0);
+                        return res[0];
                     }
                     return null;
                 };
