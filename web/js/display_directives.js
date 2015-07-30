@@ -510,7 +510,6 @@ app.directive('filterform', function(){
             url: '@',
             _schema: '=schema',
             callback: '=',
-            paginate: '=',
         },
         templateUrl: 'js/templates/form/filterForm.htm',
         controller: function($scope, $timeout, dataServ, configServ){
@@ -604,6 +603,8 @@ app.directive('filterform', function(){
                 $scope.schema.fields.forEach(function(item){
                     $scope.filterData[item.name] = {filter: '=', value: item.default};
                 });
+                $scope.paginate = $scope.schema.limit != null;
+
                 configServ.get($scope.url, function(resp){
                     if(resp){
                         $scope.page = resp.page;
