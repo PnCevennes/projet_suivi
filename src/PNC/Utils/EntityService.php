@@ -88,7 +88,7 @@ class EntityService{
             $data = $obj['data'];
             if(isset($obj['refer'])){
                 foreach($obj['refer'] as $ref){
-                    $data[$ref['dest'] = $out[$ref['source'][0]]->$ref['source'][1]();
+                    $data[$ref['dest']] = $out[$ref['source'][0]]->$ref['source'][1]();
                 }
             }
             try{
@@ -149,7 +149,7 @@ class EntityService{
             $entity = $this->getOne($obj['repo'], $obj['filter']);
             if(isset($obj['refer'])){
                 foreach($obj['refer'] as $ref){
-                    $data[$ref['dest'] = $out[$ref['source'][0]]->$ref['source'][1]();
+                    $data[$ref['dest']] = $out[$ref['source'][0]]->$ref['source'][1]();
                 }
             }
             try{
