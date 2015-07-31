@@ -3,26 +3,13 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * Biometrie
  */
-class Biometrie
+class Biometrie extends BaseEntity
 {
-
-    private $_errors = array();
-
-    /*
-     * Retourne la liste des champs invalides s'il y en a
-     * ou false si tout est OK
-     */
-
-    public function errors(){
-        /*if(empty($this->_errors)){
-            return false;
-        }*/
-        return $this->_errors;
-    }
 
     /**
      * @var integer

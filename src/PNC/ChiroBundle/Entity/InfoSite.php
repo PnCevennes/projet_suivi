@@ -3,15 +3,15 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * InfoSite
  */
-class InfoSite
+class InfoSite extends BaseEntity;
 {
 
 
-    private $_errors = array();
     /**
      * @var integer
      */
@@ -93,15 +93,6 @@ class InfoSite
      */
     private $contact_commentaire;
 
-
-
-    /*
-     * Retourne la liste des champs invalides s'il y en a
-     * ou false si tout est OK
-     */
-    public function errors(){
-        return $this->_errors;
-    }
 
     /**
      * Get id
