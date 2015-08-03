@@ -1,17 +1,94 @@
+body { 
+    padding-top: 52px; 
+    padding-bottom: 52px;
+}
+
 #mapd{
     width: 100%;
     height: 100%;
 }
 
 .fixed-map {
-  position: fixed;
-  padding: 0;
-  margin: 0;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+}
+
+.map{
+    float: left;
+    padding: 0px;
+    /*
+    box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+        -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+        -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
+        */
+}
+
+
+.map.medium{
+    height: 60vh;
+    width: 100%;
+    border: 2px solid #CCC;
+}
+
+
+@media (min-width: 768px){
+    .fixed-map.large{
+        width: 40%;
+        border-right: 2px solid #CCC;
+    }
+    .map.large{
+        height: 100vh;
+        width: 100%;
+    }
+    .fixed-map._small{
+        width: 25%;
+        border-right: 2px solid #CCC;
+    }
+    .map._small{
+        height: 100vh; 
+        width: 100%;
+    }
+    .cnt{
+        margin-right: 1ex;
+    }
+    .cnt.large{
+        margin-left: 41%;
+    }
+    .cnt._small{
+        margin-left: 26%;
+    }
+}
+
+@media (max-width: 768px){
+    .fixed-map.large{
+        position: relative;
+        width: 100%;
+    }
+    .map.large{
+        height: 80vh;
+        width: 100%;
+        border-bottom: 2px solid #CCC;
+    }
+    .fixed-map._small{
+        position: relative;
+        width: 100%;
+        height: 40vh;
+    }
+    .map._small{
+        height: 40vh;
+        width: 100%;
+        border-bottom: 2px solid #CCC;
+    }
+    .cnt{
+        margin-left: 1em;
+        margin-right: 1em;
+    }
 }
 
 .full-screen{
-  padding:0;
-  padding:0;
+    padding: 0;
+    padding: 0;
 }
 
 .padded{
@@ -29,32 +106,10 @@
     display: block;
 }
 
-.map{
-    float: left;
-    padding: 0px;
-    /*
-    box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
-        -moz-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
-        -webkit-box-shadow: 0px 0px 10px 4px rgba(119, 119, 119, 0.75);
-        */
-}
-
-.map.large{
-    height: 100vh;
-    width: 100%;
-}
-
-.map.medium{
-    height: 60vh;
-}
-
-.map.small{
-    height: 92vh; 
-}
 
 .content-panel {
- min-height: 90vh;
- padding:10px;
+    min-height: 90vh;
+    padding: 10px;
 }
 
 .img_menu {
@@ -95,10 +150,6 @@
  * Menu principal
  ********************************************************/
  /*Fixed Nav-bar*/
- body { 
-    padding-top: 52px; 
-    padding-bottom: 52px;
-}
  
 #main-menu {
     font-size: 14px;
@@ -140,12 +191,12 @@
  * Spinner
  *******************************************************/
 .custom-loading.dw-loading {
-  text-align: center;
+    text-align: center;
 }
 
 .custom-loading.dw-loading.dw-loading-overlay {
-  background-color: rgba(0, 255, 255, .7);
-  z-index: 9999;
+    background-color: rgba(0, 255, 255, .7);
+    z-index: 9999;
 }
 
 .custom-loading.dw-loading > .dw-loading-body > .dw-loading-text {
@@ -219,8 +270,8 @@
  * Barre d'action des formulaires
  */
 .btn-toolbox {
-  margin-left: 10px;
-  margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 #formToolbox{
@@ -249,16 +300,16 @@
  * * Table wrapper
  * *******************************************************/
 .select-column {
-  left:auto;
-  right:0;
+    left: auto;
+    right: 0;
 }
 
 table.tablewrapper>tbody>tr.odd>td {
-  background-color:rgba(207, 207, 207, 0.72)
+    background-color: rgba(207, 207, 207, 0.72)
 }
 
 table.tablewrapper>tbody>tr.active>td{
-  background-color:rgb(117, 227, 118);
+    background-color: rgb(117, 227, 118);
 }
 
 /*******************************************************
@@ -267,15 +318,15 @@ table.tablewrapper>tbody>tr.active>td{
 
 
 .float-right {
-  float:right;
+    float: right;
 }
 
 .float-left {
-  float:left;
+    float: left;
 }
 
 .float-none {
-    float:none;
+    float: none;
 }
 
 .center {
@@ -298,16 +349,11 @@ table.tablewrapper>tbody>tr.active>td{
   font-size: 28px;
 }
 
-#mapAsFilter{
-    display: inline;
-    position: fixed;
-    background-color: rgba(255,255,255,1);
-    padding: 8px;
-    left: 25px;
-    bottom: 35px;
-    z-index: 99;
+.mapFilter{
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 4px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    padding: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 }
 
 .recenterBtn{
@@ -351,18 +397,18 @@ table.rc-table-resizing thead, table.rc-table-resizing thead > th, table.rc-tabl
 }
 
 .table-small{
-    max-width: 10em;
+    max-width: 20em;
 }
 
 .table-xsmall{
-    max-width: 5em;
+    max-width: 10em;
 }
 
 .opaque{
     background-color: white;
     z-index: 100;
     padding-bottom: 20px;
-    border-left: 2px solid #CCC;
+    /*border-left: 2px solid #CCC;*/
 }
 /*
 .ng-table th.sortable.sort-asc{

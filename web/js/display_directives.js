@@ -466,7 +466,6 @@ app.directive('tablewrapper', function(){
                 if(newval.length){
                     configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
                         if(item){
-                            console.log(item);
                             _item = $scope.data.filter(function(elem){
                                 return elem.id == item.id;
                             });
