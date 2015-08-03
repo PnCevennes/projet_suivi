@@ -439,7 +439,7 @@ app.directive('tablewrapper', function(){
              * Fonctions
              */
             $scope.selectItem = function(item, broadcast){
-                if($scope.currentItem){
+                if($scope.currentItem && $scope.currentItem != item){
                     $scope.currentItem.$selected = false;
                 }
                 if(broadcast == undefined){
@@ -466,10 +466,19 @@ app.directive('tablewrapper', function(){
                 if(newval.length){
                     configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
                         if(item){
+                            console.log(item);
+                            _item = $scope.data.filter(function(elem){
+                                return elem.id == item.id;
+                            });
+                            if(_item.length){
+                                item = _item[0];
+                            }
                             $scope.currentItem = item;
                             $timeout(function(){
+                                $scope.selectItem(item, false);
                                 $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
                             }, 0);
+                            return;
                         }
                     });
                     $scope.tableParams.reload();
