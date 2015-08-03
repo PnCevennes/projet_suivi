@@ -8,7 +8,7 @@ use PNC\Utils\BaseEntity;
 /**
  * InfoSite
  */
-class InfoSite extends BaseEntity;
+class InfoSite extends BaseEntity
 {
 
 
