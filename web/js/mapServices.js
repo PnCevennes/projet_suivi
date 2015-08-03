@@ -134,7 +134,9 @@ app.directive('leafletMap', function(){
                             })
                         });
 
-
+                        $timeout(function(){
+                            $rootScope.$broadcast('map:ready');
+                        }, 0);
 
                         dfd.resolve();
                     });
@@ -343,6 +345,7 @@ app.directive('leafletMap', function(){
                 if(map){
                     map.remove();
                     mapService.initialize = null;
+                    mapService.map = null;
                     geoms = [];
                 }
             });
@@ -355,10 +358,11 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
         restrict: 'A',
         transclude: true,
         //templateUrl: 'js/templates/display/mapList.htm',
-        template: '<div><div id="mapAsFilter" class="checkbox"><label ng-show="toolBoxOpened"><input type="checkbox" ng-model="mapAsFilter" ng-click="filter()"/> filtrer avec la carte </label><span ng-class="{\'glyphicon glyphicon-chevron-left\': toolBoxOpened, \'glyphicon glyphicon-chevron-right\': !toolBoxOpened}" ng-click="toolBoxOpened = !toolBoxOpened"></span></div><ng-transclude></ng-transclude></div>',
+        template: '<div><ng-transclude></ng-transclude></div>',
         link: function(scope, elem, attrs){
             // récupération de l'identificateur d'événements de la liste
             var target = attrs['maplist'];
+            var filterTpl = '<div class="mapFilter"><label> filtrer avec la carte <input type="checkbox" onchange="filterWithMap(this);"/></label></div>';
             scope.mapAsFilter = false;
             scope.toolBoxOpened = true;
             var visibleItems = [];
@@ -401,6 +405,31 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
                     if(mapService.filterData){
                         mapService.filterData(ids);
                     }
+                });
+
+            };
+
+            var _createFilterCtrl = function(){
+                var filterCtrl = L.control({position: 'topright'});
+                filterCtrl.onAdd = function(map){
+                    this._filtCtrl = L.DomUtil.create('div', 'filterBtn');
+                    this.update();
+                    return this._filtCtrl;
+                };
+                filterCtrl.update = function(){
+                    this._filtCtrl.innerHTML = filterTpl;
+                };
+                filterCtrl.addTo(mapService.getMap());
+            }
+
+            scope.$on('map:ready', function(){
+                _createFilterCtrl();
+            });
+
+            document.filterWithMap = function(elem){
+                $rootScope.$apply(function(){
+                    scope.mapAsFilter = elem.checked;
+                    scope.filter();
                 });
             };
 
