@@ -18,79 +18,79 @@ groups:
             -   name: nomComplet
                 label: "Nom taxon"
                 type: string
-            -   name: obsTxInitial
+            -   name: cotxInitial
                 label: "Taxon initial"
                 type: string
-            -   name: obsEspeceIncertaine
+            -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool
-            -   name: obsObjStatusValidation
+            -   name: cotxObjStatusValidation
                 label: "Statut validation"
                 type: select
                 thesaurusID: 9
-            -   name: obsValidateur
+            -   name: cotxValidateur
                 label: "Validateur"
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: actId
+            -   name: cotxActId
                 label: "Activité"
                 type: select
                 thesaurusID: 5
-            -   name: prvId
+            -   name: cotxPrvId
                 label: "Preuves de reproduction"
                 type: select
                 thesaurusID: 6
-            -   name: obsEffectifAbs
+            -   name: cotxEffectifAbs
                 label: "Effectif total"
                 type: num
     -   name: "Détail"
         fields:
-            -   name: obsNbMaleAdulte
+            -   name: cotxNbMaleAdulte
                 label: "Mâles adultes"
                 type: num
-            -   name: obsNbFemelleAdulte
+            -   name: cotxNbFemelleAdulte
                 label: "Femelles adultes"
                 type: num
-            -   name: obsNbMaleJuvenile
+            -   name: cotxNbMaleJuvenile
                 label: "Mâles juvéniles"
                 type: num
-            -   name: obsNbFemelleJuvenile
+            -   name: cotxNbFemelleJuvenile
                 label: "Femelles juvéniles"
                 type: num
-            -   name: obsNbMaleIndetermine
+            -   name: cotxNbMaleIndetermine
                 label: "Mâles indéterminés"
                 help: "Âge indéterminé"
                 type: num
-            -   name: obsNbFemelleIndetermine
+            -   name: cotxNbFemelleIndetermine
                 label: "Femelles indéterminées"
                 help: "Âge indéterminé"
                 type: num
-            -   name: obsNbIndetermineAdulte
+            -   name: cotxNbIndetermineAdulte
                 label: "Indéterminés adultes"
                 help: "Sexe indéterminé"
                 type: num
-            -   name: obsNbIndetermineJuvenile
+            -   name: cotxNbIndetermineJuvenile
                 label: "Indéterminés juvéniles"
                 help: "Sexe indéterminé"
                 type: num
-            -   name: obsNbIndetermineIndetermine
+            -   name: cotxNbIndetermineIndetermine
                 label: "Indéterminé indéterminé"
                 help: "Âge et sexe indéterminés"
                 type: num
-            -   name: obsCommentaire
+            -   name: cotxCommentaire
                 label: "Commentaires"
                 type: string
     -   name: "Metadonnées"
         fields:
-            -   name: numerisateurId
+            -   name: metaNumerisateurId
                 label: Numérisateur
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: created
+            -   name: metaCreateTimestamp
                 label: "Création donnée"
                 type: date
-            -   name: updated
+            -   name: metaUpdateTimestamp
                 label: "Dernière mise à jour"
                 type: date

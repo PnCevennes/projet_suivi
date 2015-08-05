@@ -13,13 +13,13 @@ PNC\ChiroBundle\Entity\ValidationTaxonView:
             type: integer
         nom_complet:
             type: text
-        obs_effectif_abs:
+        cotx_effectif_abs:
             type: integer
-        obs_date:
+        bv_date:
             type: date
-        obs_obj_status_validation:
+        cotx_obj_status_validation:
             type: integer
-        date_validation:
+        cotx_date_validation:
             type: date
         validateur:
             type: text
@@ -27,7 +27,7 @@ PNC\ChiroBundle\Entity\ValidationTaxonView:
             type: text
         observateurs:
             type: json_array
-        site_nom:
+        bs_nom:
             type: text
         geom:
             type: json_array

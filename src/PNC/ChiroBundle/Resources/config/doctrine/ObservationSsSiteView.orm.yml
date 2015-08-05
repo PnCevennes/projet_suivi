@@ -9,29 +9,29 @@ PNC\ChiroBundle\Entity\ObservationSsSiteView:
     fields:
         geom:
             type: json_array
-        obs_date:
+        bv_date:
             type: date
-        numerisateur_id:
+        meta_numerisateur_id:
             type: integer
         numerisateur:
             type: text
-        obs_commentaire:
+        bv_commentaire:
             type: text
-        obs_id_table_src:
+        bv_id_table_src:
             type: integer
-        obs_temperature:
+        cvc_temperature:
             type: float
-        obs_humidite:
+        cvc_humidite:
             type: float
         nb_taxons:
             type: integer
         abondance:
             type: integer
-        mod_id:
+        cvc_mod_id:
             type: integer
-        created:
+        meta_create_timestamp:
             type: date
-        updated:
+        meta_update_timestamp:
             type: date
         ref_commune:
             type: json_array
@@ -40,7 +40,7 @@ PNC\ChiroBundle\Entity\ObservationSsSiteView:
         observateurs:
             targetEntity: PNC\ChiroBundle\Entity\ObservateurView
             joinTable:
-                name: pnc.rel_obs_obr
+                name: suivi.rel_obs_obr
                 joinColumns:
                     obs_id:
                         referencedColumnName: id

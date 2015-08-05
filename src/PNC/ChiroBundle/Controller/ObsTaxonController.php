@@ -78,11 +78,11 @@ class ObsTaxonController extends Controller
         $ids = array();
         try{
             foreach($in_data['__items__'] as $item){
-                $item['obsId'] = $in_data['refId'];
-                $item['numId'] = $user->getUser()['id_role'];
-                $item['obsObjStatusValidation'] = 55;
-                $item['obsCommentaire'] = '';
-                $item['obsValidateur'] = null;
+                $item['fkBvId'] = $in_data['refId'];
+                $item['metaNumerisateurId'] = $user->getUser()['id_role'];
+                $item['cotxObjStatusValidation'] = 55;
+                $item['cotxCommentaire'] = '';
+                $item['cotxValidateurId'] = null;
                 $res = $ts->create($item, $manager, false);
                 $ids[] = $res['id'];
             }

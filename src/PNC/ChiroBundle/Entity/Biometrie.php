@@ -10,456 +10,100 @@ use PNC\Utils\BaseEntity;
  */
 class Biometrie extends BaseEntity
 {
-
-    /**
-     * @var integer
-     */
-    private $biom_id;
-
-    /**
-     * @var integer
-     */
-    private $age_id;
-
-    /**
-     * @var integer
-     */
-    private $sexe_id;
-
-    /**
-     * @var string
-     */
-    private $biom_ab;
-
-    /**
-     * @var string
-     */
-    private $biom_poids;
-
-    /**
-     * @var string
-     */
-    private $biom_d3mf1;
-
-    /**
-     * @var string
-     */
-    private $biom_d3f2f3;
-
-    /**
-     * @var string
-     */
-    private $biom_d3total;
-
-    /**
-     * @var string
-     */
-    private $biom_d5;
-
-    /**
-     * @var string
-     */
-    private $biom_cm3sup;
-
-    /**
-     * @var string
-     */
-    private $biom_cm3inf;
-
-    /**
-     * @var string
-     */
-    private $biom_cb;
-
-    /**
-     * @var string
-     */
-    private $biom_lm;
-
-    /**
-     * @var string
-     */
-    private $biom_oreille;
-
-    /**
-     * @var string
-     */
-    private $biom_commentaire;
-
-
-    /**
-     * Get biom_id
-     *
-     * @return integer 
-     */
-    public function getBiomId()
-    {
-        return $this->biom_id;
-    }
-
-    /**
-     * Set age_id
-     *
-     * @param integer $ageId
-     * @return Biometrie
-     */
-    public function setAgeId($ageId)
-    {
-        $this->age_id = $ageId;
-
-        return $this;
-    }
-
-    /**
-     * Get age_id
-     *
-     * @return integer 
-     */
-    public function getAgeId()
-    {
-        return $this->age_id;
-    }
-
-    /**
-     * Set sexe_id
-     *
-     * @param integer $sexeId
-     * @return Biometrie
-     */
-    public function setSexeId($sexeId)
-    {
-        $this->sexe_id = $sexeId;
-
-        return $this;
-    }
-
-    /**
-     * Get sexe_id
-     *
-     * @return integer 
-     */
-    public function getSexeId()
-    {
-        return $this->sexe_id;
-    }
-
-    /**
-     * Set biom_ab
-     *
-     * @param string $biomAb
-     * @return Biometrie
-     */
-    public function setBiomAb($biomAb)
-    {
-        if($biomAb && !is_numeric($biomAb)){
-            $this->_errors['biomAb'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_ab = $biomAb;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_ab
-     *
-     * @return string 
-     */
-    public function getBiomAb()
-    {
-        return  $this->biom_ab;
-    }
-
-    /**
-     * Set biom_poids
-     *
-     * @param string $biomPoids
-     * @return Biometrie
-     */
-    public function setBiomPoids($biomPoids)
-    {
-        if($biomPoids && !is_numeric($biomPoids)){
-            $this->_errors['biomPoids'] = "Cette valeur est numérique !";
-        }
-        else{
-            if($biomPoids > 1000){
-                $this->_errors['biomPoids'] = "Poids improbable";
-            }
-            $this->biom_poids = $biomPoids;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get biom_poids
-     *
-     * @return string 
-     */
-    public function getBiomPoids()
-    {
-        return  $this->biom_poids;
-    }
-
-    /**
-     * Set biom_d3mf1
-     *
-     * @param string $biomD3mf1
-     * @return Biometrie
-     */
-    public function setBiomD3mf1($biomD3mf1)
-    {
-        if($biomD3mf1 && !is_numeric($biomD3mf1)){
-            $this->_errors['biomD3mf1'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_d3mf1 = $biomD3mf1;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_d3mf1
-     *
-     * @return string 
-     */
-    public function getBiomD3mf1()
-    {
-        return  $this->biom_d3mf1;
-    }
-
-    /**
-     * Set biom_d3f2f3
-     *
-     * @param string $biomD3f2f3
-     * @return Biometrie
-     */
-    public function setBiomD3f2f3($biomD3f2f3)
-    {
-        if($biomD3f2f3 && !is_numeric($biomD3f2f3)){
-            $this->_errors['biomD3f2f3'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_d3f2f3 = $biomD3f2f3;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_d3f2f3
-     *
-     * @return string 
-     */
-    public function getBiomD3f2f3()
-    {
-        return  $this->biom_d3f2f3;
-    }
-
-    /**
-     * Set biom_d3total
-     *
-     * @param string $biomD3total
-     * @return Biometrie
-     */
-    public function setBiomD3total($biomD3total)
-    {
-        if($biomD3total && !is_numeric($biomD3total)){
-            $this->_errors['biomD3total'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_d3total = $biomD3total;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_d3total
-     *
-     * @return string 
-     */
-    public function getBiomD3total()
-    {
-        return  $this->biom_d3total;
-    }
-
-    /**
-     * Set biom_d5
-     *
-     * @param string $biomD5
-     * @return Biometrie
-     */
-    public function setBiomD5($biomD5)
-    {
-        if($biomD5 && !is_numeric($biomD5)){
-            $this->_errors['biomD5'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_d5 = $biomD5;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_d5
-     *
-     * @return string 
-     */
-    public function getBiomD5()
-    {
-        return  $this->biom_d5;
-    }
-
-    /**
-     * Set biom_cm3sup
-     *
-     * @param string $biomCm3sup
-     * @return Biometrie
-     */
-    public function setBiomCm3sup($biomCm3sup)
-    {
-        if($biomCm3sup && !is_numeric($biomCm3sup)){
-            $this->_errors['biomCm3sup'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_cm3sup = $biomCm3sup;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_cm3sup
-     *
-     * @return string 
-     */
-    public function getBiomCm3sup()
-    {
-        return  $this->biom_cm3sup;
-    }
-
-    /**
-     * Set biom_cm3inf
-     *
-     * @param string $biomCm3inf
-     * @return Biometrie
-     */
-    public function setBiomCm3inf($biomCm3inf)
-    {
-        if($biomCm3inf && !is_numeric($biomCm3inf)){
-            $this->_errors['biomCm3inf'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_cm3inf = $biomCm3inf;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_cm3inf
-     *
-     * @return string 
-     */
-    public function getBiomCm3inf()
-    {
-        return  $this->biom_cm3inf;
-    }
-
-    /**
-     * Set biom_cb
-     *
-     * @param string $biomCb
-     * @return Biometrie
-     */
-    public function setBiomCb($biomCb)
-    {
-        if($biomCb && !is_numeric($biomCb)){
-            $this->_errors['biomCb'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_cb = $biomCb;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_cb
-     *
-     * @return string 
-     */
-    public function getBiomCb()
-    {
-        return  $this->biom_cb;
-    }
-
-    /**
-     * Set biom_lm
-     *
-     * @param string $biomLm
-     * @return Biometrie
-     */
-    public function setBiomLm($biomLm)
-    {
-        if($biomLm && !is_numeric($biomLm)){
-            $this->_errors['biomLm'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_lm = $biomLm;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_lm
-     *
-     * @return string 
-     */
-    public function getBiomLm()
-    {
-        return  $this->biom_lm;
-    }
-
-    /**
-     * Set biom_oreille
-     *
-     * @param string $biomOreille
-     * @return Biometrie
-     */
-    public function setBiomOreille($biomOreille)
-    {
-        if($biomOreille && !is_numeric($biomOreille)){
-            $this->_errors['biomOreille'] = "Cette valeur est numérique !";
-        }
-        else $this->biom_oreille = $biomOreille;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_oreille
-     *
-     * @return string 
-     */
-    public function getBiomOreille()
-    {
-        return  $this->biom_oreille;
-    }
-
-    /**
-     * Set biom_commentaire
-     *
-     * @param string $biomCommentaire
-     * @return Biometrie
-     */
-    public function setBiomCommentaire($biomCommentaire)
-    {
-        $this->biom_commentaire = $biomCommentaire;
-
-        return $this;
-    }
-
-    /**
-     * Get biom_commentaire
-     *
-     * @return string 
-     */
-    public function getBiomCommentaire()
-    {
-        return $this->biom_commentaire;
-    }
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var integer
+     */
+    private $fk_cotx_id;
+
+    /**
+     * @var integer
+     */
+    private $cbio_age_id;
+
+    /**
+     * @var integer
+     */
+    private $cbio_sexe_id;
+
+    /**
+     * @var float
+     */
+    private $cbio_ab;
+
+    /**
+     * @var float
+     */
+    private $cbio_poids;
+
+    /**
+     * @var float
+     */
+    private $cbio_d3mf1;
+
+    /**
+     * @var float
+     */
+    private $cbio_d3f2f3;
+
+    /**
+     * @var float
+     */
+    private $cbio_d3total;
+
+    /**
+     * @var float
+     */
+    private $cbio_d5;
+
+    /**
+     * @var float
+     */
+    private $cbio_cm3sup;
+
+    /**
+     * @var float
+     */
+    private $cbio_cm3inf;
+
+    /**
+     * @var float
+     */
+    private $cbio_cb;
+
+    /**
+     * @var float
+     */
+    private $cbio_lm;
+
+    /**
+     * @var float
+     */
+    private $cbio_oreille;
+
+    /**
+     * @var string
+     */
+    private $cbio_commentaire;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_create_timestamp;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_update_timestamp;
+
+    /**
+     * @var integer
+     */
+    private $meta_numerisateur_id;
 
 
     /**
@@ -471,144 +115,418 @@ class Biometrie extends BaseEntity
     {
         return $this->id;
     }
-    /**
-     * @var integer
-     */
-    private $obs_tx_id;
 
     /**
-     * @var \PNC\ChiroBundle\Entity\ObservationTaxon
-     */
-    private $observation;
-
-
-    /**
-     * Set obs_tx_id
+     * Set fk_cotx_id
      *
-     * @param integer $obsTxId
+     * @param integer $fkCotxId
      * @return Biometrie
      */
-    public function setObsTxId($obsTxId)
+    public function setFkCotxId($fkCotxId)
     {
-        $this->obs_tx_id = $obsTxId;
+        $this->fk_cotx_id = $fkCotxId;
 
         return $this;
     }
 
     /**
-     * Get obs_tx_id
+     * Get fk_cotx_id
      *
      * @return integer 
      */
-    public function getObsTxId()
+    public function getFkCotxId()
     {
-        return $this->obs_tx_id;
+        return $this->fk_cotx_id;
     }
 
     /**
-     * Set observation
+     * Set cbio_age_id
      *
-     * @param \PNC\ChiroBundle\Entity\ObservationTaxon $observation
+     * @param integer $cbioAgeId
      * @return Biometrie
      */
-    public function setObservation(\PNC\ChiroBundle\Entity\ObservationTaxon $observation = null)
+    public function setCbioAgeId($cbioAgeId)
     {
-        $this->observation = $observation;
+        $this->cbio_age_id = $cbioAgeId;
 
         return $this;
     }
 
     /**
-     * Get observation
-     *
-     * @return \PNC\ChiroBundle\Entity\ObservationTaxon 
-     */
-    public function getObservation()
-    {
-        return $this->observation;
-    }
-    /**
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     */
-    private $updated;
-
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return Biometrie
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime 
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     * @return Biometrie
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime 
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-    /**
-     * @var integer
-     */
-    private $numerisateur_id;
-
-
-    /**
-     * Set numerisateur_id
-     *
-     * @param integer $numerisateurId
-     * @return Biometrie
-     */
-    public function setNumerisateurId($numerisateurId)
-    {
-        $this->numerisateur_id = $numerisateurId;
-
-        return $this;
-    }
-
-    /**
-     * Get numerisateur_id
+     * Get cbio_age_id
      *
      * @return integer 
      */
-    public function getNumerisateurId()
+    public function getCbioAgeId()
     {
-        return $this->numerisateur_id;
+        return $this->cbio_age_id;
+    }
+
+    /**
+     * Set cbio_sexe_id
+     *
+     * @param integer $cbioSexeId
+     * @return Biometrie
+     */
+    public function setCbioSexeId($cbioSexeId)
+    {
+        $this->cbio_sexe_id = $cbioSexeId;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_sexe_id
+     *
+     * @return integer 
+     */
+    public function getCbioSexeId()
+    {
+        return $this->cbio_sexe_id;
+    }
+
+    /**
+     * Set cbio_ab
+     *
+     * @param float $cbioAb
+     * @return Biometrie
+     */
+    public function setCbioAb($cbioAb)
+    {
+        $this->cbio_ab = $cbioAb;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_ab
+     *
+     * @return float 
+     */
+    public function getCbioAb()
+    {
+        return $this->cbio_ab;
+    }
+
+    /**
+     * Set cbio_poids
+     *
+     * @param float $cbioPoids
+     * @return Biometrie
+     */
+    public function setCbioPoids($cbioPoids)
+    {
+        $this->cbio_poids = $cbioPoids;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_poids
+     *
+     * @return float 
+     */
+    public function getCbioPoids()
+    {
+        return $this->cbio_poids;
+    }
+
+    /**
+     * Set cbio_d3mf1
+     *
+     * @param float $cbioD3mf1
+     * @return Biometrie
+     */
+    public function setCbioD3mf1($cbioD3mf1)
+    {
+        $this->cbio_d3mf1 = $cbioD3mf1;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_d3mf1
+     *
+     * @return float 
+     */
+    public function getCbioD3mf1()
+    {
+        return $this->cbio_d3mf1;
+    }
+
+    /**
+     * Set cbio_d3f2f3
+     *
+     * @param float $cbioD3f2f3
+     * @return Biometrie
+     */
+    public function setCbioD3f2f3($cbioD3f2f3)
+    {
+        $this->cbio_d3f2f3 = $cbioD3f2f3;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_d3f2f3
+     *
+     * @return float 
+     */
+    public function getCbioD3f2f3()
+    {
+        return $this->cbio_d3f2f3;
+    }
+
+    /**
+     * Set cbio_d3total
+     *
+     * @param float $cbioD3total
+     * @return Biometrie
+     */
+    public function setCbioD3total($cbioD3total)
+    {
+        $this->cbio_d3total = $cbioD3total;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_d3total
+     *
+     * @return float 
+     */
+    public function getCbioD3total()
+    {
+        return $this->cbio_d3total;
+    }
+
+    /**
+     * Set cbio_d5
+     *
+     * @param float $cbioD5
+     * @return Biometrie
+     */
+    public function setCbioD5($cbioD5)
+    {
+        $this->cbio_d5 = $cbioD5;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_d5
+     *
+     * @return float 
+     */
+    public function getCbioD5()
+    {
+        return $this->cbio_d5;
+    }
+
+    /**
+     * Set cbio_cm3sup
+     *
+     * @param float $cbioCm3sup
+     * @return Biometrie
+     */
+    public function setCbioCm3sup($cbioCm3sup)
+    {
+        $this->cbio_cm3sup = $cbioCm3sup;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_cm3sup
+     *
+     * @return float 
+     */
+    public function getCbioCm3sup()
+    {
+        return $this->cbio_cm3sup;
+    }
+
+    /**
+     * Set cbio_cm3inf
+     *
+     * @param float $cbioCm3inf
+     * @return Biometrie
+     */
+    public function setCbioCm3inf($cbioCm3inf)
+    {
+        $this->cbio_cm3inf = $cbioCm3inf;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_cm3inf
+     *
+     * @return float 
+     */
+    public function getCbioCm3inf()
+    {
+        return $this->cbio_cm3inf;
+    }
+
+    /**
+     * Set cbio_cb
+     *
+     * @param float $cbioCb
+     * @return Biometrie
+     */
+    public function setCbioCb($cbioCb)
+    {
+        $this->cbio_cb = $cbioCb;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_cb
+     *
+     * @return float 
+     */
+    public function getCbioCb()
+    {
+        return $this->cbio_cb;
+    }
+
+    /**
+     * Set cbio_lm
+     *
+     * @param float $cbioLm
+     * @return Biometrie
+     */
+    public function setCbioLm($cbioLm)
+    {
+        $this->cbio_lm = $cbioLm;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_lm
+     *
+     * @return float 
+     */
+    public function getCbioLm()
+    {
+        return $this->cbio_lm;
+    }
+
+    /**
+     * Set cbio_oreille
+     *
+     * @param float $cbioOreille
+     * @return Biometrie
+     */
+    public function setCbioOreille($cbioOreille)
+    {
+        $this->cbio_oreille = $cbioOreille;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_oreille
+     *
+     * @return float 
+     */
+    public function getCbioOreille()
+    {
+        return $this->cbio_oreille;
+    }
+
+    /**
+     * Set cbio_commentaire
+     *
+     * @param string $cbioCommentaire
+     * @return Biometrie
+     */
+    public function setCbioCommentaire($cbioCommentaire)
+    {
+        $this->cbio_commentaire = $cbioCommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get cbio_commentaire
+     *
+     * @return string 
+     */
+    public function getCbioCommentaire()
+    {
+        return $this->cbio_commentaire;
+    }
+
+    /**
+     * Set meta_create_timestamp
+     *
+     * @param \DateTime $metaCreateTimestamp
+     * @return Biometrie
+     */
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
+    {
+        $this->meta_create_timestamp = $metaCreateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_create_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaCreateTimestamp()
+    {
+        return $this->meta_create_timestamp;
+    }
+
+    /**
+     * Set meta_update_timestamp
+     *
+     * @param \DateTime $metaUpdateTimestamp
+     * @return Biometrie
+     */
+    public function setMetaUpdateTimestamp($metaUpdateTimestamp)
+    {
+        $this->meta_update_timestamp = $metaUpdateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_update_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaUpdateTimestamp()
+    {
+        return $this->meta_update_timestamp;
+    }
+
+    /**
+     * Set meta_numerisateur_id
+     *
+     * @param integer $metaNumerisateurId
+     * @return Biometrie
+     */
+    public function setMetaNumerisateurId($metaNumerisateurId)
+    {
+        $this->meta_numerisateur_id = $metaNumerisateurId;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_numerisateur_id
+     *
+     * @return integer 
+     */
+    public function getMetaNumerisateurId()
+    {
+        return $this->meta_numerisateur_id;
     }
 }

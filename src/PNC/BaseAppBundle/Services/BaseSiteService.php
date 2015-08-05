@@ -16,12 +16,12 @@ class BaseSiteService{
         $this->entityService = $es;
         $this->schema = array(
             'geom'=>'point',
-            'siteNom'=>null,
-            'typeId'=>null,
-            'siteDate'=>'date',
-            'siteDescription'=>null,
-            'observateurId'=>null,
-            'numerisateurId'=>null
+            'bsNom'=>null,
+            'bsTypeId'=>null,
+            'bsDate'=>'date',
+            'bsDescription'=>null,
+            'bsObrId'=>null,
+            'metaNumerisateurId'=>null
         );
     }
 

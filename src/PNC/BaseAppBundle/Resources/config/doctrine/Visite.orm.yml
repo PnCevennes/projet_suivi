@@ -1,8 +1,8 @@
-PNC\BaseAppBundle\Entity\Observation:
+PNC\BaseAppBundle\Entity\Visite:
     type: entity
-    table: pnc.base_observation
-    schema: pnc
-    repositoryClass: PNC\BaseAppBundle\Repositories\ObservationRepository
+    table: suivi.pr_base_visite
+    schema: suivi
+    #repositoryClass: PNC\BaseAppBundle\Repositories\ObservationRepository
     id:
         id:
             type: integer
@@ -10,25 +10,25 @@ PNC\BaseAppBundle\Entity\Observation:
             generator:
                 strategy: AUTO
     fields:
-        obs_date:
+        bv_date:
             type: date
-        obs_commentaire:
+        bv_commentaire:
             type: text
-        obs_id_table_src:
+        bv_id_table_src:
             type: integer
-        numerisateur_id:
+        meta_numerisateur_id:
             type: integer
-        site_id:
+        fk_bs_id:
             type: integer
         geom:
             type: geometry
         ref_commune:
             type: string
             nullable: true
-        created:
+        meta_create_timestamp:
             type: date
             nullable: true
-        updated:
+        meta_update_timestamp:
             type: date
             nullable: true
 
@@ -36,7 +36,7 @@ PNC\BaseAppBundle\Entity\Observation:
         observateurs:
             targetEntity: PNC\BaseAppBundle\Entity\Observateurs
             joinTable:
-                name: pnc.rel_obs_obr
+                name: suivi.rel_obs_obr
                 joinColumns:
                     obs_id:
                         referencedColumnName: id

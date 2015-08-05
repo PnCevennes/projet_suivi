@@ -27,33 +27,48 @@ class ValidationTaxonView
     /**
      * @var integer
      */
-    private $obs_effectif_abs;
+    private $cotx_effectif_abs;
 
     /**
      * @var \DateTime
      */
-    private $obs_date;
+    private $bv_date;
+
+    /**
+     * @var integer
+     */
+    private $cotx_obj_status_validation;
+
+    /**
+     * @var \DateTime
+     */
+    private $cotx_date_validation;
 
     /**
      * @var string
      */
-    private $site_nom;
+    private $cotx_validateur;
+
+    /**
+     * @var string
+     */
+    private $meta_numerisateur_id;
+
+    /**
+     * @var array
+     */
+    private $observateurs;
+
+    /**
+     * @var string
+     */
+    private $bs_nom;
 
     /**
      * @var array
      */
     private $geom;
 
-
-    private $obs_obj_status_validation;
-
-    public function getObsObjStatusValidation(){
-        return $this->obs_obj_status_validation;
-    }
-
-    public function setObsObjStatusValidation($v){
-        $this->obs_obj_status_validation = $v;
-    }
 
     /**
      * Get id
@@ -112,72 +127,187 @@ class ValidationTaxonView
     }
 
     /**
-     * Set obs_effectif_abs
+     * Set cotx_effectif_abs
      *
-     * @param integer $obsEffectifAbs
+     * @param integer $cotxEffectifAbs
      * @return ValidationTaxonView
      */
-    public function setObsEffectifAbs($obsEffectifAbs)
+    public function setCotxEffectifAbs($cotxEffectifAbs)
     {
-        $this->obs_effectif_abs = $obsEffectifAbs;
+        $this->cotx_effectif_abs = $cotxEffectifAbs;
 
         return $this;
     }
 
     /**
-     * Get obs_effectif_abs
+     * Get cotx_effectif_abs
      *
      * @return integer 
      */
-    public function getObsEffectifAbs()
+    public function getCotxEffectifAbs()
     {
-        return $this->obs_effectif_abs;
+        return $this->cotx_effectif_abs;
     }
 
     /**
-     * Set obs_date
+     * Set bv_date
      *
-     * @param \DateTime $obsDate
+     * @param \DateTime $bvDate
      * @return ValidationTaxonView
      */
-    public function setObsDate($obsDate)
+    public function setBvDate($bvDate)
     {
-        $this->obs_date = $obsDate;
+        $this->bv_date = $bvDate;
 
         return $this;
     }
 
     /**
-     * Get obs_date
+     * Get bv_date
      *
      * @return \DateTime 
      */
-    public function getObsDate()
+    public function getBvDate()
     {
-        return $this->obs_date;
+        return $this->bv_date;
     }
 
     /**
-     * Set site_nom
+     * Set cotx_obj_status_validation
      *
-     * @param string $siteNom
+     * @param integer $cotxObjStatusValidation
      * @return ValidationTaxonView
      */
-    public function setSiteNom($siteNom)
+    public function setCotxObjStatusValidation($cotxObjStatusValidation)
     {
-        $this->site_nom = $siteNom;
+        $this->cotx_obj_status_validation = $cotxObjStatusValidation;
 
         return $this;
     }
 
     /**
-     * Get site_nom
+     * Get cotx_obj_status_validation
+     *
+     * @return integer 
+     */
+    public function getCotxObjStatusValidation()
+    {
+        return $this->cotx_obj_status_validation;
+    }
+
+    /**
+     * Set cotx_date_validation
+     *
+     * @param \DateTime $cotxDateValidation
+     * @return ValidationTaxonView
+     */
+    public function setCotxDateValidation($cotxDateValidation)
+    {
+        $this->cotx_date_validation = $cotxDateValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_date_validation
+     *
+     * @return \DateTime 
+     */
+    public function getCotxDateValidation()
+    {
+        return $this->cotx_date_validation;
+    }
+
+    /**
+     * Set cotx_validateur
+     *
+     * @param string $cotxValidateur
+     * @return ValidationTaxonView
+     */
+    public function setCotxValidateur($cotxValidateur)
+    {
+        $this->cotx_validateur = $cotxValidateur;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_validateur
      *
      * @return string 
      */
-    public function getSiteNom()
+    public function getCotxValidateur()
     {
-        return $this->site_nom;
+        return $this->cotx_validateur;
+    }
+
+    /**
+     * Set meta_numerisateur_id
+     *
+     * @param string $metaNumerisateurId
+     * @return ValidationTaxonView
+     */
+    public function setMetaNumerisateurId($metaNumerisateurId)
+    {
+        $this->meta_numerisateur_id = $metaNumerisateurId;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_numerisateur_id
+     *
+     * @return string 
+     */
+    public function getMetaNumerisateurId()
+    {
+        return $this->meta_numerisateur_id;
+    }
+
+    /**
+     * Set observateurs
+     *
+     * @param array $observateurs
+     * @return ValidationTaxonView
+     */
+    public function setObservateurs($observateurs)
+    {
+        $this->observateurs = $observateurs;
+
+        return $this;
+    }
+
+    /**
+     * Get observateurs
+     *
+     * @return array 
+     */
+    public function getObservateurs()
+    {
+        return $this->observateurs;
+    }
+
+    /**
+     * Set bs_nom
+     *
+     * @param string $bsNom
+     * @return ValidationTaxonView
+     */
+    public function setBsNom($bsNom)
+    {
+        $this->bs_nom = $bsNom;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_nom
+     *
+     * @return string 
+     */
+    public function getBsNom()
+    {
+        return $this->bs_nom;
     }
 
     /**
@@ -203,43 +333,10 @@ class ValidationTaxonView
         return $this->geom;
     }
     /**
-     * @var \DateTime
-     */
-    private $date_validation;
-
-    /**
      * @var string
      */
     private $validateur;
 
-    /**
-     * @var string
-     */
-    private $numerisateur;
-
-
-    /**
-     * Set date_validation
-     *
-     * @param \DateTime $dateValidation
-     * @return ValidationTaxonView
-     */
-    public function setDateValidation($dateValidation)
-    {
-        $this->date_validation = $dateValidation;
-
-        return $this;
-    }
-
-    /**
-     * Get date_validation
-     *
-     * @return \DateTime 
-     */
-    public function getDateValidation()
-    {
-        return $this->date_validation;
-    }
 
     /**
      * Set validateur
@@ -263,6 +360,11 @@ class ValidationTaxonView
     {
         return $this->validateur;
     }
+    /**
+     * @var string
+     */
+    private $numerisateur;
+
 
     /**
      * Set numerisateur
@@ -285,33 +387,5 @@ class ValidationTaxonView
     public function getNumerisateur()
     {
         return $this->numerisateur;
-    }
-    /**
-     * @var array
-     */
-    private $observateurs;
-
-
-    /**
-     * Set observateurs
-     *
-     * @param array $observateurs
-     * @return ValidationTaxonView
-     */
-    public function setObservateurs($observateurs)
-    {
-        $this->observateurs = $observateurs;
-
-        return $this;
-    }
-
-    /**
-     * Get observateurs
-     *
-     * @return array 
-     */
-    public function getObservateurs()
-    {
-        return $this->observateurs;
     }
 }

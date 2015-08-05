@@ -10,288 +10,65 @@ use PNC\Utils\BaseEntity;
  */
 class Site extends BaseEntity
 {
-
-    //geometrie geoJson
-    public $geom;
-    /**
-     * @var integer
-     */
-
-    /**
-     * @var string
-     */
-    private $site_nom;
-
-    /**
-     * @var integer
-     */
-    private $observateur_id;
-
-    /**
-     * @var integer
-     */
-    private $type_id;
-
-    /**
-     * @var string
-     */
-    private $site_code;
-
-    /**
-     * @var \DateTime
-     */
-    private $site_date;
-
-    /**
-     * @var string
-     */
-    private $site_description;
-
-    /**
-     * @var \PNC\ExtBundle\Entity\Observateur
-     */
-    private $observateur;
-
-    /**
-     * @var \PNC\ExtBundle\Entity\Lexique
-     */
-    private $site_type;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $site_app;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->site_app = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    
-    /**
-     * Set site_nom
-     *
-     * @param string $siteNom
-     * @return Site
-     */
-    public function setSiteNom($siteNom)
-    {
-        $this->site_nom = $siteNom;
-
-        return $this;
-    }
-
-    /**
-     * Get site_nom
-     *
-     * @return string 
-     */
-    public function getSiteNom()
-    {
-        return $this->site_nom;
-    }
-
-    /**
-     * Set observateur_id
-     *
-     * @param integer $observateurId
-     * @return Site
-     */
-    public function setObservateurId($observateurId)
-    {
-        $this->observateur_id = $observateurId;
-
-        return $this;
-    }
-
-    /**
-     * Get observateur_id
-     *
-     * @return integer 
-     */
-    public function getObservateurId()
-    {
-        return $this->observateur_id;
-    }
-
-    /**
-     * Set type_id
-     *
-     * @param integer $typeId
-     * @return Site
-     */
-    public function setTypeId($typeId)
-    {
-        $this->type_id = $typeId;
-
-        return $this;
-    }
-
-    /**
-     * Get type_id
-     *
-     * @return integer 
-     */
-    public function getTypeId()
-    {
-        return $this->type_id;
-    }
-
-    /**
-     * Set site_code
-     *
-     * @param string $siteCode
-     * @return Site
-     */
-    public function setSiteCode($siteCode)
-    {
-        return $this;
-    }
-
-    /**
-     * Get site_code
-     *
-     * @return string 
-     */
-    public function getSiteCode()
-    {
-        return $this->site_code;
-    }
-
-    /**
-     * Set site_date
-     *
-     * @param \DateTime $siteDate
-     * @return Site
-     */
-    public function setSiteDate($siteDate)
-    {
-        $this->site_date = $siteDate;
-
-        return $this;
-    }
-
-    /**
-     * Get site_date
-     *
-     * @return \DateTime 
-     */
-    public function getSiteDate()
-    {
-        return $this->site_date;
-    }
-
-    /**
-     * Set site_description
-     *
-     * @param string $siteDescription
-     * @return Site
-     */
-    public function setSiteDescription($siteDescription)
-    {
-        $this->site_description = $siteDescription;
-
-        return $this;
-    }
-
-    /**
-     * Get site_description
-     *
-     * @return string 
-     */
-    public function getSiteDescription()
-    {
-        return $this->site_description;
-    }
-
-    /**
-     * Set observateur
-     *
-     * @param \PNC\ExtBundle\Entity\Observateur $observateur
-     * @return Site
-     */
-    public function setObservateur(\PNC\ExtBundle\Entity\Observateur $observateur = null)
-    {
-        $this->observateur = $observateur;
-
-        return $this;
-    }
-
-    /**
-     * Get observateur
-     *
-     * @return \PNC\ExtBundle\Entity\Observateur 
-     */
-    public function getObservateur()
-    {
-        return $this->observateur;
-    }
-
-    /**
-     * Set site_type
-     *
-     * @param \PNC\ExtBundle\Entity\Lexique $siteType
-     * @return Site
-     */
-    public function setSiteType(\PNC\ExtBundle\Entity\Lexique $siteType = null)
-    {
-        if($siteType == null){
-            $this->_errors['siteType'] = "Type de lieu indéfini";
-        }
-        $this->site_type = $siteType;
-
-        return $this;
-    }
-
-    /**
-     * Get site_type
-     *
-     * @return \PNC\ExtBundle\Entity\Lexique 
-     */
-    public function getSiteType()
-    {
-        return $this->site_type;
-    }
-
-    /**
-     * Add site_app
-     *
-     * @param \PNC\ExtBundle\Entity\Application $siteApp
-     * @return Site
-     */
-    public function addSiteApp(\PNC\ExtBundle\Entity\Application $siteApp)
-    {
-        $this->site_app[] = $siteApp;
-
-        return $this;
-    }
-
-    /**
-     * Remove site_app
-     *
-     * @param \PNC\ExtBundle\Entity\Application $siteApp
-     */
-    public function removeSiteApp(\PNC\ExtBundle\Entity\Application $siteApp)
-    {
-        $this->site_app->removeElement($siteApp);
-    }
-
-    /**
-     * Get site_app
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getSiteApp()
-    {
-        return $this->site_app;
-    }
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var string
+     */
+    private $bs_nom;
+
+    /**
+     * @var integer
+     */
+    private $bs_obr_id;
+
+    /**
+     * @var integer
+     */
+    private $bs_type_id;
+
+    /**
+     * @var string
+     */
+    private $bs_code;
+
+    /**
+     * @var \DateTime
+     */
+    private $bs_date;
+
+    /**
+     * @var string
+     */
+    private $bs_description;
+
+    /**
+     * @var geometry
+     */
+    private $geom;
+
+    /**
+     * @var string
+     */
+    private $ref_commune;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_create_timestamp;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_update_timestamp;
+
+    /**
+     * @var integer
+     */
+    private $meta_numerisateur_id;
 
 
     /**
@@ -302,6 +79,144 @@ class Site extends BaseEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set bs_nom
+     *
+     * @param string $bsNom
+     * @return Site
+     */
+    public function setBsNom($bsNom)
+    {
+        $this->bs_nom = $bsNom;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_nom
+     *
+     * @return string 
+     */
+    public function getBsNom()
+    {
+        return $this->bs_nom;
+    }
+
+    /**
+     * Set bs_obr_id
+     *
+     * @param integer $bsObrId
+     * @return Site
+     */
+    public function setBsObrId($bsObrId)
+    {
+        $this->bs_obr_id = $bsObrId;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_obr_id
+     *
+     * @return integer 
+     */
+    public function getBsObrId()
+    {
+        return $this->bs_obr_id;
+    }
+
+    /**
+     * Set bs_type_id
+     *
+     * @param integer $bsTypeId
+     * @return Site
+     */
+    public function setBsTypeId($bsTypeId)
+    {
+        $this->bs_type_id = $bsTypeId;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_type_id
+     *
+     * @return integer 
+     */
+    public function getBsTypeId()
+    {
+        return $this->bs_type_id;
+    }
+
+    /**
+     * Set bs_code
+     *
+     * @param string $bsCode
+     * @return Site
+     */
+    public function setBsCode($bsCode)
+    {
+        $this->bs_code = $bsCode;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_code
+     *
+     * @return string 
+     */
+    public function getBsCode()
+    {
+        return $this->bs_code;
+    }
+
+    /**
+     * Set bs_date
+     *
+     * @param \DateTime $bsDate
+     * @return Site
+     */
+    public function setBsDate($bsDate)
+    {
+        $this->bs_date = $bsDate;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_date
+     *
+     * @return \DateTime 
+     */
+    public function getBsDate()
+    {
+        return $this->bs_date;
+    }
+
+    /**
+     * Set bs_description
+     *
+     * @param string $bsDescription
+     * @return Site
+     */
+    public function setBsDescription($bsDescription)
+    {
+        $this->bs_description = $bsDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_description
+     *
+     * @return string 
+     */
+    public function getBsDescription()
+    {
+        return $this->bs_description;
     }
 
     /**
@@ -326,21 +241,6 @@ class Site extends BaseEntity
     {
         return $this->geom;
     }
-    /**
-     * @var string
-     */
-    private $ref_commune;
-
-    /**
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     */
-    private $updated;
-
 
     /**
      * Set ref_commune
@@ -366,76 +266,71 @@ class Site extends BaseEntity
     }
 
     /**
-     * Set created
+     * Set meta_create_timestamp
      *
-     * @param \DateTime $created
+     * @param \DateTime $metaCreateTimestamp
      * @return Site
      */
-    public function setCreated($created)
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
     {
-        $this->created = $created;
+        $this->meta_create_timestamp = $metaCreateTimestamp;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get meta_create_timestamp
      *
      * @return \DateTime 
      */
-    public function getCreated()
+    public function getMetaCreateTimestamp()
     {
-        return $this->created;
+        return $this->meta_create_timestamp;
     }
 
     /**
-     * Set updated
+     * Set meta_update_timestamp
      *
-     * @param \DateTime $updated
+     * @param \DateTime $metaUpdateTimestamp
      * @return Site
      */
-    public function setUpdated($updated)
+    public function setMetaUpdateTimestamp($metaUpdateTimestamp)
     {
-        $this->updated = $updated;
+        $this->meta_update_timestamp = $metaUpdateTimestamp;
 
         return $this;
     }
 
     /**
-     * Get updated
+     * Get meta_update_timestamp
      *
      * @return \DateTime 
      */
-    public function getUpdated()
+    public function getMetaUpdateTimestamp()
     {
-        return $this->updated;
+        return $this->meta_update_timestamp;
     }
-    /**
-     * @var integer
-     */
-    private $numerisateur_id;
-
 
     /**
-     * Set numerisateur_id
+     * Set meta_numerisateur_id
      *
-     * @param integer $numerisateurId
+     * @param integer $metaNumerisateurId
      * @return Site
      */
-    public function setNumerisateurId($numerisateurId)
+    public function setMetaNumerisateurId($metaNumerisateurId)
     {
-        $this->numerisateur_id = $numerisateurId;
+        $this->meta_numerisateur_id = $metaNumerisateurId;
 
         return $this;
     }
 
     /**
-     * Get numerisateur_id
+     * Get meta_numerisateur_id
      *
      * @return integer 
      */
-    public function getNumerisateurId()
+    public function getMetaNumerisateurId()
     {
-        return $this->numerisateur_id;
+        return $this->meta_numerisateur_id;
     }
 }

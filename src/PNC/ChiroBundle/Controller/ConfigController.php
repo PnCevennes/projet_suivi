@@ -19,7 +19,7 @@ class ConfigController extends Controller{
         $out = array();
         switch($view){
             case 'biometrie':
-                $req = $manager->prepare('SELECT id, obs_tx_id FROM chiro.chiro_biometrie WHERE id=:id');
+                $req = $manager->prepare('SELECT id, fk_cotx_id FROM chiro.subpr_observationtaxon_biometrie WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();
@@ -32,10 +32,10 @@ class ConfigController extends Controller{
                     'label'=>'Biometrie n°'.$id, 
                     'link'=>'#/chiro/biometrie/'.$id
                 );
-                $id = $res['obs_tx_id'];
+                $id = $res['fk_cotx_id'];
             case 'taxons': 
             case 'taxon':
-                $req = $manager->prepare('SELECT id, nom_complet as label, obs_id FROM chiro.chiro_observation_taxon WHERE id=:id');
+                $req = $manager->prepare('SELECT id, nom_complet as label, fk_bv_id FROM chiro.pr_visite_observationtaxon WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();
@@ -48,14 +48,14 @@ class ConfigController extends Controller{
                     'label'=>$res['label'], 
                     'link'=>'#/chiro/taxons/'.$id
                 );
-                $id = $res['obs_id'];
+                $id = $res['fk_bv_id'];
             case 'validation':
                 if($view == 'validation'){
                     return new JsonResponse(array(array('id'=>null, 'label'=>'Validation', 'link'=>'#/chiro/validation')));
                 }
             case 'inventaire':
             case 'observation':
-                $req = $manager->prepare('SELECT id, obs_date as label, site_id FROM pnc.base_observation WHERE id=:id');
+                $req = $manager->prepare('SELECT id, bv_date as label, fk_bs_id FROM suivi.pr_base_visite WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();
@@ -63,7 +63,7 @@ class ConfigController extends Controller{
                     return new JsonResponse(array(array('id'=>null, 'label'=>'Inventaire', 'link'=>'#/chiro/inventaire')));
                 }
                 $res = $res[0];
-                if($res['site_id']==null){
+                if($res['fk_bs_id']==null){
                     $out[] = array(
                         'id'=>$res['id'], 
                         'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
@@ -78,9 +78,9 @@ class ConfigController extends Controller{
                     'id'=>$res['id'], 
                     'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
                     'link'=>'#/chiro/observation/'.$id);
-                $id = $res['site_id'];
+                $id = $res['fk_bs_id'];
             case 'site':
-                $req = $manager->prepare('SELECT id, site_nom as label FROM pnc.base_site WHERE id=:id');
+                $req = $manager->prepare('SELECT id, bs_nom as label FROM suivi.pr_base_site WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();

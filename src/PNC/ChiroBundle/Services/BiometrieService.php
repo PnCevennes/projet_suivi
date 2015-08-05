@@ -19,6 +19,7 @@ class BiometrieService{
         $this->db = $db;
         $this->entityService = $es;
         $this->pagination = $pg;
+        /*
         $this->schema = array(
             'id'=>null,
             'obsTxId'=>null,
@@ -60,19 +61,44 @@ class BiometrieService{
             'updated'=>'date',
             'numerisateurId'=>null,
         );
+         */
+
+        $this->schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+        $this->normalize_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
     }
+
 
     /*
      * Retourne la liste des biométries liées à une observation de taxon
      * params:
      *      otx_id=>id de l'observation de taxon
      */
-    public function getList($request, $otx_id){
+    public function getList($otx_id){
+        $out = array();
+        if($otx_id){
+            $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+            $data = $repo->findBy(array('fk_cotx_id'=>$otx_id));
+            foreach($data as $item){
+                $out[] = $this->entityService->normalize($item, $schema);
+            }
+        }
+        return $out;
+    }
+
+
+    /*
+     * Retourne la liste filtrée des biométries liées à une observation de taxon
+     * params:
+     *      request=>requete de filtrage
+     *      otx_id=>id de l'observation de taxon
+     */
+    public function getFilteredList($request, $otx_id){
         $entity = 'PNCChiroBundle:Biometrie';
-        //$data = $repo->findBy(array('obs_tx_id'=>$otx_id));
+        //$data = $repo->findBy(array('fk_cotx_id'=>$otx_id));
         $cpl = array(
             array(
-                'name'=>'obs_tx_id',
+                'name'=>'fk_cotx_id',
                 'compare'=>'=',
                 'value'=>$otx_id
             )

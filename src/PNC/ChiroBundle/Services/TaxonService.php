@@ -21,12 +21,12 @@ class TaxonService{
         $this->entityService = $es;
     }
 
-    public function getList($obs_id){
+    public function getList($fk_bv_id){
         $out = array();
-        if($obs_id){
+        if($fk_bv_id){
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
             $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
-            $data = $repo->findBy(array('obs_id'=>$obs_id));
+            $data = $repo->findBy(array('fk_bv_id'=>$fk_bv_id));
             foreach($data as $item){
                 $out[] = $this->entityService->normalize($item, $schema);
             }
@@ -47,7 +47,7 @@ class TaxonService{
             $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
             $cpl = array(
                 array(
-                    'name'=>'obs_id',
+                    'name'=>'fk_bv_id',
                     'compare'=>'=',
                     'value'=>$obsId
                 )
@@ -120,8 +120,8 @@ class TaxonService{
 
         if(isset($data['__biometries__'])){
             foreach($data['__biometries__'] as $biom){
-                $biom['obsTxId'] = $obsTx->getId();
-                $biom['biomCommentaire'] = '';
+                $biom['fkCotxId'] = $obsTx->getId();
+                $biom['cbioCommentaire'] = '';
                 $this->biometrieService->create($biom, $manager);
             }
         }

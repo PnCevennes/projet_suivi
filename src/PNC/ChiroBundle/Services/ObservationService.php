@@ -39,7 +39,7 @@ class ObservationService{
             $entity = 'PNCChiroBundle:ObservationView';
             $cpl = array(
                 array(
-                    'name'=>'site_id',
+                    'name'=>'fk_bs_id',
                     'compare'=>'=',
                     'value'=>$id
                 )
@@ -81,7 +81,7 @@ class ObservationService{
             }
 
             $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
-                $info->getId(), $info->getObsDate()->format('d/m/Y'));
+                $info->getId(), $info->getBvDate()->format('d/m/Y'));
 
             $out[] = $out_item;
         }
@@ -97,7 +97,7 @@ class ObservationService{
         }
         else{
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
-            $infos = $repo->findBy(array('site_id'=>$siteId));
+            $infos = $repo->findBy(array('fk_bs_id'=>$siteId));
             $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
         }
         $out = array();
@@ -114,7 +114,7 @@ class ObservationService{
             }
 
             $out_item['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
-                $info->getId(), $info->getObsDate()->format('d/m/Y'));
+                $info->getId(), $info->getBvDate()->format('d/m/Y'));
 
             $out[] = $out_item;
         }
@@ -177,11 +177,11 @@ class ObservationService{
         if(isset($data['__taxons__'])){
             try{
                 foreach($data['__taxons__'] as $taxon){
-                    $taxon['obsId'] = $resObs;
-                    $taxon['numId'] = $data['numerisateurId'];
-                    $taxon['obsObjStatusValidation'] = 56;
-                    $taxon['obsCommentaire'] = '';
-                    $taxon['obsValidateur'] = null;
+                    $taxon['fkBvId'] = $resObs;
+                    $taxon['metaNumerisateurId'] = $data['metaNumerisateurId'];
+                    $taxon['cotxObjStatusValidation'] = 56;
+                    $taxon['cotxCommentaire'] = '';
+                    $taxon['cotxValidateurId'] = null;
 
                     $this->taxonService->create($taxon, false);
                 }
@@ -194,7 +194,7 @@ class ObservationService{
             }
         }
 
-        $cobs->setObsId($resObs);
+        $cobs->setFkBvId($resObs);
         $manager->persist($cobs);
         $manager->flush();
 
@@ -210,7 +210,7 @@ class ObservationService{
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
 
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
+        $cobs = $rCobs->findOneBy(array('fk_bv_id'=>$data['id']));
         $errors = array();
         try{
             $resObs = $this->parentService->update($this->db, $id, $data);
@@ -236,7 +236,7 @@ class ObservationService{
     public function remove($id, $cascade=false){
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+        $cobs = $rCobs->findOneBy(array('fk_bv_id'=>$id));
         $taxons = $this->taxonService->getList($id);
         if($cascade){
             foreach($taxons as $taxon){

@@ -12,7 +12,7 @@ groups:
       fields:
           - name: id
             type: hidden
-          - name: siteNom
+          - name: bsNom
             label: Site
             type: string
           - name: refCommune
@@ -21,7 +21,7 @@ groups:
             options:
                 url: commune
                 multi: true
-          - name: obsDate
+          - name: bvDate
             label: Date
             type: date
           - name: observateurs
@@ -30,23 +30,23 @@ groups:
             options:
                 multi: true
                 url: "users/id"
-          - name: modId
+          - name: cvcModId
             label: "Mode d'observation"
             type: select
             thesaurusID: 4
-          - name: obsCommentaire
+          - name: bvCommentaire
             label: Commentaires
             type: string
-          - name: obsTemperature
+          - name: cvcTemperature
             label: "Température (°C)"
             type: string
-          - name: obsHumidite
+          - name: cvcHumidite
             label: "Humidité (%)"
             type: string
-          - name: created
+          - name: metaCreateTimestamp
             label: "Création donnée"
             type: date
-          - name: updated
+          - name: metaUpdateTimestamp
             label: "Dernière mise à jour"
             type: date
 

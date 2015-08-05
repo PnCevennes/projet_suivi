@@ -4,7 +4,7 @@ namespace PNC\BaseAppBundle\Services;
 
 use Commons\Exceptions\DataObjectException;
 
-use PNC\BaseAppBundle\Entity\Observation;
+use PNC\BaseAppBundle\Entity\Visite;
 use PNC\BaseAppBundle\Entity\Observateurs;
 
 class BaseObservationService{
@@ -15,18 +15,18 @@ class BaseObservationService{
         $this->geometryService = $gs;
         $this->entityService = $es;
         $this->schema = array(
-            'obsDate'=>'date',
+            'bvDate'=>'date',
             'geom'=>'point',
-            'siteId'=>null,
-            'obsCommentaire'=>null,
-            'numerisateurId'=>null
+            'fkBsId'=>null,
+            'bvCommentaire'=>null,
+            'metaNumerisateurId'=>null
         );
     }
     
     public function create($db, $data){
         $repo = $db->getRepository('PNCBaseAppBundle:Observateurs');
         $manager = $db->getManager();
-        $obs = new Observation();
+        $obs = new Visite();
         $errors = array();
 
         try{
@@ -57,7 +57,7 @@ class BaseObservationService{
 
     public function update($db, $id, $data){
         $rObr = $db->getRepository('PNCBaseAppBundle:Observateurs');
-        $rObs = $db->getRepository('PNCBaseAppBundle:Observation');
+        $rObs = $db->getRepository('PNCBaseAppBundle:Visite');
         $manager = $db->getManager();
         $obs = $rObs->findOneBy(array('id'=>$data['id']));
         $errors = array();
@@ -90,7 +90,7 @@ class BaseObservationService{
     }
 
     public function remove($db, $id){
-        $rObs = $db->getRepository('PNCBaseAppBundle:Observation');
+        $rObs = $db->getRepository('PNCBaseAppBundle:Visite');
         $manager = $db->getManager();
         $obs = $rObs->findOneBy(array('id'=>$id));
         $manager->remove($obs);

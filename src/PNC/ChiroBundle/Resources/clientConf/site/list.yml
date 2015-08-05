@@ -13,12 +13,13 @@ filtering:
         -   name: nb_obs
             label: "Nombre d'observations"
             type: "num"
-        -   name: "type_id"
+        -   name: "bs_type_id"
             label: "Type de site"
             type: select
             thesaurusID: 7
             default: 0
-        -   name: site_date
+            zeroNull: true
+        -   name: bs_date
             label: "Création du site"
             type: date
 fields: 
@@ -30,20 +31,20 @@ fields:
         options: 
             visible: false
 
-    -   name: siteNom
+    -   name: bsNom
         label: Nom
         type: text
         filter: 
-            siteNom: text
+            bsNom: text
         options:
             primary: true
             visible: true
             style: xl
-    -   name: siteCode
+    -   name: bsCode
         label: Code site
         type: text
         filter: 
-            siteCode: text
+            bsCode: text
         options:
             visible: false
             style: xl
@@ -55,11 +56,11 @@ fields:
         option:
             visible: true
             style: xl
-    -   name: siteDate
+    -   name: bsDate
         label: Date créa.
         type: date
         filter:
-            siteDate: text
+            bsDate: text
         options:
             type: date
             visible: false

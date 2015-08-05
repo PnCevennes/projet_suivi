@@ -11,63 +11,57 @@ PNC\ChiroBundle\Entity\SiteView:
                 strategy: AUTO
 
     fields:
-        site_nom:
+        bs_nom:
             type: text
-        site_code:
+        bs_code:
             type: text
-        site_date:
+        bs_date:
             type: date
         geom:
             type: json_array
         nom_observateur:
             type: text
-        observateur_id:
+        bs_obr_id:
             type: integer
-        type_id:
+        bs_type_id:
             type: integer
         type_lieu:
             type: text
-        contact_nom:
+        bs_description:
             type: text
-        site_description:
+        cis_frequentation:
             type: text
-        site_schema:
+        cis_menace:
             type: text
-        site_frequentation:
-            type: text
-        site_menace:
-            type: text
-        site_menace_cmt:
+        cis_menace_cmt:
             type: text
         site_amenagement:
             type: json_array
-        site_commentaire:
+        cis_contact_nom:
             type: text
-        contact_nom:
+        cis_contact_prenom:
             type: text
-        contact_prenom:
+        cis_contact_adresse:
             type: text
-        contact_adresse:
+        cis_contact_code_postal:
             type: text
-        contact_code_postal:
+        cis_contact_ville:
             type: text
-        contact_ville:
+        cis_contact_telephone:
             type: text
-        contact_telephone:
+        cis_contact_portable:
             type: text
-        contact_portable:
-            type: text
-        contact_commentaire:
+        cis_contact_commentaire:
             type: text
         dern_obs:
             type: date
         nb_obs:
             type: integer
-        created: 
+        meta_create_timestamp: 
             type: date
-        updated:
+        meta_update_timestamp:
             type: date
-        numerisateur_id:
+        meta_numerisateur_id:
             type: integer
         ref_commune:
             type: json_array

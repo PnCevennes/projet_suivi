@@ -10,426 +10,140 @@ use PNC\Utils\BaseEntity;
  */
 class ObservationTaxon extends BaseEntity
 {
-
-    /**
-     * @var integer
-     */
-    private $rt_id;
-
-    /**
-     * @var string
-     */
-    private $obs_tx_initial;
-
-    /**
-     * @var boolean
-     */
-    private $obs_espece_incertaine;
-
-    /**
-     * @var integer
-     */
-    private $obs_effectif_abs;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_male_adulte;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_femelle_adulte;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_male_juvenile;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_femelle_juvenile;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_male_indetermine;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_femelle_indetermine;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_indetermine_indetermine;
-
-    /**
-     * @var integer
-     */
-    private $obs_obj_status_validation;
-
-    /**
-     * @var string
-     */
-    private $obs_commentaire;
-
-    /**
-     * @var integer
-     */
-    private $obs_validateur;
-
-    private $act_id;
-
-    private $eff_id;
-
-    private $prv_id;
-
-    private $num_id;
-
-    public function getNumId(){
-        return $this->num_id;
-    }
-
-    public function setNumId($num_id){
-        $this->num_id = $num_id;
-        return $this;
-    }
-
-    public function getActId(){
-        return $this->act_id;
-    }
-
-    public function setActId($act_id){
-        $this->act_id = $act_id;
-        return $this;
-    }
-
-    public function getEffId(){
-        return $this->eff_id;
-    }
-
-    public function setEffId($eff_id){
-        $this->eff_id = $eff_id;
-        return $this;
-    }
-
-    public function getPrvId(){
-        return $this->prv_id;
-    }
-
-    public function setPrvId($prv_id){
-        $this->prv_id = $prv_id;
-        return $this;
-    }
-
-
-    /**
-     * Get rt_id
-     *
-     * @return integer 
-     */
-    public function getRtId()
-    {
-        return $this->rt_id;
-    }
-
-    /**
-     * Set obs_tx_initial
-     *
-     * @param string $obsTxInitial
-     * @return ObservationTaxon
-     */
-    public function setObsTxInitial($obsTxInitial)
-    {
-        $this->obs_tx_initial = $obsTxInitial;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_tx_initial
-     *
-     * @return string 
-     */
-    public function getObsTxInitial()
-    {
-        return $this->obs_tx_initial;
-    }
-
-    /**
-     * Set obs_espece_incertaine
-     *
-     * @param boolean $obsEspeceIncertaine
-     * @return ObservationTaxon
-     */
-    public function setObsEspeceIncertaine($obsEspeceIncertaine)
-    {
-        $this->obs_espece_incertaine = $obsEspeceIncertaine;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_espece_incertaine
-     *
-     * @return boolean 
-     */
-    public function getObsEspeceIncertaine()
-    {
-        return $this->obs_espece_incertaine;
-    }
-
-    /**
-     * Set obs_effectif_abs
-     *
-     * @param integer $obsEffectifAbs
-     * @return ObservationTaxon
-     */
-    public function setObsEffectifAbs($obsEffectifAbs)
-    {
-        $this->obs_effectif_abs = $obsEffectifAbs;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_effectif_abs
-     *
-     * @return integer 
-     */
-    public function getObsEffectifAbs()
-    {
-        return $this->obs_effectif_abs;
-    }
-
-    /**
-     * Set obs_nb_male_adulte
-     *
-     * @param integer $obsNbMaleAdulte
-     * @return ObservationTaxon
-     */
-    public function setObsNbMaleAdulte($obsNbMaleAdulte)
-    {
-        $this->obs_nb_male_adulte = $obsNbMaleAdulte;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_male_adulte
-     *
-     * @return integer 
-     */
-    public function getObsNbMaleAdulte()
-    {
-        return $this->obs_nb_male_adulte;
-    }
-
-    /**
-     * Set obs_nb_femelle_adulte
-     *
-     * @param integer $obsNbFemelleAdulte
-     * @return ObservationTaxon
-     */
-    public function setObsNbFemelleAdulte($obsNbFemelleAdulte)
-    {
-        $this->obs_nb_femelle_adulte = $obsNbFemelleAdulte;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_femelle_adulte
-     *
-     * @return integer 
-     */
-    public function getObsNbFemelleAdulte()
-    {
-        return $this->obs_nb_femelle_adulte;
-    }
-
-    /**
-     * Set obs_nb_male_juvenile
-     *
-     * @param integer $obsNbMaleJuvenile
-     * @return ObservationTaxon
-     */
-    public function setObsNbMaleJuvenile($obsNbMaleJuvenile)
-    {
-        $this->obs_nb_male_juvenile = $obsNbMaleJuvenile;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_male_juvenile
-     *
-     * @return integer 
-     */
-    public function getObsNbMaleJuvenile()
-    {
-        return $this->obs_nb_male_juvenile;
-    }
-
-    /**
-     * Set obs_nb_femelle_juvenile
-     *
-     * @param integer $obsNbFemelleJuvenile
-     * @return ObservationTaxon
-     */
-    public function setObsNbFemelleJuvenile($obsNbFemelleJuvenile)
-    {
-        $this->obs_nb_femelle_juvenile = $obsNbFemelleJuvenile;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_femelle_juvenile
-     *
-     * @return integer 
-     */
-    public function getObsNbFemelleJuvenile()
-    {
-        return $this->obs_nb_femelle_juvenile;
-    }
-
-    /**
-     * Set obs_nb_male_indetermine
-     *
-     * @param integer $obsNbMaleIndetermine
-     * @return ObservationTaxon
-     */
-    public function setObsNbMaleIndetermine($obsNbMaleIndetermine)
-    {
-        $this->obs_nb_male_indetermine = $obsNbMaleIndetermine;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_male_indetermine
-     *
-     * @return integer 
-     */
-    public function getObsNbMaleIndetermine()
-    {
-        return $this->obs_nb_male_indetermine;
-    }
-
-    /**
-     * Set obs_nb_femelle_indetermine
-     *
-     * @param integer $obsNbFemelleIndetermine
-     * @return ObservationTaxon
-     */
-    public function setObsNbFemelleIndetermine($obsNbFemelleIndetermine)
-    {
-        $this->obs_nb_femelle_indetermine = $obsNbFemelleIndetermine;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_femelle_indetermine
-     *
-     * @return integer 
-     */
-    public function getObsNbFemelleIndetermine()
-    {
-        return $this->obs_nb_femelle_indetermine;
-    }
-
-    /**
-     * Set obs_nb_indetermine_indetermine
-     *
-     * @param integer $obsNbIndetermineIndetermine
-     * @return ObservationTaxon
-     */
-    public function setObsNbIndetermineIndetermine($obsNbIndetermineIndetermine)
-    {
-        $this->obs_nb_indetermine_indetermine = $obsNbIndetermineIndetermine;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_indetermine_indetermine
-     *
-     * @return integer 
-     */
-    public function getObsNbIndetermineIndetermine()
-    {
-        return $this->obs_nb_indetermine_indetermine;
-    }
-
-    /**
-     * Set obs_obj_status_validation
-     *
-     * @param integer $obsObjStatusValidation
-     * @return ObservationTaxon
-     */
-    public function setObsObjStatusValidation($obsObjStatusValidation)
-    {
-        $this->obs_obj_status_validation = $obsObjStatusValidation;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_obj_status_validation
-     *
-     * @return integer 
-     */
-    public function getObsObjStatusValidation()
-    {
-        return $this->obs_obj_status_validation;
-    }
-
-    /**
-     * Set obs_commentaire
-     *
-     * @param string $obsCommentaire
-     * @return ObservationTaxon
-     */
-    public function setObsCommentaire($obsCommentaire)
-    {
-        $this->obs_commentaire = $obsCommentaire;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_commentaire
-     *
-     * @return string 
-     */
-    public function getObsCommentaire()
-    {
-        return $this->obs_commentaire;
-    }
-    /**
-     * @var integer
-     */
-    private $ot_id;
-
-
-    /**
-     * Get ot_id
-     *
-     * @return integer 
-     */
-    public function getOtId()
-    {
-        return $this->ot_id;
-    }
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var integer
+     */
+    private $fk_bv_id;
+
+    /**
+     * @var string
+     */
+    private $cotx_initial;
+
+    /**
+     * @var boolean
+     */
+    private $cotx_espece_incertaine;
+
+    /**
+     * @var integer
+     */
+    private $cotx_effectif_abs;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_male_adulte;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_femelle_adulte;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_male_juvenile;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_femelle_juvenile;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_male_indetermine;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_femelle_indetermine;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_indetermine_adulte;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_indetermine_juvenile;
+
+    /**
+     * @var integer
+     */
+    private $cotx_nb_indetermine_indetermine;
+
+    /**
+     * @var integer
+     */
+    private $cotx_obj_status_validation;
+
+    /**
+     * @var string
+     */
+    private $cotx_commentaire;
+
+    /**
+     * @var integer
+     */
+    private $cd_nom;
+
+    /**
+     * @var string
+     */
+    private $nom_complet;
+
+    /**
+     * @var integer
+     */
+    private $cotx_validateur;
+
+    /**
+     * @var integer
+     */
+    private $cotx_act_id;
+
+    /**
+     * @var integer
+     */
+    private $cotx_eff_id;
+
+    /**
+     * @var integer
+     */
+    private $cotx_prv_id;
+
+    /**
+     * @var integer
+     */
+    private $cotx_num_id;
+
+    /**
+     * @var \DateTime
+     */
+    private $cotx_date_validation;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_create_timestamp;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_update_timestamp;
+
+    /**
+     * @var integer
+     */
+    private $meta_numerisateur_id;
 
 
     /**
@@ -441,72 +155,351 @@ class ObservationTaxon extends BaseEntity
     {
         return $this->id;
     }
-    /**
-     * @var integer
-     */
-    private $obs_id;
 
     /**
-     * @var \PNC\BaseAppBundle\Entity\Observation
-     */
-    private $observation;
-
-
-    /**
-     * Set obs_id
+     * Set fk_bv_id
      *
-     * @param integer $obsId
+     * @param integer $fkBvId
      * @return ObservationTaxon
      */
-    public function setObsId($obsId)
+    public function setFkBvId($fkBvId)
     {
-        $this->obs_id = $obsId;
+        $this->fk_bv_id = $fkBvId;
 
         return $this;
     }
 
     /**
-     * Get obs_id
+     * Get fk_bv_id
      *
      * @return integer 
      */
-    public function getObsId()
+    public function getFkBvId()
     {
-        return $this->obs_id;
+        return $this->fk_bv_id;
     }
 
     /**
-     * Set observation
+     * Set cotx_initial
      *
-     * @param \PNC\BaseAppBundle\Entity\Observation $observation
+     * @param string $cotxInitial
      * @return ObservationTaxon
      */
-    public function setObservation(\PNC\BaseAppBundle\Entity\Observation $observation = null)
+    public function setCotxInitial($cotxInitial)
     {
-        $this->observation = $observation;
+        $this->cotx_initial = $cotxInitial;
 
         return $this;
     }
 
     /**
-     * Get observation
+     * Get cotx_initial
      *
-     * @return \PNC\BaseAppBundle\Entity\Observation 
+     * @return string 
      */
-    public function getObservation()
+    public function getCotxInitial()
     {
-        return $this->observation;
+        return $this->cotx_initial;
     }
-    /**
-     * @var integer
-     */
-    private $cd_nom;
 
     /**
-     * @var string
+     * Set cotx_espece_incertaine
+     *
+     * @param boolean $cotxEspeceIncertaine
+     * @return ObservationTaxon
      */
-    private $nom_complet;
+    public function setCotxEspeceIncertaine($cotxEspeceIncertaine)
+    {
+        $this->cotx_espece_incertaine = $cotxEspeceIncertaine;
 
+        return $this;
+    }
+
+    /**
+     * Get cotx_espece_incertaine
+     *
+     * @return boolean 
+     */
+    public function getCotxEspeceIncertaine()
+    {
+        return $this->cotx_espece_incertaine;
+    }
+
+    /**
+     * Set cotx_effectif_abs
+     *
+     * @param integer $cotxEffectifAbs
+     * @return ObservationTaxon
+     */
+    public function setCotxEffectifAbs($cotxEffectifAbs)
+    {
+        $this->cotx_effectif_abs = $cotxEffectifAbs;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_effectif_abs
+     *
+     * @return integer 
+     */
+    public function getCotxEffectifAbs()
+    {
+        return $this->cotx_effectif_abs;
+    }
+
+    /**
+     * Set cotx_nb_male_adulte
+     *
+     * @param integer $cotxNbMaleAdulte
+     * @return ObservationTaxon
+     */
+    public function setCotxNbMaleAdulte($cotxNbMaleAdulte)
+    {
+        $this->cotx_nb_male_adulte = $cotxNbMaleAdulte;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_male_adulte
+     *
+     * @return integer 
+     */
+    public function getCotxNbMaleAdulte()
+    {
+        return $this->cotx_nb_male_adulte;
+    }
+
+    /**
+     * Set cotx_nb_femelle_adulte
+     *
+     * @param integer $cotxNbFemelleAdulte
+     * @return ObservationTaxon
+     */
+    public function setCotxNbFemelleAdulte($cotxNbFemelleAdulte)
+    {
+        $this->cotx_nb_femelle_adulte = $cotxNbFemelleAdulte;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_femelle_adulte
+     *
+     * @return integer 
+     */
+    public function getCotxNbFemelleAdulte()
+    {
+        return $this->cotx_nb_femelle_adulte;
+    }
+
+    /**
+     * Set cotx_nb_male_juvenile
+     *
+     * @param integer $cotxNbMaleJuvenile
+     * @return ObservationTaxon
+     */
+    public function setCotxNbMaleJuvenile($cotxNbMaleJuvenile)
+    {
+        $this->cotx_nb_male_juvenile = $cotxNbMaleJuvenile;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_male_juvenile
+     *
+     * @return integer 
+     */
+    public function getCotxNbMaleJuvenile()
+    {
+        return $this->cotx_nb_male_juvenile;
+    }
+
+    /**
+     * Set cotx_nb_femelle_juvenile
+     *
+     * @param integer $cotxNbFemelleJuvenile
+     * @return ObservationTaxon
+     */
+    public function setCotxNbFemelleJuvenile($cotxNbFemelleJuvenile)
+    {
+        $this->cotx_nb_femelle_juvenile = $cotxNbFemelleJuvenile;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_femelle_juvenile
+     *
+     * @return integer 
+     */
+    public function getCotxNbFemelleJuvenile()
+    {
+        return $this->cotx_nb_femelle_juvenile;
+    }
+
+    /**
+     * Set cotx_nb_male_indetermine
+     *
+     * @param integer $cotxNbMaleIndetermine
+     * @return ObservationTaxon
+     */
+    public function setCotxNbMaleIndetermine($cotxNbMaleIndetermine)
+    {
+        $this->cotx_nb_male_indetermine = $cotxNbMaleIndetermine;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_male_indetermine
+     *
+     * @return integer 
+     */
+    public function getCotxNbMaleIndetermine()
+    {
+        return $this->cotx_nb_male_indetermine;
+    }
+
+    /**
+     * Set cotx_nb_femelle_indetermine
+     *
+     * @param integer $cotxNbFemelleIndetermine
+     * @return ObservationTaxon
+     */
+    public function setCotxNbFemelleIndetermine($cotxNbFemelleIndetermine)
+    {
+        $this->cotx_nb_femelle_indetermine = $cotxNbFemelleIndetermine;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_femelle_indetermine
+     *
+     * @return integer 
+     */
+    public function getCotxNbFemelleIndetermine()
+    {
+        return $this->cotx_nb_femelle_indetermine;
+    }
+
+    /**
+     * Set cotx_nb_indetermine_adulte
+     *
+     * @param integer $cotxNbIndetermineAdulte
+     * @return ObservationTaxon
+     */
+    public function setCotxNbIndetermineAdulte($cotxNbIndetermineAdulte)
+    {
+        $this->cotx_nb_indetermine_adulte = $cotxNbIndetermineAdulte;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_indetermine_adulte
+     *
+     * @return integer 
+     */
+    public function getCotxNbIndetermineAdulte()
+    {
+        return $this->cotx_nb_indetermine_adulte;
+    }
+
+    /**
+     * Set cotx_nb_indetermine_juvenile
+     *
+     * @param integer $cotxNbIndetermineJuvenile
+     * @return ObservationTaxon
+     */
+    public function setCotxNbIndetermineJuvenile($cotxNbIndetermineJuvenile)
+    {
+        $this->cotx_nb_indetermine_juvenile = $cotxNbIndetermineJuvenile;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_indetermine_juvenile
+     *
+     * @return integer 
+     */
+    public function getCotxNbIndetermineJuvenile()
+    {
+        return $this->cotx_nb_indetermine_juvenile;
+    }
+
+    /**
+     * Set cotx_nb_indetermine_indetermine
+     *
+     * @param integer $cotxNbIndetermineIndetermine
+     * @return ObservationTaxon
+     */
+    public function setCotxNbIndetermineIndetermine($cotxNbIndetermineIndetermine)
+    {
+        $this->cotx_nb_indetermine_indetermine = $cotxNbIndetermineIndetermine;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_nb_indetermine_indetermine
+     *
+     * @return integer 
+     */
+    public function getCotxNbIndetermineIndetermine()
+    {
+        return $this->cotx_nb_indetermine_indetermine;
+    }
+
+    /**
+     * Set cotx_obj_status_validation
+     *
+     * @param integer $cotxObjStatusValidation
+     * @return ObservationTaxon
+     */
+    public function setCotxObjStatusValidation($cotxObjStatusValidation)
+    {
+        $this->cotx_obj_status_validation = $cotxObjStatusValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_obj_status_validation
+     *
+     * @return integer 
+     */
+    public function getCotxObjStatusValidation()
+    {
+        return $this->cotx_obj_status_validation;
+    }
+
+    /**
+     * Set cotx_commentaire
+     *
+     * @param string $cotxCommentaire
+     * @return ObservationTaxon
+     */
+    public function setCotxCommentaire($cotxCommentaire)
+    {
+        $this->cotx_commentaire = $cotxCommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_commentaire
+     *
+     * @return string 
+     */
+    public function getCotxCommentaire()
+    {
+        return $this->cotx_commentaire;
+    }
 
     /**
      * Set cd_nom
@@ -554,180 +547,210 @@ class ObservationTaxon extends BaseEntity
         return $this->nom_complet;
     }
 
-    public function setObsValidateur($validateur){
-        $this->obs_validateur = $validateur;
-        return $this;
-    }
-
-    public function getObsValidateur(){
-        return $this->obs_validateur;
-    }
     /**
-     * @var \DateTime
-     */
-    private $date_validation;
-
-
-    /**
-     * Set date_validation
+     * Set cotx_validateur
      *
-     * @param \DateTime $dateValidation
+     * @param integer $cotxValidateur
      * @return ObservationTaxon
      */
-    public function setDateValidation($dateValidation)
+    public function setCotxValidateur($cotxValidateur)
     {
-        $this->date_validation = $dateValidation;
+        $this->cotx_validateur = $cotxValidateur;
 
         return $this;
     }
 
     /**
-     * Get date_validation
-     *
-     * @return \DateTime 
-     */
-    public function getDateValidation()
-    {
-        return $this->date_validation;
-    }
-    /**
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     */
-    private $updated;
-
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return ObservationTaxon
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime 
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     * @return ObservationTaxon
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime 
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-    /**
-     * @var integer
-     */
-    private $obs_nb_indetermine_adulte;
-
-    /**
-     * @var integer
-     */
-    private $obs_nb_indetermine_juvenile;
-
-
-    /**
-     * Set obs_nb_indetermine_adulte
-     *
-     * @param integer $obsNbIndetermineAdulte
-     * @return ObservationTaxon
-     */
-    public function setObsNbIndetermineAdulte($obsNbIndetermineAdulte)
-    {
-        $this->obs_nb_indetermine_adulte = $obsNbIndetermineAdulte;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_nb_indetermine_adulte
+     * Get cotx_validateur
      *
      * @return integer 
      */
-    public function getObsNbIndetermineAdulte()
+    public function getCotxValidateur()
     {
-        return $this->obs_nb_indetermine_adulte;
+        return $this->cotx_validateur;
     }
 
     /**
-     * Set obs_nb_indetermine_juvenile
+     * Set cotx_act_id
      *
-     * @param integer $obsNbIndetermineJuvenile
+     * @param integer $cotxActId
      * @return ObservationTaxon
      */
-    public function setObsNbIndetermineJuvenile($obsNbIndetermineJuvenile)
+    public function setCotxActId($cotxActId)
     {
-        $this->obs_nb_indetermine_juvenile = $obsNbIndetermineJuvenile;
+        $this->cotx_act_id = $cotxActId;
 
         return $this;
     }
 
     /**
-     * Get obs_nb_indetermine_juvenile
+     * Get cotx_act_id
      *
      * @return integer 
      */
-    public function getObsNbIndetermineJuvenile()
+    public function getCotxActId()
     {
-        return $this->obs_nb_indetermine_juvenile;
+        return $this->cotx_act_id;
     }
-    /**
-     * @var integer
-     */
-    private $numerisateur_id;
-
 
     /**
-     * Set numerisateur_id
+     * Set cotx_eff_id
      *
-     * @param integer $numerisateurId
+     * @param integer $cotxEffId
      * @return ObservationTaxon
      */
-    public function setNumerisateurId($numerisateurId)
+    public function setCotxEffId($cotxEffId)
     {
-        $this->numerisateur_id = $numerisateurId;
+        $this->cotx_eff_id = $cotxEffId;
 
         return $this;
     }
 
     /**
-     * Get numerisateur_id
+     * Get cotx_eff_id
      *
      * @return integer 
      */
-    public function getNumerisateurId()
+    public function getCotxEffId()
     {
-        return $this->numerisateur_id;
+        return $this->cotx_eff_id;
+    }
+
+    /**
+     * Set cotx_prv_id
+     *
+     * @param integer $cotxPrvId
+     * @return ObservationTaxon
+     */
+    public function setCotxPrvId($cotxPrvId)
+    {
+        $this->cotx_prv_id = $cotxPrvId;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_prv_id
+     *
+     * @return integer 
+     */
+    public function getCotxPrvId()
+    {
+        return $this->cotx_prv_id;
+    }
+
+    /**
+     * Set cotx_num_id
+     *
+     * @param integer $cotxNumId
+     * @return ObservationTaxon
+     */
+    public function setCotxNumId($cotxNumId)
+    {
+        $this->cotx_num_id = $cotxNumId;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_num_id
+     *
+     * @return integer 
+     */
+    public function getCotxNumId()
+    {
+        return $this->cotx_num_id;
+    }
+
+    /**
+     * Set cotx_date_validation
+     *
+     * @param \DateTime $cotxDateValidation
+     * @return ObservationTaxon
+     */
+    public function setCotxDateValidation($cotxDateValidation)
+    {
+        $this->cotx_date_validation = $cotxDateValidation;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_date_validation
+     *
+     * @return \DateTime 
+     */
+    public function getCotxDateValidation()
+    {
+        return $this->cotx_date_validation;
+    }
+
+    /**
+     * Set meta_create_timestamp
+     *
+     * @param \DateTime $metaCreateTimestamp
+     * @return ObservationTaxon
+     */
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
+    {
+        $this->meta_create_timestamp = $metaCreateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_create_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaCreateTimestamp()
+    {
+        return $this->meta_create_timestamp;
+    }
+
+    /**
+     * Set meta_update_timestamp
+     *
+     * @param \DateTime $metaUpdateTimestamp
+     * @return ObservationTaxon
+     */
+    public function setMetaUpdateTimestamp($metaUpdateTimestamp)
+    {
+        $this->meta_update_timestamp = $metaUpdateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_update_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaUpdateTimestamp()
+    {
+        return $this->meta_update_timestamp;
+    }
+
+    /**
+     * Set meta_numerisateur_id
+     *
+     * @param integer $metaNumerisateurId
+     * @return ObservationTaxon
+     */
+    public function setMetaNumerisateurId($metaNumerisateurId)
+    {
+        $this->meta_numerisateur_id = $metaNumerisateurId;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_numerisateur_id
+     *
+     * @return integer 
+     */
+    public function getMetaNumerisateurId()
+    {
+        return $this->meta_numerisateur_id;
     }
 }

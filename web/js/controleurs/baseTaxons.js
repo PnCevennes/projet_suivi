@@ -55,7 +55,7 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
     }
     else{
         $scope.saveUrl = $scope._appName + '/obs_taxon';
-        $scope.data = {obsId: $routeParams.obs_id};
+        $scope.data = {fkBvId: $routeParams.obs_id};
     }
 
 
@@ -73,7 +73,7 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
             $location.url($scope._appName + '/taxons/' + data.id);
         }
         else{
-            $location.url($scope._appName + '/observation/' + data.obsId);
+            $location.url($scope._appName + '/observation/' + data.fkBvId);
         }
     });
 

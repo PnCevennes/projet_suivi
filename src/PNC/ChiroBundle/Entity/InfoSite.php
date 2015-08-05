@@ -10,8 +10,6 @@ use PNC\Utils\BaseEntity;
  */
 class InfoSite extends BaseEntity
 {
-
-
     /**
      * @var integer
      */
@@ -20,78 +18,77 @@ class InfoSite extends BaseEntity
     /**
      * @var integer
      */
-    private $site_id;
+    private $fk_bs_id;
 
     /**
      * @var string
      */
-    private $site_description;
+    private $cis_description;
 
     /**
      * @var string
      */
-    private $site_schema;
-
-    /**
-     * @var integer
-     *
-     */
-    private $site_frequentation;
+    private $cis_schema;
 
     /**
      * @var integer
      */
-    private $site_menace;
+    private $cis_frequentation;
+
+    /**
+     * @var integer
+     */
+    private $cis_menace;
 
     /**
      * @var string
      */
-    private $site_menace_cmt;
+    private $cis_menace_cmt;
 
     /**
      * @var string
      */
-    private $site_commentaire;
+    private $cis_commentaire;
 
     /**
      * @var string
      */
-    private $contact_nom;
+    private $cis_contact_nom;
 
     /**
      * @var string
      */
-    private $contact_prenom;
+    private $cis_contact_prenom;
 
     /**
      * @var string
      */
-    private $contact_adresse;
+    private $cis_contact_adresse;
 
     /**
      * @var string
      */
-    private $contact_code_postal;
+    private $cis_contact_code_postal;
 
     /**
      * @var string
      */
-    private $contact_ville;
+    private $cis_contact_ville;
 
     /**
      * @var string
      */
-    private $contact_telephone;
+    private $cis_contact_telephone;
 
     /**
      * @var string
      */
-    private $contact_portable;
+    private $cis_contact_portable;
 
     /**
      * @var string
      */
-    private $contact_commentaire;
+    private $cis_contact_commentaire;
 
 
     /**
@@ -105,27 +102,359 @@ class InfoSite extends BaseEntity
     }
 
     /**
-     * Set site_id
+     * Set fk_bs_id
      *
-     * @param integer $siteId
+     * @param integer $fkBsId
      * @return InfoSite
      */
-    public function setSiteId($siteId)
+    public function setFkBsId($fkBsId)
     {
-        $this->site_id = $siteId;
+        $this->fk_bs_id = $fkBsId;
 
         return $this;
     }
 
     /**
-     * Get site_id
+     * Get fk_bs_id
      *
      * @return integer 
      */
-    public function getSiteId()
+    public function getFkBsId()
     {
-        return $this->site_id;
+        return $this->fk_bs_id;
     }
+
+    /**
+     * Set cis_description
+     *
+     * @param string $cisDescription
+     * @return InfoSite
+     */
+    public function setCisDescription($cisDescription)
+    {
+        $this->cis_description = $cisDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_description
+     *
+     * @return string 
+     */
+    public function getCisDescription()
+    {
+        return $this->cis_description;
+    }
+
+    /**
+     * Set cis_schema
+     *
+     * @param string $cisSchema
+     * @return InfoSite
+     */
+    public function setCisSchema($cisSchema)
+    {
+        $this->cis_schema = $cisSchema;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_schema
+     *
+     * @return string 
+     */
+    public function getCisSchema()
+    {
+        return $this->cis_schema;
+    }
+
+    /**
+     * Set cis_frequentation
+     *
+     * @param integer $cisFrequentation
+     * @return InfoSite
+     */
+    public function setCisFrequentation($cisFrequentation)
+    {
+        $this->cis_frequentation = $cisFrequentation;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_frequentation
+     *
+     * @return integer 
+     */
+    public function getCisFrequentation()
+    {
+        return $this->cis_frequentation;
+    }
+
+    /**
+     * Set cis_menace
+     *
+     * @param integer $cisMenace
+     * @return InfoSite
+     */
+    public function setCisMenace($cisMenace)
+    {
+        $this->cis_menace = $cisMenace;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_menace
+     *
+     * @return integer 
+     */
+    public function getCisMenace()
+    {
+        return $this->cis_menace;
+    }
+
+    /**
+     * Set cis_menace_cmt
+     *
+     * @param string $cisMenaceCmt
+     * @return InfoSite
+     */
+    public function setCisMenaceCmt($cisMenaceCmt)
+    {
+        $this->cis_menace_cmt = $cisMenaceCmt;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_menace_cmt
+     *
+     * @return string 
+     */
+    public function getCisMenaceCmt()
+    {
+        return $this->cis_menace_cmt;
+    }
+
+    /**
+     * Set cis_commentaire
+     *
+     * @param string $cisCommentaire
+     * @return InfoSite
+     */
+    public function setCisCommentaire($cisCommentaire)
+    {
+        $this->cis_commentaire = $cisCommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_commentaire
+     *
+     * @return string 
+     */
+    public function getCisCommentaire()
+    {
+        return $this->cis_commentaire;
+    }
+
+    /**
+     * Set cis_contact_nom
+     *
+     * @param string $cisContactNom
+     * @return InfoSite
+     */
+    public function setCisContactNom($cisContactNom)
+    {
+        $this->cis_contact_nom = $cisContactNom;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_nom
+     *
+     * @return string 
+     */
+    public function getCisContactNom()
+    {
+        return $this->cis_contact_nom;
+    }
+
+    /**
+     * Set cis_contact_prenom
+     *
+     * @param string $cisContactPrenom
+     * @return InfoSite
+     */
+    public function setCisContactPrenom($cisContactPrenom)
+    {
+        $this->cis_contact_prenom = $cisContactPrenom;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_prenom
+     *
+     * @return string 
+     */
+    public function getCisContactPrenom()
+    {
+        return $this->cis_contact_prenom;
+    }
+
+    /**
+     * Set cis_contact_adresse
+     *
+     * @param string $cisContactAdresse
+     * @return InfoSite
+     */
+    public function setCisContactAdresse($cisContactAdresse)
+    {
+        $this->cis_contact_adresse = $cisContactAdresse;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_adresse
+     *
+     * @return string 
+     */
+    public function getCisContactAdresse()
+    {
+        return $this->cis_contact_adresse;
+    }
+
+    /**
+     * Set cis_contact_code_postal
+     *
+     * @param string $cisContactCodePostal
+     * @return InfoSite
+     */
+    public function setCisContactCodePostal($cisContactCodePostal)
+    {
+        $this->cis_contact_code_postal = $cisContactCodePostal;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_code_postal
+     *
+     * @return string 
+     */
+    public function getCisContactCodePostal()
+    {
+        return $this->cis_contact_code_postal;
+    }
+
+    /**
+     * Set cis_contact_ville
+     *
+     * @param string $cisContactVille
+     * @return InfoSite
+     */
+    public function setCisContactVille($cisContactVille)
+    {
+        $this->cis_contact_ville = $cisContactVille;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_ville
+     *
+     * @return string 
+     */
+    public function getCisContactVille()
+    {
+        return $this->cis_contact_ville;
+    }
+
+    /**
+     * Set cis_contact_telephone
+     *
+     * @param string $cisContactTelephone
+     * @return InfoSite
+     */
+    public function setCisContactTelephone($cisContactTelephone)
+    {
+        $this->cis_contact_telephone = $cisContactTelephone;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_telephone
+     *
+     * @return string 
+     */
+    public function getCisContactTelephone()
+    {
+        return $this->cis_contact_telephone;
+    }
+
+    /**
+     * Set cis_contact_portable
+     *
+     * @param string $cisContactPortable
+     * @return InfoSite
+     */
+    public function setCisContactPortable($cisContactPortable)
+    {
+        $this->cis_contact_portable = $cisContactPortable;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_portable
+     *
+     * @return string 
+     */
+    public function getCisContactPortable()
+    {
+        return $this->cis_contact_portable;
+    }
+
+    /**
+     * Set cis_contact_commentaire
+     *
+     * @param string $cisContactCommentaire
+     * @return InfoSite
+     */
+    public function setCisContactCommentaire($cisContactCommentaire)
+    {
+        $this->cis_contact_commentaire = $cisContactCommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get cis_contact_commentaire
+     *
+     * @return string 
+     */
+    public function getCisContactCommentaire()
+    {
+        return $this->cis_contact_commentaire;
+    }
+    /**
+     * @var string
+     */
+    private $site_description;
+
+    /**
+     * @var string
+     */
+    private $site_schema;
+
 
     /**
      * Set site_description
@@ -171,282 +500,6 @@ class InfoSite extends BaseEntity
     public function getSiteSchema()
     {
         return $this->site_schema;
-    }
-
-    /**
-     * Set site_frequentation
-     *
-     * @param string $siteFrequentation
-     * @return InfoSite
-     */
-    public function setSiteFrequentation($siteFrequentation)
-    {
-        $this->site_frequentation = $siteFrequentation;
-
-        return $this;
-    }
-
-    /**
-     * Get site_frequentation
-     *
-     * @return string 
-     */
-    public function getSiteFrequentation()
-    {
-        return $this->site_frequentation;
-    }
-
-    /**
-     * Set site_menace
-     *
-     * @param string $siteMenace
-     * @return InfoSite
-     */
-    public function setSiteMenace($siteMenace)
-    {
-        $this->site_menace = $siteMenace;
-
-        return $this;
-    }
-
-    /**
-     * Get site_menace
-     *
-     * @return string 
-     */
-    public function getSiteMenace()
-    {
-        return $this->site_menace;
-    }
-
-    /**
-     * Set site_menace_cmt
-     *
-     * @param string $siteMenaceCmt
-     * @return InfoSite
-     */
-    public function setSiteMenaceCmt($siteMenaceCmt)
-    {
-        $this->site_menace_cmt = $siteMenaceCmt;
-
-        return $this;
-    }
-
-    /**
-     * Get site_menace_cmt
-     *
-     * @return string 
-     */
-    public function getSiteMenaceCmt()
-    {
-        return $this->site_menace_cmt;
-    }
-
-    /**
-     * Set site_commentaire
-     *
-     * @param string $siteCommentaire
-     * @return InfoSite
-     */
-    public function setSiteCommentaire($siteCommentaire)
-    {
-        $this->site_commentaire = $siteCommentaire;
-
-        return $this;
-    }
-
-    /**
-     * Get site_commentaire
-     *
-     * @return string 
-     */
-    public function getSiteCommentaire()
-    {
-        return $this->site_commentaire;
-    }
-
-    /**
-     * Set contact_nom
-     *
-     * @param string $contactNom
-     * @return InfoSite
-     */
-    public function setContactNom($contactNom)
-    {
-        $this->contact_nom = $contactNom;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_nom
-     *
-     * @return string 
-     */
-    public function getContactNom()
-    {
-        return $this->contact_nom;
-    }
-
-    /**
-     * Set contact_prenom
-     *
-     * @param string $contactPrenom
-     * @return InfoSite
-     */
-    public function setContactPrenom($contactPrenom)
-    {
-        $this->contact_prenom = $contactPrenom;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_prenom
-     *
-     * @return string 
-     */
-    public function getContactPrenom()
-    {
-        return $this->contact_prenom;
-    }
-
-    /**
-     * Set contact_adresse
-     *
-     * @param string $contactAdresse
-     * @return InfoSite
-     */
-    public function setContactAdresse($contactAdresse)
-    {
-        $this->contact_adresse = $contactAdresse;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_adresse
-     *
-     * @return string 
-     */
-    public function getContactAdresse()
-    {
-        return $this->contact_adresse;
-    }
-
-    /**
-     * Set contact_code_postal
-     *
-     * @param string $contactCodePostal
-     * @return InfoSite
-     */
-    public function setContactCodePostal($contactCodePostal)
-    {
-        $this->contact_code_postal = $contactCodePostal;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_code_postal
-     *
-     * @return string 
-     */
-    public function getContactCodePostal()
-    {
-        return $this->contact_code_postal;
-    }
-
-    /**
-     * Set contact_ville
-     *
-     * @param string $contactVille
-     * @return InfoSite
-     */
-    public function setContactVille($contactVille)
-    {
-        $this->contact_ville = $contactVille;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_ville
-     *
-     * @return string 
-     */
-    public function getContactVille()
-    {
-        return $this->contact_ville;
-    }
-
-    /**
-     * Set contact_telephone
-     *
-     * @param string $contactTelephone
-     * @return InfoSite
-     */
-    public function setContactTelephone($contactTelephone)
-    {
-        $this->contact_telephone = $contactTelephone;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_telephone
-     *
-     * @return string 
-     */
-    public function getContactTelephone()
-    {
-        return $this->contact_telephone;
-    }
-
-    /**
-     * Set contact_portable
-     *
-     * @param string $contactPortable
-     * @return InfoSite
-     */
-    public function setContactPortable($contactPortable)
-    {
-        $this->contact_portable = $contactPortable;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_portable
-     *
-     * @return string 
-     */
-    public function getContactPortable()
-    {
-        return $this->contact_portable;
-    }
-
-    /**
-     * Set contact_commentaire
-     *
-     * @param string $contactCommentaire
-     * @return InfoSite
-     */
-    public function setContactCommentaire($contactCommentaire)
-    {
-        $this->contact_commentaire = $contactCommentaire;
-
-        return $this;
-    }
-
-    /**
-     * Get contact_commentaire
-     *
-     * @return string 
-     */
-    public function getContactCommentaire()
-    {
-        return $this->contact_commentaire;
     }
     /**
      * @var \PNC\BaseAppBundle\Entity\Site

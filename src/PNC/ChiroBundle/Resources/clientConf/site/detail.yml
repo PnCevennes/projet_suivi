@@ -5,17 +5,17 @@ subDataUrl: chiro/observation/site/
 groups:
     -   name: Informations
         fields:
-            -   name: siteCode
+            -   name: bsCode
                 label: "Code site"
                 type: string
             -   name: nomObservateur
                 label: "Observateur"
                 type: string
-            -   name: siteDate
+            -   name: bsDate
                 label: "Date de création"
                 type: date
                 help: "Date d'ajout du site à la base de données"
-            -   name: typeId
+            -   name: bsTypeId
                 label: "Type"
                 type: select
                 thesaurusID: 7
@@ -28,66 +28,66 @@ groups:
                     url: "commune"
     -   name: Détails
         fields:
-            -   name: siteDescription
+            -   name: bsDescription
                 label: Description
                 type: string
-            -   name: siteAmenagement
+            -   name: cisAmenagement
                 label: Aménagement
                 type: file
                 help: "Aménagement du site"
                 options:
                     target: "chiro/site/"
-            -   name: siteFrequentation
+            -   name: cisFrequentation
                 label: Fréquentation
                 type: select
                 thesaurusID: 10
                 help: "Fréquentation du site"
-            -   name: siteMenace
+            -   name: cisMenace
                 label: Menaces
                 type: select
                 thesaurusID: 11
                 help: "Menaces pesant sur le site"
-            -   name: siteMenaceCmt
+            -   name: cisMenaceCmt
                 label: "Description menaces"
                 type: string
                 help: "Description des menaces pesant sur le site"
     -   name: Contact
         fields:
-            -   name: contactNom
+            -   name: cisContactNom
                 label: "Nom du contact"
                 type: string
-            -   name: contactPrenom
+            -   name: cisContactPrenom
                 label: "Prénom du contact"
                 type: string
-            -   name: contactAdresse
+            -   name: cisContactAdresse
                 label: "Adresse du contact"
                 type: string
-            -   name: contactCodePostal
+            -   name: cisContactCodePostal
                 label: "Code postal"
                 type: string
-            -   name: contactVille
+            -   name: cisContactVille
                 label: "Ville"
                 type: string
-            -   name: contactTelephone
+            -   name: cisContactTelephone
                 label: "Téléphone"
                 type: string
-            -   name: contactPortable
+            -   name: cisContactPortable
                 label: "Portable"
                 type: string
-            -   name: contactCommentaire
+            -   name: cisContactCommentaire
                 label: "Commentaires contact"
                 type: string
                 help: "Informations complémentaires contact"
     -   name: "Metadonnées"
         fields:
-            -   name: numerisateurId
+            -   name: metaNumerisateurId
                 label: Numérisateur
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: created
+            -   name: metaCreateTimestamp
                 label: "Création donnée"
                 type: date
-            -   name: updated
+            -   name: metaUpdateTimestamp
                 label: "Dernière mise à jour"
                 type: date

@@ -14,10 +14,10 @@ filtering:
                 url: "chiro/taxons"
                 reverseurl: "chiro/taxons/id"
                 ref: "taxon"
-        -   name: "obs_date"
+        -   name: "bv_date"
             label: "Date de l'observation"
             type: "date"
-        -   name: "obs_obj_status_validation"
+        -   name: "cotx_obj_status_validation"
             label: "Statut validation"
             type: "select"
             zeroNull: true
@@ -52,33 +52,33 @@ fields:
             type: list
             visible: true
             style: l
-    -   name: "obsObjStatusValidation"
+    -   name: "cotxObjStatusValidation"
         label: "Validation"
         filter: 
-            obsObjStatusValidation: "text"
+            cotxObjStatusValidation: "text"
         options: 
             visible: false 
             type: "select"
             style: l
-    -   name: "siteNom"
+    -   name: "bsNom"
         label: "Nom du site"
         filter: 
-            siteNom: "text"
+            bsNom: "text"
         options: 
             visible: true
             style: xl
-    -   name: "obsDate"
+    -   name: "bvDate"
         label: "Date d'observation"
         filter: 
-            obsDate: "text"
+            bvDate: "text"
         options: 
             visible: true 
             type: "date"
             style: l
-    -   name: "obsEffectifAbs"
+    -   name: "cotxEffectifAbs"
         label: "Effectif total"
         filter: 
-            obsEffectifAbs: "text"
+            cotxEffectifAbs: "text"
         options: 
             visible: true
             style: s
@@ -98,10 +98,10 @@ fields:
         options: 
             visible: false
             style: l
-    -   name: "dateValidation"
+    -   name: "cotxDateValidation"
         label: "Date de validation"
         filter: 
-            dateValidation: "text"
+            cotxDateValidation: "text"
         options: 
             visible: false
             type: "date"

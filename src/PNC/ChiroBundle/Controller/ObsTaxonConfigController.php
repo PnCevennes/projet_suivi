@@ -45,13 +45,13 @@ class ObsTaxonConfigController extends Controller{
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['name'] == 'obsObjStatusValidation'){
+            if($field['name'] == 'cotxObjStatusValidation'){
                 $field['options']['choices'] = $typesVal;
                 $field['default'] = 0;
             }
         }
         foreach($out['filtering']['fields'] as &$field){
-            if($field['name'] == 'obs_obj_status_validation'){
+            if($field['name'] == 'cotx_obj_status_validation'){
                 if(!isset($field['options'])){
                     $field['options'] = array();
                 }
@@ -102,7 +102,7 @@ class ObsTaxonConfigController extends Controller{
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['name'] == 'obsObjStatusValidation'){
+            if($field['name'] == 'cotxObjStatusValidation'){
                 $field['options']['choices'] = $thesaurus->get_list(9, false);
             }
         }

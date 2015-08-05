@@ -117,11 +117,11 @@ class ObservationController extends Controller{
         }
         if($user->checkLevel(3)){
             $delete = true;
-            if(!$user->isOwner($obs['numerisateurId'])){
+            if(!$user->isOwner($obs['metaNumerisateurId'])){
                 $cascade = true;
             }
         }
-        if($user->checkLevel(2) && $user->isOwner($obs['numerisateurId'])){
+        if($user->checkLevel(2) && $user->isOwner($obs['metaNumerisateurId'])){
             $delete = true;
         }
 

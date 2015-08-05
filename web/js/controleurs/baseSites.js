@@ -90,7 +90,7 @@ app.controller('siteDetailController', function($scope, $rootScope, $routeParams
                     mapService.selectItem($routeParams.id);
                 }
                 );
-            $scope.title = data.siteNom;
+            $scope.title = data.bsNom;
         });
     });
 
@@ -119,8 +119,8 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     }
 
     $scope.$on('form:init', function(ev, data){
-        if(data.siteNom){
-            $scope.title = 'Modification du site ' + data.siteNom;
+        if(data.bsNom){
+            $scope.title = 'Modification du site ' + data.bsNom;
         }
         else{
             $scope.title = 'Nouveau site';
@@ -132,19 +132,19 @@ app.controller('siteEditController', function($scope, $rootScope, $routeParams, 
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.successMessage = 'le site ' + data.siteNom + ' a été créé avec succès.'
+        userMessages.successMessage = 'le site ' + data.bsNom + ' a été créé avec succès.'
         $location.url($scope._appName + '/site/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
 
-        userMessages.successMessage = 'le site ' + data.siteNom + ' a été mis à jour avec succès.'
+        userMessages.successMessage = 'le site ' + data.bsNom + ' a été mis à jour avec succès.'
         $location.url($scope._appName + '/site/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
 
-        userMessages.successMessage = 'le site ' + data.siteNom + ' a été supprimé.'
+        userMessages.successMessage = 'le site ' + data.bsNom + ' a été supprimé.'
         dataServ.forceReload = true;
         $location.url($scope._appName + '/site/');
     });

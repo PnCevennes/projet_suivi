@@ -10,23 +10,30 @@ use PNC\Utils\BaseEntity;
  */
 class ConditionsObservation extends BaseEntity
 {
-
     /**
      * @var integer
      */
     private $id;
 
     /**
-     * @var string
+     * @var integer
      */
-    private $obs_temperature;
+    private $fk_bv_id;
 
     /**
-     * @var string
+     * @var float
      */
-    private $obs_humidite;
+    private $cvc_temperature;
 
-    private $mod_id;
+    /**
+     * @var float
+     */
+    private $cvc_humidite;
+
+    /**
+     * @var integer
+     */
+    private $cvc_mod_id;
 
 
     /**
@@ -40,86 +47,94 @@ class ConditionsObservation extends BaseEntity
     }
 
     /**
-     * Set obs_temperature
+     * Set fk_bv_id
      *
-     * @param string $obsTemperature
+     * @param integer $fkBvId
      * @return ConditionsObservation
      */
-    public function setObsTemperature($obsTemperature)
+    public function setFkBvId($fkBvId)
     {
-        $this->obs_temperature = $obsTemperature;
+        $this->fk_bv_id = $fkBvId;
 
         return $this;
     }
 
     /**
-     * Get obs_temperature
-     *
-     * @return string 
-     */
-    public function getObsTemperature()
-    {
-        return  $this->obs_temperature;
-    }
-
-    /**
-     * Set obs_humidite
-     *
-     * @param string $obsHumidite
-     * @return ConditionsObservation
-     */
-    public function setObsHumidite($obsHumidite)
-    {
-        $this->obs_humidite = $obsHumidite;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_humidite
-     *
-     * @return string 
-     */
-    public function getObsHumidite()
-    {
-        return  $this->obs_humidite;
-    }
-
-    /**
-     * @var integer
-     */
-    private $obs_id;
-
-
-    /**
-     * Set obs_id
-     *
-     * @param integer $obsId
-     * @return ConditionsObservation
-     */
-    public function setObsId($obsId)
-    {
-        $this->obs_id = $obsId;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_id
+     * Get fk_bv_id
      *
      * @return integer 
      */
-    public function getObsId()
+    public function getFkBvId()
     {
-        return $this->obs_id;
+        return $this->fk_bv_id;
     }
 
-    public function setModId($mod_id){
-        $this->mod_id = $mod_id;
+    /**
+     * Set cvc_temperature
+     *
+     * @param float $cvcTemperature
+     * @return ConditionsObservation
+     */
+    public function setCvcTemperature($cvcTemperature)
+    {
+        $this->cvc_temperature = $cvcTemperature;
+
+        return $this;
     }
 
-    public function getModId(){
-        return $this->mod_id;
+    /**
+     * Get cvc_temperature
+     *
+     * @return float 
+     */
+    public function getCvcTemperature()
+    {
+        return $this->cvc_temperature;
     }
 
+    /**
+     * Set cvc_humidite
+     *
+     * @param float $cvcHumidite
+     * @return ConditionsObservation
+     */
+    public function setCvcHumidite($cvcHumidite)
+    {
+        $this->cvc_humidite = $cvcHumidite;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_humidite
+     *
+     * @return float 
+     */
+    public function getCvcHumidite()
+    {
+        return $this->cvc_humidite;
+    }
+
+    /**
+     * Set cvc_mod_id
+     *
+     * @param integer $cvcModId
+     * @return ConditionsObservation
+     */
+    public function setCvcModId($cvcModId)
+    {
+        $this->cvc_mod_id = $cvcModId;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_mod_id
+     *
+     * @return integer 
+     */
+    public function getCvcModId()
+    {
+        return $this->cvc_mod_id;
+    }
 }

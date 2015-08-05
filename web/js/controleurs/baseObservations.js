@@ -104,7 +104,7 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     }
     else{
         $scope.saveUrl = $scope._appName + '/observation';
-        $scope.data = {siteId: $routeParams.site_id};
+        $scope.data = {fkBsId: $routeParams.site_id};
     }
 
     var frDate = function(dte){
@@ -117,8 +117,8 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
     }
 
     $scope.$on('form:init', function(ev, data){
-        if(data.obsDate){
-            $scope.title = "Modification de la visite du " + frDate(data.obsDate);
+        if(data.bvDate){
+            $scope.title = "Modification de la visite du " + frDate(data.bvDate);
             // breadcrumbs
         }
         else{
@@ -131,24 +131,24 @@ app.controller('observationEditController', function($scope, $rootScope, $routeP
             $location.url($scope._appName + '/observation/' + data.id);
         }
         else{
-            $location.url($scope._appName + '/site/' + data.siteId);
+            $location.url($scope._appName + '/site/' + data.fkBsId);
         }
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = "La visite n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
+        userMessages.infoMessage = "La visite n° " + data.id + " du " + frDate(data.bvDate) + ' a été créée avec succès.';
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        userMessages.infoMessage = "La visite n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.';
+        userMessages.infoMessage = "La visite n° " + data.id + " du " + frDate(data.bvDate) + ' a été mise à jour avec succès.';
         $location.url($scope._appName + '/observation/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        userMessages.infoMessage = "La viste n° " + data.id + " du " + frDate(data.obsDate) + " a été supprimée.";
+        userMessages.infoMessage = "La viste n° " + data.id + " du " + frDate(data.bvDate) + " a été supprimée.";
         dataServ.forceReload = true;
-        $location.url($scope._appName + '/site/' + data.siteId);
+        $location.url($scope._appName + '/site/' + data.fkBsId);
     });
 });
 
@@ -164,11 +164,11 @@ app.controller('observationDetailController', function($scope, $rootScope, $rout
     $scope.dataId = $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        $scope.title = "Visite du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+        $scope.title = "Visite du " + data.bvDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
 
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
             mapService.loadData($scope._appName + '/site').then(function(){
-                mapService.selectItem(data.siteId);
+                mapService.selectItem(data.fkBsId);
             });
         });
 
@@ -189,7 +189,7 @@ app.controller('observationSsSiteDetailController', function($scope, $rootScope,
     $scope.dataId = $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        $scope.title = "Inventaire du " + data.obsDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+        $scope.title = "Inventaire du " + data.bvDate.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
         
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
             mapService.loadData($scope._appName + '/observation').then(function(){
@@ -227,8 +227,8 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
     }
 
     $scope.$on('form:init', function(ev, data){
-        if(data.obsDate){
-            $scope.title = "Modification de l'inventaire du " + frDate(data.obsDate)
+        if(data.bvDate){
+            $scope.title = "Modification de l'inventaire du " + frDate(data.bvDate)
             // breadcrumbs
         }
         else{
@@ -246,17 +246,17 @@ app.controller('observationSsSiteEditController', function($scope, $rootScope, $
     });
 
     $scope.$on('form:create', function(ev, data){
-        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + ' a été créée avec succès.';
+        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.bvDate) + ' a été créée avec succès.';
         $location.url($scope._appName + '/inventaire/' + data.id);
     });
 
     $scope.$on('form:update', function(ev, data){
-        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + ' a été mise à jour avec succès.';
+        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.bvDate) + ' a été mise à jour avec succès.';
         $location.url($scope._appName + '/inventaire/' + data.id);
     });
 
     $scope.$on('form:delete', function(ev, data){
-        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.obsDate) + " a été supprimé.";
+        userMessages.infoMessage = "l'inventaire n° " + data.id + " du " + frDate(data.bvDate) + " a été supprimé.";
         dataServ.forceReload = true;
         $location.url($scope._appName + '/inventaire');
     });

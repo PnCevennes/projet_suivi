@@ -23,17 +23,17 @@ class SiteService{
         $this->entityService = $es;
         $this->pagination = $pg;
         $this->schema = array(
-            'siteFrequentation'=>null,
-            'siteMenace'=>null,
-            'siteMenaceCmt'=>null,
-            'contactNom'=>null,
-            'contactPrenom'=>null,
-            'contactAdresse'=>null,
-            'contactCodePostal'=>null,
-            'contactVille'=>null,
-            'contactTelephone'=>null,
-            'contactPortable'=>null,
-            'contactCommentaire'=>null
+            'cisFrequentation'=>null,
+            'cisMenace'=>null,
+            'cisMenaceCmt'=>null,
+            'cisContactNom'=>null,
+            'cisContactPrenom'=>null,
+            'cisContactAdresse'=>null,
+            'cisContactCodePostal'=>null,
+            'cisContactVille'=>null,
+            'cisContactTelephone'=>null,
+            'cisContactPortable'=>null,
+            'cisContactCommentaire'=>null
         );
 
     }
@@ -41,12 +41,12 @@ class SiteService{
     public function getFilteredList($request){
         $schema = array(
             'id'=>null,
-            'siteNom'=>null,
-            'siteDate'=>'date',
+            'bsNom'=>null,
+            'bsDate'=>'date',
             'dernObs'=>'date',
             'nbObs'=>null,
             'nomObservateur'=>null,
-            'siteCode'=>null,
+            'bsCode'=>null,
             'typeLieu'=>null,
         );
 
@@ -67,7 +67,7 @@ class SiteService{
             $out_item['properties']['geomLabel'] = sprintf(
                 '<a href="#/chiro/site/%s">%s</a>',
                 $info->getId(), 
-                $info->getSiteNom()
+                $info->getBsNom()
             );
             $out[] = $out_item;
         }
@@ -124,7 +124,7 @@ class SiteService{
 
     public function update($id, $data){
         $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
-        $infoSite = $repo->findOneBy(array('site_id'=>$id));
+        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
         if(!$infoSite){
             return null;
         }
@@ -188,7 +188,7 @@ class SiteService{
 
     public function remove($id, $cascade=false){
         $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
-        $infoSite = $repo->findOneBy(array('site_id'=>$id));
+        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
         if(!$infoSite){
             return false;
         }

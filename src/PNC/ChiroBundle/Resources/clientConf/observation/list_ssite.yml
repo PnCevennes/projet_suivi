@@ -8,7 +8,7 @@ editAccess: 2
 filtering:
     limit: 200
     fields:
-        -   name: obs_date
+        -   name: bv_date
             label: "Date d'observation"
             type: date
         -   name: nb_taxons
@@ -26,10 +26,10 @@ fields:
       options:
           visible: false
           style: xs
-    - name: obsDate
+    - name: bvDate
       label: "Date d'inventaire"
       filter:
-          obsDate: text
+          bvDate: text
       options:
           primary: true
           visible: true

@@ -30,17 +30,19 @@ fields:
             visible: true
             style: xl 
             primary: true
-    -   name: obsEffectifAbs
+    -   name: cotxEffectifAbs
         label: "Effectif total"
         filter:
-            obsEffectifAbs: text
+            cotxEffectifAbs: text
         options:
             visible: true
             style: xs 
-    -   name: obsObjStatusValidation
+    -   name: cotxObjStatusValidation
         label: "Validation"
+        type: select
+        thesaurusID: 9
         filter:
-            obsObjStatusValidation: text
+            cotxObjStatusValidation: text
         options:
             visible: true
             type: select

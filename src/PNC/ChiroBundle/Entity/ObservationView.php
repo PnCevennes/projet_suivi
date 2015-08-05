@@ -17,48 +17,90 @@ class ObservationView
     /**
      * @var integer
      */
-    private $site_id;
+    private $fk_bs_id;
+
+    /**
+     * @var string
+     */
+    private $bs_nom;
 
     /**
      * @var \DateTime
      */
-    private $obs_date;
-
-    /**
-     * @var string
-     */
-    private $obs_commentaire;
+    private $bv_date;
 
     /**
      * @var integer
      */
-    private $obs_id_table_src;
+    private $meta_numerisateur_id;
 
     /**
      * @var string
      */
-    private $obs_temperature;
+    private $numerisateur;
 
     /**
      * @var string
      */
-    private $obs_humidite;
+    private $bv_commentaire;
+
+    /**
+     * @var integer
+     */
+    private $bv_id_table_src;
+
+    /**
+     * @var float
+     */
+    private $cvc_temperature;
+
+    /**
+     * @var float
+     */
+    private $cvc_humidite;
 
     /**
      * @var integer
      */
     private $nb_taxons;
 
-    private $mod_id;
+    /**
+     * @var integer
+     */
+    private $abondance;
 
-    public function setModId($mod_id){
-        $this->mod_id = $mod_id;
+    /**
+     * @var integer
+     */
+    private $cvc_mod_id;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_create_timestamp;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_update_timestamp;
+
+    /**
+     * @var array
+     */
+    private $ref_commune;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $observateurs;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->observateurs = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    public function getModId(){
-        return $this->mod_id;
-    }
-
 
     /**
      * Set id
@@ -84,141 +126,210 @@ class ObservationView
     }
 
     /**
-     * Set site_id
+     * Set fk_bs_id
      *
-     * @param integer $siteId
+     * @param integer $fkBsId
      * @return ObservationView
      */
-    public function setSiteId($siteId)
+    public function setFkBsId($fkBsId)
     {
-        $this->site_id = $siteId;
+        $this->fk_bs_id = $fkBsId;
 
         return $this;
     }
 
     /**
-     * Get site_id
+     * Get fk_bs_id
      *
      * @return integer 
      */
-    public function getSiteId()
+    public function getFkBsId()
     {
-        return $this->site_id;
+        return $this->fk_bs_id;
     }
 
     /**
-     * Set obs_date
+     * Set bs_nom
      *
-     * @param \DateTime $obsDate
+     * @param string $bsNom
      * @return ObservationView
      */
-    public function setObsDate($obsDate)
+    public function setBsNom($bsNom)
     {
-        $this->obs_date = $obsDate;
+        $this->bs_nom = $bsNom;
 
         return $this;
     }
 
     /**
-     * Get obs_date
+     * Get bs_nom
+     *
+     * @return string 
+     */
+    public function getBsNom()
+    {
+        return $this->bs_nom;
+    }
+
+    /**
+     * Set bv_date
+     *
+     * @param \DateTime $bvDate
+     * @return ObservationView
+     */
+    public function setBvDate($bvDate)
+    {
+        $this->bv_date = $bvDate;
+
+        return $this;
+    }
+
+    /**
+     * Get bv_date
      *
      * @return \DateTime 
      */
-    public function getObsDate()
+    public function getBvDate()
     {
-        return $this->obs_date;
+        return $this->bv_date;
     }
 
     /**
-     * Set obs_commentaire
+     * Set meta_numerisateur_id
      *
-     * @param string $obsCommentaire
+     * @param integer $metaNumerisateurId
      * @return ObservationView
      */
-    public function setObsCommentaire($obsCommentaire)
+    public function setMetaNumerisateurId($metaNumerisateurId)
     {
-        $this->obs_commentaire = $obsCommentaire;
+        $this->meta_numerisateur_id = $metaNumerisateurId;
 
         return $this;
     }
 
     /**
-     * Get obs_commentaire
-     *
-     * @return string 
-     */
-    public function getObsCommentaire()
-    {
-        return $this->obs_commentaire;
-    }
-
-    /**
-     * Set obs_id_table_src
-     *
-     * @param integer $obsIdTableSrc
-     * @return ObservationView
-     */
-    public function setObsIdTableSrc($obsIdTableSrc)
-    {
-        $this->obs_id_table_src = $obsIdTableSrc;
-
-        return $this;
-    }
-
-    /**
-     * Get obs_id_table_src
+     * Get meta_numerisateur_id
      *
      * @return integer 
      */
-    public function getObsIdTableSrc()
+    public function getMetaNumerisateurId()
     {
-        return $this->obs_id_table_src;
+        return $this->meta_numerisateur_id;
     }
 
     /**
-     * Set obs_temperature
+     * Set numerisateur
      *
-     * @param string $obsTemperature
+     * @param string $numerisateur
      * @return ObservationView
      */
-    public function setObsTemperature($obsTemperature)
+    public function setNumerisateur($numerisateur)
     {
-        $this->obs_temperature = $obsTemperature;
+        $this->numerisateur = $numerisateur;
 
         return $this;
     }
 
     /**
-     * Get obs_temperature
+     * Get numerisateur
      *
      * @return string 
      */
-    public function getObsTemperature()
+    public function getNumerisateur()
     {
-        return  $this->obs_temperature;
+        return $this->numerisateur;
     }
 
     /**
-     * Set obs_humidite
+     * Set bv_commentaire
      *
-     * @param string $obsHumidite
+     * @param string $bvCommentaire
      * @return ObservationView
      */
-    public function setObsHumidite($obsHumidite)
+    public function setBvCommentaire($bvCommentaire)
     {
-        $this->obs_humidite = $obsHumidite;
+        $this->bv_commentaire = $bvCommentaire;
 
         return $this;
     }
 
     /**
-     * Get obs_humidite
+     * Get bv_commentaire
      *
      * @return string 
      */
-    public function getObsHumidite()
+    public function getBvCommentaire()
     {
-        return  $this->obs_humidite;
+        return $this->bv_commentaire;
+    }
+
+    /**
+     * Set bv_id_table_src
+     *
+     * @param integer $bvIdTableSrc
+     * @return ObservationView
+     */
+    public function setBvIdTableSrc($bvIdTableSrc)
+    {
+        $this->bv_id_table_src = $bvIdTableSrc;
+
+        return $this;
+    }
+
+    /**
+     * Get bv_id_table_src
+     *
+     * @return integer 
+     */
+    public function getBvIdTableSrc()
+    {
+        return $this->bv_id_table_src;
+    }
+
+    /**
+     * Set cvc_temperature
+     *
+     * @param float $cvcTemperature
+     * @return ObservationView
+     */
+    public function setCvcTemperature($cvcTemperature)
+    {
+        $this->cvc_temperature = $cvcTemperature;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_temperature
+     *
+     * @return float 
+     */
+    public function getCvcTemperature()
+    {
+        return $this->cvc_temperature;
+    }
+
+    /**
+     * Set cvc_humidite
+     *
+     * @param float $cvcHumidite
+     * @return ObservationView
+     */
+    public function setCvcHumidite($cvcHumidite)
+    {
+        $this->cvc_humidite = $cvcHumidite;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_humidite
+     *
+     * @return float 
+     */
+    public function getCvcHumidite()
+    {
+        return $this->cvc_humidite;
     }
 
     /**
@@ -243,17 +354,120 @@ class ObservationView
     {
         return $this->nb_taxons;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $observateurs;
 
     /**
-     * Constructor
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationView
      */
-    public function __construct()
+    public function setAbondance($abondance)
     {
-        $this->observateurs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
+    }
+
+    /**
+     * Set cvc_mod_id
+     *
+     * @param integer $cvcModId
+     * @return ObservationView
+     */
+    public function setCvcModId($cvcModId)
+    {
+        $this->cvc_mod_id = $cvcModId;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_mod_id
+     *
+     * @return integer 
+     */
+    public function getCvcModId()
+    {
+        return $this->cvc_mod_id;
+    }
+
+    /**
+     * Set meta_create_timestamp
+     *
+     * @param \DateTime $metaCreateTimestamp
+     * @return ObservationView
+     */
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
+    {
+        $this->meta_create_timestamp = $metaCreateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_create_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaCreateTimestamp()
+    {
+        return $this->meta_create_timestamp;
+    }
+
+    /**
+     * Set meta_update_timestamp
+     *
+     * @param \DateTime $metaUpdateTimestamp
+     * @return ObservationView
+     */
+    public function setMetaUpdateTimestamp($metaUpdateTimestamp)
+    {
+        $this->meta_update_timestamp = $metaUpdateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_update_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaUpdateTimestamp()
+    {
+        return $this->meta_update_timestamp;
+    }
+
+    /**
+     * Set ref_commune
+     *
+     * @param array $refCommune
+     * @return ObservationView
+     */
+    public function setRefCommune($refCommune)
+    {
+        $this->ref_commune = $refCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get ref_commune
+     *
+     * @return array 
+     */
+    public function getRefCommune()
+    {
+        return $this->ref_commune;
     }
 
     /**
@@ -287,201 +501,5 @@ class ObservationView
     public function getObservateurs()
     {
         return $this->observateurs;
-    }
-    /**
-     * @var string
-     */
-    private $site_nom;
-
-
-    /**
-     * Set site_nom
-     *
-     * @param string $siteNom
-     * @return ObservationView
-     */
-    public function setSiteNom($siteNom)
-    {
-        $this->site_nom = $siteNom;
-
-        return $this;
-    }
-
-    /**
-     * Get site_nom
-     *
-     * @return string 
-     */
-    public function getSiteNom()
-    {
-        return $this->site_nom;
-    }
-    /**
-     * @var integer
-     */
-    private $numerisateur_id;
-
-    /**
-     * @var string
-     */
-    private $numerisateur;
-
-
-    /**
-     * Set numerisateur_id
-     *
-     * @param integer $numerisateurId
-     * @return ObservationView
-     */
-    public function setNumerisateurId($numerisateurId)
-    {
-        $this->numerisateur_id = $numerisateurId;
-
-        return $this;
-    }
-
-    /**
-     * Get numerisateur_id
-     *
-     * @return integer 
-     */
-    public function getNumerisateurId()
-    {
-        return $this->numerisateur_id;
-    }
-
-    /**
-     * Set numerisateur
-     *
-     * @param string $numerisateur
-     * @return ObservationView
-     */
-    public function setNumerisateur($numerisateur)
-    {
-        $this->numerisateur = $numerisateur;
-
-        return $this;
-    }
-
-    /**
-     * Get numerisateur
-     *
-     * @return string 
-     */
-    public function getNumerisateur()
-    {
-        return $this->numerisateur;
-    }
-    /**
-     * @var integer
-     */
-    private $abondance;
-
-
-    /**
-     * Set abondance
-     *
-     * @param integer $abondance
-     * @return ObservationView
-     */
-    public function setAbondance($abondance)
-    {
-        $this->abondance = $abondance;
-
-        return $this;
-    }
-
-    /**
-     * Get abondance
-     *
-     * @return integer 
-     */
-    public function getAbondance()
-    {
-        return $this->abondance;
-    }
-    /**
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     */
-    private $updated;
-
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return ObservationView
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime 
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     * @return ObservationView
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime 
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-    /**
-     * @var array
-     */
-    private $ref_commune;
-
-
-    /**
-     * Set ref_commune
-     *
-     * @param array $refCommune
-     * @return ObservationView
-     */
-    public function setRefCommune($refCommune)
-    {
-        $this->ref_commune = $refCommune;
-
-        return $this;
-    }
-
-    /**
-     * Get ref_commune
-     *
-     * @return array 
-     */
-    public function getRefCommune()
-    {
-        return $this->ref_commune;
     }
 }

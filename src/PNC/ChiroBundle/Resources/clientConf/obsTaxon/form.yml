@@ -9,14 +9,14 @@ groups:
         fields:
             -   name: id
                 type: hidden
-            -   name: obsId
+            -   name: fkBvId
                 type: hidden
-            -   name: numerisateurId
+            -   name: metaNumerisateurId
                 label: Numerisateur
                 type: hidden
                 options:
                     ref: userId
-            -   name: obsValidateur
+            -   name: cotxValidateur
                 type: hidden
             -   name: cdNom
                 label: "Nom taxon"
@@ -25,28 +25,28 @@ groups:
                     url: "chiro/taxons"
                     reverseurl: "chiro/taxons/id"
                     ref: cdNom
-            -   name: obsTxInitial
+            -   name: cotxInitial
                 label: "Taxon initial"
                 type: string
-            -   name: obsObjStatusValidation
+            -   name: cotxObjStatusValidation
                 label: Validation
                 type: select
                 thesaurusID: 9
                 options:
                     editLevel: 5
                 default: 55
-            -   name: actId
+            -   name: cotxActId
                 label: "Activité"
                 type: select
                 thesaurusID: 5
-            -   name: prvId
+            -   name: cotxPrvId
                 label: "Preuves de reproduction"
                 type: select
                 thesaurusID: 6
-            -   name: obsEspeceIncertaine
+            -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool
-            -   name: obsCommentaire
+            -   name: cotxCommentaire
                 label: Commentaires
                 type: text
                 help: "Informations complémentaires sur l'observation"
@@ -62,19 +62,19 @@ groups:
                     -   name: "males"
                         label: "Mâles"
                         fields:
-                            -   name: obsNbMaleAdulte
+                            -   name: cotxNbMaleAdulte
                                 label: "Adultes"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbMaleJuvenile
+                            -   name: cotxNbMaleJuvenile
                                 label: "Juveniles"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbMaleIndetermine
+                            -   name: cotxNbMaleIndetermine
                                 label: "Age indeterminé"
                                 type: num
                                 options:
@@ -83,19 +83,19 @@ groups:
                     -   name: "femelles"
                         label: "Femelles"
                         fields:
-                            -   name: obsNbFemelleAdulte
+                            -   name: cotxNbFemelleAdulte
                                 label: "Adultes"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbFemelleJuvenile
+                            -   name: cotxNbFemelleJuvenile
                                 label: "Juveniles"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbFemelleIndetermine
+                            -   name: cotxNbFemelleIndetermine
                                 label: "Age indeterminé"
                                 type: num
                                 options:
@@ -104,37 +104,37 @@ groups:
                     -   name: "indetermines"
                         label: "Sexe indéterminé"
                         fields:
-                            -   name: obsNbIndetermineAdulte
+                            -   name: cotxNbIndetermineAdulte
                                 label: "Adultes"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbIndetermineJuvenile
+                            -   name: cotxNbIndetermineJuvenile
                                 label: "Juvéniles"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-                            -   name: obsNbIndetermineIndetermine
+                            -   name: cotxNbIndetermineIndetermine
                                 label: "Age indeterminé"
                                 type: num
                                 options:
                                     min: 0
                                 default: 0
-            -   name: obsEffectifAbs
+            -   name: cotxEffectifAbs
                 label: Effectif total
                 type: sum
                 options:
                     ref:
-                        -   obsNbMaleAdulte
-                        -   obsNbFemelleAdulte
-                        -   obsNbMaleJuvenile
-                        -   obsNbFemelleJuvenile
-                        -   obsNbMaleIndetermine
-                        -   obsNbFemelleIndetermine
-                        -   obsNbIndetermineAdulte
-                        -   obsNbIndetermineJuvenile   
-                        -   obsNbIndetermineIndetermine
+                        -   cotxNbMaleAdulte
+                        -   cotxNbFemelleAdulte
+                        -   cotxNbMaleJuvenile
+                        -   cotxNbFemelleJuvenile
+                        -   cotxNbMaleIndetermine
+                        -   cotxNbFemelleIndetermine
+                        -   cotxNbIndetermineAdulte
+                        -   cotxNbIndetermineJuvenile   
+                        -   cotxNbIndetermineIndetermine
                     modifiable: false
                     min: 1

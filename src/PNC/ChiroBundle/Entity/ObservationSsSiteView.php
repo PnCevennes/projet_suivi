@@ -22,7 +22,7 @@ class ObservationSsSiteView
     /**
      * @var \DateTime
      */
-    private $obs_date;
+    private $bv_date;
 
     /**
      * @var integer
@@ -37,22 +37,22 @@ class ObservationSsSiteView
     /**
      * @var string
      */
-    private $obs_commentaire;
+    private $bv_commentaire;
 
     /**
      * @var integer
      */
-    private $obs_id_table_src;
+    private $bv_id_table_src;
 
     /**
      * @var float
      */
-    private $obs_temperature;
+    private $cvc_temperature;
 
     /**
      * @var float
      */
-    private $obs_humidite;
+    private $cvc_humidite;
 
     /**
      * @var integer
@@ -60,20 +60,34 @@ class ObservationSsSiteView
     private $nb_taxons;
 
     /**
+     * @var integer
+     */
+    private $abondance;
+
+    /**
+     * @var integer
+     */
+    private $cvc_mod_id;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_create_timestamp;
+
+    /**
+     * @var \DateTime
+     */
+    private $meta_update_timestamp;
+
+    /**
+     * @var array
+     */
+    private $ref_commune;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $observateurs;
-
-
-    private $mod_id;
-
-    public function setModId($mod_id){
-        $this->mod_id = $mod_id;
-    }
-
-    public function getModId(){
-        return $this->mod_id;
-    }
 
     /**
      * Constructor
@@ -130,26 +144,26 @@ class ObservationSsSiteView
     }
 
     /**
-     * Set obs_date
+     * Set bv_date
      *
-     * @param \DateTime $obsDate
+     * @param \DateTime $bvDate
      * @return ObservationSsSiteView
      */
-    public function setObsDate($obsDate)
+    public function setBvDate($bvDate)
     {
-        $this->obs_date = $obsDate;
+        $this->bv_date = $bvDate;
 
         return $this;
     }
 
     /**
-     * Get obs_date
+     * Get bv_date
      *
      * @return \DateTime 
      */
-    public function getObsDate()
+    public function getBvDate()
     {
-        return $this->obs_date;
+        return $this->bv_date;
     }
 
     /**
@@ -199,95 +213,95 @@ class ObservationSsSiteView
     }
 
     /**
-     * Set obs_commentaire
+     * Set bv_commentaire
      *
-     * @param string $obsCommentaire
+     * @param string $bvCommentaire
      * @return ObservationSsSiteView
      */
-    public function setObsCommentaire($obsCommentaire)
+    public function setBvCommentaire($bvCommentaire)
     {
-        $this->obs_commentaire = $obsCommentaire;
+        $this->bv_commentaire = $bvCommentaire;
 
         return $this;
     }
 
     /**
-     * Get obs_commentaire
+     * Get bv_commentaire
      *
      * @return string 
      */
-    public function getObsCommentaire()
+    public function getBvCommentaire()
     {
-        return $this->obs_commentaire;
+        return $this->bv_commentaire;
     }
 
     /**
-     * Set obs_id_table_src
+     * Set bv_id_table_src
      *
-     * @param integer $obsIdTableSrc
+     * @param integer $bvIdTableSrc
      * @return ObservationSsSiteView
      */
-    public function setObsIdTableSrc($obsIdTableSrc)
+    public function setBvIdTableSrc($bvIdTableSrc)
     {
-        $this->obs_id_table_src = $obsIdTableSrc;
+        $this->bv_id_table_src = $bvIdTableSrc;
 
         return $this;
     }
 
     /**
-     * Get obs_id_table_src
+     * Get bv_id_table_src
      *
      * @return integer 
      */
-    public function getObsIdTableSrc()
+    public function getBvIdTableSrc()
     {
-        return $this->obs_id_table_src;
+        return $this->bv_id_table_src;
     }
 
     /**
-     * Set obs_temperature
+     * Set cvc_temperature
      *
-     * @param float $obsTemperature
+     * @param float $cvcTemperature
      * @return ObservationSsSiteView
      */
-    public function setObsTemperature($obsTemperature)
+    public function setCvcTemperature($cvcTemperature)
     {
-        $this->obs_temperature = $obsTemperature;
+        $this->cvc_temperature = $cvcTemperature;
 
         return $this;
     }
 
     /**
-     * Get obs_temperature
+     * Get cvc_temperature
      *
      * @return float 
      */
-    public function getObsTemperature()
+    public function getCvcTemperature()
     {
-        return $this->obs_temperature;
+        return $this->cvc_temperature;
     }
 
     /**
-     * Set obs_humidite
+     * Set cvc_humidite
      *
-     * @param float $obsHumidite
+     * @param float $cvcHumidite
      * @return ObservationSsSiteView
      */
-    public function setObsHumidite($obsHumidite)
+    public function setCvcHumidite($cvcHumidite)
     {
-        $this->obs_humidite = $obsHumidite;
+        $this->cvc_humidite = $cvcHumidite;
 
         return $this;
     }
 
     /**
-     * Get obs_humidite
+     * Get cvc_humidite
      *
      * @return float 
      */
-    public function getObsHumidite()
+    public function getCvcHumidite()
     {
-        return $this->obs_humidite;
+        return $this->cvc_humidite;
     }
 
     /**
@@ -311,6 +325,121 @@ class ObservationSsSiteView
     public function getNbTaxons()
     {
         return $this->nb_taxons;
+    }
+
+    /**
+     * Set abondance
+     *
+     * @param integer $abondance
+     * @return ObservationSsSiteView
+     */
+    public function setAbondance($abondance)
+    {
+        $this->abondance = $abondance;
+
+        return $this;
+    }
+
+    /**
+     * Get abondance
+     *
+     * @return integer 
+     */
+    public function getAbondance()
+    {
+        return $this->abondance;
+    }
+
+    /**
+     * Set cvc_mod_id
+     *
+     * @param integer $cvcModId
+     * @return ObservationSsSiteView
+     */
+    public function setCvcModId($cvcModId)
+    {
+        $this->cvc_mod_id = $cvcModId;
+
+        return $this;
+    }
+
+    /**
+     * Get cvc_mod_id
+     *
+     * @return integer 
+     */
+    public function getCvcModId()
+    {
+        return $this->cvc_mod_id;
+    }
+
+    /**
+     * Set meta_create_timestamp
+     *
+     * @param \DateTime $metaCreateTimestamp
+     * @return ObservationSsSiteView
+     */
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
+    {
+        $this->meta_create_timestamp = $metaCreateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_create_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaCreateTimestamp()
+    {
+        return $this->meta_create_timestamp;
+    }
+
+    /**
+     * Set meta_update_timestamp
+     *
+     * @param \DateTime $metaUpdateTimestamp
+     * @return ObservationSsSiteView
+     */
+    public function setMetaUpdateTimestamp($metaUpdateTimestamp)
+    {
+        $this->meta_update_timestamp = $metaUpdateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get meta_update_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getMetaUpdateTimestamp()
+    {
+        return $this->meta_update_timestamp;
+    }
+
+    /**
+     * Set ref_commune
+     *
+     * @param array $refCommune
+     * @return ObservationSsSiteView
+     */
+    public function setRefCommune($refCommune)
+    {
+        $this->ref_commune = $refCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get ref_commune
+     *
+     * @return array 
+     */
+    public function getRefCommune()
+    {
+        return $this->ref_commune;
     }
 
     /**
@@ -348,113 +477,29 @@ class ObservationSsSiteView
     /**
      * @var integer
      */
-    private $abondance;
+    private $meta_numerisateur_id;
 
 
     /**
-     * Set abondance
+     * Set meta_numerisateur_id
      *
-     * @param integer $abondance
+     * @param integer $metaNumerisateurId
      * @return ObservationSsSiteView
      */
-    public function setAbondance($abondance)
+    public function setMetaNumerisateurId($metaNumerisateurId)
     {
-        $this->abondance = $abondance;
+        $this->meta_numerisateur_id = $metaNumerisateurId;
 
         return $this;
     }
 
     /**
-     * Get abondance
+     * Get meta_numerisateur_id
      *
      * @return integer 
      */
-    public function getAbondance()
+    public function getMetaNumerisateurId()
     {
-        return $this->abondance;
-    }
-    /**
-     * @var \DateTime
-     */
-    private $created;
-
-    /**
-     * @var \DateTime
-     */
-    private $updated;
-
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return ObservationSsSiteView
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime 
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     * @return ObservationSsSiteView
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime 
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-    /**
-     * @var array
-     */
-    private $ref_commune;
-
-
-    /**
-     * Set ref_commune
-     *
-     * @param array $refCommune
-     * @return ObservationSsSiteView
-     */
-    public function setRefCommune($refCommune)
-    {
-        $this->ref_commune = $refCommune;
-
-        return $this;
-    }
-
-    /**
-     * Get ref_commune
-     *
-     * @return array 
-     */
-    public function getRefCommune()
-    {
-        return $this->ref_commune;
+        return $this->meta_numerisateur_id;
     }
 }
