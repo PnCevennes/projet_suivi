@@ -31,7 +31,7 @@ groups:
             -   name: bsDescription
                 label: Description
                 type: string
-            -   name: cisAmenagement
+            -   name: siteAmenagement
                 label: Aménagement
                 type: file
                 help: "Aménagement du site"
