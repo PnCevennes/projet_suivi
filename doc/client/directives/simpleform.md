@@ -39,7 +39,17 @@ controleur:
 
 ##Evenements
 
-Tous les événements sont de type *broadcast* et transmettent en parametre les données du formulaire
+
+###schema:init
+
+Message envoyé lorsque le schéma du formulaire a été chargé.
+
+type: broadcast
+
+params: schema
+
+
+Tous les autres événements sont de type *broadcast* et transmettent en parametre les données du formulaire
 
 
 ###form:init 

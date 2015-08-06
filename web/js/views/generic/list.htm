@@ -1,0 +1,19 @@
+<div maplist="generic/list">
+    <div ng-class="{'fixed-map large': schema.mapSize=='large', 'fixed-map _small': schema.mapSize=='small'}">
+        <div ng-class="{'map large': schema.mapSize=='large', 'map _small': schema.mapSize=='small'}" leaflet-map data="geoms"></div>
+    </div>
+    <!--<div class="fixed-map large">
+        <div class="map large" leaflet-map data="geoms"></div>
+    </div>-->
+    <div ng-class="{'cnt large opaque': schema.mapSize=='large', 'cnt _small opaque': schema.mapSize=='small'}">
+        <!--<div breadcrumbs appname="{{_appName}}"></div>-->
+        <div>
+            <filterform url="{{data_url}}" schema="schema.filtering" callback="setData" paginate="false"></filterform>
+            <div tablewrapper class="table" schema="schema" data="data" refname="generic/list">
+                <h1>{{schema.title}}</h1>
+                <a class="btn btn-success float-left" style="margin-right: 1ex;" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+

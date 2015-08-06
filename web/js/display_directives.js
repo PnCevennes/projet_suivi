@@ -111,6 +111,7 @@ app.directive('detailDisplay', function(){
         scope: {
             schemaUrl: '@schemaurl',
             dataUrl: '@dataurl',
+            genericDataUrl: '=',
             updateUrl: '@updateurl',
             dataId: '@dataid',
         },
@@ -132,8 +133,19 @@ app.directive('detailDisplay', function(){
                 $scope.schema = angular.copy(resp);
                 $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
                 $scope.subEditAccess = userServ.checkLevel($scope.schema.subEditAccess);
+                $rootScope.$broadcast('schema:init', resp);
                 //récupération des données
-                dataServ.get($scope.dataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                if($scope.dataUrl){
+                    dataServ.get($scope.dataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                }
+                else{
+                    $scope.$watch('genericDataUrl', function(newval){
+                        if(newval){
+                            console.log(newval);
+                            dataServ.get($scope.genericDataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                        }
+                    });
+                }
             };
 
             $scope.setData = function(resp){

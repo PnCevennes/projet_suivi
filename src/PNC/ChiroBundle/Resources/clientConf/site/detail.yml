@@ -1,3 +1,7 @@
+dataUrl: "chiro/site/" 
+mapConfig: "js/resources/chiro_site.json"
+mapData: "chiro/site"
+mapSize: large
 editAccess: 3
 subEditAccess: 2
 subSchemaUrl: chiro/config/observation/list

@@ -4,6 +4,9 @@ createBtnLabel: Nouveau site
 createUrl: "#/chiro/edit/site/"
 editUrl: "#/chiro/edit/site/"
 detailUrl: "#/chiro/site/"
+dataUrl: "chiro/site" 
+mapConfig: "js/resources/chiro_site.json"
+mapSize: large
 editAccess: 5
 filtering:
     fields:

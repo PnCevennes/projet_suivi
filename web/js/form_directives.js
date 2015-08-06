@@ -407,6 +407,8 @@ app.directive('simpleform', function(){
                 $scope.isActive[0] = true;
                 $scope.isDisabled[0] = false;
 
+                $rootScope.$broadcast('schema:init', resp);
+
                 if($scope.dataUrl){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }

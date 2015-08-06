@@ -4,6 +4,9 @@ createBtnLabel: "Nouvel inventaire"
 createUrl: "#/chiro/edit/inventaire"
 editUrl: "#/chiro/edit/inventaire/"
 detailUrl: "#/chiro/inventaire/"
+dataUrl: "chiro/inventaire" 
+mapConfig: "js/resources/chiro_site.json"
+mapSize: large
 editAccess: 2
 filtering:
     limit: 200

@@ -1,4 +1,7 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule', 'ngTableResizableColumns']);
+var app = angular.module('appSuiviProtocoles', ['generiques', 'baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule', 'ngTableResizableColumns']);
+
+// generiques
+angular.module('generiques', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
@@ -26,6 +29,7 @@ angular.module('DisplayDirectives', ['SimpleMap']);
 
 // directives map
 angular.module('SimpleMap', ['suiviProtocoleServices']);
+
 
 
 /*

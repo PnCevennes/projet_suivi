@@ -1,3 +1,11 @@
+formTitleCreate: "Nouveau site"
+formTitleUpdate: "Modification du site "
+formTitleRef: bsNom
+createSuccessMessage: "Création réussie"
+updateSuccessMessage: "Modification réussie"
+deleteSuccessMessage: "Suppression réussie"
+formDeleteRedirectUrl: "g/chiro/site/list"
+formCreateCancelUrl: "g/chiro/site/list"
 deleteAccess: 5
 groups:
     -   name: Localisation

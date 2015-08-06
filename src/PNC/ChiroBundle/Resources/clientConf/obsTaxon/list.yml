@@ -4,6 +4,9 @@ createBtnLabel: Ajouter taxon
 createUrl: "#/chiro/edit/taxons/observation/"
 editUrl: "#/chiro/edit/taxons/"
 detailUrl: "#/chiro/taxons/"
+dataUrl: "chiro/obs_taxon" 
+mapConfig: "js/resources/chiro_site.json"
+mapSize: small
 editAccess: 3
 filtering:
     limit: 200

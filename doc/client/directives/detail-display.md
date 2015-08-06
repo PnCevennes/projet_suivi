@@ -38,11 +38,22 @@ controleur:
 
 ##Evenements
 
+###schema:init
+
+type: broadcast
+
+Message émis lorsque le schéma de la vue a été chargé
+
+param : schema
+
+
 ###display:init
 
 type: broadcast
 
 Message émis lorsque la directive est totalement initialisée (cad. lorsqu'elle a réceptionné le schéma et les données)
+
+param : data
 
 
 ###map:centerOnSelected
