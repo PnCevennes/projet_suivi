@@ -1,6 +1,6 @@
 editAccess: 3
 subEditAccess: 2
-editAccessOverride: numerisateurId
+editAccessOverride: metaNumerisateurId
 subSchemaUrl: "chiro/config/obstaxon/list"
 subDataUrl: "chiro/obs_taxon/observation/"
 subEditSchemaUrl: "chiro/config/obstaxon/form/many"

@@ -183,10 +183,18 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
     };
     
     this.checkLevel = angular.bind(this, function(level){
-        return this.getUser().apps[this.getCurrentApp().appId] >= level;
+        try{
+            return this.getUser().apps[this.getCurrentApp().appId] >= level;
+        }
+        catch(e){
+            return false;
+        }
     });
 
     this.isOwner = angular.bind(this,function(ownerId){
+        if(_user==null){
+            return false;
+        }
         return _user.id_role == ownerId;
     });
 

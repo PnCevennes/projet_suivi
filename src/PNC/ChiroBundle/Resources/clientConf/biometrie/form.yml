@@ -1,3 +1,4 @@
+editAccess: 3
 deleteAccess: 3
 groups:
     -   name: "Général"

@@ -1,6 +1,6 @@
 editAccess: 3
 subEditAccess: 3
-editAccessOverride: numId
+editAccessOverride: metaNumerisateurId
 subSchemaUrl: chiro/config/biometrie/list
 subDataUrl: chiro/biometrie/taxon/
 subEditSchemaUrl: chiro/config/biometrie/form/many

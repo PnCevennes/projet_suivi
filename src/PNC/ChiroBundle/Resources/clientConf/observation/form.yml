@@ -1,5 +1,7 @@
+editAccess: 3
+editAccessOverride: metaNumerisateurId
 deleteAccess: 5
-deleteAccessOverride: numerisateurId
+deleteAccessOverride: metaNumerisateurId
 subSchemaUrl: chiro/config/obstaxon/form/many
 subDataRef: __taxons__
 subSchemaAdd: 2,

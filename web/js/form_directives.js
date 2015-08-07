@@ -303,6 +303,7 @@ app.directive('simpleform', function(){
         templateUrl: 'js/templates/simpleForm.htm',
         controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet, $modal, $location, $timeout){
             var dirty = true;
+            var editAccess = false;
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.addSubSchema = false;
@@ -381,6 +382,8 @@ app.directive('simpleform', function(){
 
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
+
+                editAccess = userServ.checkLevel(resp.editAccess)
                 
                 // mise en place tabulation formulaire
                 $scope.schema.groups.forEach(function(group){
@@ -423,6 +426,18 @@ app.directive('simpleform', function(){
             };
 
             $scope.setData = function(resp){
+                if(!editAccess){
+                    if($scope.schema.editAccessOverride){
+                        if(!userServ.isOwner(resp[$scope.schema.editAccessOverride])){
+                            dirty = false;
+                            $rootScope.$broadcast('form:cancel', []);
+                        }
+                    }
+                    else{
+                        dirty = false;
+                        $rootScope.$broadcast('form:cancel', []);
+                    }
+                }
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
                         if(field.type != 'group'){
