@@ -1,5 +1,7 @@
+editAccess: 3
+editAccessOverride: metaNumerisateurId
 deleteAccess: 5
-deleteAccessOverride: numId 
+deleteAccessOverride: metaNumerisateurId 
 subSchemaAdd: 3
 subSchemaUrl: chiro/config/biometrie/form/many
 subDataRef: __biometries__

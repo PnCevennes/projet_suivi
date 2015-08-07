@@ -621,7 +621,7 @@ app.directive('geometry', function($timeout){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
-            var initialize = function(){
+            var _initialize = function(){
                 mapService.initialize($scope.configUrl).then(function(){
                     mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
                     mapService.loadData($scope.options.dataUrl).then(function(){
@@ -695,6 +695,19 @@ app.directive('geometry', function($timeout){
                 
                 });
             };
+
+            var initialize = function(){
+                try{
+                    _initialize();
+                }
+                catch(e){
+                    $scope.$watch(function(){ return mapService.initialize }, function(newval){
+                        if(newval){
+                            _initialize();
+                        }
+                    });
+                }
+            }
 
             // initialisation de la carte
             $timeout(initialize, 0);
