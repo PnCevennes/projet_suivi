@@ -20,19 +20,14 @@
     </div>
 <div>
 <div ng-if="subSchema" class="sub-schema">
-    <div class="padding-20">
-        <a class="btn btn-success float-left" ng-if="subData.length==0 && subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
-        <button type="button" class="btn btn-primary float-right" ng-if="subData.length==0 && subEditAccess && schema.subEditSchemaUrl" ng-click="switchEditing()">{{subSchema.createBtnLabel}} - Rapide</button>
-    </div>
     <div ng-if="!subEditing">
-        <filterform url="{{schema.subDataUrl+dataId}}" schema="subSchema.filtering" callback="setSubData" paginate="subSchema.filtering.limit>0"></filterform>
-        <div tablewrapper class="table" ng-if="subData.length>0 && !subEditing" schema="subSchema" data="subData" refname="{{subSchema.title}}{{dataId}}">
+        <div tablewrapper class="table" filter-url="{{schema.subDataUrl+dataId}}" filter-callback="setSubData" schema="subSchema" data="subData" refname="{{subSchema.title}}{{dataId}}">
             <h1>{{subSchema.title}}<h1>
-            <a class="btn btn-success float-left" ng-if="subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
         </div>
-        <h1 ng-if="subData.length==0 && !subEditing">{{subSchema.emptyMsg}}</h1>
     </div>
-    <div ng-if="subData.length==0 && subEditing" subeditform schema="schema.subEditSchemaUrl" saveurl="schema.subEditSaveUrl" refid="data[schema.subEditRef]"></div>
+    <a class="btn btn-success" ng-if="subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
+    <button type="button" class="btn btn-primary" ng-if="subData.length==0 && subEditAccess && schema.subEditSchemaUrl" ng-click="switchEditing()">{{subSchema.createBtnLabel}} - Rapide</button>
+    <div ng-if="subEditing" subeditform schema="schema.subEditSchemaUrl" saveurl="schema.subEditSaveUrl" refid="data[schema.subEditRef]"></div>
 </div>
 
 <div dw-loading="spinner-detail" dw-loading-options="{text: 'Chargement des données'}" ng-options="{ text: '', className: 'custom-loading', spinnerOptions: {radius:30, width:8, length: 16, color: '#f0f', direction: -1, speed: 3}}"></div>

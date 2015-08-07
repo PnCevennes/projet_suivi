@@ -273,6 +273,8 @@ app.directive('tablewrapper', function(){
             refName: '@refname',
             schema: '=',
             data: '=',
+            filterUrl: '@',
+            filterCallback: '=',
         },
         transclude: true,
         templateUrl: 'js/templates/display/tableWrapper.htm',
@@ -357,7 +359,7 @@ app.directive('tablewrapper', function(){
             },
             {
                 counts: [10, 25, 50],
-                total: $scope.data.length, // length of data
+                total: $scope.data ? $scope.data.length : 0, // length of data
                 getData: function ($defer, params) {
                     /*
                     // use build-in angular filter
@@ -475,7 +477,7 @@ app.directive('tablewrapper', function(){
             };
 
             $scope.$watch('data', function(newval){
-                if(newval.length){
+                if(newval && newval.length){
                     configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
                         if(item){
                             _item = $scope.data.filter(function(elem){

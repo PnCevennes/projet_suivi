@@ -8,10 +8,9 @@
     <div ng-class="{'cnt large opaque': schema.mapSize=='large', 'cnt _small opaque': schema.mapSize=='small'}">
         <!--<div breadcrumbs appname="{{_appName}}"></div>-->
         <div>
-            <filterform url="{{data_url}}" schema="schema.filtering" callback="setData" paginate="false"></filterform>
-            <div tablewrapper class="table" schema="schema" data="data" refname="generic/list">
+            <div tablewrapper filter-url="{{data_url}}" filter-callback="setData" class="table" schema="schema" data="data" refname="generic/list">
                 <h1>{{schema.title}}</h1>
-                <a class="btn btn-success float-left" style="margin-right: 1ex;" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
+                <a class="btn btn-success" style="margin-right: 1ex;" ng-if="editAccess" ng-href="{{schema.createUrl}}">{{schema.createBtnLabel}}</a>
             </div>
         </div>
     </div>
