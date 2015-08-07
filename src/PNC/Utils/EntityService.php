@@ -242,12 +242,13 @@ class EntityService{
             $schema = $this->read_mapping($schema);
         }
         foreach($schema as $key=>$transform){
-            if(isset($data[$key])){
-                $fn = 'set' . ucwords($key);
-                $value = $this->transform_from($transform, $data[$key]);
-                if(method_exists($obj, $fn)){
-                    $obj->$fn($value);
-                }
+            if(!isset($data[$key])){
+                $data[$key] = null;
+            }
+            $fn = 'set' . ucwords($key);
+            $value = $this->transform_from($transform, $data[$key]);
+            if(method_exists($obj, $fn)){
+                $obj->$fn($value);
             }
         }
         if($obj->errors()){
@@ -336,6 +337,9 @@ class EntityService{
         }
         switch($method){
             case 'date': 
+                if($data == null){
+                    return new \DateTime();
+                }
                 if(strpos($data, '/')!==false){
                     return \DateTime::createFromFormat('d/m/Y', $data);
                 }
@@ -348,6 +352,8 @@ class EntityService{
                 return $this->geometryService->getLineString($data);
             case 'polygon':
                 return $this->geometryService->getPolygon($data);
+            case 'integer':
+                return $data !== null ? $data : 0;
             default:
                 return $data;
         }

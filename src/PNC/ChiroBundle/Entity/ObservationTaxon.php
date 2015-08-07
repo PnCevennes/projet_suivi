@@ -233,6 +233,9 @@ class ObservationTaxon extends BaseEntity
      */
     public function setCotxEffectifAbs($cotxEffectifAbs)
     {
+        if($cotxEffectifAbs < 1){
+            $this->add_error('cotxEffectifAbs', "L'effectif total doit être supérieur à 0");
+        }
         $this->cotx_effectif_abs = $cotxEffectifAbs;
 
         return $this;

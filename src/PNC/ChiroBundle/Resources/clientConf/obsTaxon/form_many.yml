@@ -88,3 +88,4 @@ fields:
                 -   cotxNbIndetermineJuvenile
             modifiable: false
             min: 1
+        default: 0
