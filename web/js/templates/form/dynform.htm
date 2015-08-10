@@ -1,5 +1,5 @@
     <div ng-repeat="field in group.fields" class="form-group" ng-if="!field.options.dismissed">
-        <label for="{{field.name}}" ng-if="field.type!='hidden' && field.type!='group'" tooltip="{{field.help}}">{{field.label}}</label>
+        <label for="{{field.name}}" ng-if="field.type!='hidden' && field.type!='group'" tooltip="{{field.help}}" tooltip-placement="right">{{field.label}}</label>
         <p style="color: red;" ng-show="errors[field.name]">{{errors[field.name]}}</p>
         <multi refer="data[field.name]" schema="field" ng-if="field.options.multi"></multi>
         <input id="{{field.name}}" type="hidden" ng-if="field.type=='hidden' && !field.options.multi" ng-model="data[field.name]">
