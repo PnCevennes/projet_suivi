@@ -756,4 +756,32 @@ class ObservationTaxon extends BaseEntity
     {
         return $this->meta_numerisateur_id;
     }
+    /**
+     * @var integer
+     */
+    private $cotx_mod_id;
+
+
+    /**
+     * Set cotx_mod_id
+     *
+     * @param integer $cotxModId
+     * @return ObservationTaxon
+     */
+    public function setCotxModId($cotxModId)
+    {
+        $this->cotx_mod_id = $cotxModId;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_mod_id
+     *
+     * @return integer 
+     */
+    public function getCotxModId()
+    {
+        return $this->cotx_mod_id;
+    }
 }

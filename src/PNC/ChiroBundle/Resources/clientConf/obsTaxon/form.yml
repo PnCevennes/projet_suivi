@@ -37,6 +37,10 @@ groups:
                 options:
                     editLevel: 5
                 default: 55
+            -   name: cotxModId
+                label: "Mode d'observation"
+                type: select
+                thesaurusID: 4
             -   name: cotxActId
                 label: "Activité"
                 type: select

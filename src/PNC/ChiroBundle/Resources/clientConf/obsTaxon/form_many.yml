@@ -19,6 +19,10 @@ fields:
     -   name: cotxEspeceIncertaine
         label: "Espece incertaine"
         type: bool
+    -   name: cotxModId
+        label: "Mode d'observation"
+        type: select
+        thesaurusID: 4
     -   name: cotxActId
         label: "Activité"
         type: select
