@@ -60,6 +60,7 @@ groups:
                 help: "Mesure de l'oreille"
                 type: num
     -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
         fields:
             -   name: metaNumerisateurId
                 label: Numérisateur

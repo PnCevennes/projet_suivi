@@ -9,6 +9,7 @@ subEditRef: id
 subSchemaAdd: 3
 groups:
     -   name: "Général"
+        glyphicon: glyphicon-info-sign
         fields:
             -   name: id
                 type: hidden
@@ -45,6 +46,7 @@ groups:
                 label: "Effectif total"
                 type: num
     -   name: "Détail"
+        glyphicon: glyphicon-search
         fields:
             -   name: cotxNbMaleAdulte
                 label: "Mâles adultes"
@@ -82,6 +84,7 @@ groups:
                 label: "Commentaires"
                 type: string
     -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
         fields:
             -   name: metaNumerisateurId
                 label: Numérisateur

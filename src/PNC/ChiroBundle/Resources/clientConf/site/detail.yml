@@ -8,6 +8,7 @@ subSchemaUrl: chiro/config/observation/list
 subDataUrl: chiro/observation/site/
 groups:
     -   name: Informations
+        glyphicon: glyphicon-info-sign
         fields:
             -   name: bsCode
                 label: "Code site"
@@ -31,6 +32,7 @@ groups:
                     multi: true
                     url: "commune"
     -   name: Détails
+        glyphicon: glyphicon-search
         fields:
             -   name: bsDescription
                 label: Description
@@ -56,6 +58,7 @@ groups:
                 type: string
                 help: "Description des menaces pesant sur le site"
     -   name: Contact
+        glyphicon: glyphicon-phone-alt
         fields:
             -   name: cisContactNom
                 label: "Nom du contact"
@@ -83,6 +86,7 @@ groups:
                 type: string
                 help: "Informations complémentaires contact"
     -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
         fields:
             -   name: metaNumerisateurId
                 label: Numérisateur

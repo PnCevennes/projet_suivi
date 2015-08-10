@@ -9,6 +9,7 @@ subEditRef: id
 subSchemaAdd: 2
 groups:
     - name: Inventaire
+      glyphicon: glyphicon-info-sign
       fields:
           - name: id
             type: hidden
@@ -41,6 +42,7 @@ groups:
             label: "Humidité (%)"
             type: string
     -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
         fields:
           - name: metaNumerisateurId
             label: Numérisateur
