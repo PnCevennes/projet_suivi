@@ -755,17 +755,19 @@ app.directive('datepick', function(){
                 $scope.opened = !$scope.opened;
             };
 
+            if($scope.date && $scope.date.getDate){
+                $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+            }
+
             $scope.$watch('date', function(newval){
                 try{
                     newval.setHours(12);
-                    //$scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
                     $scope.date = newval;
                 }
                 catch(e){
                     if(newval){
                         try{
                             $scope.date = newval;
-                            //$scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
                         }
                         catch(e){
                             //$scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
