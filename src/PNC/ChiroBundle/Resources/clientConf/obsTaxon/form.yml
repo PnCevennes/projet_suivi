@@ -56,7 +56,7 @@ groups:
                 label: Commentaires
                 type: text
                 help: "Informations complémentaires sur l'observation"
-    -   name: Enumération
+    -   name: Dénombrement
         fields:
             -   name: "enum"
                 type: group

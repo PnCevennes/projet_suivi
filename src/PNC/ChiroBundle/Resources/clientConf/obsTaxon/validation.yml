@@ -55,10 +55,10 @@ fields:
     -   name: "cotxObjStatusValidation"
         label: "Validation"
         filter: 
-            cotxObjStatusValidation: "text"
+            cotxObjStatusValidation: select
         options: 
             visible: false 
-            type: "select"
+            type: select
             style: l
     -   name: "bsNom"
         label: "Nom du site"

@@ -85,14 +85,15 @@ fields:
         options:
             visible: true
             style: xs
-    -   name: typeLieu
+    -   name: bsTypeId
         label: Type
         type: select
         thesaurusID: 7
         filter:
-            typeLieu: text
+            bsTypeId: select 
         options:
             visible: true
+            type: select
             style: l
 
 

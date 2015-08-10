@@ -285,6 +285,13 @@ app.directive('tablewrapper', function(){
             extFilter = false;
             var orderedData;
 
+            $scope.filterZero = function(x){
+                if(x.id == 0){
+                    x.id = '';
+                }
+                return x;
+            };
+
             var filterFuncs = {
                 starting: function(key, filterTxt){
                     if(filterTxt == ''){

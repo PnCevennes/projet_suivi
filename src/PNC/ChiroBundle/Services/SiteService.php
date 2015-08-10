@@ -47,7 +47,7 @@ class SiteService{
             'nbObs'=>null,
             'nomObservateur'=>null,
             'bsCode'=>null,
-            'typeLieu'=>null,
+            'bsTypeId'=>null,
         );
 
         $entity = 'PNCChiroBundle:SiteView';
