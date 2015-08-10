@@ -78,12 +78,19 @@ class DefaultController extends Controller
     // path: GET /users/id/{id}
     // retourne l'utilisateur identifié par l'ID fourni
     public function getUserByIdAction($id){
-        $repo = $this->getDoctrine()->getRepository('CommonsUsersBundle:Login');
-        $user = $repo->findOneBy(array('id_role'=>$id));
+
+        $db = $this->getDoctrine()->getManager()->getConnection();
+
+        $qr = $db->prepare("select id_role, (nom_role || ' ' || prenom_role) as nomcomplet from utilisateurs.t_roles where id_role=:id");
+        $qr->bindValue('id', $id);
+        $qr->execute();
+
+        $user = $qr->fetchAll();
+
         if($user){
             $out = array(
-                'id'=>$user->getIdRole(),
-                'label'=>$user->getNomComplet()
+                'id'=>$user[0]['id_role'],
+                'label'=>$user[0]['nomcomplet']
             );
             return new JsonResponse($out);
         }
