@@ -5,9 +5,10 @@ Il est possible d'utiliser des controleurs génériques pour chaque type de vue 
 Les urls à utiliser doivent alors etre préfixées par **g** et suffixées par la vue souhaitée
 
 ```
-#/g/{{appli}}/{{vue}}/list
-#/g/{{appli}}/{{vue}}/detail/{{id}}
-#/g/{{appli}}/{{vue}}/edit/{{id?}}
+#/g/{{appli}}/{{vue}}/list -> affiche la liste des objets
+#/g/{{appli}}/{{vue}}/detail/{{id}} -> affiche le détail d'un objet
+#/g/{{appli}}/{{vue}}/edit/{{id?}} -> affiche le formulaire de création ou d'édition d'un objet
+#/g/{{appli}}/{{vue}}/{{protocoleParent}}/edit/{{idReference}} -> affiche le formulaire de création d'un sous objet du protocole parent identifié par "idReference"
 ```
 
 Afin de récupérer le schéma, les vues construisent une url correspondant à 

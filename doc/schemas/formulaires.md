@@ -28,6 +28,32 @@ au formulaire en cours.
 **groups** liste des panneaux du formulaire
 
 
+###Elements nécéssaires pour les vues génériques
+
+**editAccess** définit le niveau de droits nécéssaire pour accéder au formulaire. Si le niveau de l'utilisateur est insuffisant, il est redirigé vers une autre vue.
+
+**formTitleCreate** titre du formulaire de création d'un nouvel objet
+
+**formTitleUpdate** titre du formulaire de mise à jour d'un objet
+
+**formTitleRef** champ de référence pour compléter le titre du formulaire
+
+**createSuccessMessage** message affiché lorsqu'un objet est créé avec succès
+
+**updateSuccessMessage** message affiché lorsqu'un objet est mis à jour avec succès
+
+**deleteSuccessMessage** message affiché lorsqu'un objet est supprimé avec succès
+
+**formDeleteRedirectUrl** url vers laquelle le navigateur est redirigé après la suppression d'un objet
+
+**formCreateCancelUrl** url vers laquelle le navigateur est redirigé lorsque l'utilisateur annule la création d'un nouvelle objet
+
+
+Pour les formulaires permettant de créer un sous protocole, la référence au protocole "parent" se définit par l'option **referParent: true** du champ concerné.
+
+
+
+
 ##Groupes
 
 Chaque groupe définit un nouveau panneau dans le formulaire.
