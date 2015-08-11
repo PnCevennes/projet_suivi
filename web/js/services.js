@@ -100,9 +100,9 @@ app.service('dataServ', function($http, $filter, userMessages){
 
 /**
  * Service de récupération et stockage des configurations
- * Utiliser pour stocker les variables globales ou les éléments de configuation de l'application
+ * Utiliser pour stocker les variables globales ou les éléments de configuration de l'application
  */
-app.service('configServ', function(dataServ){
+app.service('configServ', function(dataServ, localStorageService){
     var cache = {};
 
     this.bc = null;
@@ -117,13 +117,14 @@ app.service('configServ', function(dataServ){
      *  success: la callback de traitement
      */
     this.getUrl = function(serv, success){
-        if(cache[serv]){
-            success(cache[serv]);
+        var data = localStorageService.get(serv);
+        if(data){
+            success(data);
         }
         else{
             dataServ.get(serv, function(resp){
-                cache[serv] = resp;
-                success(cache[serv]);
+                localStorageService.set(serv, resp);
+                success(resp);
             });
         }
     };
