@@ -141,7 +141,6 @@ app.directive('detailDisplay', function(){
                 else{
                     $scope.$watch('genericDataUrl', function(newval){
                         if(newval){
-                            console.log(newval);
                             dataServ.get($scope.genericDataUrl, $scope.setData, function(){dfd.resolve('loading data')});
                         }
                     });
