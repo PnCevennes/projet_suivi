@@ -2,7 +2,8 @@
 
 Il est possible d'utiliser des controleurs génériques pour chaque type de vue (list/detail/edit)
 
-Les urls à utiliser doivent alors etre préfixées par **g** et suffixées par la vue souhaitée
+Les urls à utiliser doivent alors etre préfixées par **g**, suffixées par la fonction souhaitée (list/detail/form) et complétées par l'identifiant de donnée si nécéssaire.
+
 
 ```
 #/g/{{appli}}/{{vue}}/list -> affiche la liste des objets
