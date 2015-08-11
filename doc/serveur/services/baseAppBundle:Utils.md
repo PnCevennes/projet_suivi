@@ -93,6 +93,81 @@ $entityList = array(
 );
 ```
 
+exemple d'utilisation pour la création d'un site
+
+```php
+
+//création de la liste des entités à créer
+$entityList = array(
+    'mappingSite.yml'=>array(
+        'entity'=>new BaseSite(),
+        'data'=>$data,
+    ),
+    'mappingInfoSite.yml'=>array(
+        'entity'=>new InfoSite(),
+        'data'=>$data,
+        'refer'=>array(
+            'source'=>array('mappingSite.yml', 'getId'),
+            'dest'=>'fkBsId'
+        )
+    )
+);
+
+//enregistrement
+$results = $entityService->create($entityList);
+
+/*
+results : 
+    array(
+        'mappingSite.yml'=>[instance BaseSite],
+        'mappingInfoSite.yml'=>[instance InfoSite]
+    )
+*/
+```
+
+méthode alternative
+
+```php
+//création du manager
+$db = $entityService.getManager();
+
+//initialisation d'une transaction
+$db->getConnection()->beginTransaction();
+
+
+// creation de l'objet "parent"
+$entity1 = array(
+    'mappingSite.yml'=>array(
+        'entity'=>new BaseSite(),
+        'data'=>$data
+    )
+);
+
+$result1 = $entityService->create($entity1, $db);
+
+
+//mise à jour des données à partir du résultat de la première insertion
+$site = $result1['mappingSite.yml'];
+
+$data['fkBsId'] = $site->getId();
+
+
+// création de l'objet dépendant
+$entity2 = array(
+    'mappingInfoSite.yml'=>array(
+        'entity'=>new InfoSite(),
+        'data'=>$data
+    )
+);
+
+$result2 = $entityService->create($entity2, $db);
+
+$db->getConnection()->commit();
+```
+
+les deux méthodes donnent un résultat équivalent.
+
+
 
 ####public update($entityList [, $manager=null])
 
