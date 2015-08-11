@@ -129,7 +129,7 @@ méthode alternative
 
 ```php
 //création du manager
-$db = $entityService.getManager();
+$db = $entityService->getManager();
 
 //initialisation d'une transaction
 $db->getConnection()->beginTransaction();
