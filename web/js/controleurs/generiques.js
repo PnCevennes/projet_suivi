@@ -16,6 +16,10 @@ app.config(function($routeProvider){
             controller: 'genericEditController',
             templateUrl: 'js/views/generic/edit.htm'
         })
+        .when('/g/:appName/:viewName/:protocoleReference/edit/:idReference', {
+            controller: 'genericEditController',
+            templateUrl: 'js/views/generic/edit.htm'
+        })
         .when('/g/:appName/:viewName/detail/:id', {
             controller: 'genericDetailController',
             templateUrl: 'js/views/generic/detail.htm'
@@ -89,6 +93,15 @@ app.controller('genericEditController', function($scope, $routeParams, configSer
     
     $scope.$on('schema:init', function(ev, schema){
         $scope.schema = schema;
+        if($routeParams.protocoleReference){
+            schema.groups.forEach(function(_group){
+                _group.fields.forEach(function(_field){
+                    if(_field.options && _field.options.referParent){
+                        $scope.data[_field.name] = $routeParams.idReference;
+                    }
+                });
+            });
+        }
     });
 
     $scope.$on('form:init', function(ev, data){

@@ -13,6 +13,8 @@ groups:
                 type: hidden
             -   name: fkBvId
                 type: hidden
+                options:
+                    referParent: true
             -   name: metaNumerisateurId
                 label: Numerisateur
                 type: hidden
