@@ -13,6 +13,7 @@ class ConfigController extends Controller{
     public function breadcrumbAction(Request $req){
         $view = $req->get('view');
         $id = $req->get('id');
+        $generic = $req->get('generic');
 
         $manager = $this->getDoctrine()->getConnection();
 
@@ -30,7 +31,7 @@ class ConfigController extends Controller{
                 $out[] = array(
                     'id'=>$res['id'], 
                     'label'=>'Biometrie n°'.$id, 
-                    'link'=>'#/chiro/biometrie/'.$id
+                    'link'=> $generic ? '#/g/chiro/biometrie/detail/'.$id : '#/chiro/biometrie/'.$id
                 );
                 $id = $res['fk_cotx_id'];
             case 'taxons': 
@@ -46,7 +47,7 @@ class ConfigController extends Controller{
                 $out[] = array(
                     'id'=>$res['id'], 
                     'label'=>$res['label'], 
-                    'link'=>'#/chiro/taxons/'.$id
+                    'link'=> $generic ? '#/g/chiro/taxons/detail/'.$id : '#/chiro/taxons/'.$id
                 );
                 $id = $res['fk_bv_id'];
             case 'validation':
@@ -67,17 +68,17 @@ class ConfigController extends Controller{
                     $out[] = array(
                         'id'=>$res['id'], 
                         'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
-                        'link'=>'#/chiro/inventaire/'.$id);
+                        'link'=> $generic ? '#/g/chiro/inventaire/detail/'.$id : '#/chiro/inventaire/'.$id);
                     $out[] = array(
                         'id'=>null, 
                         'label'=>'Inventaire', 
-                        'link'=>'#/chiro/inventaire');
+                        'link'=> $generic ? '#/g/chiro/inventaire/list' : '#/chiro/inventaire');
                     return new JsonResponse(array_reverse($out));
                 }
                 $out[] = array(
                     'id'=>$res['id'], 
                     'label'=>implode('/', array_reverse(explode('-', $res['label']))), //transformation date Y-m-d -> d/m/Y
-                    'link'=>'#/chiro/observation/'.$id);
+                    'link'=> $generic ? '#/g/chiro/observation/detail/'.$id : '#/chiro/observation/'.$id);
                 $id = $res['fk_bs_id'];
             case 'site':
                 $req = $manager->prepare('SELECT id, bs_nom as label FROM suivi.pr_base_site WHERE id=:id');
@@ -88,8 +89,8 @@ class ConfigController extends Controller{
                     return new JsonResponse(array(array('id'=>null, 'label'=>'Sites', 'link'=>'#/chiro/site')));
                 }
                 $res = $res[0];
-                $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>'#/chiro/site/'.$id);
-                $out[] = array('id'=>null, 'label'=>'Sites', 'link'=>'#/chiro/site');
+                $out[] = array('id'=>$res['id'], 'label'=>$res['label'], 'link'=>$generic ? '#/g/chiro/site/detail/'.$id : '#/chiro/site/'.$id);
+                $out[] = array('id'=>null, 'label'=>'Sites', 'link'=>$generic ? '#/g/chiro/site/list' : '#/chiro/site');
         }
         return new JsonResponse(array_reverse($out));
     }

@@ -224,6 +224,7 @@ app.directive('breadcrumbs', function(){
             $scope.bc = [];
             $scope._edit = false;
             $scope._create = false;
+            var _generic = false;
             var _url = null;
             var params = $location.path().slice(1).split('/');
             if(params.indexOf('edit') >= 0){
@@ -233,29 +234,40 @@ app.directive('breadcrumbs', function(){
                     $scope._create = true;
                 }
             }
+            // générique
+            if(params[0] == 'g'){
+                params.splice(0, 1);
+                var _functions = ['list', 'detail'];
+                params = params.filter(function(itemName){
+                    console.log(itemName);
+                    return (_functions.indexOf(itemName) == -1);
+                });
+                _generic = true;
+            }
+            console.log(params);
             if(params.length == 4){
                 if(!parseInt(params[3])){
-                    url = params[0] + '/config/breadcrumb?view=' + params[1]
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]
                 }
                 else{
                     if($scope._edit){
-                        url = params[0] + '/config/breadcrumb?view=' + params[2] + '&id=' + params[3];
+                        url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[2] + '&id=' + params[3];
                     }
                     else{
-                        url = params[0] + '/config/breadcrumb?view=' + params[1] + '&id=' + params[3];
+                        url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1] + '&id=' + params[3];
                     }
                 }
             }
             else if(params.length == 3){
                 if(!parseInt(params[2])){
-                    url = params[0] + '/config/breadcrumb?view=' + params[1]
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]
                 }
                 else{
-                    url = params[0] + '/config/breadcrumb?view=' + params[1]+ '&id=' + params[2];           
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]+ '&id=' + params[2];           
                 }
             }
             else if(params.length == 2){
-                url = params[0] + '/config/breadcrumb?view=' + params[1];
+                url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1];
             }
             configServ.getUrl(url, function(resp){
                 $scope.bc = resp;

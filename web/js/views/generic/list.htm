@@ -6,7 +6,7 @@
         <div class="map large" leaflet-map data="geoms"></div>
     </div>-->
     <div ng-class="{'cnt large opaque': schema.mapSize=='large', 'cnt _small opaque': schema.mapSize=='small'}">
-        <!--<div breadcrumbs appname="{{_appName}}"></div>-->
+        <div breadcrumbs appname="{{_appName}}"></div>
         <div>
             <div tablewrapper filter-url="{{data_url}}" filter-callback="setData" class="table" schema="schema" data="data" refname="generic/list">
                 <h1>{{schema.title}}</h1>
