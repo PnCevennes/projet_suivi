@@ -239,12 +239,10 @@ app.directive('breadcrumbs', function(){
                 params.splice(0, 1);
                 var _functions = ['list', 'detail'];
                 params = params.filter(function(itemName){
-                    console.log(itemName);
                     return (_functions.indexOf(itemName) == -1);
                 });
                 _generic = true;
             }
-            console.log(params);
             if(params.length == 4){
                 if(!parseInt(params[3])){
                     url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]
