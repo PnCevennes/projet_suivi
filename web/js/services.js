@@ -117,13 +117,23 @@ app.service('configServ', function(dataServ, localStorageService){
      *  success: la callback de traitement
      */
     this.getUrl = function(serv, success){
-        var data = localStorageService.get(serv);
+        if(cache['debug']){
+            var data = cache[serv];
+        }
+        else{
+            var data = localStorageService.get(serv);
+        }
         if(data){
             success(data);
         }
         else{
             dataServ.get(serv, function(resp){
-                localStorageService.set(serv, resp);
+                if(cache['debug']){
+                    cache[serv] = resp;
+                }
+                else{
+                    localStorageService.set(serv, resp);
+                }
                 success(resp);
             });
         }
