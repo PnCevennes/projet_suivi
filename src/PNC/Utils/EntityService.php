@@ -279,6 +279,18 @@ class EntityService{
         return $out;
     }
 
+    public function getGeoJsonFeature($data, $geomLabelConf, $geomName='geom'){
+        $out = array('type'=>'Feature');
+        $out['geometry'] = $data[$geomName];
+        unset($data[$geomName]);
+        $out['properties'] = $data;
+        $geomLabelData = array();
+        foreach($geomLabelConf['refs'] as $ref){
+            $geomLabelData[] = $data[$ref];
+        }
+        $out['properties']['geomLabel'] = vsprintf($geomLabelConf['label'], $geomLabelData);
+        return $out;
+    }
 
     /*
      * lit un mapping entité et retourne le schéma de données

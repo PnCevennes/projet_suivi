@@ -229,6 +229,29 @@ extrait les données d'une entité doctrine `$object` en suivant le schéma four
 - soit le chemin du mapping doctrine de l'entité.
 
 
+####public getGeoJsonFeature($data, $labelConfig [, $geomName='geom'])
+
+formate les données d'un objet "normalisé" sous forme de *feature* GeoJSON.
+
+params:
+
+*$data* - données sous forme de dictionnaire
+
+*$labelConfig* - dictionnaire decrivant la manière de formater le label associé à la géométrie
+
+```
+    {
+    'label'=>chaine template printf
+    'refs'=>liste des champs à utiliser pour le formatage
+    }
+```
+
+*$geomName* - nom du champ contenant les données géométriques (facultatif: 'geom' par défaut)
+
+
+renvoie le dictionnaire de données au format Feature GeoJSON.
+
+
 ####private read_mapping($path) 
 
 méthode utilisée par `hydrate` et `normalize`. Lit le fichier mapping dont le chemin

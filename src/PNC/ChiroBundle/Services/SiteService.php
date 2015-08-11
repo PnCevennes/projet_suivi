@@ -48,6 +48,7 @@ class SiteService{
             'nomObservateur'=>null,
             'bsCode'=>null,
             'bsTypeId'=>null,
+            'geom'=>null,
         );
 
         $entity = 'PNCChiroBundle:SiteView';
@@ -59,18 +60,18 @@ class SiteService{
         $out = array();
 
         // definition de la structure de données sous form GeoJson
-        foreach($infos as $info){
-            $out_item = array('type'=>'Feature');
-            $out_item['properties'] = $this->entityService->normalize($info, $schema);
-            $out_item['geometry'] = $info->getGeom();
+        $geoLabelConf = array(
+            'label'=>'<h4><a href="#/chiro/site/%s">%s<a></h4>',
+            'refs'=>array('id', 'bsNom')
+        );
 
-            $out_item['properties']['geomLabel'] = sprintf(
-                '<a href="#/chiro/site/%s">%s</a>',
-                $info->getId(), 
-                $info->getBsNom()
-            );
-            $out[] = $out_item;
+        foreach($infos as $info){
+            $out[] = $this->entityService->getGeoJsonFeature(
+                $this->entityService->normalize($info, $schema),
+                $geoLabelConf, 
+                'geom');
         }
+
         return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
