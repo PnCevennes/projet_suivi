@@ -13,7 +13,7 @@ class ConfigController extends Controller{
     public function breadcrumbAction(Request $req){
         $view = $req->get('view');
         $id = $req->get('id');
-        $generic = $req->get('generic');
+        $generic = $req->get('generic') == "true";
 
         $manager = $this->getDoctrine()->getConnection();
 
