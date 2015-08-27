@@ -105,7 +105,7 @@ class ConfigController extends Controller{
     // path: GET /commune/{insee}
     public function getCommuneAction(Request $req, $insee){
         $db = $this->getDoctrine()->getConnection();
-        $req = $db->prepare('SELECT nom_reel FROM ref_geographique.communes_france WHERE insee_com=:insee');
+        $req = $db->prepare('SELECT nom_reel FROM ref_geographique.l_communes WHERE insee_com=:insee');
         $req->bindParam('insee', $insee);
         $req->execute();
         $res = $req->fetchAll();
