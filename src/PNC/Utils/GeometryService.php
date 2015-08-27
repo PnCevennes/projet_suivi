@@ -4,6 +4,7 @@ namespace PNC\Utils;
 use CrEOF\Spatial\PHP\Types\Geometry\Point;
 use CrEOF\Spatial\PHP\Types\Geometry\LineString;
 use CrEOF\Spatial\PHP\Types\Geometry\Polygon;
+use CrEOF\Spatial\Exception\InvalidValueException;
 
 class GeometryService{
 
@@ -11,7 +12,12 @@ class GeometryService{
      *Retourne un objet geometrique de type Point
      */
     public function getPoint($coords){
-        return new Point($coords[0][0], $coords[0][1], 4326);
+        try{
+            return new Point($coords[0][0], $coords[0][1], 4326);
+        }
+        catch(InvalidValueException $e){
+            return null;
+        }
     }
 
 
