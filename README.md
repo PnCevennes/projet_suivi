@@ -1,5 +1,5 @@
-projet_pnc
-==========
+Projet application suivis
+=========================
 
 A Symfony project created on March 10, 2015, 4:08 pm.
 
@@ -28,5 +28,5 @@ License
 * OpenSource - GPL V3
 * Copyleft 2015 - Parc national des Cévennes
 
-![logo-pnc](doc/img/logo_pnc_orange.png)
+![logo-pnc](docs/img/logo_pnc_orange.png)
 
