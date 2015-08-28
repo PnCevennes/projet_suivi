@@ -2,14 +2,16 @@ Projet d'application de saisie des protocoles naturalistes
 ==========================================================
 
 
-[Installation](install.md)
+Installation et configuration
+------------------------------
+ * [Installation](install.md)
 
 
 Présentation de l'architecture
--------------
-[Serveur](serveur)
-[Client](client)
-
+------------------------------
+ * [Serveur](serveur)
+ * [Client](client)
+ * [Schema](schemas)
 
 
 License
