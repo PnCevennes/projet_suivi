@@ -11,6 +11,9 @@ Le projet se décline en deux bundles :
 
 *PNC/ChiroBundle* la mise en application de cette base pour fournir une interface de saisie des protocoles de suivi des chiroptères.
 
+Documentation
+------------
+http://projet-suivi.readthedocs.org
 
 Auteurs
 -------
