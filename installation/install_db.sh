@@ -19,7 +19,7 @@ function database_exists () {
         return 0
     else
         # Grep db name in the list of database
-        sudo -n -u postgres -h $host -s -- psql -tAl | grep -q "^$1|"
+        sudo -n -u postgres -s -- psql -tAl | grep -q "^$1|"
         return $?
     fi
 }
@@ -30,8 +30,8 @@ then
 	if $drop_apps_db
         then	
 	        echo 'Suppression de la base de données...'
-			sudo -n -u postgres -h $host -s psql -d $db_name -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name'  AND pid <> pg_backend_pid();"  
-			sudo -n -u postgres -h $host -s dropdb $db_name
+			sudo -n -u postgres -s psql -d $db_name -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name'  AND pid <> pg_backend_pid();"  
+			sudo -n -u postgres -s dropdb $db_name
         else
         	echo "La base de données existe et le fichier de settings indique de ne pas la supprimer."
 	fi
@@ -41,7 +41,7 @@ if ! database_exists $db_name
 then
 	
 	echo "Création de la base..."
-	sudo -n -u postgres -h $host -s createdb -O $user_pg $db_name
+	sudo -n -u postgres -s createdb -O $user_pg $db_name
 
 	echo "Création de la structure de la base de données..."
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/schema_projet_suivis.sql  &> log/install_db.log
