@@ -1,9 +1,10 @@
-#Projet d'application de saisie des protocoles naturalistes
+# Présentation du projet
 
+@TODO
 
-##Installation et configuration
+# Installation et configuration
 
-###Prérequis
+## Prérequis
 
 
 * Ressources minimum serveur :
@@ -19,7 +20,7 @@ Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
  * php-cli 
  * php-curl
 
-###Installation et configuration du serveur
+## Installation et configuration du serveur
 
 
 * Activer le mod_rewrite et les configurations requises pour symfony et redémarrer apache
@@ -29,7 +30,7 @@ Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
         sudo apache2ctl restart
 ```
 
-### Installation et configuration de PosgreSQL
+## Installation et configuration de PosgreSQL
 
 
 * Création de 2 utilisateurs PostgreSQL
@@ -42,12 +43,27 @@ Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
         \q
 ```
 
+## Installation et configuration de la base de données
+* Créer un fichier de configuration de la base de données
+```
+        cd installation
+        cp db_settings.ini.sample db_settings.ini
+```
 
-### Installation et configuration de l'application
+* Spécifier les bon paramètres de configuration de la base de données
 
-* Configuration de symphony
+* Lancer l'installation
 
-```{r, engine='bash', count_lines}
+```
+        cd installation
+        sudo ./install_db.sh 
+```
+
+## Installation et configuration de l'application
+
+* Configuration de symphony @TODO
+
+```
       #Droits sur les répertoires log et cache
       sudo chmod -R 777 app/cache app/log
       
@@ -59,8 +75,7 @@ Un serveur disposant d'au moins de 1 Go RAM et de 10 Go d'espace disque.
 
 
 
-
-## License
+# License
 
 
 * OpenSource - GPL V3
