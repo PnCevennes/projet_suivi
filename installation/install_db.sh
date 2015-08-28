@@ -6,7 +6,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-. db_settings.ini
+. ./db_settings.ini
 
 mkdir -p log
 
@@ -62,6 +62,8 @@ then
 	sed -i "s#PATH_TO_DIR#${DIR}#g" scripts/import_data_inpn_v8.sql
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name  -f scripts/import_data_inpn_v8.sql &>> log/install_db.log
 	
+	sed -i "s#${DIR}#PATH_TO_DIR#g" scripts/import_data_inpn_v8.sql
+
 	find data/inpn -type f -not -name '*.zip' | xargs rm
 
 	echo "Insertion  des données géographiques : communes de france"
