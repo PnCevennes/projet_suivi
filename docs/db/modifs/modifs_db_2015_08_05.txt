@@ -1,0 +1,113 @@
+alter schema pnc rename to suivi;
+
+ALTER TABLE suivi.base_site RENAME observateur_id  TO bs_obr_id;
+alter table suivi.base_site rename type_id to bs_type_id;
+alter table suivi.base_site rename site_nom to bs_nom;
+alter table suivi.base_site rename site_code to bs_code;
+alter table suivi.base_site REname site_date to bs_date;
+alter table suivi.base_site rename site_description to bs_description;
+alter table suivi.base_site rename created to meta_create_timestamp;
+alter table suivi.base_site rename updated to meta_update_timestamp;
+alter table suivi.base_site rename numerisateur_id to meta_numerisateur_id;
+ALTER TABLE suivi.base_site RENAME TO pr_base_site;
+	
+	
+alter table suivi.base_observation rename site_id to fk_bs_id;
+alter table suivi.base_observation rename obs_date to bv_date;
+alter table suivi.base_observation rename obs_id_table_src to bv_id_table_src;
+alter table suivi.base_observation rename obs_commentaire to bv_commentaire;
+alter table suivi.base_observation rename numerisateur_id to meta_numerisateur_id;
+alter table suivi.base_observation rename created to meta_create_timestamp;
+alter table suivi.base_observation rename updated to meta_update_timestamp;
+alter table suivi.base_observation rename to pr_base_visite;
+alter table suivi.pr_base_visite drop column obs_site_id;
+	
+	
+--alter table chiro.chiro_infos_site drop column site_schema;
+--alter table chiro.chiro_infos_site drop column site_description;
+	
+alter table chiro.chiro_infos_site rename site_id to fk_bs_id;
+alter table chiro.chiro_infos_site rename site_commentaire to cis_description;
+alter table chiro.chiro_infos_site rename site_menace_cmt to cis_menace_cmt;
+alter table chiro.chiro_infos_site rename contact_nom to cis_contact_nom;
+alter table chiro.chiro_infos_site rename contact_prenom to cis_contact_prenom;
+alter table chiro.chiro_infos_site rename contact_adresse to cis_contact_adresse;
+alter table chiro.chiro_infos_site rename contact_code_postal to cis_contact_code_postal;
+alter table chiro.chiro_infos_site rename contact_ville to cis_contact_ville;
+alter table chiro.chiro_infos_site rename contact_telephone to cis_contact_telephone;
+alter table chiro.chiro_infos_site rename contact_portable to cis_contact_portable;
+alter table chiro.chiro_infos_site rename contact_commentaire to cis_contact_commentaire;
+alter table chiro.chiro_infos_site rename site_frequentation to cis_frequentation;
+alter table chiro.chiro_infos_site rename site_menace to cis_menace;
+alter table chiro.chiro_infos_site rename to pr_site_infos;
+	
+	
+alter table chiro.chiro_conditions_observ rename obs_id to fk_bv_id;
+alter table chiro.chiro_conditions_observ rename obs_temperature to cvc_temperature;
+alter table chiro.chiro_conditions_observ rename obs_humidite to cvc_humidite;
+alter table chiro.chiro_conditions_observ rename mod_id to cvc_mod_id;
+alter table chiro.chiro_conditions_observ rename to pr_visite_conditions;
+
+
+alter table chiro.chiro_observation_taxon rename obs_id to fk_bv_id;
+alter table chiro.chiro_observation_taxon rename obs_tx_initial to cotx_initial;
+alter table chiro.chiro_observation_taxon rename obs_espece_incertaine to cotx_espece_incertaine;
+alter table chiro.chiro_observation_taxon rename obs_effectif_abs to cotx_effectif_abs;
+alter table chiro.chiro_observation_taxon rename obs_nb_male_adulte to cotx_nb_male_adulte;
+alter table chiro.chiro_observation_taxon rename obs_nb_male_juvenile to cotx_nb_male_juvenile;
+alter table chiro.chiro_observation_taxon rename obs_nb_male_indetermine to cotx_nb_male_indetermine;
+alter table chiro.chiro_observation_taxon rename obs_nb_femelle_adulte to cotx_nb_femelle_adulte;
+alter table chiro.chiro_observation_taxon rename obs_nb_femelle_juvenile to cotx_nb_femelle_juvenile;
+alter table chiro.chiro_observation_taxon rename obs_nb_femelle_indetermine to cotx_nb_femelle_indetermine;
+alter table chiro.chiro_observation_taxon rename obs_nb_indetermine_adulte to cotx_nb_indetermine_adulte;
+alter table chiro.chiro_observation_taxon rename obs_nb_indetermine_juvenile to cotx_nb_indetermine_juvenile;
+alter table chiro.chiro_observation_taxon rename obs_nb_indetermine_indetermine to cotx_nb_indetermine_indetermine;
+alter table chiro.chiro_observation_taxon rename obs_obj_status_validation to cotx_obj_status_validation;
+alter table chiro.chiro_observation_taxon rename obs_commentaire to cotx_commentaire;
+alter table chiro.chiro_observation_taxon rename obs_validateur to cotx_validateur;
+alter table chiro.chiro_observation_taxon rename mod_id to cotx_mod_id;
+alter table chiro.chiro_observation_taxon rename act_id to cotx_act_id;
+alter table chiro.chiro_observation_taxon rename eff_id to cotx_eff_id;
+alter table chiro.chiro_observation_taxon rename prv_id to cotx_prv_id;
+alter table chiro.chiro_observation_taxon rename num_id to cotx_num_id;
+alter table chiro.chiro_observation_taxon rename date_validation to cotx_date_validation;
+alter table chiro.chiro_observation_taxon rename created to meta_create_timestamp;
+alter table chiro.chiro_observation_taxon rename updated to meta_update_timestamp;
+alter table chiro.chiro_observation_taxon rename numerisateur_id to meta_numerisateur_id;
+alter table chiro.chiro_observation_taxon rename to pr_visite_observationtaxon;
+alter table chiro.pr_visite_observationtaxon rename cotx_cd_nom to cd_nom;
+alter table chiro.pr_visite_observationtaxon rename cotx_nom_complet to nom_complet;
+	
+	
+alter table chiro.chiro_biometrie rename obs_tx_id to fk_cotx_id;
+alter table chiro.chiro_biometrie rename age_id to cbio_age_id;
+alter table chiro.chiro_biometrie rename sexe_id to cbio_sexe_id;
+alter table chiro.chiro_biometrie rename biom_ab to cbio_ab;
+alter table chiro.chiro_biometrie rename biom_poids to cbio_poids;
+alter table chiro.chiro_biometrie rename biom_d3mf1 to cbio_d3mf1;
+alter table chiro.chiro_biometrie rename biom_d3f2f3 to cbio_d3f2f3;
+alter table chiro.chiro_biometrie rename biom_d3total to cbio_d3total;
+alter table chiro.chiro_biometrie rename biom_d5 to cbio_d5;
+alter table chiro.chiro_biometrie rename biom_cm3sup to cbio_cm3sup;
+alter table chiro.chiro_biometrie rename biom_cm3inf to cbio_cm3inf;
+alter table chiro.chiro_biometrie rename biom_cb to cbio_cb;
+alter table chiro.chiro_biometrie rename biom_lm to cbio_lm;
+alter table chiro.chiro_biometrie rename biom_oreille to cbio_oreille;
+alter table chiro.chiro_biometrie rename biom_commentaire to cbio_commentaire;
+alter table chiro.chiro_biometrie rename created to meta_create_timestamp;
+alter table chiro.chiro_biometrie rename updated to meta_update_timestamp;
+alter table chiro.chiro_biometrie rename numerisateur_id to meta_numerisateur_id;
+alter table chiro.chiro_biometrie rename to subpr_observationtaxon_biometrie;
+
+
+ALTER SCHEMA ext RENAME TO lexique;
+
+
+ALTER SEQUENCE chiro.chiro_biometrie_id_seq RENAME TO subpr_observationtaxon_biometrie_id_seq;
+ALTER SEQUENCE chiro.chiro_observation_taxon_id_seq RENAME TO pr_visite_observationtaxon_id_seq;
+ALTER SEQUENCE chiro.chiro_conditions_observ_id_seq RENAME TO pr_visite_conditions_id_seq;	
+ALTER SEQUENCE chiro.chiro_infos_site_id_seq RENAME TO pr_site_infos_id_seq;
+ALTER SEQUENCE suivi.base_observation_id_seq RENAME TO pr_base_visite_id_seq;
+ALTER SEQUENCE suivi.base_site_id_seq RENAME TO pr_base_site_id_seq;
+	
+ALTER TABLE chiro.subpr_observationtaxon_biometrie ALTER COLUMN id SET DEFAULT nextval('chiro.subpr_observationtaxon_biometrie_id_seq'::regclass);

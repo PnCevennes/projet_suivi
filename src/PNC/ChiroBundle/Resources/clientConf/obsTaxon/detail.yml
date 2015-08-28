@@ -1,6 +1,6 @@
 editAccess: 3
 subEditAccess: 3
-editAccessOverride: numId
+editAccessOverride: metaNumerisateurId
 subSchemaUrl: chiro/config/biometrie/list
 subDataUrl: chiro/biometrie/taxon/
 subEditSchemaUrl: chiro/config/biometrie/form/many
@@ -9,6 +9,7 @@ subEditRef: id
 subSchemaAdd: 3
 groups:
     -   name: "Général"
+        glyphicon: glyphicon-info-sign
         fields:
             -   name: id
                 type: hidden
@@ -18,61 +19,85 @@ groups:
             -   name: nomComplet
                 label: "Nom taxon"
                 type: string
-            -   name: obsTxInitial
+            -   name: cotxInitial
                 label: "Taxon initial"
                 type: string
-            -   name: obsEspeceIncertaine
+            -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool
-            -   name: numId
-                label: "Numérisateur"
-                type: xhr
-                options:
-                    url: "users/id"
-            -   name: obsObjStatusValidation
+            -   name: cotxObjStatusValidation
                 label: "Statut validation"
                 type: select
-            -   name: obsValidateur
+                thesaurusID: 9
+            -   name: cotxValidateur
                 label: "Validateur"
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: actId
+            -   name: cotxModId
+                label: "Mode d'observation"
+                type: select
+                thesaurusID: 4
+            -   name: cotxActId
                 label: "Activité"
                 type: select
-            -   name: prvId
+                thesaurusID: 5
+            -   name: cotxPrvId
                 label: "Preuves de reproduction"
                 type: select
-            -   name: obsEffectifAbs
+                thesaurusID: 6
+            -   name: cotxEffectifAbs
                 label: "Effectif total"
                 type: num
     -   name: "Détail"
+        glyphicon: glyphicon-search
         fields:
-            -   name: obsNbMaleAdulte
+            -   name: cotxNbMaleAdulte
                 label: "Mâles adultes"
                 type: num
-            -   name: obsNbFemelleAdulte
+            -   name: cotxNbFemelleAdulte
                 label: "Femelles adultes"
                 type: num
-            -   name: obsNbMaleJuvenile
+            -   name: cotxNbMaleJuvenile
                 label: "Mâles juvéniles"
                 type: num
-            -   name: obsNbFemelleJuvenile
+            -   name: cotxNbFemelleJuvenile
                 label: "Femelles juvéniles"
                 type: num
-            -   name: obsNbMaleIndetermine
+            -   name: cotxNbMaleIndetermine
                 label: "Mâles indéterminés"
                 help: "Âge indéterminé"
                 type: num
-            -   name: obsNbFemelleIndetermine
+            -   name: cotxNbFemelleIndetermine
                 label: "Femelles indéterminées"
                 help: "Âge indéterminé"
                 type: num
-            -   name: obsNbIndetermineIndetermine
+            -   name: cotxNbIndetermineAdulte
+                label: "Indéterminés adultes"
+                help: "Sexe indéterminé"
+                type: num
+            -   name: cotxNbIndetermineJuvenile
+                label: "Indéterminés juvéniles"
+                help: "Sexe indéterminé"
+                type: num
+            -   name: cotxNbIndetermineIndetermine
                 label: "Indéterminé indéterminé"
                 help: "Âge et sexe indéterminés"
                 type: num
-            -   name: obsCommentaire
+            -   name: cotxCommentaire
                 label: "Commentaires"
                 type: string
-
+    -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
+        fields:
+            -   name: metaNumerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: metaCreateTimestamp
+                label: "Création donnée"
+                type: date
+            -   name: metaUpdateTimestamp
+                label: "Dernière mise à jour"
+                type: date

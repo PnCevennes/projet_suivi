@@ -1,8 +1,8 @@
 PNC\ChiroBundle\Entity\ObservationTaxon:
     type: entity
-    table: chiro.chiro_observation_taxon
+    table: chiro.pr_visite_observationtaxon
     schema: chiro
-    repositoryClass: PNC\ChiroBundle\Repositories\ObservationTaxonRepository
+    #repositoryClass: PNC\ChiroBundle\Repositories\ObservationTaxonRepository
     id:
         id:
             type: integer
@@ -10,46 +10,61 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             generator:
                 strategy: AUTO
     fields:
-        obs_id:
+        fk_bv_id:
             type: integer
-        obs_tx_initial:
+        cotx_initial:
             type: string
             length: 250
-        obs_espece_incertaine:
+        cotx_espece_incertaine:
             type: boolean
             options:
                 default: false
-        obs_effectif_abs:
+        cotx_effectif_abs:
             type: integer
-        obs_nb_male_adulte:
+        cotx_nb_male_adulte:
             type: integer
-        obs_nb_femelle_adulte:
+        cotx_nb_femelle_adulte:
             type: integer
-        obs_nb_male_juvenile:
+        cotx_nb_male_juvenile:
             type: integer
-        obs_nb_femelle_juvenile:
+        cotx_nb_femelle_juvenile:
             type: integer
-        obs_nb_male_indetermine:
+        cotx_nb_male_indetermine:
             type: integer
-        obs_nb_femelle_indetermine:
+        cotx_nb_femelle_indetermine:
             type: integer
-        obs_nb_indetermine_indetermine:
+        cotx_nb_indetermine_adulte:
             type: integer
-        obs_obj_status_validation:
+        cotx_nb_indetermine_juvenile:
             type: integer
-        obs_commentaire:
+        cotx_nb_indetermine_indetermine:
+            type: integer
+        cotx_obj_status_validation:
+            type: integer
+        cotx_commentaire:
             type: text
         cd_nom:
             type: integer
         nom_complet:
             type: text
-        obs_validateur:
+        cotx_validateur:
             type: integer
-        act_id: 
+        cotx_act_id: 
             type: integer
-        eff_id: 
+        cotx_eff_id: 
             type: integer
-        prv_id: 
+        cotx_prv_id: 
             type: integer
-        num_id:
+        cotx_num_id:
             type: integer
+        cotx_mod_id:
+            type: integer
+        cotx_date_validation:
+            type: date
+        meta_create_timestamp: 
+            type: date
+        meta_update_timestamp:
+            type: date
+        meta_numerisateur_id:
+            type: integer
+            nullable: true

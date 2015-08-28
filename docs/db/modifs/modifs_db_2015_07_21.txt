@@ -1,0 +1,50 @@
+ALTER TABLE pnc.base_site ADD COLUMN numerisateur_id INTEGER;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN numerisateur_id INTEGER;
+ALTER TABLE chiro.chiro_biometrie ADD COLUMN numerisateur_id INTEGER;
+DROP VIEW chiro.vue_chiro_site;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_site AS 
+    SELECT s.id,
+        s.site_nom,
+        s.site_code,
+        s.site_date,
+        s.site_description,
+        s.observateur_id,
+        s.created,
+        s.updated,
+        s.numerisateur_id,
+        array_to_json(s.ref_commune)::text AS ref_commune,
+        st_asgeojson(s.geom) AS geom,
+        (((obr.nom_role::text || ' '::text) || obr.prenom_role::text))::character varying(255) AS nom_observateur,
+        s.type_id,
+        l.code AS type_lieu,
+        c.site_schema,
+        c.site_frequentation,
+        c.site_menace,
+        c.site_menace_cmt,
+        c.site_commentaire,
+        c.contact_nom,
+        c.contact_prenom,
+        c.contact_adresse,
+        c.contact_code_postal,
+        c.contact_ville,
+        c.contact_telephone,
+        c.contact_portable,
+        c.contact_commentaire,
+        array_to_json(ARRAY( SELECT (rcf.fichier_id::text || '_'::text) || ups.path::text
+        FROM chiro.rel_chirosite_fichiers rcf
+        LEFT JOIN pnc.uploads ups ON ups.id = rcf.fichier_id
+        WHERE rcf.site_id = s.id)) AS site_amenagement,
+        ( SELECT max(obs.obs_date) AS max
+        FROM pnc.base_observation obs
+        WHERE obs.site_id = s.id) AS dern_obs,
+        ( SELECT count(*) AS count
+        FROM pnc.base_observation
+        WHERE base_observation.site_id = s.id) AS nb_obs
+    FROM chiro.chiro_infos_site c
+    JOIN pnc.base_site s ON c.site_id = s.id
+    LEFT JOIN utilisateurs.t_roles obr ON obr.id_role = s.observateur_id
+    LEFT JOIN ext.t_thesaurus l ON l.id = s.type_id
+    ORDER BY s.id;
+
+

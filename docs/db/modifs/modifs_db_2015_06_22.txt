@@ -1,0 +1,61 @@
+-- MAJ des sites existants
+
+update pnc.base_site set site_code=t.code from (
+select 
+test.id, 
+test.code
+from (
+	select a.id as id, 
+	b.unique_code || '_' || row_number() over(partition by b.unique_code order by a.site_date) as code,
+	row_number() over(partition by b.unique_code) as num
+	from pnc.base_site a 
+	join ref_geographique.communes_france b on st_within(a.geom, st_transform(b.geom, 4326))
+	)as test) as t
+where pnc.base_site.id=t.id;
+
+
+
+
+-- TRIGGER
+-- Function: pnc.fct_trg_gen_site_code()
+
+-- DROP FUNCTION pnc.fct_trg_gen_site_code();
+
+CREATE OR REPLACE FUNCTION pnc.fct_trg_gen_site_code()
+  RETURNS trigger AS
+$BODY$
+DECLARE new_site_code varchar;
+BEGIN
+
+	new_site_code = (SELECT DISTINCT (unique_code || '_' ||  COALESCE(prochain_id, 1))::varchar
+		FROM (SELECT * FROM ref_geographique.communes_france  ) c
+		LEFT OUTER JOIN (
+			SELECT DISTINCT max(split_part(site_code, '_', 3)::int+1) OVER (PARTITION BY (regexp_matches(a.site_code, '(.*?)(_\d+)$'))[1])  as prochain_id  ,
+				(regexp_matches(a.site_code, '(.*?)(_\d+)$'))[1] as commune
+			FROM pnc.base_site a
+		) a
+		ON a.commune =c.unique_code
+		WHERE  st_intersects(geom ,st_transform(NEW.geom, 2154)));
+	
+	IF (TG_OP = 'INSERT') THEN
+		NEW.site_code := new_site_code;
+	ELSIF(TG_OP = 'UPDATE') THEN
+		IF (select (regexp_matches(NEW.site_code, '(.*?)(_\d+)$'))[1] <> (select (regexp_matches(new_site_code, '(.*?)(_\d+)$'))[1])) OR NEW.site_code is null THEN
+			NEW.site_code := new_site_code;
+		END IF;
+	END IF;
+	RETURN NEW;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION pnc.fct_trg_gen_site_code()
+  OWNER TO geonatadmin;
+
+
+--drop trigger trg_gen_site_code on pnc.base_site;
+
+CREATE TRIGGER trg_gen_site_code BEFORE INSERT OR UPDATE ON pnc.base_site
+   FOR EACH ROW EXECUTE PROCEDURE pnc.fct_trg_gen_site_code();
+
+

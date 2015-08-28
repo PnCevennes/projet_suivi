@@ -43,6 +43,7 @@ app.directive('angucompletewrapper', function(dataServ, $http){
             $scope.$watch('localselectedobject', function(newval){
                 if(newval && newval.id){
                     $scope.selectedobject = newval.id;
+                    elem[0].firstChild.children[1].focus();
                 }
             });
 
@@ -51,6 +52,9 @@ app.directive('angucompletewrapper', function(dataServ, $http){
                     dataServ.get($scope.reverseurl + '/' + newval, function(resp){
                         $scope.localselectedobject = resp;
                     });
+                }
+                else{
+                    $scope.localselectedobject = null;
                 }
             });
         }
@@ -63,8 +67,6 @@ app.directive('angucompletewrapper', function(dataServ, $http){
  * params:
  *  schema: le squelette du formulaire (cf. doc schémas)
  *  data: le dictionnaire de données source/cible
- *  onsave: la callback de sauvegarde du controleur
- *  onremove: la callback de suppression du controleur
  *  errors: liste d'erreurs de saisie (dictionnaire {nomChamp: errMessage})
  */
 app.directive('dynform', function(){
@@ -80,6 +82,18 @@ app.directive('dynform', function(){
     };
 });
 
+app.directive('tableFieldset', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            group: '=',
+            data: '=',
+            errors: '=',
+        },
+        templateUrl: 'js/templates/form/tableFieldset.htm',
+        controller: function($scope){},
+    };
+});
 
 /**
  * génération d'un champ formulaire de type multivalué
@@ -87,7 +101,7 @@ app.directive('dynform', function(){
  *  refer: la valeur source/cible du champ (une liste)
  *  schema: le schema descripteur du champ (cf. doc schemas)
  */
-app.directive('multi', function(){
+app.directive('multi', function(userMessages, $timeout){
     return {
         restrict: 'E',
         scope: {
@@ -95,7 +109,7 @@ app.directive('multi', function(){
             schema: '=',
         },
         templateUrl: 'js/templates/form/multi.htm',
-        controller: function($scope, userMessages){
+        link: function($scope, elem){
             $scope.addDisabled = true;
             if(!$scope.refer){
                 $scope.refer = [];
@@ -133,6 +147,17 @@ app.directive('multi', function(){
                         }
                     }
                 );
+                $timeout(function(){
+                    // passage du focus à la ligne créée
+                    var name = $scope.schema.name+($scope.data.length-1);
+                    try{
+                        //cas angucomplete
+                        document.getElementById(name).children[0].children[1].focus();
+                    }
+                    catch(e){
+                        document.getElementById(name).focus();
+                    }
+                }, 0);
             };
             $scope.remove = function(idx){
                 $scope.data.splice(idx, 1);
@@ -165,11 +190,15 @@ app.directive('fileinput', function(){
         templateUrl: 'js/templates/form/fileinput.htm',
         controller: function($scope, $rootScope, $upload, dataServ, userMessages){
             var maxSize = $scope.options.maxSize || 2048000;
+            var getOptions = '';
+            if($scope.options.target){
+                getOptions = '?target=' + $scope.options.target;
+            }
             if($scope.fileids == undefined){
                 $scope.fileids = [];
             }
             $scope.delete_file = function(f_id){
-                dataServ.delete('upload_file/'+f_id, function(resp){
+                dataServ.delete('upload_file/' + f_id + getOptions, function(resp){
                     $scope.fileids.splice($scope.fileids.indexOf(resp.id), 1);
                 });
             };
@@ -183,7 +212,7 @@ app.directive('fileinput', function(){
                         if(item.size < maxSize){
                             $scope.lock = true;
                             $upload.upload({
-                                url: 'upload_file',
+                                url: 'upload_file' + getOptions,
                                 file: item,
                                 })
                                 .progress(function(evt){
@@ -272,8 +301,9 @@ app.directive('simpleform', function(){
         },
         transclude: true,
         templateUrl: 'js/templates/simpleForm.htm',
-        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet){
+        controller: function($scope, $rootScope, configServ, dataServ, userServ, userMessages, $loading, $q, SpreadSheet, $modal, $location, $timeout){
             var dirty = true;
+            var editAccess = false;
             $scope.errors = {};
             $scope.currentPage = 0;
             $scope.addSubSchema = false;
@@ -291,6 +321,23 @@ app.directive('simpleform', function(){
             promise.then(function(result) {
                 $loading.finish('spinner-form');
             });
+
+            $scope.openConfirm = function(txt){
+                var modInstance = $modal.open({
+                    templateUrl: 'js/templates/modalConfirm.htm',
+                    resolve: {txt: function(){return txt}},
+                    controller: function($modalInstance, $scope, txt){
+                        $scope.txt = txt;
+                        $scope.ok = function(){
+                            $modalInstance.close();
+                        };
+                        $scope.cancel = function(){
+                            $modalInstance.dismiss('cancel');
+                        }
+                    }
+                });
+                return modInstance.result;
+            }
             
             
             $scope.prevPage = function(){
@@ -311,16 +358,50 @@ app.directive('simpleform', function(){
                 }
             };
 
+            $scope.hasNext = function(idx){
+                if($scope.addSubSchema){
+                    return idx < $scope.isActive.length;
+                }
+                return idx < ($scope.isActive.length - 1);
+            };
+
+            $scope.isFormValid = function(){
+                for(i=0; i<$scope.schema.groups.length; i++){
+                    if($scope.Simpleform['sub_'+i]){
+                        if(!$scope.Simpleform['sub_'+i].$valid){
+                            return false;
+                        }
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                return true;
+                //return $scope.Simpleform.$valid;
+            }
+
             $scope.setSchema = function(resp){
                 $scope.schema = angular.copy(resp);
+
+                editAccess = userServ.checkLevel(resp.editAccess)
                 
                 // mise en place tabulation formulaire
                 $scope.schema.groups.forEach(function(group){
                     $scope.isActive.push(false);
                     $scope.isDisabled.push(!$scope.dataUrl);
                     group.fields.forEach(function(field){
-                        if(!field.options){
-                            field.options = {};
+                        if(field.type=='group'){
+                            field.fields.forEach(function(sub){
+                                if(!sub.options){
+                                    sub.options = {};
+                                }
+                            });
+
+                        }
+                        else{
+                            if(!field.options){
+                                field.options = {};
+                            }
                         }
                         field.options.readOnly = !userServ.checkLevel(field.options.editLevel || 0);
                         field.options.dismissed = !userServ.checkLevel(field.options.restrictLevel || 0);
@@ -329,12 +410,15 @@ app.directive('simpleform', function(){
                 $scope.isActive[0] = true;
                 $scope.isDisabled[0] = false;
 
+                $rootScope.$broadcast('schema:init', resp);
+
                 if($scope.dataUrl){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }
                 else{
                     if($scope.schema.subSchemaAdd && userServ.checkLevel($scope.schema.subSchemaAdd)){
                         $scope.addSubSchema = true;
+                        $scope.isActive.push(false);
                     }
                     $scope.setData($scope.data || {});
                     dfd.resolve('loading form');
@@ -342,12 +426,34 @@ app.directive('simpleform', function(){
             };
 
             $scope.setData = function(resp){
+                if(!editAccess){
+                    if($scope.schema.editAccessOverride){
+                        if(!userServ.isOwner(resp[$scope.schema.editAccessOverride])){
+                            dirty = false;
+                            $rootScope.$broadcast('form:cancel', []);
+                        }
+                    }
+                    else{
+                        dirty = false;
+                        $rootScope.$broadcast('form:cancel', []);
+                    }
+                }
                 $scope.schema.groups.forEach(function(group){
                     group.fields.forEach(function(field){
-                        $scope.data[field.name] = angular.copy(resp[field.name]) || field.default || null;
-                        if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
-                            $scope.data[field.name] = userServ.getUser().idRole;
+                        if(field.type != 'group'){
+                            $scope.data[field.name] = resp[field.name] != undefined ? angular.copy(resp[field.name]) : field.default != undefined ? field.default : null;
+                            if(field.type=='hidden' && field.options && field.options.ref=='userId' && $scope.data[field.name]==null && userServ.checkLevel(field.options.restrictLevel || 0)){
+                                $scope.data[field.name] = userServ.getUser().id_role;
+                            }
                         }
+                        else{
+                            field.fields.forEach(function(line){
+                                line.fields.forEach(function(grField){
+                                    $scope.data[grField.name] = resp[grField.name] != undefined ? angular.copy(resp[grField.name]) : grField.default != undefined ? grField.default : null;
+                                });
+                            });
+                        }
+
                     });
                 });
                 $scope.deleteAccess = userServ.checkLevel($scope.schema.deleteAccess);
@@ -362,9 +468,26 @@ app.directive('simpleform', function(){
                 $rootScope.$broadcast('form:cancel', $scope.data);
             };
 
+
+            $scope.saveConfirmed = function(){
+                $loading.start('spinner-send');
+                var dfd = $q.defer();
+                var promise = dfd.promise;
+                promise.then(function(result) {
+                    $loading.finish('spinner-send');
+                });
+                
+                if($scope.dataUrl){
+                    dataServ.post($scope.saveUrl, $scope.data, $scope.updated(dfd), $scope.error(dfd));
+                }
+                else{
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.created(dfd), $scope.error(dfd));
+                }
+            };
+
+
             $scope.save = function(){
                 var errors = null;
-                var confirm_save = true;
                 if($scope.schema.subDataRef){
                     if(SpreadSheet.hasErrors[$scope.schema.subDataRef]){
                         errors = SpreadSheet.hasErrors[$scope.schema.subDataRef]();
@@ -373,60 +496,88 @@ app.directive('simpleform', function(){
                         errors = null;
                     }
                     if(errors){
-                        userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
-                        var confirm_save = userMessages.confirm("Il y a des erreurs dans le sous formulaire de saisie rapide.\n\nSi vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées");
-                    }
-                }
-                if(confirm_save){
-                    if($scope.dataUrl){
-                        dataServ.post($scope.saveUrl, $scope.data, $scope.updated, $scope.error);
+                        $scope.openConfirm(["Il y a des erreurs dans le sous formulaire de saisie rapide.", "Si vous confirmez l'enregistrement, les données du sous formulaire de saisie rapide ne seront pas enregistrées"]).then(function(){
+                            scope.saveConfirmed();
+                        },
+                        function(){
+                            userMessages.errorMessage = SpreadSheet.errorMessage[$scope.schema.subDataRef];
+                        });
                     }
                     else{
-                        dataServ.put($scope.saveUrl, $scope.data, $scope.created, $scope.error);
+                        $scope.saveConfirmed();
                     }
+                }
+                else{
+                    $scope.saveConfirmed();
                 }
             };
 
-            $scope.updated = function(resp){
-                dataServ.forceReload = true;
-                $scope.data.id = resp.id;
-                dirty = false;
-                $rootScope.$broadcast('form:update', $scope.data);
-            }
+            $scope.updated = function(dfd){
+                return function(resp){
+                    dataServ.forceReload = true;
+                    $scope.data.id = resp.id;
+                    dirty = false;
+                    dfd.resolve('updated');
+                    $rootScope.$broadcast('form:update', $scope.data);
+                };
+            };
 
-            $scope.created = function(resp){
-                dataServ.forceReload = true;
-                $scope.data.id = resp.id;
-                dirty = false;
-                $rootScope.$broadcast('form:create', $scope.data);
-            }
+            $scope.created = function(dfd){
+                return function(resp){
+                    dataServ.forceReload = true;
+                    $scope.data.id = resp.id;
+                    dirty = false;
+                    dfd.resolve('created');
+                    $rootScope.$broadcast('form:create', $scope.data);
+                };
+            };
 
-            $scope.error = function(resp){
-                userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
-                $scope.errors = angular.copy(resp);
-            }
+            $scope.error = function(dfd){
+                return function(resp){
+                    userMessages.errorMessage = 'Il y a des erreurs dans votre saisie';
+                    $scope.errors = angular.copy(resp);
+                    dfd.resolve('errors');
+                }
+            };
 
             $scope.remove = function(){
-                if(userMessages.confirm("Êtes vous certain de vouloir supprimer cet élément ?")){
-                    dataServ.delete($scope.saveUrl, $scope.removed);
-                }
-            }
+                $scope.openConfirm(["Êtes vous certain de vouloir supprimer cet élément ?"]).then(function(){
+                    $loading.start('spinner-send');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-send');
+                    });
+                    dataServ.delete($scope.saveUrl, $scope.removed(dfd));
+                });
+            };
 
-            $scope.removed = function(resp){
-                dirty = false;
-                $rootScope.$broadcast('form:delete', $scope.data);
-            }
+            $scope.removed = function(dfd){
+                return function(resp){
+                    dirty = false;
+                    dfd.resolve('removed');
+                    $rootScope.$broadcast('form:delete', $scope.data);
+                };
+            };
 
-            $scope.$on('$locationChangeStart', function(ev){
+            var locationBlock = $scope.$on('$locationChangeStart', function(ev, newUrl){
                 if(!dirty){
+                    locationBlock();
+                    $location.path(newUrl.slice(newUrl.indexOf('#')+1));
                     return;
                 }
-                if(!userMessages.confirm("Etes vous certain de vouloir quitter cette page ?\n\nLes données non enregistrées pourraient être perdues.")){
-                    ev.preventDefault();
-                }
+                ev.preventDefault();
+                $scope.openConfirm(["Etes vous certain de vouloir quitter cette page ?", "Les données non enregistrées pourraient être perdues."]).then(
+                    function(){
+                        locationBlock();
+                        $location.path(newUrl.slice(newUrl.indexOf('#')+1));
+                    }
+                    );
             });
 
-            configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+            $timeout(function(){
+                configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+            },0);
         }
     }
 });
@@ -448,7 +599,7 @@ app.directive('geometry', function($timeout){
             origin: '=',
         },
         templateUrl:  'js/templates/form/geometry.htm',
-        controller: function($scope, $rootScope, mapService){
+        controller: function($scope, $rootScope, $timeout, mapService){
             $scope.editLayer = new L.FeatureGroup();
 
             var current = null;
@@ -470,76 +621,96 @@ app.directive('geometry', function($timeout){
                 $scope.configUrl = $scope.options.configUrl;
             }
 
-            mapService.initialize($scope.configUrl).then(function(){
-                mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
-                mapService.loadData($scope.options.dataUrl).then(function(){
-                    if($scope.origin){
-                        var layer = mapService.selectItem($scope.origin);
-                        if(layer){
-                            setEditLayer(layer);
+            var _initialize = function(){
+                mapService.initialize($scope.configUrl).then(function(){
+                    mapService.getLayerControl().addOverlay($scope.editLayer, "Edition");
+                    mapService.loadData($scope.options.dataUrl).then(function(){
+                        if($scope.origin){
+                            $timeout(function(){
+                                var layer = mapService.selectItem($scope.origin);
+                                if(layer){
+                                    setEditLayer(layer);
+                                }
+                            }, 0);
                         }
-                    }
-                    mapService.getMap().addLayer($scope.editLayer);
-                    mapService.getMap().removeLayer(mapService.getLayer());
-                });
+                        mapService.getMap().addLayer($scope.editLayer);
+                        mapService.getMap().removeLayer(mapService.getLayer());
+                    });
 
-                $scope.controls = new L.Control.Draw({
-                    edit: {featureGroup: $scope.editLayer},
-                    draw: {
-                        circle: false,
-                        rectangle: false,
-                        marker: $scope.options.geometryType == 'point',
-                        polyline: $scope.options.geometryType == 'linestring',
-                        polygon: $scope.options.geometryType == 'polygon',
-                    },
-                });
+                    $scope.controls = new L.Control.Draw({
+                        edit: {featureGroup: $scope.editLayer},
+                        draw: {
+                            circle: false,
+                            rectangle: false,
+                            marker: $scope.options.geometryType == 'point',
+                            polyline: $scope.options.geometryType == 'linestring',
+                            polygon: $scope.options.geometryType == 'polygon',
+                        },
+                    });
 
-                mapService.getMap().addControl($scope.controls);
+                    mapService.getMap().addControl($scope.controls);
 
-                /*
-                 * affichage coords curseur en edition 
-                 * TODO confirmer le maintien
-                 */
-                coordsDisplay = L.control({position: 'bottomleft'});
-                coordsDisplay.onAdd = function(map){
-                    this._dsp = L.DomUtil.create('div', 'coords-dsp');
-                    return this._dsp;
-                };
-                coordsDisplay.update = function(evt){
-                    this._dsp.innerHTML = '<span>Long. : ' + evt.latlng.lng + '</span><span>Lat. : ' + evt.latlng.lat + '</span>';
-                };
+                    /*
+                     * affichage coords curseur en edition 
+                     * TODO confirmer le maintien
+                     */
+                    coordsDisplay = L.control({position: 'bottomleft'});
+                    coordsDisplay.onAdd = function(map){
+                        this._dsp = L.DomUtil.create('div', 'coords-dsp');
+                        return this._dsp;
+                    };
+                    coordsDisplay.update = function(evt){
+                        this._dsp.innerHTML = '<span>Long. : ' + evt.latlng.lng + '</span><span>Lat. : ' + evt.latlng.lat + '</span>';
+                    };
 
-                mapService.getMap().on('mousemove', function(e){
-                    coordsDisplay.update(e);
-                });
+                    mapService.getMap().on('mousemove', function(e){
+                        coordsDisplay.update(e);
+                    });
 
-                coordsDisplay.addTo(mapService.getMap());
-                /*
-                 * ---------------------------------------
-                 */
+                    coordsDisplay.addTo(mapService.getMap());
+                    /*
+                     * ---------------------------------------
+                     */
 
 
-                mapService.getMap().on('draw:created', function(e){
-                    if(!current){
-                        $scope.editLayer.addLayer(e.layer);
-                        current = e.layer;
+                    mapService.getMap().on('draw:created', function(e){
+                        if(!current){
+                            $scope.editLayer.addLayer(e.layer);
+                            current = e.layer;
+                            $rootScope.$apply($scope.updateCoords(current));
+                        }
+                    });
+
+                    mapService.getMap().on('draw:edited', function(e){
+                        $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
+                    });
+
+                    mapService.getMap().on('draw:deleted', function(e){
+                        current = null;
                         $rootScope.$apply($scope.updateCoords(current));
-                    }
+                    });
+                    $timeout(function() {
+                        mapService.getMap().invalidateSize();
+                    }, 0 );
+                
                 });
+            };
 
-                mapService.getMap().on('draw:edited', function(e){
-                    $rootScope.$apply($scope.updateCoords(e.layers.getLayers()[0]));
-                });
+            var initialize = function(){
+                try{
+                    _initialize();
+                }
+                catch(e){
+                    $scope.$watch(function(){ return mapService.initialize }, function(newval){
+                        if(newval){
+                            _initialize();
+                        }
+                    });
+                }
+            }
 
-                mapService.getMap().on('draw:deleted', function(e){
-                    current = null;
-                    $rootScope.$apply($scope.updateCoords(current));
-                });
-                $timeout(function() {
-                    mapService.getMap().invalidateSize();
-                }, 0 );
-            
-            });
+            // initialisation de la carte
+            $timeout(initialize, 0);
 
             $scope.geom = $scope.geom || [];
 
@@ -584,6 +755,10 @@ app.directive('datepick', function(){
                 $scope.opened = !$scope.opened;
             };
 
+            if($scope.date && $scope.date.getDate){
+                $scope.date = ('00'+$scope.date.getDate()).slice(-2) + '/' + ('00' + ($scope.date.getMonth()+1)).slice(-2) + '/' + $scope.date.getFullYear();
+            }
+
             $scope.$watch('date', function(newval){
                 try{
                     newval.setHours(12);
@@ -591,7 +766,12 @@ app.directive('datepick', function(){
                 }
                 catch(e){
                     if(newval){
-                        $scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                        try{
+                            $scope.date = newval;
+                        }
+                        catch(e){
+                            //$scope.date = $scope.date.replace(/(\d+)-(\d+)-(\d+)/, '$3/$2/$1');
+                        }
                     }
                 }
             });
@@ -625,7 +805,7 @@ app.directive('spreadsheet', function(){
             dataIn: '=data',
         },
         templateUrl: 'js/templates/form/spreadsheet.htm',
-        controller: function($scope, configServ, SpreadSheet){
+        controller: function($scope, configServ, userServ, SpreadSheet, ngTableParams){
             var defaultLine = {};
             var lines = [];
             $scope.data = [];
@@ -655,6 +835,14 @@ app.directive('spreadsheet', function(){
                 }
             };
 
+            $scope.tableParams = new ngTableParams({},
+                {
+                    getData: function($defer, params){
+                        return $scope.data;
+                    }
+                }
+            );
+
             $scope.check = function(){
                 var out = [];
                 var err_lines = [];
@@ -665,21 +853,33 @@ app.directive('spreadsheet', function(){
                     var line_valid = true;
                     var line_empty = true;
                     $scope.schema.fields.forEach(function(field){
-                        if(line[field.name] && line[field.name] != '__NULL__'){
-                            line_empty = false;
-                        }
-                        if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == '__NULL__')){
-                            line_valid = false;
-                        }
-                        if(field.options.primary && line_valid){
-                            //gestion des clés primaires pour la suppression des doublons
-                            if(primaries.indexOf(line[field.name])>-1){
-                                line_valid = false;
-                                errMsg = "Doublon";
-                                hasErrors = true
+                        if(field.type == "hidden"){
+                            if(field.options && field.options.ref == 'userId' && line[field.name] == null){
+                                /*
+                                 * ajout du numérisateur à la ligne
+                                 */
+                                line[field.name] = userServ.getUser().id_role;
                             }
-                            else{
-                                primaries.push(line[field.name]);
+                        }
+                        else{
+                            if(line[field.name] && line[field.name] != null){
+                                line_empty = false;
+                            }
+                            if((field.options.required || field.options.primary) && (!line[field.name] || line[field.name] == null)){
+                                line_valid = false;
+                            }
+                            if(field.options.primary && line_valid){
+                                /*
+                                 * gestion des clés primaires pour la suppression des doublons
+                                 */
+                                if(primaries.indexOf(line[field.name])>-1){
+                                    line_valid = false;
+                                    errMsg = "Doublon";
+                                    hasErrors = true
+                                }
+                                else{
+                                    primaries.push(line[field.name]);
+                                }
                             }
                         }
                     });
@@ -723,8 +923,8 @@ app.directive('subeditform', function(){
             saveUrl: "=saveurl",
             refId: "=refid",
         },
-        template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><button type="button" class="btn btn-success" ng-click="save()">Enregistrer</button><pre>{{data|json}}</pre>',
-        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages){
+    template: '<div spreadsheet schemaurl="schema" dataref="dataRef" data="data" subtitle=""></div><div style="margin-top: 5px;"><button type="button" class="btn btn-success float-right" ng-click="save()">Enregistrer</button></div>',
+        controller: function($scope, $rootScope, dataServ, configServ, SpreadSheet, userMessages, userServ, $loading, $q){
             $scope.data = {refId: $scope.refId};
             $scope.dataRef = '__items__';
 
@@ -734,15 +934,39 @@ app.directive('subeditform', function(){
                     userMessages.errorMessage = SpreadSheet.errorMessage[$scope.dataRef];
                 }
                 else{
-                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved);
+                    /*
+                     * Spinner
+                     * */
+                    $loading.start('spinner-detail');
+                    var dfd = $q.defer();
+                    var promise = dfd.promise;
+                    promise.then(function(result) {
+                        $loading.finish('spinner-detail');
+                    });
+                    dataServ.put($scope.saveUrl, $scope.data, $scope.saved(dfd), $scope.error(dfd));
                 }
             };
 
-            $scope.saved = function(resp){
-                resp.ids.forEach(function(item, key){
-                    $scope.data.__items__[key].id = item;
-                });
-                $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+            $scope.saved = function(deferred){
+                return function(resp){
+                    resp.ids.forEach(function(item, key){
+                        $scope.data.__items__[key].id = item;
+                    });
+                    deferred.resolve();
+                    userMessages.successMessage = "Données ajoutées";
+                    $rootScope.$broadcast('subEdit:dataAdded', $scope.data.__items__);
+                };
+            };
+
+            $scope.error = function(deferred){
+                var _errmsg = ''
+                return function(resp){
+                    deferred.resolve();
+                    for(errkey in resp){
+                        _errmsg += resp[errkey];
+                    }
+                    userMessages.errorMessage = _errmsg;
+                };
             };
         }
     };

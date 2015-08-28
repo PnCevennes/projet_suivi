@@ -1,0 +1,28 @@
+alter table pnc.base_site add column created date;
+alter table pnc.base_site add column updated date;
+alter table pnc.base_observation add column created Date;
+alter table pnc.base_observation add column updated date;
+alter table chiro.chiro_observation_taxon add column created Date;
+alter table chiro.chiro_observation_taxon add column updated Date;
+alter table chiro.chiro_biometrie add column created Date;
+alter table chiro.chiro_biometrie add column updated Date;
+
+create or replace function pnc.fct_trg_date_changes() returns trigger as 
+$body$
+begin
+    if(TG_OP = 'INSERT') THEN
+        NEW.created = NOW();
+    ELSIF(TG_OP = 'UPDATE') THEN
+        NEW.updated = NOW();
+        if(NEW.created IS NULL) THEN
+            NEW.created = NOW();
+        END IF;
+    end IF;
+    return NEW;
+end;
+$body$ language plpgsql;
+
+create trigger trg_date_changes before insert or update on pnc.base_site for each row execute procedure pnc.fct_trg_date_changes();
+create trigger trg_date_changes before insert or update on pnc.base_observation for each row execute procedure pnc.fct_trg_date_changes();
+create trigger trg_date_changes before insert or update on chiro.chiro_observation_taxon for each row execute procedure pnc.fct_trg_date_changes();
+create trigger trg_date_changes before insert or update on chiro.chiro_biometrie for each row execute procedure pnc.fct_trg_date_changes();

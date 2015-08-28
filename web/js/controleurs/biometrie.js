@@ -17,9 +17,8 @@ app.config(function($routeProvider){
 });
 
 app.controller('biometrieDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
-    $scope._appName = $routeParams.appName;
-    $rootScope.$broadcast('map:hide');
 
+    $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/biometrie/detail';
     $scope.dataUrl = $scope._appName + '/biometrie/' + $routeParams.id;
     $scope.updateUrl = '#/' + $scope._appName + '/edit/biometrie/' + $routeParams.id;
@@ -28,12 +27,6 @@ app.controller('biometrieDetailController', function($scope, $rootScope, $routeP
 
     $scope.$on('display:init', function(ev, data){
         $scope.title = "Biométrie n°" + data.id;
-        if($rootScope._function == 'site'){
-            configServ.addBc(4, $scope.title, '#/'+$scope._appName+'/biometrie/'+data.id);
-        }
-        else{
-            configServ.addBc(3, $scope.title, '#/'+$scope._appName+'/biometrie/'+data.id);
-        }
     });
 
 });
@@ -49,27 +42,14 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
     }
     else{
         $scope.saveUrl = $scope._appName + '/biometrie'
-        $scope.data = {obsTxId: $routeParams.otx_id};
+        $scope.data = {fkCotxId: $routeParams.otx_id};
     }
     $scope.$on('form:init', function(ev, data){
         if($routeParams.id){
             $scope.title = "Modification de la biométrie";
-            // breadcrumbs
-            if($rootScope._function == 'site'){
-                configServ.addBc(5, 'Modification', '');
-            }
-            else{
-                configServ.addBc(4, 'Modification', '');
-            }
         }
         else{
             $scope.title = 'Nouvelle biométrie';
-            if($rootScope._function == 'site'){
-                configServ.addBc(5, $scope.title, '');
-            }
-            else{
-                configServ.addBc(4, $scope.title, '');
-            }
         }
     });
 
@@ -78,7 +58,7 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
             $location.url($scope._appName + '/biometrie/' + data.id);
         }
         else{
-            $location.url($scope._appName + '/taxons/' + data.obsTxId);
+            $location.url($scope._appName + '/taxons/' + data.fkCotxId);
         }
     });
 
@@ -93,8 +73,8 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
     });
 
     $scope.$on('form:delete', function(ev, data){
-        userMessages.infoMessage = "Personne n'a jamais pris la moindre mesure sur quoi que ce soit.";
+        userMessages.infoMessage = "La biométrie n°" + data.id + "a été supprimée."; 
         dataServ.forceReload = true;
-        $location.url($scope._appName + '/taxons/' + data.obsTxId);
+        $location.url($scope._appName + '/taxons/' + data.fkCotxId);
     });
 });

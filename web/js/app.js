@@ -1,4 +1,7 @@
-var app = angular.module('appSuiviProtocoles', ['baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule']);
+var app = angular.module('appSuiviProtocoles', ['generiques', 'baseSites', 'baseObservations', 'baseTaxons', 'baseValidation', 'biometrie', 'suiviProtocoleServices', 'FormDirectives', 'DisplayDirectives', 'ui.bootstrap', 'darthwade.loading', 'SimpleMap', 'LocalStorageModule', 'ngTableResizableColumns']);
+
+// generiques
+angular.module('generiques', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
 
 // module de gestion des sites
 angular.module('baseSites', ['suiviProtocoleServices', 'SimpleMap', 'ngRoute', 'ngTable']);
@@ -28,6 +31,7 @@ angular.module('DisplayDirectives', ['SimpleMap']);
 angular.module('SimpleMap', ['suiviProtocoleServices']);
 
 
+
 /*
  * Configuration des routes
  */
@@ -53,7 +57,7 @@ app.config(function($routeProvider){
 });
 
 app.config(function (localStorageServiceProvider) {
-  localStorageServiceProvider.setPrefix('projetSuivis');
+    localStorageServiceProvider.setPrefix('projetSuivis');
 })
 
 /*
@@ -62,41 +66,51 @@ app.config(function (localStorageServiceProvider) {
 app.controller('baseController', function($scope, $location, dataServ, configServ, mapService, userMessages, userServ){
     $scope._appName = null;
     $scope.app = {name: "Suivi des protocoles", menu: []};
-    $scope.user = userServ.getUser();
-    configServ.bcShown = false;
-    if(!$scope.user){
-        $location.url('login');
-    }
     $scope.success = function(resp){
+        $scope.user = userServ.getUser();
+        if(!$scope.user){
+            $location.url('login');
+        }
         $scope.data = resp;
 
         // FIXME DEBUG
-        configServ.put('debug', false);
+        configServ.put('debug', true);
         /*
         userServ.login('as_test', 'test');
         */
         
         //configServ.put('app', $scope.data[0]);
-        userMessages.infoMessage = "bienvenue !";
         //$scope._appName = $scope.data[0].name;
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
-            $location.url('apps');
+            
+            var app = userServ.getCurrentApp();
+            if(!app){
+                $location.url('apps');
+            }
+            else{
+                $scope.app = app;
+                if($location.path() == '/'){
+                    $scope.setActive(app.menu[0]);
+                    $location.url(app.menu[0].url.slice(2));
+                }
+            }
         });
 
         $scope.$on('user:logout', function(ev){
-            configServ.bcShown = false;
             $scope.app = {name: "Suivi des protocoles", menu: []};
             $scope.user = null;
         });
 
         $scope.$on('app:select', function(ev, app){
-            configServ.bcShown = true;
             $scope.app = app;
             $scope.setActive(app.menu[0]);
         });
 
+        $scope.$on('app:selection', function(ev){
+            $scope.app = {name: "Suivi des protocoles", menu: []};
+        });
     };
 
     $scope.setActive = function(item){
@@ -108,6 +122,7 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
                 elem.__active__ = false;
             }
         });
+        userServ.setCurrentApp($scope.app);
     };
 
     $scope.check = function(val){
@@ -131,18 +146,15 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
     else{
         $scope.data = {login: null, pass: null};
     }
-    configServ.bcShown = false;
 
     $scope.$on('user:login', function(ev, user){
         userMessages.infoMessage = user.nom_complet.replace(/(\w+) (\w+)/, 'Bienvenue $2 $1 !');
         
-        configServ.bcShown = true;
-        var curBc = configServ.getBc();
         $location.url('apps'); 
     });
 
     $scope.$on('user:error', function(ev){
-        userMessages.errorMessage = "Erreur d'identification. Respirez un coup et recommencez."
+        userMessages.errorMessage = "Erreur d'identification."
     });
 
     $scope.send = function(){
@@ -157,7 +169,6 @@ app.controller('loginController', function($scope, $location, $rootScope, userSe
 app.controller('logoutController', function($scope, $location, userServ, userMessages, configServ){
     $scope.$on('user:logout', function(ev){
         userMessages.infoMessage = "Tchuss !";
-        var curBc = configServ.getBc();
         $location.url('login');
     });
 
@@ -174,6 +185,8 @@ app.controller('appsController', function($scope, $location, configServ, userSer
         $location.url('login');
     }
 
+    $scope.$emit('app:selection');
+
     $scope.setData = function(resp){
         $scope.apps = resp;
     };
@@ -181,7 +194,7 @@ app.controller('appsController', function($scope, $location, configServ, userSer
     $scope.select = function(id){
         $scope.apps.forEach(function(item){
             if(item.id == id){
-                userServ.setCurrentApp(item.appId);
+                userServ.setCurrentApp(item);
                 $scope.$emit('app:select', item);
             }
         });

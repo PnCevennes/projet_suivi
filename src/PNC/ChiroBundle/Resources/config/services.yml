@@ -6,17 +6,17 @@ services:
 
     biometrieService:
         class: PNC\ChiroBundle\Services\BiometrieService
-        arguments: [@doctrine, @normalizer]
+        arguments: [@doctrine, @entityService, @pagination]
             
     taxonService:
         class: PNC\ChiroBundle\Services\TaxonService
-        arguments: [@doctrine, @normalizer, @biometrieService]
+        arguments: [@doctrine, @biometrieService, @pagination, @entityService]
             
     observationService:
         class: PNC\ChiroBundle\Services\ObservationService
-        arguments: [@doctrine, @normalizer, @taxonService, @baseObservationService]
+        arguments: [@doctrine, @taxonService, @baseObservationService, @entityService, @pagination]
             
     siteService:
         class: PNC\ChiroBundle\Services\SiteService
-        arguments: [@doctrine, @normalizer, @observationService, @baseSiteService]
+        arguments: [@doctrine, @observationService, @baseSiteService, @entityService, @pagination]
             

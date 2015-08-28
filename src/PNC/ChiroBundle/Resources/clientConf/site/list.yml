@@ -4,57 +4,97 @@ createBtnLabel: Nouveau site
 createUrl: "#/chiro/edit/site/"
 editUrl: "#/chiro/edit/site/"
 detailUrl: "#/chiro/site/"
+dataUrl: "chiro/site" 
+mapConfig: "js/resources/chiro_site.json"
+mapSize: large
 editAccess: 5
+filtering:
+    fields:
+        -   name: "dern_obs"
+            label: "Dernière observation"
+            type: date
+        -   name: nb_obs
+            label: "Nombre d'observations"
+            type: "num"
+        -   name: "bs_type_id"
+            label: "Type de site"
+            type: select
+            thesaurusID: 7
+            default: 0
+            zeroNull: true
+        -   name: bs_date
+            label: "Création du site"
+            type: date
 fields: 
     -   name: id 
         label: ID
+        type: text
         filter: 
             id: text
         options: 
             visible: false
 
-    -   name: siteNom
+    -   name: bsNom
         label: Nom
+        type: text
         filter: 
-            siteNom: text
+            bsNom: text
         options:
+            primary: true
             visible: true
-    -   name: siteCode
+            style: xl
+    -   name: bsCode
         label: Code site
+        type: text
         filter: 
-            siteCode: text
+            bsCode: text
         options:
-            visible: true
+            visible: false
+            style: xl
     -   name: nomObservateur
         label: Observateur
+        type: text
         filter:
             nomObservateur: text
         option:
             visible: true
-    -   name: siteDate
+            style: xl
+    -   name: bsDate
         label: Date créa.
+        type: date
         filter:
-            siteDate: text
+            bsDate: text
         options:
+            type: date
             visible: false
+            style: l
     -   name: dernObs
-        label: Dernière observation
+        label: "Dern. obs."
+        type: date
         filter:
             dernObs: text
         options:
+            type: date
             visible: true 
+            style: xs
     -   name: nbObs
-        label: Nombre de visites
+        label: "Nb visites"
+        type: text
         filter:
             nbObs: text
         options:
             visible: true
-    -   name: typeLieu
+            style: xs
+    -   name: bsTypeId
         label: Type
+        type: select
+        thesaurusID: 7
         filter:
-            typeLieu: text
+            bsTypeId: select 
         options:
             visible: true
+            type: select
+            style: l
 
 
 

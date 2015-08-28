@@ -14,31 +14,33 @@ use Commons\Exceptions\CascadeException;
 class ObservationController extends Controller{
 
     // path: GET /chiro/observation
-    public function listAction(){
+    public function listAction(Request $request){
         /*
          * retourne la liste complete des observations
          */
         $os = $this->get('observationService');
+        /*
         $out = array();
-        foreach($os->getList() as $item){
+        foreach( as $item){
             $geoJson = array(
                 'type'=>'Feature',
                 'geometry'=>$item['geom'],
                 'properties'=>$item);
             $out[] = $geoJson;
         }
-
+        */
+        $out = $os->getFilteredList($request);
         return new JsonResponse($out);
     }
 
     // path: GET /chiro/observation/site/{id}
-    public function listSiteAction($id){
+    public function listSiteAction(Request $request, $id){
         /*
          * retourne la liste des observations associées à un site
          */
         $os = $this->get('observationService');
         
-        return new JsonResponse($os->getList($id));
+        return new JsonResponse($os->getFilteredList($request, $id));
     }
 
     // path: GET /chiro/observation/{id}
@@ -115,11 +117,11 @@ class ObservationController extends Controller{
         }
         if($user->checkLevel(3)){
             $delete = true;
-            if(!$user->isOwner($obs['numerisateurId'])){
+            if(!$user->isOwner($obs['metaNumerisateurId'])){
                 $cascade = true;
             }
         }
-        if($user->checkLevel(2) && $user->isOwner($obs['numerisateurId'])){
+        if($user->checkLevel(2) && $user->isOwner($obs['metaNumerisateurId'])){
             $delete = true;
         }
 

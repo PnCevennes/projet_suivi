@@ -1,0 +1,24 @@
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN date_validation DATE;
+
+DROP VIEW chiro.vue_chiro_validation;
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_validation AS 
+    SELECT 
+        tx.id,
+        tx.cd_nom,
+        tx.nom_complet,
+        tx.obs_effectif_abs,
+        tx.obs_obj_status_validation,
+        tx.date_validation,
+        obs.obs_date,
+        site.site_nom,
+        (upper(num.nom_role::text) || ' '::text) || num.prenom_role::text AS numerisateur,
+        (upper(val.nom_role::text) || ' '::text) || val.prenom_role::text AS validateur,
+        st_asgeojson(COALESCE(obs.geom, site.geom)) AS geom
+    FROM chiro.chiro_observation_taxon tx
+    JOIN pnc.base_observation obs ON obs.id = tx.obs_id
+    LEFT join utilisateurs.t_roles num on num.id_role = obs.numerisateur_id
+    LEFT join utilisateurs.t_roles val on val.id_role = tx.obs_validateur
+    LEFT JOIN pnc.base_site site ON site.id = obs.site_id;
+
+

@@ -1,0 +1,108 @@
+title: "Taxons en attente de validation"
+emptyMsg: "Aucun taxon en attente"
+detailUrl: "#/chiro/taxons/"
+editUrl: "#/chiro/edit/taxons/"
+editAccess: 5
+checkable: true
+filtering:
+    limit: 200
+    fields: 
+        -   name: "cd_nom"
+            label: "Taxon"
+            type: "xhr"
+            options:
+                url: "chiro/taxons"
+                reverseurl: "chiro/taxons/id"
+                ref: "taxon"
+        -   name: "bv_date"
+            label: "Date de l'observation"
+            type: "date"
+        -   name: "cotx_obj_status_validation"
+            label: "Statut validation"
+            type: "select"
+            zeroNull: true
+fields: 
+    -   name: "id"
+        label: "Id"
+        options: 
+            visible: true
+            type: "checkable"
+            style: s
+    -   name: "cdNom"
+        label: "CdNom"
+        filter: 
+            cdNom: "text"
+        options: 
+            visible: false
+            style: s
+    -   name: "nomComplet"
+        label: "Nom complet"
+        filter: 
+            nomComplet: "text"
+        filterFunc: "starting"
+        options: 
+            visible: true
+            primary: true
+            style: xl
+    -   name: "observateurs"
+        label: "Observateurs"
+        filter:
+            observateurs: text
+        options:
+            type: list
+            visible: true
+            style: l
+    -   name: "cotxObjStatusValidation"
+        label: "Validation"
+        filter: 
+            cotxObjStatusValidation: select
+        options: 
+            visible: false 
+            type: select
+            style: l
+    -   name: "bsNom"
+        label: "Nom du site"
+        filter: 
+            bsNom: "text"
+        options: 
+            visible: true
+            style: xl
+    -   name: "bvDate"
+        label: "Date d'observation"
+        filter: 
+            bvDate: "text"
+        options: 
+            visible: true 
+            type: "date"
+            style: l
+    -   name: "cotxEffectifAbs"
+        label: "Effectif total"
+        filter: 
+            cotxEffectifAbs: "text"
+        options: 
+            visible: true
+            style: s
+    -   name: "numerisateur"
+        label: "Numérisateur"
+        filter: 
+            numerisateur: "text"
+        filterFunc: "starting"
+        options: 
+            visible: false
+            style: l
+    -   name: "validateur"
+        label: "Validateur"
+        filter: 
+            validateur: "text"
+        filterFunc: "starting"
+        options: 
+            visible: false
+            style: l
+    -   name: "cotxDateValidation"
+        label: "Date de validation"
+        filter: 
+            cotxDateValidation: "text"
+        options: 
+            visible: false
+            type: "date"
+            style: l

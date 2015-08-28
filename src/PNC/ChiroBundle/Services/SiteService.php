@@ -12,61 +12,79 @@ use PNC\ChiroBundle\Entity\SiteFichiers;
 
 
 class SiteService{
+
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
-
-    public function __construct($db, $norm, $obsServ, $parentServ){
+    public function __construct($db, $obsServ, $parentServ, $es, $pg){
         $this->db = $db;
-        $this->norm = $norm;
         $this->obsService = $obsServ;
         $this->parentService = $parentServ;
+        $this->entityService = $es;
+        $this->pagination = $pg;
+        $this->schema = array(
+            'cisFrequentation'=>null,
+            'cisMenace'=>null,
+            'cisMenaceCmt'=>null,
+            'cisContactNom'=>null,
+            'cisContactPrenom'=>null,
+            'cisContactAdresse'=>null,
+            'cisContactCodePostal'=>null,
+            'cisContactVille'=>null,
+            'cisContactTelephone'=>null,
+            'cisContactPortable'=>null,
+            'cisContactCommentaire'=>null
+        );
+
     }
 
-    public function getList(){
-        $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
-        $infos = $repo->findAll();
+    public function getFilteredList($request){
+        $schema = array(
+            'id'=>null,
+            'bsNom'=>null,
+            'bsDate'=>'date',
+            'dernObs'=>'date',
+            'nbObs'=>null,
+            'nomObservateur'=>null,
+            'bsCode'=>null,
+            'bsTypeId'=>null,
+            'geom'=>null,
+        );
+
+        $entity = 'PNCChiroBundle:SiteView';
+
+        $res = $this->pagination->filter_request($entity, $request);
+
+        $infos = $res['filtered'];
+
         $out = array();
 
         // definition de la structure de données sous form GeoJson
+        $geoLabelConf = array(
+            'label'=>'<h4><a href="#/chiro/site/%s">%s<a></h4>',
+            'refs'=>array('id', 'bsNom')
+        );
+
         foreach($infos as $info){
-            $out_item = array('type'=>'Feature');
-            $out_item['properties'] = array(
-                'id'=>$info->getId(),
-                'siteNom'=>$info->getSiteNom(),
-                'siteDate'=>!is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '',
-                'dernObs'=>!is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '',
-                'nbObs'=>$info->getNbObs(),
-                'nomObservateur'=>$info->getNomObservateur(),
-                'siteCode'=>$info->getSiteCode(),
-                'typeLieu'=>$info->getTypeLieu(),
-            );
-            $out_item['geometry'] = $info->getGeom();
-
-            $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/site/%s">%s</a>',
-                $info->getId(), $info->getSiteNom());
-            $out[] = $out_item;
+            $out[] = $this->entityService->getGeoJsonFeature(
+                $this->entityService->normalize($info, $schema),
+                $geoLabelConf, 
+                'geom');
         }
-        return $out;
 
-
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getOne($id){
-        $repo = $this->db->getRepository('PNCChiroBundle:SiteView');
-        $info = $repo->findOneById($id);
+        $info = $this->entityService->getOne('PNCChiroBundle:SiteView', array('id'=>$id));
         if(!$info){
             throw new NotFoundHttpException();
         }
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/SiteView.orm.yml';
+        $data = $this->entityService->normalize($info, $schema);
 
-        $out_item = $this->norm->normalize($info, array('siteDate', 'geom', 'dernObs', 'siteAmenagement'));
-        $out_item['siteAmenagement'] = $info->getSiteAmenagement();
-        $out_item['siteDate'] = !is_null($info->getSiteDate()) ? $info->getSiteDate()->format('Y-m-d'): '';
-        $out_item['dernObs'] = !is_null($info->getDernObs()) ? $info->getDernObs()->format('Y-m-d'): '';
-        $out_item['geom'] = array($info->getGeom()['coordinates']);
-        return $out_item;
+        $data['geom'] = array($data['geom']['coordinates']);
+        return $data;
     }
 
     public function create($data){
@@ -83,7 +101,7 @@ class SiteService{
             $errors = $e->getErrors();
         }
         try{
-            $this->hydrate($infoSite, $data);
+            $this->entityService->hydrate($infoSite, $this->schema, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors());
@@ -107,7 +125,7 @@ class SiteService{
 
     public function update($id, $data){
         $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
-        $infoSite = $repo->findOneBy(array('site_id'=>$id));
+        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
         if(!$infoSite){
             return null;
         }
@@ -123,7 +141,7 @@ class SiteService{
             $errors = $e->getErrors();
         }
         try{
-            $this->hydrate($infoSite, $data);
+            $this->entityService->hydrate($infoSite, $this->schema, $data);
             $manager->flush();
             $manager->getConnection()->commit();
         }
@@ -171,7 +189,7 @@ class SiteService{
 
     public function remove($id, $cascade=false){
         $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
-        $infoSite = $repo->findOneBy(array('site_id'=>$id));
+        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
         if(!$infoSite){
             return false;
         }
@@ -194,22 +212,5 @@ class SiteService{
         $this->parentService->remove($this->db, $site);
         return true;
 
-    }
-
-    private function hydrate($obj, $data){
-        $obj->setSiteFrequentation($data['siteFrequentation']);
-        $obj->setSiteMenace($data['siteMenace']);
-        $obj->setSiteMenaceCmt($data['siteMenaceCmt']);
-        $obj->setContactNom($data['contactNom']);
-        $obj->setContactPrenom($data['contactPrenom']);
-        $obj->setContactAdresse($data['contactAdresse']);
-        $obj->setContactCodePostal($data['contactCodePostal']);
-        $obj->setContactVille($data['contactVille']);
-        $obj->setContactTelephone($data['contactTelephone']);
-        $obj->setContactPortable($data['contactPortable']);
-        $obj->setContactCommentaire($data['contactCommentaire']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors()); 
-        }
     }
 }

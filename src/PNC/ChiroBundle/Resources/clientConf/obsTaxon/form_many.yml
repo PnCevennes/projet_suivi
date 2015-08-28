@@ -7,51 +7,89 @@ fields:
             url: "chiro/taxons"
             reverseurl: "chiro/taxons/id"
             ref: cdNom
-    -   name: obsTxInitial
+
+    -   name: metaNumerisateurId
+        label: Numerisateur
+        type: hidden
+        options:
+            ref: userId
+    -   name: cotxInitial
         label: "Taxon initial"
         type: string
-    -   name: obsEspeceIncertaine
+    -   name: cotxEspeceIncertaine
         label: "Espece incertaine"
         type: bool
-    -   name: actId
+    -   name: cotxModId
+        label: "Mode d'observation"
+        type: select
+        thesaurusID: 4
+    -   name: cotxActId
         label: "Activité"
         type: select
-    -   name: prvId
+        thesaurusID: 5
+    -   name: cotxPrvId
         label: "Preuves de reproduction"
         type: select
-    -   name: obsNbIndetermineIndetermine
+        thesaurusID: 6
+    -   name: cotxNbIndetermineIndetermine
         label: "Indéterminés"
         type: num
-        help: "Âge et sexe indéterminés"
-    -   name: obsNbMaleIndetermine
+        options:
+            min: 0
+    -   name: cotxNbMaleIndetermine
         label: "Mâles indeterminés"
         type: num
-    -   name: obsNbFemelleIndetermine
+        options:
+            min: 0
+    -   name: cotxNbFemelleIndetermine
         label: "Femelles indeterminés"
         type: num
-    -   name: obsNbMaleAdulte
+        options:
+            min: 0
+    -   name: cotxNbMaleAdulte
         label: "Mâles adultes"
         type: num
-    -   name: obsNbFemelleAdulte
+        options:
+            min: 0
+    -   name: cotxNbFemelleAdulte
         label: "Femelles adultes"
         type: num
-    -   name: obsNbMaleJuvenile
+        options:
+            min: 0
+    -   name: cotxNbMaleJuvenile
         label: "Mâles juveniles"
         type: num
-    -   name: obsNbFemelleJuvenile
+        options:
+            min: 0
+    -   name: cotxNbFemelleJuvenile
         label: "Femelles juveniles"
         type: num
-    -   name: obsEffectifAbs
+        options:
+            min: 0
+    -   name: cotxNbIndetermineAdulte
+        label: "Indeterminés adultes"
+        type: num
+        options:
+            min: 0
+    -   name: cotxNbIndetermineJuvenile
+        label: "Indeterminés juvéniles"
+        type: num
+        options:
+            min: 0
+    -   name: cotxEffectifAbs
         label: Effectif total
         type: sum
         options:
             ref:
-                -   obsNbMaleAdulte
-                -   obsNbFemelleAdulte
-                -   obsNbMaleJuvenile
-                -   obsNbFemelleJuvenile
-                -   obsNbMaleIndetermine
-                -   obsNbFemelleIndetermine
-                -   obsNbIndetermineIndetermine
-            modifiable: true
-
+                -   cotxNbMaleAdulte
+                -   cotxNbFemelleAdulte
+                -   cotxNbMaleJuvenile
+                -   cotxNbFemelleJuvenile
+                -   cotxNbMaleIndetermine
+                -   cotxNbFemelleIndetermine
+                -   cotxNbIndetermineIndetermine
+                -   cotxNbIndetermineAdulte
+                -   cotxNbIndetermineJuvenile
+            modifiable: false
+            min: 1
+        default: 0

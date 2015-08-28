@@ -30,177 +30,69 @@ class ObsTaxonConfigController extends Controller{
         return new JsonResponse($out);
     }
 
-    // path : GET chiro/config/obstaxon/form
-    public function getFormAction(){
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
+    // path : GET chiro/config/obstaxon/validation
+    public function getValidationAction(){
 
         // Statut validation
-        $types = $repo->findBy(array('id_type'=>9));
-        $typesVal = array();
-        foreach($types as $tl){
-            if($tl->getFkParent() != 0){
-                $typesVal[] = $norm->normalize($tl, array());
-            }
-        }
+        $thesaurus = $this->get('thesaurusService');
+        $typesVal = $thesaurus->get_list(9);
+        $typesVal[0]['libelle'] = 'Tout statut';
 
-        // Activité
-        $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
-        foreach($acts as $tl){
-            if($tl->getFkParent() != 0){
-                $typeAct[] = $norm->normalize($tl, array());
-            }
-        }
-
-        // Preuves de reproduction
-        $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
-        foreach($prvs as $tl){
-            if($tl->getFkParent() != 0){
-                $typePrv[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form.yml');
-        $out = Yaml::parse($file);
-
-        foreach($out['groups'] as &$group){
-            foreach($group['fields'] as &$field){
-                if(!isset($field['options'])){
-                    $field['options'] = array();
-                }
-                if($field['name'] == 'obsObjStatusValidation'){
-                    $field['options']['choices'] = $typesVal;
-                    $field['default'] = 56;
-                }
-                if($field['name'] == 'actId'){
-                    $field['options']['choices'] = $typeAct;
-                    $field['default'] = '__NULL__';
-                    //$field['default'] = 25;
-                }
-                if($field['name'] == 'prvId'){
-                    $field['options']['choices'] = $typePrv;
-                    $field['default'] = '__NULL__';
-                    //$field['default'] = 32;
-                }
-            }
-        }
-
-        return new JsonResponse($out);
-    }
-    
-    // path : GET chiro/config/obstaxon/form/many
-    public function getFormManyAction(){
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $types = $repo->findBy(array('id_type'=>9));
-
-        // Activité
-        $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array(array('id'=>'__NULL__', 'libelle'=>''));
-        foreach($acts as $tl){
-            if($tl->getFkParent() != 0){
-                $typeAct[] = $norm->normalize($tl, array());
-            }
-        }
-
-        // Preuves de reproduction
-        $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array(array('id'=>'__NULL__', 'libelle'=>''));
-        foreach($prvs as $tl){
-            if($tl->getFkParent() != 0){
-                $typePrv[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/form_many.yml');
+        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/validation.yml');
         $out = Yaml::parse($file);
 
         foreach($out['fields'] as &$field){
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['name'] == 'actId'){
-                $field['options']['choices'] = $typeAct;
-                $field['default'] = '__NULL__';
-            }
-            if($field['name'] == 'prvId'){
-                $field['options']['choices'] = $typePrv;
-                $field['default'] = '__NULL__';
+            if($field['name'] == 'cotxObjStatusValidation'){
+                $field['options']['choices'] = $typesVal;
+                $field['default'] = 0;
             }
         }
+        foreach($out['filtering']['fields'] as &$field){
+            if($field['name'] == 'cotx_obj_status_validation'){
+                if(!isset($field['options'])){
+                    $field['options'] = array();
+                }
+                $field['options']['choices'] = $typesVal;
+                $field['default'] = 0;
+            }
+        }
+        return new JsonResponse($out);
+    }
+
+    // path : GET chiro/config/obstaxon/form
+    public function getFormAction(){
+        $conf = $this->get('configService');
+
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/form.yml');
+
+        return new JsonResponse($out);
+    }
+    
+    // path : GET chiro/config/obstaxon/form/many
+    public function getFormManyAction(){
+
+        $conf = $this->get('configService');
+
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/form_many.yml');
 
         return new JsonResponse($out);
     }
 
     // path : GET chiro/config/obstaxon/detail
     public function getDetailAction(){
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $types = $repo->findBy(array('id_type'=>9));
-        $typesVal = array();
-        foreach($types as $tl){
-            if($tl->getFkParent() != 0){
-                $typesVal[] = $norm->normalize($tl, array());
-            }
-        }
 
-
-        // Activité
-        $acts = $repo->findBy(array('id_type'=>5));
-        $typeAct = array();
-        foreach($acts as $tl){
-            if($tl->getFkParent() != 0){
-                $typeAct[] = $norm->normalize($tl, array());
-            }
-        }
-
-        // Preuves de reproduction
-        $prvs = $repo->findBy(array('id_type'=>6));
-        $typePrv = array();
-        foreach($prvs as $tl){
-            if($tl->getFkParent() != 0){
-                $typePrv[] = $norm->normalize($tl, array());
-            }
-        }
-
-        $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/detail.yml');
-        $out = Yaml::parse($file);
-
-        foreach($out['groups'] as &$group){
-            foreach($group['fields'] as &$field){
-                if(!isset($field['options'])){
-                    $field['options'] = array();
-                }
-                if($field['name'] == 'obsObjStatusValidation'){
-                    $field['options']['choices'] = $typesVal;
-                }
-                if($field['name'] == 'actId'){
-                    $field['options']['choices'] = $typeAct;
-                }
-                if($field['name'] == 'prvId'){
-                    $field['options']['choices'] = $typePrv;
-                }
-            }
-        }
-
-
+        $conf = $this->get('configService');
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/detail.yml');
 
         return new JsonResponse($out);
     }
 
     // path : GET chiro/config/obstaxon/list
     public function getListAction(){
-        $norm = $this->get('normalizer');
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Thesaurus');
-        $types = $repo->findBy(array('id_type'=>9));
-        $typesVal = array();
-        foreach($types as $tl){
-            if($tl->getFkParent() != 0){
-                $typesVal[] = $norm->normalize($tl, array());
-            }
-        }
+        $thesaurus = $this->get('thesaurusService');
 
         $file = file_get_contents(__DIR__ . '/../Resources/clientConf/obsTaxon/list.yml');
         $out = Yaml::parse($file);
@@ -210,8 +102,8 @@ class ObsTaxonConfigController extends Controller{
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['name'] == 'obsObjStatusValidation'){
-                $field['options']['choices'] = $typesVal;
+            if($field['name'] == 'cotxObjStatusValidation'){
+                $field['options']['choices'] = $thesaurus->get_list(9, false);
             }
         }
         return new JsonResponse($out);

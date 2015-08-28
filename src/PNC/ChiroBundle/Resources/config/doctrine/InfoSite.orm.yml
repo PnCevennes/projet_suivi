@@ -1,8 +1,8 @@
 PNC\ChiroBundle\Entity\InfoSite:
     type: entity
-    table: chiro.chiro_infos_site
+    table: chiro.pr_site_infos
     schema: chiro
-    repositoryClass: PNC\ChiroBundle\Repositories\InfoSiteRepository
+    #repositoryClass: PNC\ChiroBundle\Repositories\InfoSiteRepository
     id:
         id:
             type: integer
@@ -10,7 +10,7 @@ PNC\ChiroBundle\Entity\InfoSite:
             generator:
                 strategy: AUTO
     fields:
-        site_id:
+        fk_bs_id:
             type: integer
         site_description:
             type: text
@@ -19,47 +19,44 @@ PNC\ChiroBundle\Entity\InfoSite:
             type: string
             length: 255
             nullable: true
-        site_frequentation:
+        cis_frequentation:
             type: integer
             nullable: true
-        site_menace:
+        cis_menace:
             type: integer
             nullable: true
-        site_menace_cmt:
+        cis_menace_cmt:
             type: text
             nullable: true
-        site_commentaire:
-            type: text
-            nullable: true
-        contact_nom:
+        cis_contact_nom:
             type: string
             length: 25
             nullable: true
-        contact_prenom:
+        cis_contact_prenom:
             type: string
             length: 25
             nullable: true
-        contact_adresse:
+        cis_contact_adresse:
             type: string
             length: 150
             nullable: true
-        contact_code_postal:
+        cis_contact_code_postal:
             type: string
             length: 5
             nullable: true
-        contact_ville:
+        cis_contact_ville:
             type: string
             length: 100
             nullable: true
-        contact_telephone:
+        cis_contact_telephone:
             type: string
             length: 15
             nullable: true
-        contact_portable:
+        cis_contact_portable:
             type: string
             length: 15
             nullable: true
-        contact_commentaire:
+        cis_contact_commentaire:
             type: text
             nullable: true
 
@@ -67,6 +64,6 @@ PNC\ChiroBundle\Entity\InfoSite:
         parent_site:
             targetEntity: PNC\BaseAppBundle\Entity\Site
             joinColumn:
-                name: site_id
+                name: fk_bs_id
                 referencedColumnName: id
 

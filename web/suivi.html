@@ -2,6 +2,11 @@
 <html lang="fr" ng-app="appSuiviProtocoles">
     <head>
         <meta charset="utf8">
+        <meta name="HandheldFriendly" content="True"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="MobileOptimized" content="320"/>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
 
         <script src="js/lib/jquery/jquery.min.js"></script>
         <script src="css/lib/bootstrap/js/bootstrap.min.js"></script>
@@ -9,6 +14,7 @@
         <script src="js/lib/angular-1.3.9/angular-route.js"></script>
         <script src="js/lib/leaflet/leaflet.js"></script>
         <script src="js/lib/ng-table.min.js"></script>
+        <script src="js/lib/ng-table-resizable-columns.js"></script>
         <script src="js/lib/leaflet.markercluster.js"></script>
         <script src="js/lib/leaflet.draw/leaflet.draw.js"></script>
         <script src="js/lib/angular-file-upload.js"></script>
@@ -56,7 +62,6 @@
                             </ul>
                         </div>
                     </div>   
-                    
                     <div ng-view class="container-fluid full-screen"></div>
                     
                 </div>
@@ -68,6 +73,7 @@
         <script src="js/services.js"></script>
         <script src="js/form_directives.js"></script>
         <script src="js/display_directives.js"></script>
+        <script src="js/controleurs/generiques.js"></script>
         <script src="js/controleurs/baseSites.js"></script>
         <script src="js/controleurs/baseObservations.js"></script>
         <script src="js/controleurs/baseTaxons.js"></script>

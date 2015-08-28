@@ -1,7 +1,7 @@
 PNC\BaseAppBundle\Entity\Fichiers:
     type: entity
-    table: pnc.uploads
-    schema: pnc
+    table: suivi.uploads
+    schema: suivi
     repositoryClass: PNC\BaseAppBundle\Repositories\FichiersRepository
     id:
         id:

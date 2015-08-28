@@ -1,8 +1,8 @@
 PNC\ChiroBundle\Entity\Biometrie:
     type: entity
-    table: chiro.chiro_biometrie
+    table: chiro.subpr_observationtaxon_biometrie
     schema: chiro
-    repositoryClass: PNC\ChiroBundle\Repositories\BiometrieRepository
+    #repositoryClass: PNC\ChiroBundle\Repositories\BiometrieRepository
     id:
         id:
             type: integer
@@ -10,48 +10,55 @@ PNC\ChiroBundle\Entity\Biometrie:
             generator:
                 strategy: AUTO
     fields:
-        obs_tx_id:
+        fk_cotx_id:
             type: integer
-        age_id:
-            type: integer
-            nullable: true
-        sexe_id:
+        cbio_age_id:
             type: integer
             nullable: true
-        biom_ab:
+        cbio_sexe_id:
+            type: integer
+            nullable: true
+        cbio_ab:
             type: float
             nullable: true
-        biom_poids:
+        cbio_poids:
             type: float
             nullable: true
-        biom_d3mf1:
+        cbio_d3mf1:
             type: float
             nullable: true
-        biom_d3f2f3:
+        cbio_d3f2f3:
             type: float
             nullable: true
-        biom_d3total:
+        cbio_d3total:
             type: float
             nullable: true
-        biom_d5:
+        cbio_d5:
             type: float
             nullable: true
-        biom_cm3sup:
+        cbio_cm3sup:
             type: float
             nullable: true
-        biom_cm3inf:
+        cbio_cm3inf:
             type: float
             nullable: true
-        biom_cb:
+        cbio_cb:
             type: float
             nullable: true
-        biom_lm:
+        cbio_lm:
             type: float
             nullable: true
-        biom_oreille:
+        cbio_oreille:
             type: float
             nullable: true
-        biom_commentaire:
+        cbio_commentaire:
             type: text 
+            nullable: true
+        meta_create_timestamp: 
+            type: date
+        meta_update_timestamp:
+            type: date
+        meta_numerisateur_id:
+            type: integer
             nullable: true
 

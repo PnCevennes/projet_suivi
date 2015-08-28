@@ -1,5 +1,7 @@
+editAccess: 3
+editAccessOverride: metaNumerisateurId
 deleteAccess: 5
-deleteAccessOverride: numId 
+deleteAccessOverride: metaNumerisateurId 
 subSchemaAdd: 3
 subSchemaUrl: chiro/config/biometrie/form/many
 subDataRef: __biometries__
@@ -9,11 +11,16 @@ groups:
         fields:
             -   name: id
                 type: hidden
-            -   name: numId
+            -   name: fkBvId
                 type: hidden
-            -   name: obsId
-                label: hidden
-            -   name: obsValidateur
+                options:
+                    referParent: true
+            -   name: metaNumerisateurId
+                label: Numerisateur
+                type: hidden
+                options:
+                    ref: userId
+            -   name: cotxValidateur
                 type: hidden
             -   name: cdNom
                 label: "Nom taxon"
@@ -22,61 +29,120 @@ groups:
                     url: "chiro/taxons"
                     reverseurl: "chiro/taxons/id"
                     ref: cdNom
-            -   name: obsTxInitial
+            -   name: cotxInitial
                 label: "Taxon initial"
                 type: string
-            -   name: obsObjStatusValidation
+            -   name: cotxObjStatusValidation
                 label: Validation
                 type: select
+                thesaurusID: 9
                 options:
                     editLevel: 5
-            -   name: actId
+                default: 55
+            -   name: cotxModId
+                label: "Mode d'observation"
+                type: select
+                thesaurusID: 4
+            -   name: cotxActId
                 label: "Activité"
                 type: select
-            -   name: prvId
+                thesaurusID: 5
+            -   name: cotxPrvId
                 label: "Preuves de reproduction"
                 type: select
-            -   name: obsEspeceIncertaine
+                thesaurusID: 6
+            -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool
-            -   name: obsCommentaire
+            -   name: cotxCommentaire
                 label: Commentaires
                 type: text
                 help: "Informations complémentaires sur l'observation"
-    -   name: Enumération
+    -   name: Dénombrement
         fields:
-            -   name: obsNbMaleAdulte
-                label: "Mâles adultes"
-                type: num
-            -   name: obsNbFemelleAdulte
-                label: "Femelles adultes"
-                type: num
-            -   name: obsNbMaleJuvenile
-                label: "Mâles juveniles"
-                type: num
-            -   name: obsNbFemelleJuvenile
-                label: "Femelles juveniles"
-                type: num
-            -   name: obsNbMaleIndetermine
-                label: "Mâles indeterminés"
-                type: num
-            -   name: obsNbFemelleIndetermine
-                label: "Femelles indeterminés"
-                type: num
-            -   name: obsNbIndetermineIndetermine
-                label: "Indéterminés"
-                type: num
-                help: "Âge et sexe indéterminés"
-            -   name: obsEffectifAbs
+            -   name: "enum"
+                type: group
+                titles:
+                    -   Adultes
+                    -   Juvéniles
+                    -   Indéterminés
+                fields: 
+                    -   name: "males"
+                        label: "Mâles"
+                        fields:
+                            -   name: cotxNbMaleAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbMaleJuvenile
+                                label: "Juveniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbMaleIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                    -   name: "femelles"
+                        label: "Femelles"
+                        fields:
+                            -   name: cotxNbFemelleAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbFemelleJuvenile
+                                label: "Juveniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbFemelleIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                    -   name: "indetermines"
+                        label: "Sexe indéterminé"
+                        fields:
+                            -   name: cotxNbIndetermineAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbIndetermineJuvenile
+                                label: "Juvéniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbIndetermineIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+            -   name: cotxEffectifAbs
                 label: Effectif total
                 type: sum
                 options:
                     ref:
-                        -   obsNbMaleAdulte
-                        -   obsNbFemelleAdulte
-                        -   obsNbMaleJuvenile
-                        -   obsNbFemelleJuvenile
-                        -   obsNbMaleIndetermine
-                        -   obsNbFemelleIndetermine
-                        -   obsNbIndetermineIndetermine
-                    modifiable: true
+                        -   cotxNbMaleAdulte
+                        -   cotxNbFemelleAdulte
+                        -   cotxNbMaleJuvenile
+                        -   cotxNbFemelleJuvenile
+                        -   cotxNbMaleIndetermine
+                        -   cotxNbFemelleIndetermine
+                        -   cotxNbIndetermineAdulte
+                        -   cotxNbIndetermineJuvenile   
+                        -   cotxNbIndetermineIndetermine
+                    modifiable: false
+                    min: 1

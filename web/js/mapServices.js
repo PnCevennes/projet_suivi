@@ -43,8 +43,9 @@ app.directive('leafletMap', function(){
         scope: {
             data: '=',
         },
-        template: '<div id="mapd"></div>',
-        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout){
+        templateUrl: 'js/templates/display/map.htm',
+        //template: '<div dw-loading="map-loading" dw-loading-options="{text: \'Chargement des données\'}" ng-options="{ text: \'\', className: \'custom-loading\', spinnerOptions: {radius:30, width:8, length: 16, color: \'#f0f\', direction: -1, speed: 3}}"></div><div id="mapd"></div>',
+        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout, $loading){
             /*
              */
 
@@ -66,29 +67,110 @@ app.directive('leafletMap', function(){
                     }, 0 );
                 }
                 var dfd = $q.defer();
-                map = L.map('mapd', {maxZoom: 17});
-                layer = L.markerClusterGroup();
-                layer.addTo(map);
-                configServ.getUrl(configUrl, function(res){
-                    resource = res[0];
-                    if(!resource.clustering){
-                        layer.options.disableClusteringAtZoom = 13;
-                    }
-                    resource.layers.baselayers.forEach(function(layer, name){
-                        var layerData = LeafletServices.loadData(layer);
-                        tileLayers[layerData.name] = layerData.map;
-                        if(layerData.active){
-                            layerData.map.addTo(map);
+                try{
+                    map = L.map('mapd', {maxZoom: 17});
+                    layer = L.markerClusterGroup();
+                    layer.addTo(map);
+                    configServ.getUrl(configUrl, function(res){
+                        resource = res[0];
+                        if(!resource.clustering){
+                            layer.options.disableClusteringAtZoom = 13;
+                        }
+                        var curlayer = null;
+                        configServ.get('map:currentLayer', function(_curlayer){
+                            curlayer = _curlayer
+                        });
+                        resource.layers.baselayers.forEach(function(_layer, name){
+                            var layerData = LeafletServices.loadData(_layer);
+                            tileLayers[layerData.name] = layerData.map;
+                            if(curlayer){
+                                if(layerData.name == curlayer){
+                                    layerData.map.addTo(map);
+                                }
+                            }
+                            else{
+                                if(layerData.active){
+                                    layerData.map.addTo(map);
+                                }
+                            }
+                        });
+                        map.setView(
+                            [resource.center.lat, resource.center.lng], 
+                            resource.center.zoom);
+                        layerControl = L.control.layers(tileLayers, {'Données': layer});
+                        
+                        layerControl.addTo(map);
+
+
+                        var recenterCtrl = L.control({position: 'topleft'});
+                        recenterCtrl.onAdd = function(map){
+                            this._rectCtrl = L.DomUtil.create('div', 'recenterBtn');
+                            this.update();
+                            return this._rectCtrl;
+                        }
+                        recenterCtrl.update = function(){
+                            this._rectCtrl.innerHTML = '<button type="button" onclick="recenter();"><span class="glyphicon glyphicon-move"></span></button>';
+                        };
+                        recenterCtrl.addTo(map);
+
+                        document.recenter = function(){
+                            $rootScope.$apply(
+                                $rootScope.$broadcast('mapService:centerOnSelected')
+                            );
+                        }
+
+                        /*
+                         * déplacement carte récupération de la zone d'affichage
+                         */
+                        map.on('moveend', function(ev){
+                            $rootScope.$apply(
+                                $rootScope.$broadcast('mapService:pan')
+                            );
+                        });
+
+                        map.on('baselayerchange', function(ev){
+                            $rootScope.$apply(function(){
+                                configServ.put('map:currentLayer', ev.name);
+                            })
+                        });
+
+                        $timeout(function(){
+                            $rootScope.$broadcast('map:ready');
+                        }, 0);
+
+                        dfd.resolve();
+                    });
+                }
+                catch(e){
+                    layer.clearLayers();
+                    geoms.splice(0);
+                    dfd.resolve();
+                }
+
+                var getVisibleItems = function(){
+                    var bounds = map.getBounds();
+                    var visibleItems = [];
+                    geoms.forEach(function(item){
+                        try{
+                            var _coords = item.getLatLng();
+                        }
+                        catch(e){
+                            var _coords = item.getLatLngs();
+                        }
+                        try{
+                            if(bounds.intersects(_coords)){
+                                visibleItems.push(item.feature.properties.id);
+                            }
+                        }
+                        catch(e){
+                            if(bounds.contains(_coords)){
+                                visibleItems.push(item.feature.properties.id);
+                            }
                         }
                     });
-                    map.setView(
-                        [resource.center.lat, resource.center.lng], 
-                        resource.center.zoom);
-                    layerControl = L.control.layers(tileLayers, {'Données': layer});
-                    
-                    layerControl.addTo(map);
-                    dfd.resolve();
-                });
+                    return visibleItems;
+                };
+                mapService.getVisibleItems = getVisibleItems;
 
                 var getLayerControl = function(){
                     return layerControl;
@@ -127,46 +209,64 @@ app.directive('leafletMap', function(){
                 mapService.filterData = filterData;
 
                 var getItem = function(_id){
-                    var res = $filter('filter')(geoms, {feature: {properties: {id: _id}}}, function(act, exp){return act==exp;});
-                    try{
-                        map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
+                    var res = geoms.filter(function(item){
+                        return item.feature.properties.id == _id;
+                    });
+                    if(res.length){
+                        $timeout(function(){
+                            try{
+                                /*
+                                 * centre la carte sur le point sélectionné
+                                 */
+                                map.setView(res[0].getLatLng(), Math.max(map.getZoom(), 13));
+                            }
+                            catch(e){
+                                /*
+                                 * centre la carte sur la figure sélectionnée
+                                 */
+                                map.fitBounds(res[0].getBounds());
+                            }
+                        }, 0);
                         return res[0];
                     }
-                    catch(e){
-                        return null;
-                    }
+                    return null;
                 };
                 mapService.getItem = getItem;
 
-
-                var selectItem = function(_id){
-                    var geom = getItem(_id);
-                    
+                var _set_selected = function(item, _status){
+                    var iconUrl = 'js/lib/leaflet/images/marker-icon.png';
+                    var polygonColor = '#03F'; 
+                    var zOffset = 0;
+                    if(_status){
+                        iconUrl = 'js/lib/leaflet/images/marker-rouge.png';
+                        polygonColor = '#F00'; 
+                        zOffset = 1000;
+                    }
                     try{
-                        if(currentSel){
-                            currentSel.setIcon(L.icon({
-                                iconUrl: 'js/lib/leaflet/images/marker-icon.png', 
-                                shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
-                                iconSize: [25, 41], 
-                                iconAnchor: [13, 41],
-                                popupAnchor: [0, -41],
-                            }));
-                            currentSel.setZIndexOffset(0);
-                        }
-                        geom.setIcon(L.icon({
-                            iconUrl: 'js/lib/leaflet/images/marker-rouge.png', 
+                        item.setIcon(L.icon({
+                            iconUrl: iconUrl, 
                             shadowUrl: 'js/lib/leaflet/images/marker-shadow.png',
                             iconSize: [25, 41], 
                             iconAnchor: [13, 41],
                             popupAnchor: [0, -41],
                         }));
-                        geom.setZIndexOffset(1000);
-                        currentSel = geom;
-                        return geom;
+                        item.setZIndexOffset(zOffset);
                     }
                     catch(e){
-                        return null;
+                        item.setStyle({
+                            color: polygonColor,
+                        });
                     }
+                };
+
+                var selectItem = function(_id){
+                    var geom = getItem(_id);
+                    if(currentSel){
+                        _set_selected(currentSel, false);
+                    }
+                    _set_selected(geom, true);
+                    currentSel = geom;
+                    return geom;
                 };
                 mapService.selectItem = selectItem;
 
@@ -181,7 +281,10 @@ app.directive('leafletMap', function(){
                     if(jsonData.properties.geomLabel){
                         geom.bindPopup(jsonData.properties.geomLabel);
                     }
-                    geom.setZIndexOffset(0);
+                    try{
+                        geom.setZIndexOffset(0);
+                    }
+                    catch(e){}
                     geoms.push(geom);
                     layer.addLayer(geom);
                     return geom;
@@ -191,6 +294,12 @@ app.directive('leafletMap', function(){
 
                 var loadData = function(url){
                     var defd = $q.defer();
+                    $loading.start('map-loading');
+                    configServ.get(url, function(resp){
+                        if(resp){
+                            url = resp.url;
+                        }
+                    });
                     dataServ.get(url, dataLoad(defd));
                     return defd.promise;
                 };
@@ -199,23 +308,135 @@ app.directive('leafletMap', function(){
 
                 var dataLoad = function(deferred){
                     return function(resp){
-                        resp.forEach(function(geom){
-                            addGeom(geom);
-                        });
+                        if(resp.filtered){
+                            resp.filtered.forEach(function(geom){
+                                addGeom(geom);
+                            });
+                        }
+                        else{
+                            resp.forEach(function(geom){
+                                addGeom(geom);
+                            });
+                        }
                         $rootScope.$broadcast('mapService:dataLoaded');
+                        $loading.finish('map-loading');
                         deferred.resolve();
                     };
                 };
+
                 return dfd.promise;
             };
             mapService.initialize = initialize;
 
+            $scope.recenter = function(){
+                if(currentSel){
+                    mapService.getItem(currentSel.feature.properties.id);
+                }
+            };
+
+            $scope.$on('mapService:centerOnSelected', function(ev){
+                if(currentSel){
+                    mapService.getItem(currentSel.feature.properties.id);
+                }
+            });
+
+
             $scope.$on('$destroy', function(evt){
                 if(map){
                     map.remove();
+                    mapService.initialize = null;
+                    mapService.map = null;
                     geoms = [];
                 }
             });
+        }
+    };
+});
+
+app.directive('maplist', function($rootScope, $timeout, mapService){
+    return {
+        restrict: 'A',
+        transclude: true,
+        //templateUrl: 'js/templates/display/mapList.htm',
+        template: '<div><ng-transclude></ng-transclude></div>',
+        link: function(scope, elem, attrs){
+            // récupération de l'identificateur d'événements de la liste
+            var target = attrs['maplist'];
+            var filterTpl = '<div class="mapFilter"><label> filtrer avec la carte <input type="checkbox" onchange="filterWithMap(this);"/></label></div>';
+            scope.mapAsFilter = false;
+            scope.toolBoxOpened = true;
+            var visibleItems = [];
+            /*
+             * initialisation des listeners d'évenements carte 
+             */
+            var connect = function(){
+                // click sur la carte
+                scope.$on('mapService:itemClick', function(ev, item){
+                    mapService.selectItem(item.feature.properties.id);
+                    $rootScope.$broadcast(target + ':select', item.feature.properties);
+                });
+
+                scope.$on('mapService:pan', function(ev){
+                    scope.filter();
+                });
+
+                scope.filter = function(){
+                    visibleItems = mapService.getVisibleItems();
+                    $rootScope.$broadcast(target + ':filterIds', visibleItems, scope.mapAsFilter);
+                }
+
+                // sélection dans la liste
+                scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
+                    $timeout(function(){
+                        try{
+                            var geom = mapService.selectItem(item.id);
+                            geom.openPopup();
+                        }
+                        catch(e){}
+                    }, 0);
+                });
+
+                // filtrage de la liste
+                scope.$on(target + ':ngTable:Filtered', function(ev, data){
+                    ids = [];
+                    data.forEach(function(item){
+                        ids.push(item.id);
+                    });
+                    if(mapService.filterData){
+                        mapService.filterData(ids);
+                    }
+                });
+
+            };
+
+            var _createFilterCtrl = function(){
+                var filterCtrl = L.control({position: 'topright'});
+                filterCtrl.onAdd = function(map){
+                    this._filtCtrl = L.DomUtil.create('div', 'filterBtn');
+                    this.update();
+                    return this._filtCtrl;
+                };
+                filterCtrl.update = function(){
+                    this._filtCtrl.innerHTML = filterTpl;
+                };
+                filterCtrl.addTo(mapService.getMap());
+            }
+
+            scope.$on('map:ready', function(){
+                _createFilterCtrl();
+            });
+
+            document.filterWithMap = function(elem){
+                $rootScope.$apply(function(){
+                    scope.mapAsFilter = elem.checked;
+                    scope.filter();
+                });
+            };
+
+            $timeout(function(){
+                connect();
+            }, 0);
+
         }
     };
 });

@@ -1,5 +1,7 @@
+editAccess: 3
+editAccessOverride: metaNumerisateurId
 deleteAccess: 5
-deleteAccessOverride: numerisateurId
+deleteAccessOverride: metaNumerisateurId
 subSchemaUrl: chiro/config/obstaxon/form/many
 subDataRef: __taxons__
 subSchemaAdd: 2,
@@ -10,12 +12,14 @@ groups:
           - name: id
             label: Id
             type: hidden
-          - name: siteId
+          - name: fkBsId
             label: Site
             type: hidden
-          - name: numerisateurId
+          - name: metaNumerisateurId
             label: Numerisateur
             type: hidden
+            options:
+                ref: userId
           - name: observateurs
             label: Observateurs
             type: xhr
@@ -24,24 +28,28 @@ groups:
                 url: "users/name/100/2"
                 reverseurl: "users/id"
                 ref: nomComplet
-          - name: obsDate
+          - name: bvDate
             label: Date
             type: date
             options:
                 required: true
-          - name: modId
+          - name: cvcModId
             label: "Mode d'observation"
             type: select
-          - name: obsCommentaire
+            thesaurusID: 4
+            default: 18
+          - name: bvCommentaire
             label: Commentaires
             type: text
-          - name: obsTemperature
+          - name: cvcTemperature
             label: "Température (°C)"
             options:
-                max: "100"
+                max: 100
+                step: 0.1
             type: num
-          - name: obsHumidite
+          - name: cvcHumidite
             label: "Humidité (%)"
-            options:
-                max: "100"
             type: num
+            options:
+                max: 100
+                step: 0.1

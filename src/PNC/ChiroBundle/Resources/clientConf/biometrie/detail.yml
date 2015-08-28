@@ -2,60 +2,76 @@ editAccess: 3
 groups:
     -   name: "Général"
         fields:
-            -   name: ageId
+            -   name: cbioAgeId
                 label: "Âge"
                 type: select
-            -   name: sexeId
+                thesaurusID: 1
+            -   name: cbioSexeId
                 label: "Sexe"
                 type: select
-            -   name: biomPoids
+                thesaurusID: 2
+            -   name: cbioPoids
                 label: "Poids (g)"
                 type: num
-            -   name: biomCommentaire
+            -   name: cbioCommentaire
                 label: "Commentaires"
                 type: string
     -   name: "Membre"
         fields:
-            -   name: biomAb
+            -   name: cbioAb
                 label: "AB (mm)"
                 type: num
-            -   name: biomD3mf1
+            -   name: cbioD3mf1
                 label: "D3MF1 (mm)"
                 type: num
                 help: "Mesure du 3ème doigt, métacarpe + 1ère phalange"
-            -   name: biomD3f2f3
+            -   name: cbioD3f2f3
                 label: "D3F2F3 (mm)"
                 type: num
                 help: "Mesure du 3ème doigt, 2ème et 3ème phalanges"
-            -   name: biomD3total
+            -   name: cbioD3total
                 label: "D3 total (mm)"
                 type: num
                 help: "Longueur totale du 3ème doigt"
-            -   name: biomD5
+            -   name: cbioD5
                 label: "D5 (mm)"
                 type: num
                 help: "Mesure du 5ème doigt"
     -   name: "Crane"
         fields:
-            -   name: biomCm3sup
+            -   name: cbioCm3sup
                 label: "CM3SUP (mm)"
                 type: num
                 help: "Mesure canine - 3ème molaire (mandibule supérieure)"
-            -   name: biomCm3inf
+            -   name: cbioCm3inf
                 label: "CM3INF (mm)"
                 type: num
                 help: "Mesure canine - 3ème molaire (mandibule inférieure)"
-            -   name: biomCb
+            -   name: cbioCb
                 label: "CB (mm)"
                 help: "Mesure condylobasale"
                 type: num
-            -   name: biomLm
+            -   name: cbioLm
                 label: "LM (mm)"
                 help: "Mesure mandibule inférieure"
                 type: num
-            -   name: biomOreille
+            -   name: cbioOreille
                 label: "Oreille (mm)"
                 help: "Mesure de l'oreille"
                 type: num
+    -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
+        fields:
+            -   name: metaNumerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: metaCreateTimestamp
+                label: "Création donnée"
+                type: date
+            -   name: metaUpdateTimestamp
+                label: "Dernière mise à jour"
+                type: date
 
 

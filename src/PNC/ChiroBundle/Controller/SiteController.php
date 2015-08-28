@@ -16,13 +16,13 @@ use Commons\Exceptions\CascadeException;
 class SiteController extends Controller{
     
     // path: GET /chiro/site
-    public function listAction(){
+    public function listAction(Request $request){
         /*
          * retourne la liste des sites "chiro"
          */
         $ss = $this->get('siteService');
 
-        return new JsonResponse($ss->getList());
+        return new JsonResponse($ss->getFilteredList($request));
     }
 
 

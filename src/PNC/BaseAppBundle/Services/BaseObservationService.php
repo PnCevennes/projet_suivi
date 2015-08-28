@@ -4,22 +4,33 @@ namespace PNC\BaseAppBundle\Services;
 
 use Commons\Exceptions\DataObjectException;
 
-use PNC\BaseAppBundle\Entity\Observation;
+use PNC\BaseAppBundle\Entity\Visite;
 use PNC\BaseAppBundle\Entity\Observateurs;
 
 class BaseObservationService{
-    public function __construct($gs){
+    private $geometryService;
+    private $entityService;
+
+    public function __construct($gs, $es){
         $this->geometryService = $gs;
+        $this->entityService = $es;
+        $this->schema = array(
+            'bvDate'=>'date',
+            'geom'=>'point',
+            'fkBsId'=>null,
+            'bvCommentaire'=>null,
+            'metaNumerisateurId'=>null
+        );
     }
     
     public function create($db, $data){
         $repo = $db->getRepository('PNCBaseAppBundle:Observateurs');
         $manager = $db->getManager();
-        $obs = new Observation();
+        $obs = new Visite();
         $errors = array();
 
         try{
-            $this->hydrate($obs, $data);
+            $this->entityService->hydrate($obs, $this->schema, $data);
         }
         catch(DataObjectException $e){
             $errors = $e->getErrors();
@@ -46,12 +57,12 @@ class BaseObservationService{
 
     public function update($db, $id, $data){
         $rObr = $db->getRepository('PNCBaseAppBundle:Observateurs');
-        $rObs = $db->getRepository('PNCBaseAppBundle:Observation');
+        $rObs = $db->getRepository('PNCBaseAppBundle:Visite');
         $manager = $db->getManager();
         $obs = $rObs->findOneBy(array('id'=>$data['id']));
         $errors = array();
         try{
-            $this->hydrate($obs, $data);
+            $this->entityService->hydrate($obs, $this->schema, $data);
         }
         catch(DataObjectException $e){
             $errors = $e->getErrors();
@@ -79,34 +90,11 @@ class BaseObservationService{
     }
 
     public function remove($db, $id){
-        $rObs = $db->getRepository('PNCBaseAppBundle:Observation');
+        $rObs = $db->getRepository('PNCBaseAppBundle:Visite');
         $manager = $db->getManager();
         $obs = $rObs->findOneBy(array('id'=>$id));
         $manager->remove($obs);
         $manager->flush();
         return true;
     }
-
-    private function hydrate($obj, $data){
-        if(strpos($data['obsDate'], '/')!==false){
-            $date = \DateTime::createFromFormat('d/m/Y', $data['obsDate']);
-        }
-        else{
-            $date = \DateTime::createFromFormat('Y-m-d', substr($data['obsDate'], 0, 10));
-        }
-        if(isset($data['geom'])){
-            $geom = $this->geometryService->getPoint($data['geom']);
-            $obj->setGeom($geom);
-        }
-        $obj->setObsDate($date);
-        $obj->setObsCommentaire($data['obsCommentaire']);
-        $obj->setNumerisateurId($data['numerisateurId']);
-        if(isset($data['siteId'])){
-            $obj->setSiteId($data['siteId']);
-        }
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors()); 
-        }
-    }
-
 }

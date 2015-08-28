@@ -1,0 +1,2 @@
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN obs_nb_indetermine_adulte INTEGER;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN obs_nb_indetermine_juvenile INTEGER;

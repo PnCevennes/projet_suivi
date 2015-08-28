@@ -45,6 +45,11 @@ class ConfigController extends Controller{
     // path: POST /upload_file
     public function uploadAction(Request $req){
         $manager = $this->getDoctrine()->getManager();
+
+        $upd = $this->get('kernel')->getContainer()->getParameter('upload_directory');
+        $target_directory = $req->query->get('target', '');
+        $updir = $upd . '/' . $target_directory;
+
         $manager->getConnection()->beginTransaction();
         foreach($req->files as $file){
             try{
@@ -55,7 +60,7 @@ class ConfigController extends Controller{
 
                 $fileName = $fichier->getId() . '_' . $fichier->getPath();
                 
-                $file->move($this->get('kernel')->getRootDir().'/../web/uploads', $fileName);
+                $file->move($updir, $fileName);
                 $manager->getConnection()->commit();
                 return new JsonResponse(array(
                     'id'=>$fichier->getId(),
@@ -66,12 +71,16 @@ class ConfigController extends Controller{
                 $manager->getConnection()->rollback();
                 return new JsonResponse(array('err'=>$e->getMessage()), 400);
             }
-          return new JsonResponse(array('err'=>'No files'));
         }
+        return new JsonResponse(array('err'=>'No files'), 400);
     }
 
     // path: DELETE /upload_file/{file_id}
-    public function deleteFileAction($file_id){
+    public function deleteFileAction(Request $req, $file_id){
+        $upd = $this->get('kernel')->getContainer()->getParameter('upload_directory');
+        $target_directory = $req->query->get('target', '');
+        $updir = $upd . '/' . $target_directory;
+
         $id = substr($file_id, 0, strpos($file_id, '_'));
         $deleted = false;
         $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Fichiers');
@@ -79,7 +88,8 @@ class ConfigController extends Controller{
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($fich);
         $manager->flush();
-        $fdir = $this->get('kernel')->getRootDir().'/../web/uploads/'.$file_id;
+        $target_directory = $req->request->get('target', '');
+        $fdir = $updir . '/' . $file_id;
         if(file_exists($fdir)){
             unlink($fdir);
             $deleted = true;
@@ -90,5 +100,19 @@ class ConfigController extends Controller{
             'fdir'=>$fdir,
             'deleted'=>$deleted
         ));
+    }
+
+    // path: GET /commune/{insee}
+    public function getCommuneAction(Request $req, $insee){
+        $db = $this->getDoctrine()->getConnection();
+        $req = $db->prepare('SELECT nom_reel FROM ref_geographique.l_communes WHERE insee_com=:insee');
+        $req->bindParam('insee', $insee);
+        $req->execute();
+        $res = $req->fetchAll();
+        if($res[0]){
+            $result = $res[0]['nom_reel'];
+            return new JsonResponse(array('id'=>$insee, 'label'=>$result));
+        }
+        return new JsonResponse(array('id'=>$insee), 404);
     }
 }

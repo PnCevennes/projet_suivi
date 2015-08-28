@@ -1,0 +1,101 @@
+-- View: utilisateurs.view_login
+
+-- DROP VIEW utilisateurs.view_login;
+
+CREATE OR REPLACE VIEW utilisateurs.view_login AS 
+ SELECT tr.id_role,
+    tr.identifiant,
+    tr.pass,
+    (tr.nom_role::text || ' '::text) || tr.prenom_role::text AS nom_complet,
+    crda.id_application,
+    max(crda.id_droit) AS maxdroit
+   FROM utilisateurs.t_roles tr
+     JOIN utilisateurs.cor_roles cr ON cr.id_role_utilisateur = tr.id_role
+     JOIN utilisateurs.cor_role_droit_application crda ON crda.id_role = tr.id_role OR crda.id_role = cr.id_role_groupe
+  GROUP BY tr.id_role, crda.id_application;
+
+ALTER TABLE utilisateurs.view_login
+  OWNER TO fred;
+
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN mod_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN act_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN eff_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN prv_id integer;
+ALTER TABLE chiro.chiro_observation_taxon ADD COLUMN num_id integer;
+
+DROP VIEW chiro.vue_chiro_site;
+
+ALTER TABLE chiro.chiro_infos_site
+  DROP COLUMN site_frequentation;
+ALTER TABLE chiro.chiro_infos_site RENAME site_menace  TO site_menace_cmt;
+ALTER TABLE chiro.chiro_infos_site
+  ADD COLUMN site_frequentation integer;
+ALTER TABLE chiro.chiro_infos_site
+  ADD COLUMN site_menace integer;
+
+
+-- View: chiro.vue_chiro_site
+
+CREATE OR REPLACE VIEW chiro.vue_chiro_site AS 
+ SELECT s.id,
+    s.site_nom,
+    s.site_code,
+    s.site_date,
+    s.site_description,
+    s.observateur_id,
+    st_asgeojson(s.geom) AS geom,
+    (((obr.nom_role::text || ' '::text) || obr.prenom_role::text))::character varying(255) AS nom_observateur,
+    s.type_id,
+    l.code AS type_lieu,
+    c.site_schema,
+    c.site_frequentation,
+    c.site_menace,
+    c.site_menace_cmt,
+    c.site_commentaire,
+    c.contact_nom,
+    c.contact_prenom,
+    c.contact_adresse,
+    c.contact_code_postal,
+    c.contact_ville,
+    c.contact_telephone,
+    c.contact_portable,
+    c.contact_commentaire,
+    array_to_json(ARRAY( SELECT (rcf.fichier_id::text || '_'::text) || ups.path::text
+           FROM chiro.rel_chirosite_fichiers rcf
+             LEFT JOIN pnc.uploads ups ON ups.id = rcf.fichier_id
+          WHERE rcf.site_id = s.id)) AS site_amenagement,
+    ( SELECT max(obs.obs_date) AS max
+           FROM pnc.base_observation obs
+          WHERE obs.site_id = s.id) AS dern_obs,
+    ( SELECT count(*) AS count
+           FROM pnc.base_observation
+          WHERE base_observation.site_id = s.id) AS nb_obs
+   FROM chiro.chiro_infos_site c
+     JOIN pnc.base_site s ON c.site_id = s.id
+     LEFT JOIN utilisateurs.t_roles obr ON obr.id_role = s.observateur_id
+     LEFT JOIN ext.t_thesaurus l ON l.id = s.type_id
+  ORDER BY s.id;
+
+
+-- insertions db
+
+-- menaces
+insert into ext.t_thesaurus (id_type, code, libelle, fk_parent, hierarchie) 
+values 
+(11, 'menaces', 'menaces', 0, '011'),
+(11, 'aucune', 'Aucune', 11, '011.001'),
+(11, 'destruction', 'Destruction/Dérangement direct (visite des sites)', 11, '011.002'),
+(11, 'dégradation', 'Dégradation (Réfection des sites accueillant des individus)', 11, '011.003'),
+(11, 'traitement', 'Traitement chimiques proches', 11, '011.004'),
+(11, 'modification', 'Modifications du milieu (coupes de bois, défrichement, mise en culture)', 11, '011.005')
+;
+
+-- frequentation
+insert into ext.t_thesaurus (id_type, code, libelle, fk_parent, hierarchie) 
+values 
+(10, 'frequentation', 'frequentation', 0, '010'),
+(10, 'nulle', 'Nulle (pas de pénétrations enthropiques)', 10, '010.001'),
+(10, 'faible', 'Faible (site peu accessible, peu connu)', 10, '010.002'),
+(10, 'moyenne', 'Moyenne (accessibilité à pied, proximité PR)', 10, '010.003'),
+(10, 'forte', 'Nulle (accès facile, proximité GR, bâti remarquable souvent visité)', 10, '010.004'),
+;

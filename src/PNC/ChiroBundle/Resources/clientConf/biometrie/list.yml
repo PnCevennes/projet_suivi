@@ -5,30 +5,43 @@ createUrl: "#/chiro/edit/biometrie/taxon/"
 editUrl: "#/chiro/edit/biometrie/"
 detailUrl: "#/chiro/biometrie/"
 editAccess: 3
+#filtering: 
+#    limit: 200
 fields:
     -   name: id
         label: "Id"
+        type: num
         filter: 
             id: text
         options:
             visible: false
-    -   name: ageId
+            style: xl 
+    -   name: cbioAgeId
         label: "Âge"
+        type: select
+        thesaurusID: 1
         filter:
-            ageId: text
+            cbioAgeId: text
         options:
             visible: true
             type: select
-    -   name: sexeId
+            style: xl 
+            primary: true
+    -   name: cbioSexeId
         label: "Sexe"
+        type: select
+        thesaurusID: 2
         filter:
-            sexeId: text
+            cbioSexeId: text
         options:
             visible: true
             type: select
-    -   name: biomPoids
+            style: s 
+    -   name: cbioPoids
         label: "Poids"
+        type: num
         filter: 
-            biomPoids: text
+            cbioPoids: text
         options:
             visible: true
+            style: xs 

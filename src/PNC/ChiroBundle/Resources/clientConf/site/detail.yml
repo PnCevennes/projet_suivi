@@ -1,69 +1,101 @@
+dataUrl: "chiro/site/" 
+mapConfig: "js/resources/chiro_site.json"
+mapData: "chiro/site"
+mapSize: large
 editAccess: 3
 subEditAccess: 2
 subSchemaUrl: chiro/config/observation/list
 subDataUrl: chiro/observation/site/
 groups:
     -   name: Informations
+        glyphicon: glyphicon-info-sign
         fields:
-            -   name: siteCode
+            -   name: bsCode
                 label: "Code site"
                 type: string
             -   name: nomObservateur
                 label: "Observateur"
                 type: string
-            -   name: siteDate
+            -   name: bsDate
                 label: "Date de création"
                 type: date
                 help: "Date d'ajout du site à la base de données"
-            -   name: typeId
+            -   name: bsTypeId
                 label: "Type"
                 type: select
+                thesaurusID: 7
                 help: "Type de lieu"
+            -   name: refCommune
+                label: "Commune"
+                type: xhr
+                options:
+                    multi: true
+                    url: "commune"
     -   name: Détails
+        glyphicon: glyphicon-search
         fields:
-            -   name: siteDescription
+            -   name: bsDescription
                 label: Description
                 type: string
             -   name: siteAmenagement
                 label: Aménagement
                 type: file
                 help: "Aménagement du site"
-            -   name: siteFrequentation
+                options:
+                    target: "chiro/site/"
+            -   name: cisFrequentation
                 label: Fréquentation
                 type: select
+                thesaurusID: 10
                 help: "Fréquentation du site"
-            -   name: siteMenace
+            -   name: cisMenace
                 label: Menaces
                 type: select
+                thesaurusID: 11
                 help: "Menaces pesant sur le site"
-            -   name: siteMenaceCmt
+            -   name: cisMenaceCmt
                 label: "Description menaces"
                 type: string
                 help: "Description des menaces pesant sur le site"
     -   name: Contact
+        glyphicon: glyphicon-phone-alt
         fields:
-            -   name: contactNom
+            -   name: cisContactNom
                 label: "Nom du contact"
                 type: string
-            -   name: contactPrenom
+            -   name: cisContactPrenom
                 label: "Prénom du contact"
                 type: string
-            -   name: contactAdresse
+            -   name: cisContactAdresse
                 label: "Adresse du contact"
                 type: string
-            -   name: contactCodePostal
+            -   name: cisContactCodePostal
                 label: "Code postal"
                 type: string
-            -   name: contactVille
+            -   name: cisContactVille
                 label: "Ville"
                 type: string
-            -   name: contactTelephone
+            -   name: cisContactTelephone
                 label: "Téléphone"
                 type: string
-            -   name: contactPortable
+            -   name: cisContactPortable
                 label: "Portable"
                 type: string
-            -   name: contactCommentaire
+            -   name: cisContactCommentaire
                 label: "Commentaires contact"
                 type: string
                 help: "Informations complémentaires contact"
+    -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
+        fields:
+            -   name: metaNumerisateurId
+                label: Numérisateur
+                type: xhr
+                options:
+                    url: "users/id"
+            -   name: metaCreateTimestamp
+                label: "Création donnée"
+                type: date
+            -   name: metaUpdateTimestamp
+                label: "Dernière mise à jour"
+                type: date

@@ -1,8 +1,8 @@
 PNC\BaseAppBundle\Entity\Site:
     type: entity
-    table: pnc.base_site
-    schema: pnc
-    repositoryClass: PNC\BaseAppBundle\Repositories\SiteRepository
+    table: suivi.pr_base_site
+    schema: suivi
+    #repositoryClass: PNC\BaseAppBundle\Repositories\SiteRepository
     id:
         id:
             type: integer
@@ -10,46 +10,34 @@ PNC\BaseAppBundle\Entity\Site:
             generator:
                 strategy: AUTO
     fields:
-        site_nom:
+        bs_nom:
             type: string
             length: 250
-        observateur_id:
+        bs_obr_id:
             type: integer
-        type_id:
+        bs_type_id:
             type: integer
-        site_code:
+        bs_code:
             type: string
             length: 25
             nullable: true
-        site_date:
+        bs_date:
             type: date
             nullable: true
-        site_description:
+        bs_description:
             type: text
             nullable: true
         geom:
-           type: geometry
-    manyToMany:
-        site_app:
-            targetEntity: PNC\ExtBundle\Entity\Application
-            joinTable:
-                name: pnc.rel_site_app
-                joinColumns: 
-                    site_id: 
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    app_id:
-                        referencedColumnName: id
-
-    manyToOne:
-        #observateur:
-        #    targetEntity: PNC\ExtBundle\Entity\Observateur
-        #    joinColumn: 
-        #       name: observateur_id
-        #       referencedColumnName: id
-    
-        #site_type:
-        #    targetEntity: PNC\ExtBundle\Entity\Lexique
-        #    joinColumn: 
-        #       name: type_id
-        #       referencedColumnName: id
+            type: geometry
+        ref_commune:
+            type: string
+            nullable: true
+        meta_create_timestamp:
+            type: date
+            nullable: true
+        meta_update_timestamp:
+            type: date
+            nullable: true
+        meta_numerisateur_id:
+            type: integer
+            nullable: true

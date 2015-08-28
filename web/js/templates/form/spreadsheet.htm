@@ -2,17 +2,17 @@
     <h2>{{subTitle}}</h2>
     <div class="spreadsheet">
         <form name="spreadSheet" novalidate>
-            <table class="table table-condensed">
+            <table ng-table="tableParams" class="table table-condensed ng-table-resizable-columns table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th ng-repeat="field in schema.fields" tooltip="{{field.help}}">{{field.label}}</th>
+                        <th ng-repeat="field in schema.fields" data-resizable-column-id="{{field.name}}" ng-if="field.type != 'hidden'">{{field.label}}</th>
                     </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="line in data">
                     <th scope="row">{{$index+1}}</th>
-                    <td ng-repeat="field in schema.fields">
+                    <td ng-repeat="field in schema.fields" ng-if="field.type != 'hidden'">
                         <input id="{{field.name}}" name="{{field.name}}" type="text" ng-if="field.type=='string' && !field.options.multi" ng-model="line[field.name]" ng-minlength="field.options.minLength" ng-maxlength="field.options.maxLength" ng-required="field.options.minLength>0 || field.options.required || field.options.primary">
                         <input id="{{field.name}}" name="{{field.name}}" type="number" min="{{field.options.min}}" max="{{field.options.max}}" step="{{field.options.step}}" ng-if="field.type=='num' && !field.options.multi" ng-model="line[field.name]" ng-required="field.options.required || field.options.primary">
                         <div id="{{field.name}}" datepick ng-if="field.type=='date' && !field.options.multi" date="line[field.name]" ngrequired="field.options.required || field.options.primary"></div>

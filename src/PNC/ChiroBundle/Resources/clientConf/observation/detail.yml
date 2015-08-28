@@ -1,6 +1,6 @@
 editAccess: 3
 subEditAccess: 2
-editAccessOverride: numerisateurId
+editAccessOverride: metaNumerisateurId
 subSchemaUrl: "chiro/config/obstaxon/list"
 subDataUrl: "chiro/obs_taxon/observation/"
 subEditSchemaUrl: "chiro/config/obstaxon/form/many"
@@ -9,38 +9,55 @@ subEditRef: id
 subSchemaAdd: 2
 groups:
     - name: Observation
+      glyphicon: glyphicon-info-sign
       fields:
           - name: id
             type: hidden
-          - name: siteNom
+          - name: bsNom
             label: Site
             type: string
-          - name: obsDate
-            label: Date
-            type: date
-          - name: numerisateurId
-            label: Numérisateur
+          - name: refCommune
+            label: "Commune"
             type: xhr
             options:
-                url: "users/id"
+                url: commune
+                multi: true
+          - name: bvDate
+            label: Date
+            type: date
           - name: observateurs
             label: Observateurs
             type: xhr
             options:
                 multi: true
                 url: "users/id"
-          - name: modId
+          - name: cvcModId
             label: "Mode d'observation"
             type: select
-          - name: obsCommentaire
+            thesaurusID: 4
+          - name: bvCommentaire
             label: Commentaires
             type: string
-          - name: obsTemperature
+          - name: cvcTemperature
             label: "Température (°C)"
             type: string
-          - name: obsHumidite
+          - name: cvcHumidite
             label: "Humidité (%)"
             type: string
+    - name: Metadonnées
+      glyphicon: glyphicon-stats
+      fields:
+          - name: metaNumerisateurId
+            label: Numérisateur
+            type: xhr
+            options:
+                url: "users/id"
+          - name: metaCreateTimestamp
+            label: "Création donnée"
+            type: date
+          - name: metaUpdateTimestamp
+            label: "Dernière mise à jour"
+            type: date
 
 
 

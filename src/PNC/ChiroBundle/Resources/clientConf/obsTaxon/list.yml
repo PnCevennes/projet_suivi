@@ -4,7 +4,20 @@ createBtnLabel: Ajouter taxon
 createUrl: "#/chiro/edit/taxons/observation/"
 editUrl: "#/chiro/edit/taxons/"
 detailUrl: "#/chiro/taxons/"
+dataUrl: "chiro/obs_taxon" 
+mapConfig: "js/resources/chiro_site.json"
+mapSize: small
 editAccess: 3
+filtering:
+    limit: 200
+    fields: 
+        -   name: "cd_nom"
+            label: "Taxon"
+            type: "xhr"
+            options:
+                url: "chiro/taxons"
+                reverseurl: "chiro/taxons/id"
+                ref: "taxon"
 fields:
     -   name: id
         label: Id
@@ -18,16 +31,22 @@ fields:
             nomComplet: text
         options:
             visible: true
-    -   name: obsEffectifAbs
+            style: xl 
+            primary: true
+    -   name: cotxEffectifAbs
         label: "Effectif total"
         filter:
-            obsEffectifAbs: text
+            cotxEffectifAbs: text
         options:
             visible: true
-    -   name: obsObjStatusValidation
+            style: xs 
+    -   name: cotxObjStatusValidation
         label: "Validation"
+        type: select
+        thesaurusID: 9
         filter:
-            obsObjStatusValidation: text
+            cotxObjStatusValidation: text
         options:
             visible: true
             type: select
+            style: l 

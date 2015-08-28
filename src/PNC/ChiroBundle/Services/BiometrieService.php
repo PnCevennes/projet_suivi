@@ -9,13 +9,64 @@ class BiometrieService{
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
+    // hydrate
+    private $entityService;
 
-    public function __construct($db, $norm){
+    // schema
+    private $schema;
+
+    public function __construct($db, $es, $pg){
         $this->db = $db;
-        $this->norm = $norm;
+        $this->entityService = $es;
+        $this->pagination = $pg;
+        /*
+        $this->schema = array(
+            'id'=>null,
+            'obsTxId'=>null,
+            'ageId'=>null,
+            'sexeId'=>null,
+            'biomAb'=>null,
+            'biomPoids'=>null,
+            'biomD3mf1'=>null,
+            'biomD3f2f3'=>null,
+            'biomD3total'=>null,
+            'biomD5'=>null,
+            'biomCm3sup'=>null,
+            'biomCm3inf'=>null,
+            'biomCb'=>null,
+            'biomLm'=>null,
+            'biomOreille'=>null,
+            'biomCommentaire'=>null,
+            'numerisateurId'=>null,
+        );
+
+        $this->normalize_schema = array(
+            'id'=>null,
+            'obsTxId'=>null,
+            'ageId'=>null,
+            'sexeId'=>null,
+            'biomAb'=>null,
+            'biomPoids'=>null,
+            'biomD3mf1'=>null,
+            'biomD3f2f3'=>null,
+            'biomD3total'=>null,
+            'biomD5'=>null,
+            'biomCm3sup'=>null,
+            'biomCm3inf'=>null,
+            'biomCb'=>null,
+            'biomLm'=>null,
+            'biomOreille'=>null,
+            'biomCommentaire'=>null,
+            'created'=>'date',
+            'updated'=>'date',
+            'numerisateurId'=>null,
+        );
+         */
+
+        $this->schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+        $this->normalize_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
     }
+
 
     /*
      * Retourne la liste des biométries liées à une observation de taxon
@@ -23,14 +74,45 @@ class BiometrieService{
      *      otx_id=>id de l'observation de taxon
      */
     public function getList($otx_id){
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $data = $repo->findBy(array('obs_tx_id'=>$otx_id));
+        $out = array();
+        if($otx_id){
+            $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+            $data = $repo->findBy(array('fk_cotx_id'=>$otx_id));
+            foreach($data as $item){
+                $out[] = $this->entityService->normalize($item, $schema);
+            }
+        }
+        return $out;
+    }
+
+
+    /*
+     * Retourne la liste filtrée des biométries liées à une observation de taxon
+     * params:
+     *      request=>requete de filtrage
+     *      otx_id=>id de l'observation de taxon
+     */
+    public function getFilteredList($request, $otx_id){
+        $entity = 'PNCChiroBundle:Biometrie';
+        //$data = $repo->findBy(array('fk_cotx_id'=>$otx_id));
+        $cpl = array(
+            array(
+                'name'=>'fk_cotx_id',
+                'compare'=>'=',
+                'value'=>$otx_id
+            )
+        );
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
+
+        $data = $res['filtered'];
 
         $out = array();
         foreach($data as $item){
-            $out[] = $this->norm->normalize($item);
+            $out[] = $this->entityService->normalize($item, $this->normalize_schema);
         }
-        return $out;
+
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     /*
@@ -39,10 +121,13 @@ class BiometrieService{
      *      id: l'id de la biometrie
      */
     public function getOne($id){
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $data = $repo->findOneBy(array('id'=>$id));
+        $data = $this->entityService->getOne(
+            'PNCChiroBundle:Biometrie',
+            array('id'=>$id)
+        );
+
         if($data){
-            return $this->norm->normalize($data);
+            return $this->entityService->normalize($data, $this->normalize_schema);
         }
         return null;
     }
@@ -56,33 +141,21 @@ class BiometrieService{
      *  raise:
      *      DataObjectException si les données sont invalides
      */
-    public function create($data, $db=null, $commit=true){
-        if(!$db){
-            $manager = $this->db->getManager();
+    public function create($data, $db=null){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+        $result = $this->entityService->create(
+            array(
+                $schema=>array(
+                    'entity'=>new Biometrie(), 
+                    'data'=>$data
+                )
+            ),
+            $db
+        );
+        if($result){
+            $biom = $result[$schema];
+            return array('id'=>$biom->getId());
         }
-        else{
-            $manager = $db;
-        }
-        if($commit){
-            $manager->getConnection()->beginTransaction();
-        }
-        try{
-            $biom = new Biometrie();
-            $this->hydrate($biom, $data);
-            $manager->persist($biom);
-            $manager->flush();
-        }
-        catch(DataObjectException $e){
-            if($commit){
-                $manager->getConnection()->rollback();
-            }
-            throw new DataObjectException($e->getErrors());
-        }
-        if($commit){
-            $manager->getConnection()->commit();
-        }
-        return array('id'=>$biom->getId());
-
     }
 
     /*
@@ -96,15 +169,21 @@ class BiometrieService{
      *      DataObjectException si les données sont invalides
      */
     public function update($id, $data){
-        $manager = $this->db->getManager();
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->findOneBy(array('id'=>$id));
-        if(!$biom){
-            return null;
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+
+        $result = $this->entityService->update(
+            array(
+                $schema=>array(
+                    'repo'=>'PNCChiroBundle:Biometrie',
+                    'filter'=>array('id'=>$id),
+                    'data'=>$data
+                )
+            )
+        );
+        if($result){
+            $biom = $result[$schema];
+            return array('id'=>$biom->getId());
         }
-        $this->hydrate($biom, $data);
-        $manager->flush();
-        return array('id'=>$biom->getId());
     }
 
     /*
@@ -115,44 +194,21 @@ class BiometrieService{
      *      bool succès
      */
     public function remove($id){
-        $manager = $this->db->getManager();
-        $repo = $this->db->getRepository('PNCChiroBundle:Biometrie');
-        $biom = $repo->findOneBy(array('id'=>$id));
-        if($biom){
-            $manager->remove($biom);
-            $manager->flush();
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/Biometrie.orm.yml';
+
+        try{
+            $result = $this->entityService->delete(
+                array(
+                    $schema=>array(
+                        'repo'=>'PNCChiroBundle:Biometrie',
+                        'filter'=>array('id'=>$id)
+                    )
+                )
+            );
             return true;
         }
-        return false;
-    }
-
-    /*
-     *  Factorisation de l'affectation des champs aux objets Biométrie
-     *  Aucune valeur de retour, la méthode agit sur la référence à l'objet
-     *  params:
-     *      obj: l'objet cible
-     *      data: le dictionnaire de données
-     *  raise:
-     *      DataObjectException en cas de données invalides
-     */
-    private function hydrate($obj, $data){
-        $obj->setObsTxId($data['obsTxId']);
-        $obj->setAgeId($data['ageId']);
-        $obj->setSexeId($data['sexeId']);
-        $obj->setBiomAb($data['biomAb']);
-        $obj->setBiomPoids($data['biomPoids']);
-        $obj->setBiomD3mf1($data['biomD3mf1']);
-        $obj->setBiomD3f2f3($data['biomD3f2f3']);
-        $obj->setBiomD3total($data['biomD3total']);
-        $obj->setBiomD5($data['biomD5']);
-        $obj->setBiomCm3sup($data['biomCm3sup']);
-        $obj->setBiomCm3inf($data['biomCm3inf']);
-        $obj->setBiomCb($data['biomCb']);
-        $obj->setBiomLm($data['biomLm']);
-        $obj->setBiomOreille($data['biomOreille']);
-        $obj->setBiomCommentaire($data['biomCommentaire']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors());
+        catch(DataObjectException $e){
+            return false;
         }
     }
 }

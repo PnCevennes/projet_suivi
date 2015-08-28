@@ -20,26 +20,89 @@ class ObservationService{
     // baseObservation
     private $parentService;
 
-    public function __construct($db, $norm, $taxonServ, $parentServ){
+    public function __construct($db, $taxonServ, $parentServ, $es, $pg){
         $this->db = $db;
-        $this->norm = $norm;
         $this->taxonService = $taxonServ;
         $this->parentService = $parentServ;
+        $this->entityService = $es;
+        $this->pagination = $pg;
+    }
+
+    public function getFilteredList($request, $id=null){
+        if(!$id){
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
+            $entity = 'PNCChiroBundle:ObservationSsSiteView';
+            $cpl = null;
+        }
+        else{
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
+            $entity = 'PNCChiroBundle:ObservationView';
+            $cpl = array(
+                array(
+                    'name'=>'fk_bs_id',
+                    'compare'=>'=',
+                    'value'=>$id
+                )
+            );
+        }
+
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
+
+        $infos = $res['filtered'];
+
+        if($id){
+            $out = array();
+            foreach($infos as $info){
+                $out_item = $this->entityService->normalize($info, $schema);
+                $out_item['observateurs'] = array();
+                foreach($info->getObservateurs() as $obr){
+                    if($obr->getRole() == 'observateur'){
+                        $out_item['observateurs'][] = $obr->getNomComplet();
+                    }
+                }
+                $out[] = $out_item;
+            }
+            return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
+        }
+
+
+        $out = array();
+        foreach($infos as $info){
+            $data = $this->entityService->normalize($info, $schema);
+            $out_item = array(
+                'type'=>'Feature',
+                'geometry'=>$info->getGeom(),
+                'properties'=>$data);
+            $out_item['properties']['observateurs'] = array();
+            foreach($info->getObservateurs() as $obr){
+                if($obr->getRole() == 'observateur'){
+                    $out_item['properties']['observateurs'][] = $obr->getNomComplet();
+                }
+            }
+
+            $out_item['properties']['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
+                $info->getId(), $info->getBvDate()->format('d/m/Y'));
+
+            $out[] = $out_item;
+        }
+
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
     }
 
     public function getList($siteId=null){
         if(!$siteId){
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationSsSiteView');
             $infos = $repo->findAll();
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
         }
         else{
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
-            $infos = $repo->findBy(array('site_id'=>$siteId));
+            $infos = $repo->findBy(array('fk_bs_id'=>$siteId));
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
         }
         $out = array();
         foreach($infos as $info){
-            $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
-            $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+            $out_item = $this->entityService->normalize($info, $schema);
             $out_item['observateurs'] = array();
             foreach($info->getObservateurs() as $obr){
                 if($obr->getRole() == 'observateur'){
@@ -50,8 +113,8 @@ class ObservationService{
                 $out_item['geom'] = $info->getGeom();
             }
 
-            $out_item['geomLabel'] = sprintf('<a href="#/chiro/observation/sans-site/%s">Observation du %s</a>',
-                $info->getId(), $info->getObsDate()->format('d/m/Y'));
+            $out_item['geomLabel'] = sprintf('<a href="#/chiro/inventaire/%s">Observation du %s</a>',
+                $info->getId(), $info->getBvDate()->format('d/m/Y'));
 
             $out[] = $out_item;
         }
@@ -61,18 +124,21 @@ class ObservationService{
 
     public function getOne($id){
         $has_geom = false;
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationView');
-        $info = $repo->findOneById($id);
+        $info = $this->entityService->getOne(
+            'PNCChiroBundle:ObservationView',
+            array('id'=>$id));
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationView.orm.yml';
         if(!$info){
             $has_geom = true;
-            $repo = $this->db->getRepository('PNCChiroBundle:ObservationSsSiteView');
-            $info = $repo->findOneById($id);
+            $info = $this->entityService->getOne(
+                'PNCChiroBundle:ObservationSsSiteView',
+                array('id'=>$id));
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationSsSiteView.orm.yml';
             if(!$info){
                 return null;
             }
         }
-        $out_item = $this->norm->normalize($info, array('obsDate', 'geom', 'observateurs'));
-        $out_item['obsDate'] = !is_null($info->getObsDate()) ? $info->getObsDate()->format('Y-m-d'): '';
+        $out_item = $this->entityService->normalize($info, $schema);
         $out_item['observateurs'] = array();
         foreach($info->getObservateurs() as $observateur){
             if($observateur->getRole() == 'observateur'){
@@ -86,6 +152,7 @@ class ObservationService{
     }
 
     public function create($data){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ConditionsObservation.orm.yml';
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
         $errors = array();
@@ -98,7 +165,7 @@ class ObservationService{
         }
         try{
             $cobs = new ConditionsObservation();
-            $this->hydrate($cobs, $data);
+            $this->entityService->hydrate($cobs, $schema, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors()); 
@@ -110,11 +177,11 @@ class ObservationService{
         if(isset($data['__taxons__'])){
             try{
                 foreach($data['__taxons__'] as $taxon){
-                    $taxon['obsId'] = $resObs;
-                    $taxon['numId'] = $data['numerisateurId'];
-                    $taxon['obsObjStatusValidation'] = 56;
-                    $taxon['obsCommentaire'] = '';
-                    $taxon['obsValidateur'] = null;
+                    $taxon['fkBvId'] = $resObs;
+                    $taxon['metaNumerisateurId'] = $data['metaNumerisateurId'];
+                    $taxon['cotxObjStatusValidation'] = 56;
+                    $taxon['cotxCommentaire'] = '';
+                    $taxon['cotxValidateurId'] = null;
 
                     $this->taxonService->create($taxon, false);
                 }
@@ -127,7 +194,7 @@ class ObservationService{
             }
         }
 
-        $cobs->setObsId($resObs);
+        $cobs->setFkBvId($resObs);
         $manager->persist($cobs);
         $manager->flush();
 
@@ -138,11 +205,12 @@ class ObservationService{
     }
 
     public function update($id, $data){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ConditionsObservation.orm.yml';
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
 
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$data['id']));
+        $cobs = $rCobs->findOneBy(array('fk_bv_id'=>$data['id']));
         $errors = array();
         try{
             $resObs = $this->parentService->update($this->db, $id, $data);
@@ -151,7 +219,7 @@ class ObservationService{
             $errors = $e->getErrors(); 
         }
         try{
-            $this->hydrate($cobs, $data);
+            $this->entityService->hydrate($cobs, $schema, $data);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors()); 
@@ -168,7 +236,7 @@ class ObservationService{
     public function remove($id, $cascade=false){
         $rCobs = $this->db->getRepository('PNCChiroBundle:ConditionsObservation');
         $manager = $this->db->getManager();
-        $cobs = $rCobs->findOneBy(array('obs_id'=>$id));
+        $cobs = $rCobs->findOneBy(array('fk_bv_id'=>$id));
         $taxons = $this->taxonService->getList($id);
         if($cascade){
             foreach($taxons as $taxon){
@@ -192,15 +260,6 @@ class ObservationService{
         catch(\Exception $e){
             $manager->getConnection()->rollback();
             return false;
-        }
-    }
-
-    private function hydrate($obj, $data){
-        $obj->setObsTemperature($data['obsTemperature']);
-        $obj->setObsHumidite($data['obsHumidite']);
-        $obj->setModId($data['modId']);
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors());
         }
     }
 }

@@ -11,97 +11,146 @@ class TaxonService{
     // doctrine
     private $db;
 
-    // normalizer
-    private $norm;
-
     // service biometrie
     private $biometrieService;
 
-    public function __construct($db, $norm, $biomServ){
+    public function __construct($db, $biomServ, $pagination, $es){
         $this->db = $db;
-        $this->norm = $norm;
         $this->biometrieService = $biomServ;
+        $this->pagination = $pagination;
+        $this->entityService = $es;
     }
 
-    public function getList($obs_id){
+    public function getList($fk_bv_id){
         $out = array();
-        if($obs_id){
+        if($fk_bv_id){
             $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-            $data = $repo->findBy(array('obs_id'=>$obs_id));
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+            $data = $repo->findBy(array('fk_bv_id'=>$fk_bv_id));
             foreach($data as $item){
-                $out[] = $this->norm->normalize($item);
-            }
-        }
-        else{
-            $repo = $this->db->getRepository('PNCChiroBundle:ValidationTaxonView');
-            $data = $repo->findAll();
-            foreach($data as $item){
-                $out_item = array(
-                    'type'=>'Feature', 
-                    'properties'=>$this->norm->normalize($item, array('obsDate', 'geom')),
-                    'geometry'=>$item->getGeom()
-                    );
-            
-                $out_item['properties']['obsDate'] = $item->getObsDate()->format('Y-m-d');
-                $out[] = $out_item;
+                $out[] = $this->entityService->normalize($item, $schema);
             }
         }
         return $out;
     }
 
+    public function getFilteredList($request, $obsId=null){
+        $out = array();
+
+        if(!$obsId){
+            $entity = 'PNCChiroBundle:ValidationTaxonView';
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ValidationTaxonView.orm.yml';
+            $cpl = array();
+        }
+        else{
+            $entity = 'PNCChiroBundle:ObservationTaxon';
+            $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+            $cpl = array(
+                array(
+                    'name'=>'fk_bv_id',
+                    'compare'=>'=',
+                    'value'=>$obsId
+                )
+            );
+        }
+        $filters = json_decode($request->query->get('filters'), true);
+        $page = $request->query->get('page', 0);
+        $limit = $request->query->get('limit', 30);
+
+        $res = $this->pagination->filter_request($entity, $request, $cpl);
+        $data = $res['filtered'];
+        
+        if($obsId){
+            foreach($data as $item){
+                $out[] = $this->entityService->normalize($item, $schema);
+            }
+        }
+        else{
+            foreach($data as $item){
+                $out_item = array(
+                    'type'=>'Feature', 
+                    'properties'=>$this->entityService->normalize($item, $schema),
+                    'geometry'=>$item->getGeom()
+                    );
+                $out[] = $out_item;
+            }
+        }
+        return array('total'=>$res['total'], 'filteredCount'=>$res['filteredCount'], 'filtered'=>$out);
+    }
+
     public function getOne($id){
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-        $data = $repo->findOneBy(array('id'=>$id));
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+        $data = $this->entityService->getOne(
+            'PNCChiroBundle:ObservationTaxon', 
+            array('id'=>$id)
+        );
         if($data){
-            return $this->norm->normalize($data);
+            $out = $this->entityService->normalize($data, $schema);
+            return $out;
         }
         return null;
     }
     
     public function create($data, $db=null, $commit=true){
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         if($db){
             $manager = $db;
         }
         else{
-            $manager = $this->db->getManager();
-        }
-        if($commit){
+            $manager = $this->entityService->getManager();
             $manager->getConnection()->beginTransaction();
         }
-        try{
-            $obsTx = new ObservationTaxon();
-            $this->hydrate($obsTx, $data);
-            $manager->persist($obsTx);
-            $manager->flush();
-            if(isset($data['__biometries__'])){
-                foreach($data['__biometries__'] as $biom){
-                    $biom['obsTxId'] = $obsTx->getId();
-                    $biom['biomCommentaire'] = '';
-                    $this->biometrieService->create($biom, false);
-                }
+
+        $tx = $this->entityService->getOne(
+            'PNCBaseAppBundle:Taxons', 
+            array('cd_nom'=>$data['cdNom'])
+        );
+        $data['nomComplet'] = $tx->getNomComplet();
+
+        $result = $this->entityService->create(
+            array(
+                $schema=>array(
+                    'entity'=>new ObservationTaxon(),
+                    'data'=>$data
+                )
+            ),
+            $manager
+        );
+        $obsTx = $result[$schema];
+
+        if(isset($data['__biometries__'])){
+            foreach($data['__biometries__'] as $biom){
+                $biom['fkCotxId'] = $obsTx->getId();
+                $biom['cbioCommentaire'] = '';
+                $this->biometrieService->create($biom, $manager);
             }
         }
-        catch(DataObjectException $e){
-            if($commit){
-                $manager->getConnection()->rollback();
-                throw new DataObjectException($e->getErrors());
-            }
-        }
-        if($commit){
+        if(!$db){
             $manager->getConnection()->commit();
         }
+
         return array('id'=>$obsTx->getId());
     }
 
     public function update($id, $data){
-        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
-        $manager = $this->db->getManager();
-        $obsTx = $repo->findOneBy(array('id'=>$id));
-        if(!$obsTx){
-            return null;
-        }
-        $this->hydrate($obsTx, $data);
-        $manager->flush();
+        $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+        $tx = $this->entityService->getOne(
+            'PNCBaseAppBundle:Taxons', 
+            array('cd_nom'=>$data['cdNom'])
+        );
+        $data['nomComplet'] = $tx->getNomComplet();
+
+        $result = $this->entityService->update(
+            array(
+                $schema=>array(
+                    'repo'=>'PNCChiroBundle:ObservationTaxon',
+                    'filter'=>array('id'=>$id),
+                    'data'=>$data
+                )
+            )
+        );
+
+        $obsTx = $result[$schema];
         return array('id'=>$obsTx->getId());
     }
 
@@ -129,32 +178,22 @@ class TaxonService{
         return true;
     }
 
-    private function hydrate($obj, $data){
-        $repo = $this->db->getRepository('PNCBaseAppBundle:Taxons');
-        $tx = $repo->findOneBy(array('cd_nom'=>$data['cdNom']));
-        $obj->setObsId($data['obsId']);
-        $obj->setActId($data['actId'] == '__NULL__' ? null : $data['actId']);
-        $obj->setPrvId($data['prvId'] == '__NULL__' ? null : $data['prvId']);
-        $obj->setObsTxInitial($data['obsTxInitial']);
-        $obj->setObsEspeceIncertaine($data['obsEspeceIncertaine']);
-        $obj->setObsEffectifAbs($data['obsEffectifAbs']);
-        $obj->setObsNbMaleAdulte($data['obsNbMaleAdulte']);
-        $obj->setObsNbFemelleAdulte($data['obsNbFemelleAdulte']);
-        $obj->setObsNbMaleJuvenile($data['obsNbMaleJuvenile']);
-        $obj->setObsNbFemelleJuvenile($data['obsNbFemelleJuvenile']);
-        $obj->setObsNbMaleIndetermine($data['obsNbMaleIndetermine']);
-        $obj->setObsNbFemelleIndetermine($data['obsNbFemelleIndetermine']);
-        $obj->setObsNbIndetermineIndetermine($data['obsNbIndetermineIndetermine']);
-        $obj->setObsObjStatusValidation($data['obsObjStatusValidation']);
-        $obj->setObsCommentaire($data['obsCommentaire']);
-        $obj->setCdNom($data['cdNom']);
-        $obj->setNomComplet($tx->getNomComplet());
-        $obj->setObsValidateur($data['obsValidateur']);
-        if($obj->errors()){
-            throw new \Exception($obj->errors()); 
+    public function setValidationStatus($data, $user){
+        $valid = $data['action'];
+        $repo = $this->db->getRepository('PNCChiroBundle:ObservationTaxon');
+        $manager = $this->db->getManager();
+        $manager->getConnection()->beginTransaction();
+        foreach($data['selection'] as $id){
+            $tx = $repo->findOneBy(array('id'=>$id));
+            if($tx->getObsObjStatusValidation() != $valid){
+                $tx->setObsObjStatusValidation($valid);
+                $tx->setDateValidation(new \DateTime());
+                $tx->setObsValidateur($user['id_role']);
+                $manager->flush();
+            }
         }
+        $manager->getConnection()->commit();
     }
-
 }
 
 

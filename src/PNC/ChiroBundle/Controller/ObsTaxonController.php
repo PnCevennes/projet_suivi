@@ -14,12 +14,19 @@ use Commons\Exceptions\CascadeException;
 class ObsTaxonController extends Controller
 {
     // path: GET chiro/obs_taxon/observation/{obs_id}
-    public function listAction($obs_id=null){
+    public function listAction(Request $request, $obs_id=null){
         /*
          * retourne la liste des observations taxon associées à une obs
          */
         $ts = $this->get('taxonService');
-        return new JsonResponse($ts->getList($obs_id));
+        return new JsonResponse($ts->getFilteredList($request, $obs_id));
+    }
+
+
+    // path: GET chiro/obs_taxon
+    public function listTaxonsAction(Request $req){
+        $ts = $this->get('taxonService');
+        return new JsonResponse($ts->getFilteredList($req));
     }
 
     // path: GET chiro/obs_taxon/{id}
@@ -71,11 +78,11 @@ class ObsTaxonController extends Controller
         $ids = array();
         try{
             foreach($in_data['__items__'] as $item){
-                $item['obsId'] = $in_data['refId'];
-                $item['numId'] = $user->getUser()['id_role'];
-                $item['obsObjStatusValidation'] = 55;
-                $item['obsCommentaire'] = '';
-                $item['obsValidateur'] = null;
+                $item['fkBvId'] = $in_data['refId'];
+                $item['metaNumerisateurId'] = $user->getUser()['id_role'];
+                $item['cotxObjStatusValidation'] = 55;
+                $item['cotxCommentaire'] = '';
+                $item['cotxValidateurId'] = null;
                 $res = $ts->create($item, $manager, false);
                 $ids[] = $res['id'];
             }
@@ -151,6 +158,23 @@ class ObsTaxonController extends Controller
             return new JsonResponse(array('id'=>$id), 404);
         }
         return new JsonResponse(array('id'=>$id));
+    }
+
+    // path: POST chiro/validate_taxon
+    public function validateAction(Request $req){
+        $user = $this->get('userServ');
+        $data = json_decode($req->getContent(), true);
+        if(!$user->checkLevel(5)){
+            throw new AccessDeniedHttpException();
+        }
+        $ts = $this->get('taxonService');
+        try{
+            $ts->setValidationStatus($data, $user->getUser());
+            return new JsonResponse($data);
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors(), 400);
+        }
     }
 }
 

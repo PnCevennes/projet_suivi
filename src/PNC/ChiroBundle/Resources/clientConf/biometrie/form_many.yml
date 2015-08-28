@@ -1,55 +1,86 @@
 fields:
-    -   name: ageId
+    -   name: cbioAgeId
         label: "Âge"
         type: select
+        thesaurusID: 1
         options:
             required: true
-    -   name: sexeId
+    -   name: metaNumerisateurId
+        label: Numerisateur
+        type: hidden
+        options:
+            ref: userId
+    -   name: cbioSexeId
         label: "Sexe"
         type: select
+        thesaurusID: 2
         options:
             required: true
-    -   name: biomPoids
+    -   name: cbioPoids
         label: "Poids (g)"
         type: num
-    -   name: biomAb
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioAb
         label: "AB (mm)"
         type: num
-    -   name: biomD3mf1
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioD3mf1
         label: "D3MF1 (mm)"
         type: num
-        help: "Mesure du 3ème doigt, métacarpe + 1ère phalange"
-    -   name: biomD3f2f3
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioD3f2f3
         label: "D3F2F3 (mm)"
         type: num
-        help: "Mesure du 3ème doigt, 2ème et 3ème phalanges"
-    -   name: biomD3total
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioD3total
         label: "D3 total (mm)"
         type: num
-        help: "Longueur totale du 3ème doigt"
-    -   name: biomD5
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioD5
         label: "D5 (mm)"
         type: num
-        help: "Mesure du 5ème doigt"
-    -   name: biomCm3sup
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioCm3sup
         label: "CM3SUP (mm)"
         type: num
-        help: "Mesure canine - 3ème molaire (mandibule supérieure)"
-    -   name: biomCm3inf
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioCm3inf
         label: "CM3INF (mm)"
         type: num
-        help: "Mesure canine - 3ème molaire (mandibule inférieure)"
-    -   name: biomCb
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioCb
         label: "CB (mm)"
-        help: "Mesure condylobasale"
         type: num
-    -   name: biomLm
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioLm
         label: "LM (mm)"
-        help: "Mesure mandibule inférieure"
         type: num
-    -   name: biomOreille
+        options:
+            min: 0
+            step: 0.1
+    -   name: cbioOreille
         label: "Oreille (mm)"
-        help: "Mesure de l'oreille"
         type: num
+        options:
+            min: 0
+            step: 0.1
 
 

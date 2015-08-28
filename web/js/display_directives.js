@@ -35,7 +35,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.infoMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-default';
+                        $scope.msgStyle = 'alert-info';
                         $scope.showMsg(newval);
                     }
                 }
@@ -45,7 +45,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.errorMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-error';
+                        $scope.msgStyle = 'alert-danger';
                         $scope.showMsg(newval);
                     }
                 }
@@ -55,7 +55,7 @@ app.directive('usermsg', function(userMessages, $timeout){
                 function(){return userMessages.successMessage},
                 function(newval){
                     if(newval){
-                        $scope.msgStyle = 'msg-success';
+                        $scope.msgStyle = 'alert-success';
                         $scope.showMsg(newval);
                     }
                 }
@@ -70,9 +70,8 @@ app.directive('usermsg', function(userMessages, $timeout){
                     userMessages.infoMessage = '';
                     userMessages.errorMessage = '';
                     userMessages.successMessage = '';
-                }, 3500);
-
-            }
+                }, 5500);
+            };
         }
     };
 });
@@ -112,8 +111,9 @@ app.directive('detailDisplay', function(){
         scope: {
             schemaUrl: '@schemaurl',
             dataUrl: '@dataurl',
+            genericDataUrl: '=',
             updateUrl: '@updateurl',
-            dataId: '@dataid'
+            dataId: '@dataid',
         },
         transclude: true,
         templateUrl: 'js/templates/display/detail.htm',
@@ -133,8 +133,18 @@ app.directive('detailDisplay', function(){
                 $scope.schema = angular.copy(resp);
                 $scope.editAccess = userServ.checkLevel($scope.schema.editAccess);
                 $scope.subEditAccess = userServ.checkLevel($scope.schema.subEditAccess);
+                $rootScope.$broadcast('schema:init', resp);
                 //récupération des données
-                dataServ.get($scope.dataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                if($scope.dataUrl){
+                    dataServ.get($scope.dataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                }
+                else{
+                    $scope.$watch('genericDataUrl', function(newval){
+                        if(newval){
+                            dataServ.get($scope.genericDataUrl, $scope.setData, function(){dfd.resolve('loading data')});
+                        }
+                    });
+                }
             };
 
             $scope.setData = function(resp){
@@ -158,8 +168,11 @@ app.directive('detailDisplay', function(){
 
             $scope.setSubSchema = function(resp){
                 $scope.subSchema = angular.copy(resp);
+                if(!$scope.subSchema.filtering){
+                    $scope.subSchema.filtering = {limit: null, fields: []};
+                }
                 // récupération des données liées au sous-schéma (sous-protocole)
-                dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
+                //dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
             }
 
             $scope.setSubData = function(resp){
@@ -175,6 +188,10 @@ app.directive('detailDisplay', function(){
 
             $scope.switchEditing = function(){
                 $scope.subEditing = !$scope.subEditing;
+            }
+
+            $scope.recenter = function(_id){
+                $rootScope.$broadcast('map:centerOnSelected', _id);
             }
 
             // récupération du schéma
@@ -200,23 +217,59 @@ app.directive('fieldDisplay', function(){
 app.directive('breadcrumbs', function(){
     return {
         restrict: 'A',
-        scope: {_appName: '@appname'},
+        scope: {},
         templateUrl: 'js/templates/display/breadcrumbs.htm',
         controller: function($scope, configServ, $location){
-            var bc = configServ.getBc();
-            if(bc.length == 0){
-                $location.path($scope._appName + '/site');
+            $scope.bc = [];
+            $scope._edit = false;
+            $scope._create = false;
+            var _generic = false;
+            var _url = null;
+            var params = $location.path().slice(1).split('/');
+            if(params.indexOf('edit') >= 0){
+                params.splice(params.indexOf('edit'), 1);
+                $scope._edit = true;
+                if(!parseInt(params[params.length-1])){
+                    $scope._create = true;
+                }
             }
-            $scope.bc = bc; //.slice(0, bc.length-1);
-            $scope.bcShown = configServ.bcShown;
-            $scope.$watch(
-                function(){return configServ.bcShown;},
-                function(newv, oldv){
-                    if(newv !== oldv){
-                        $scope.bcShown = newv;
+            // générique
+            if(params[0] == 'g'){
+                params.splice(0, 1);
+                var _functions = ['list', 'detail'];
+                params = params.filter(function(itemName){
+                    return (_functions.indexOf(itemName) == -1);
+                });
+                _generic = true;
+            }
+            if(params.length == 4){
+                if(!parseInt(params[3])){
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]
+                }
+                else{
+                    if($scope._edit){
+                        url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[2] + '&id=' + params[3];
+                    }
+                    else{
+                        url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1] + '&id=' + params[3];
                     }
                 }
-            );
+            }
+            else if(params.length == 3){
+                if(!parseInt(params[2])){
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]
+                }
+                else{
+                    url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1]+ '&id=' + params[2];           
+                }
+            }
+            else if(params.length == 2){
+                url = params[0] + '/config/breadcrumb?generic='+_generic+'&view=' + params[1];
+            }
+            configServ.getUrl(url, function(resp){
+                $scope.bc = resp;
+                configServ.put('currentBc', resp);
+            });
         },
     };
 });
@@ -229,12 +282,24 @@ app.directive('tablewrapper', function(){
             refName: '@refname',
             schema: '=',
             data: '=',
+            filterUrl: '@',
+            filterCallback: '=',
         },
         transclude: true,
         templateUrl: 'js/templates/display/tableWrapper.htm',
-        controller: function($scope, $rootScope, $filter, configServ, userServ, ngTableParams){
+        controller: function($scope, $rootScope, $timeout, $filter, configServ, userServ, ngTableParams){
             $scope.currentItem = null;
+            $scope._checkall = false;
+            filterIds = [];
+            extFilter = false;
             var orderedData;
+
+            $scope.filterZero = function(x){
+                if(x.id == 0){
+                    x.id = '';
+                }
+                return x;
+            };
 
             var filterFuncs = {
                 starting: function(key, filterTxt){
@@ -242,6 +307,12 @@ app.directive('tablewrapper', function(){
                         return function(x){return true};
                     }
                     return function(filtered){
+                        if(!filtered[key]){
+                            if(filterTxt == '-'){
+                                return true;
+                            }
+                            return false;
+                        }
                         return filtered[key].toLowerCase().indexOf(filterTxt.toLowerCase())===0;
                     }
                 },
@@ -293,12 +364,6 @@ app.directive('tablewrapper', function(){
                 $scope.__init__();
             }
 
-            $scope.$watch('data', function(newval){
-                if(newval){
-                    $scope.tableParams.reload();
-                }
-            });
-
             /*
              *  initialisation des parametres du tableau
              */
@@ -310,16 +375,23 @@ app.directive('tablewrapper', function(){
             },
             {
                 counts: [10, 25, 50],
-                total: $scope.data.length, // length of data
+                total: $scope.data ? $scope.data.length : 0, // length of data
                 getData: function ($defer, params) {
-                    // use build-in angular filter
-                    console.log(params.filter());
                     /*
+                    // use build-in angular filter
                     var filteredData = params.filter() ?
                             $filter('filter')($scope.data, params.filter()) :
                             $scope.data;
                     */
-                    filteredData = $scope.data;
+                    if(extFilter){
+                        var filteredData = $scope.data.filter(function(item){return filterIds.indexOf(item.id) !== -1});
+                    }
+                    else{
+                        var filteredData = $scope.data;
+                    }
+                    if(!filteredData.length){
+                        return;
+                    }
                     reqFilter = params.filter();
                     if(reqFilter){
                         for(filterKey in reqFilter){
@@ -334,6 +406,8 @@ app.directive('tablewrapper', function(){
                             }
                         }
                     }
+                    $scope._checkall = false;
+                    //$scope.clearChecked();
                     orderedData = params.sorting() ?
                             $filter('orderBy')(filteredData, params.orderBy()) :
                             $scope.data;
@@ -345,8 +419,8 @@ app.directive('tablewrapper', function(){
                     params.total(orderedData.length); // set total for recalc pagination
                     $scope.currentSel = {total: $scope.data.length, current: orderedData.length};
 
-                    
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    var curPg = params.page() || 1;
+                    $defer.resolve(orderedData.slice((curPg - 1) * params.count(), curPg * params.count()));
                 } 
             });
             
@@ -356,17 +430,46 @@ app.directive('tablewrapper', function(){
             configServ.get($scope.refName + ':ngTable:Filter', function(filter){
                 $scope.tableParams.filter(filter);
             });
+
             // récupération du tri utilisé sur le tableau 
             configServ.get($scope.refName + ':ngTable:Sorting', function(sorting){
                 $scope.tableParams.sorting(sorting);
             });
 
 
+            $scope.checkItem = function(item){
+                $rootScope.$broadcast($scope.refName + ':ngTable:itemChecked', item);
+            };
+
+
+            // selection case à cocher
+            $scope.checkAll = function(){
+                $scope._checkall = !$scope._checkall;
+
+                var page = $scope.tableParams.page();
+                var count = $scope.tableParams.count();
+                var to_check = orderedData.slice((page-1) * count, page * count);
+                to_check.forEach(function(item){
+                    item._checked = $scope._checkall;
+                    $scope.checkItem(item);
+                });
+            }
+
+            $scope.clearChecked = function(){
+                $scope.data.forEach(function(item){
+                    $scope._checkall = false;
+                    if(item._checked){
+                        item._checked = false;
+                    }
+                });
+                $rootScope.$broadcast($scope.refName + ':cleared');
+            };
+
             /*
              * Fonctions
              */
             $scope.selectItem = function(item, broadcast){
-                if($scope.currentItem){
+                if($scope.currentItem && $scope.currentItem != item){
                     $scope.currentItem.$selected = false;
                 }
                 if(broadcast == undefined){
@@ -374,13 +477,43 @@ app.directive('tablewrapper', function(){
                 }
                 item.$selected = true;
                 $scope.currentItem = item;
+                configServ.put($scope.refName + ':ngTable:ItemSelected', item);
                 var idx = orderedData.indexOf(item);
                 var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
                 $scope.tableParams.page(pgnum);
+                $timeout(function(){
+                    var _elem = document.getElementById('item'+item.id);
+                    if(_elem){
+                        _elem.focus();
+                    }
+                }, 0);
                 if(broadcast){
                     $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
                 }
             };
+
+            $scope.$watch('data', function(newval){
+                if(newval && newval.length){
+                    configServ.get($scope.refName + ':ngTable:ItemSelected', function(item){
+                        if(item){
+                            _item = $scope.data.filter(function(elem){
+                                return elem.id == item.id;
+                            });
+                            if(_item.length){
+                                item = _item[0];
+                            }
+                            $scope.currentItem = item;
+                            $timeout(function(){
+                                $scope.selectItem(item, false);
+                                $rootScope.$broadcast($scope.refName + ':ngTable:ItemSelected', item);
+                            }, 0);
+                            return;
+                        }
+                    });
+                    $scope.tableParams.reload();
+                }
+            });
+
 
             /*
              * Listeners
@@ -389,6 +522,154 @@ app.directive('tablewrapper', function(){
                 $scope.selectItem(item, false);
             });
 
+            $scope.$on($scope.refName + ':filterIds', function(ev, itemIds, filter){
+                filterIds = itemIds;
+                extFilter = filter;
+                $scope.tableParams.reload();
+                if($scope.currentItem && filterIds.indexOf($scope.currentItem.id) !== -1){
+                    var idx = orderedData.indexOf($scope.currentItem);
+                    var pgnum = Math.ceil((idx + 1) / $scope.tableParams.count());
+                    $scope.tableParams.page(pgnum);
+                }
+            });
+
+            $scope.$on($scope.refName + ':clearChecked', function(){
+                $scope.clearChecked();
+            });
         },
+    };
+});
+
+
+app.directive('filterform', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            url: '@',
+            _schema: '=schema',
+            callback: '=',
+        },
+        templateUrl: 'js/templates/form/filterForm.htm',
+        controller: function($scope, $timeout, dataServ, configServ){
+            $scope.filterData = {};
+            $scope.counts = {};
+            $scope.filters = {};
+            $scope.pageNum = 0;
+            $scope.maxCount = 0;
+            $scope.schema_initialized = false;
+            $scope.schema = {
+                fields: [],
+                limit: null
+            };
+
+
+            $scope.setArray = function(field, setArray){
+                if(setArray){
+                    var val = $scope.filterData[field].value;
+                    $scope.filterData[field].value = [val, null];
+                }
+                else{
+                    if(Array.isArray($scope.filterData[field].value)){
+                        var val = $scope.filterData[field].value[0];
+                        $scope.filterData[field].value = val;
+                   }
+                }
+            };
+
+            $scope.nextPage = function(){
+                $scope.pageNum += 1;
+                $scope.send();
+            };
+
+            $scope.prevPage = function(){
+                $scope.pageNum -= 1;
+                $scope.send();
+            };
+
+            $scope.clear = function(){
+                $scope.schema.fields.forEach(function(item){
+                    $scope.filterData[item.name] = {filter: '=', value: item.default};
+                });
+                $scope.send();
+            };
+
+            $scope.send = function(resetPage){
+                if(resetPage){
+                    $scope.pageNum = 0;
+                }
+                var _qs = [];
+                $scope.schema.fields.forEach(function(item){
+                    if($scope.filterData[item.name] && $scope.filterData[item.name].value != null){
+                        var _val = $scope.filterData[item.name].value;
+                        var _filter = $scope.filterData[item.name].filter;
+                        if(!(item.zeroNull && _val === 0)){
+                            _qs.push({item: item.name, filter: _filter, value: _val});
+                        }
+                    }
+                });
+                if(_qs.length){
+                    var _url = $scope.url + "?page="+$scope.pageNum+"&limit="+$scope.schema.limit+"&filters=" + angular.toJson(_qs);
+                }
+                else{
+                    var _url = $scope.url + "?page="+$scope.pageNum+"&limit="+$scope.schema.limit;
+                }
+                configServ.put($scope.url, 
+                    {
+                        page: $scope.pageNum,
+                        limit: $scope.schema.limit,
+                        qs: _qs,
+                        url: _url
+                    }
+                );
+                dataServ.get(_url, function(resp){
+                    //envoi des données filtrées à la vue
+                    $scope.collapseFilters = false;
+                    $scope.counts.total = resp.total;
+                    $scope.counts.current = resp.filteredCount;
+                    $scope.maxCount = Math.min(($scope.pageNum+1) * $scope.schema.limit, $scope.counts.current);
+                    $scope.callback(resp.filtered);
+                }, null, true);
+            };
+
+            $scope.init_schema = function(){
+                if($scope._schema){
+                    $scope.schema = angular.copy($scope._schema);
+                }
+                if($scope.schema.fields == undefined){
+                    $scope.schema.fields = [];
+                }
+                $scope.schema.fields.forEach(function(item){
+                    $scope.filterData[item.name] = {filter: '=', value: item.default};
+                });
+                $scope.paginate = $scope.schema.limit != null;
+
+                configServ.get($scope.url, function(resp){
+                    if(resp){
+                        $scope.page = resp.page;
+                        if(resp.limit){
+                            $scope.schema.limit = resp.limit;
+                        }
+                        resp.qs.forEach(function(item){
+                            $scope.filterData[item.item] = {
+                                filter: item.filter, 
+                                value: item.value
+                            };
+                        });
+                        //console.log(resp);
+                    }
+                    $scope.send();
+                });
+                
+            };
+
+            //$timeout($scope.init_schema, 0);
+
+            $scope.$watch('_schema', function(newval){
+                if(newval){
+                    $scope.init_schema();
+                }
+            });
+
+        }
     };
 });

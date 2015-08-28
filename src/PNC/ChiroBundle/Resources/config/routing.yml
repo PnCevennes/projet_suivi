@@ -82,6 +82,12 @@ pnc_observation_taxon_list:
     requirements:
         _method: GET
 
+pnc_observation_taxon_validation_list:
+    path:     /obs_taxon
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:listTaxons }
+    requirements:
+        _method: GET
+
 pnc_observation_taxon_detail:
     path:     /obs_taxon/{id}
     defaults: { _controller: PNCChiroBundle:ObsTaxon:detail }
@@ -111,6 +117,12 @@ pnc_observation_taxon_suppr:
     defaults: { _controller: PNCChiroBundle:ObsTaxon:delete }
     requirements:
         _method: DELETE
+
+pnc_observation_taxon_validate:
+    path:   /validate_taxon
+    defaults: { _controller: PNCChiroBundle:ObsTaxon:validate }
+    requirements:
+        _method: POST
 
 #
 # Vues biometrie

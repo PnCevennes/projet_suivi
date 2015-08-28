@@ -100,31 +100,14 @@ app.service('dataServ', function($http, $filter, userMessages){
 
 /**
  * Service de récupération et stockage des configurations
- * Utiliser pour stocker les variables globales ou les éléments de configuation de l'application
+ * Utiliser pour stocker les variables globales ou les éléments de configuration de l'application
  */
-app.service('configServ', function(dataServ){
+app.service('configServ', function(dataServ, localStorageService){
     var cache = {};
 
-    var bc = [];
-    this.bcShown = true;
-
-    this.addBc = function(lvl, label, path){
-        if(bc.length>lvl){
-            bc.splice(lvl, bc.length);
-        }
-        bc.push({label: label, url: path});
-    }
-
-    this.getBc = function(){
-        return bc;
-    }
+    this.bc = null;
 
 
-    this.setBc = function(lvl){
-        if(bc.length>lvl){
-            bc.splice(lvl, bc.length);
-        }
-    }
     /*
      * charge des informations depuis une url si elles ne sont pas déja en cache
      * et les retourne via une callback. Si les variables sont déjà en cache, les 
@@ -134,13 +117,24 @@ app.service('configServ', function(dataServ){
      *  success: la callback de traitement
      */
     this.getUrl = function(serv, success){
-        if(cache[serv]){
-            success(cache[serv]);
+        if(cache['debug']){
+            var data = cache[serv];
+        }
+        else{
+            var data = localStorageService.get(serv);
+        }
+        if(data){
+            success(data);
         }
         else{
             dataServ.get(serv, function(resp){
-                cache[serv] = resp;
-                success(cache[serv]);
+                if(cache['debug']){
+                    cache[serv] = resp;
+                }
+                else{
+                    localStorageService.set(serv, resp);
+                }
+                success(resp);
             });
         }
     };
@@ -173,10 +167,9 @@ app.service('configServ', function(dataServ){
  * service utilisateur
  */
 app.service('userServ', function(dataServ, $rootScope, localStorageService){
-    var _user = null; //FIXME idApp
+    var _user = null;
     var _tmp_password = '';
-    
-    
+
     this.getUser = function(){
         if(!_user){
             var tmp_user = localStorageService.get('user');
@@ -185,14 +178,14 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
                 _user = tmp_user;
             }
         }
-        return _user
+        return _user;
     };
 
     this.setUser = function(){
         localStorageService.set('user', _user);
     };
     
-    this.getCurrentApp = function(appId){
+    this.getCurrentApp = function(){
         return localStorageService.get('currentApp');
     };
     
@@ -200,11 +193,19 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
         localStorageService.set('currentApp', appId);
     };
     
-    this.checkLevel = angular.bind(this,function(level){
-        return this.getUser().apps[this.getCurrentApp()] >= level;
+    this.checkLevel = angular.bind(this, function(level){
+        try{
+            return this.getUser().apps[this.getCurrentApp().appId] >= level;
+        }
+        catch(e){
+            return false;
+        }
     });
 
     this.isOwner = angular.bind(this,function(ownerId){
+        if(_user==null){
+            return false;
+        }
         return _user.id_role == ownerId;
     });
 
@@ -240,12 +241,13 @@ app.service('userServ', function(dataServ, $rootScope, localStorageService){
     this.error = function(resp){
         $rootScope.$broadcast('user:error');
     };
+
+    
 });
 
 
 /**
  * filtre basique - transforme une date yyyy-mm-dd en dd/mm/yyyy pour l'affichage
- * Utilisé comme un formateur de date
  */
 app.filter('datefr', function(){
     return function(input){

@@ -6,7 +6,7 @@
         -   url: "#/chiro/site"
             label: "Suivi"
             restrict: 2
-        -   url: "#/chiro/observation"
+        -   url: "#/chiro/inventaire"
             label: "Inventaire"
             restrict: 2
         -   url: "#/chiro/validation"

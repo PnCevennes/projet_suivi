@@ -1,0 +1,46 @@
+PNC\BaseAppBundle\Entity\Visite:
+    type: entity
+    table: suivi.pr_base_visite
+    schema: suivi
+    #repositoryClass: PNC\BaseAppBundle\Repositories\ObservationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        bv_date:
+            type: date
+        bv_commentaire:
+            type: text
+        bv_id_table_src:
+            type: integer
+        meta_numerisateur_id:
+            type: integer
+        fk_bs_id:
+            type: integer
+        geom:
+            type: geometry
+        ref_commune:
+            type: string
+            nullable: true
+        meta_create_timestamp:
+            type: date
+            nullable: true
+        meta_update_timestamp:
+            type: date
+            nullable: true
+
+    manyToMany:
+        observateurs:
+            targetEntity: PNC\BaseAppBundle\Entity\Observateurs
+            joinTable:
+                name: suivi.rel_obs_obr
+                joinColumns:
+                    obs_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    obr_id:
+                        referencedColumnName: id_role
+

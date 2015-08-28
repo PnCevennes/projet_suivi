@@ -15,10 +15,10 @@ use PNC\ChiroBundle\Entity\Biometrie;
 class BiometrieController extends Controller
 {
     // path: GET chiro/biometrie/taxon/{otx_id}
-    public function listAction($otx_id=null){
+    public function listAction(Request $request, $otx_id=null){
         $bs = $this->get('biometrieService');
         
-        return new JsonResponse($bs->getList($otx_id));
+        return new JsonResponse($bs->getFilteredList($request, $otx_id));
     }
 
     // path: GET chiro/biometrie/{id}
@@ -62,8 +62,9 @@ class BiometrieController extends Controller
         $ids = array();
         try{
             foreach($data['__items__'] as $item){
-                $item['obsTxId'] = $data['refId'];
-                $item['biomCommentaire'] = '';
+                $item['fkCotxId'] = $data['refId'];
+                $item['metaNumerisateurId'] = $user->getUser()['id_role'];
+                $item['cbioCommentaire'] = '';
                 $res = $bs->create($item, $manager, false);
                 $ids[] = $res['id'];
             }
