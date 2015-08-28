@@ -1,16 +1,14 @@
 #!/bin/bash
 
-user_pg=monuser
-db_name=suivi_protocoles
-user_pg_pass=monpass
-host=localhost
-
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
 
+. db_settings.ini
+
+mkdir -p log
 
 function database_exists () {
     # /!\ Will return false if psql can't list database. Edit your pg_hba.conf
@@ -21,7 +19,7 @@ function database_exists () {
         return 0
     else
         # Grep db name in the list of database
-        sudo -n -u postgres -s -- psql -tAl | grep -q "^$1|"
+        sudo -n -u postgres -h $host -s -- psql -tAl | grep -q "^$1|"
         return $?
     fi
 }
@@ -29,17 +27,21 @@ function database_exists () {
 
 if database_exists $db_name
 then   
-	echo 'Suppression de la base de données...'
-	sudo -n -u postgres -s psql -d $db_name -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name'  AND pid <> pg_backend_pid();"
-	  
-	sudo -n -u postgres -s dropdb $db_name
-fi    
+	if $drop_apps_db
+        then	
+	        echo 'Suppression de la base de données...'
+			sudo -n -u postgres -h $host -s psql -d $db_name -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$db_name'  AND pid <> pg_backend_pid();"  
+			sudo -n -u postgres -h $host -s dropdb $db_name
+        else
+        	echo "La base de données existe et le fichier de settings indique de ne pas la supprimer."
+	fi
+fi
 
 if ! database_exists $db_name 
 then
 	
 	echo "Création de la base..."
-	sudo -n -u postgres -s createdb -O $user_pg $db_name
+	sudo -n -u postgres -h $host -s createdb -O $user_pg $db_name
 
 	echo "Création de la structure de la base de données..."
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/schema_projet_suivis.sql  &> log/install_db.log
@@ -57,7 +59,7 @@ then
 	cd ../..
 	echo "Insertion  des données taxonomiques de l'inpn... (cette opération peut être longue)"
 	DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-	sed -i "s#/home/synthese/geonature#${DIR}#g" scripts/import_data_inpn_v8.sql
+	sed -i "s#PATH_TO_DIR#${DIR}#g" scripts/import_data_inpn_v8.sql
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name  -f scripts/import_data_inpn_v8.sql &>> log/install_db.log
 	
 	find data/inpn -type f -not -name '*.zip' | xargs rm

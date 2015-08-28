@@ -125,7 +125,7 @@ COPY import_taxref (regne, phylum, classe, ordre, famille, group1_inpn, group2_i
           cd_nom, cd_taxsup, cd_ref, rang, lb_nom, lb_auteur, nom_complet, nom_complet_html,
           nom_valide, nom_vern, nom_vern_eng, habitat, fr, gf, mar, gua, 
           sm, sb, spm, may, epa, reu, taaf, pf, nc, wf, cli, url)
-FROM  '/home/sahl/Bureau/TMP/backup_db/data/inpn/TAXREFv80.txt'
+FROM  'PATH_TO_DIR/data/inpn/TAXREFv80.txt'
 WITH  CSV HEADER 
 DELIMITER E'\t'  encoding 'LATIN1';
 
@@ -154,7 +154,7 @@ cd_protection, article, intitule, protection, arrete, fichier,
 fg_afprot, niveau, cd_arrete, url, date_arrete, rang_niveau, 
 lb_article, type_protection
 )
-FROM  '/home/sahl/Bureau/TMP/backup_db/data/inpn/PROTECTION_ESPECES_TYPES_70.csv'
+FROM  'PATH_TO_DIR/data/inpn/PROTECTION_ESPECES_TYPES_70.csv'
 WITH  CSV HEADER 
 DELIMITER ';'  encoding 'LATIN1';
 
@@ -171,7 +171,7 @@ CREATE TABLE import_protection_especes (
 );
 
 COPY import_protection_especes
-FROM  '/home/sahl/Bureau/TMP/backup_db/data/inpn/PROTECTION_ESPECES_70.csv'
+FROM  'PATH_TO_DIR/data/inpn/PROTECTION_ESPECES_70.csv'
 WITH  CSV HEADER 
 DELIMITER ';'  encoding 'LATIN1';
 
