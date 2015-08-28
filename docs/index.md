@@ -18,5 +18,5 @@ License
 * OpenSource - GPL V3
 * Copyleft 2015 - Parc national des Cévennes
 
-![logo-pnc](docs/img/logo_pnc_orange.png)
+![logo-pnc](img/logo_pnc_orange.png)
 
