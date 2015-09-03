@@ -165,7 +165,7 @@ récupérer une liste d'objets en utilisant PaginationService
 
 récupérer un seul objet
 
-..code:: php
+.. code:: php
 
     //GET monModule/monObjet/{id}
     function getOneMonObjetAction($id){
