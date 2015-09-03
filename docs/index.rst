@@ -119,3 +119,10 @@ License
 .. image:: _static/logo_pnc_orange.png
     :alt: Logo PNC
 
+
+.. toctree::
+   :maxdepth: 2
+
+   index
+   serveur
+
