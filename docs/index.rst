@@ -31,7 +31,6 @@ License
 .. toctree::
    :maxdepth: 2
 
-   index
    install
    serveur
 
