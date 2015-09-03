@@ -4,12 +4,16 @@
    contain the root `toctree` directive.
 
 
-.. toctree::
-   :maxdepth: 2
-
 
 Projet suivi 
 ============
+
+.. toctree::
+   :maxdepth: 2
+
+   index
+   serveur
+
 
 Présentation du projet
 ======================
