@@ -8,12 +8,6 @@
 Projet suivi 
 ============
 
-.. toctree::
-   :maxdepth: 2
-
-   index
-   serveur
-
 
 Présentation du projet
 ======================
