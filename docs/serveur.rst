@@ -76,4 +76,91 @@ La vérification de la validité des données fournies à l'entité se fait dans
 
 
 
+Création des routes
+~~~~~~~~~~~~~~~~~~~
 
+5 routes par type de page
+
+GET module/objet retourne une liste des objets 
+
+GET module/objet/{id} retourne un objet particulier identifié par {id}
+
+PUT module/objet crée un nouvel objet 
+
+POST module/objet/{id} met à jour l'objet identifié par {id}
+
+DELETE module/objet/{id} supprime l'objet identifié par {id}
+
+
+
+Services utilisables dans les controleurs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dans les routes GET 
+
+récupérer une liste d'objets en utilisant EntityService::
+
+    //GET monModule/monObjet
+    function getAllMonObjetAction(){
+        $et = $this->get('entityService');
+        $entite = 'monModule:MonObjet';
+        $mapping = '../src/PNC/MonBundle/Resources/config/doctrine/monObjet.orm.yml';
+        $results = $et->getAll($entite);
+        $out = array();
+        foreach($results as $result){
+            $out[] = $et->normalize($result, $mapping);
+        }
+        return new JsonResponse($out);
+    }
+
+la fonction présentée utilise le fichier yaml de mapping pour normaliser les objets.
+
+.. NOTE::
+    La normalisation d'un objet consiste à le transformer en dictionnaire (tableau associatif) directement sérialisable en JSON
+
+
+Il est également possible de passer un tableau pour sélectionner les données que l'on souhaite récupérer::
+
+    ...
+    foreach($results as $result){
+        $out[] = $et->normalize($result, array(
+            'maVar1'=>null,
+            'maVar2'=>'date',
+            ...
+        ));
+    }
+    ...
+
+le tableau prend en clé le nom de la variable, et en valeur une déclaration de fonction à utiliser pour transformer la donnée.
+la valeur `null` implique qu'aucune transformation n'est à faire. 
+    
+
+
+récupérer une liste d'objets en utilisant PaginationService::
+
+    //GET monModule/monObjet
+    function getAllMonObjetAction(Request $request){
+        $ps = $this->get('paginationService');
+        $entite = 'monModule:MonObjet';
+        $mapping = '../src/PNC/MonBundle/Resources/config/doctrine/monObjet.orm.yml';
+        $results = $ps->filter_request($entite, $request);
+        $out = array();
+        foreach($results as $result){
+            $out[] = $et->normalize($result, $mapping);
+        }
+        return new JsonResponse($out);
+    }
+
+
+
+récupérer un seul objet::
+
+    //GET monModule/monObjet/{id}
+    function getOneMonObjetAction($id){
+        $et = $this->get('entityService');
+        $entite = 'monModule:MonObjet';
+        $mapping = '../src/PNC/MonBundle/Resources/config/doctrine/monObjet.orm.yml';
+        $results = $et->getOne($entite, array('id'=>$id));
+        $out = $et->normalize($result, $mapping);
+        return new JsonResponse($out);
+    }
