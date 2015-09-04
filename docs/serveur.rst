@@ -143,6 +143,25 @@ le tableau prend en clé le nom de la variable, et en valeur une déclaration de
 la valeur `null` implique qu'aucune transformation n'est à faire. 
     
 
+Pour les données géométriques, EntityService permet d'organiser facilement les données pour le format GeoJSON
+
+.. code:: php
+
+    //...
+    $geoLabel = array(
+        'label'=>'monObjet %s',
+        'refs'=>array('id')
+    );
+    foreach($results as $result){
+        $normalized = $et->normalize($result, array(
+            'maVar1'=>null,
+            'maVar2'=>'date',
+            //...
+        ));
+        $out[] = $et->getGeoJsonFeature($normalized, $geoLabel, 'geom'); //geom est le nom du champ qui contient la géométrie
+    }
+
+
 
 récupérer une liste d'objets en utilisant PaginationService
 
