@@ -42,9 +42,12 @@ Si le module ne comporte pas de sous modules, le menu reste obligatoire et dans 
 
 
 
+Schémas
+=======
+
 
 Différents schémas à définir
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
 pour chaque objet il faut définir au minimum 3 schémas :
 
