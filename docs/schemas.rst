@@ -104,15 +104,17 @@ configuration de base d'une vue générique
 * editAccess: niveau de droit nécéssaire pour éditer un objet
 
 
+filtrage des données
+
 .. code:: yaml
     
     filtering:
         limit: 200
         fields:
-            -   name: var_a
+            -   name: ma_var_a
                 label: "Var A"
                 type: string
-            -   name: var_b
+            -   name: ma_var_b
                 label: "Var B"
                 type: date
 
@@ -125,16 +127,18 @@ configuration de base d'une vue générique
 * type: type de donnée: détermine les différents comparateurs
 
 
+liste des champs
+
 .. code:: yaml
 
     fields:
-        -   name: varA
+        -   name: maVarA
             label: "Var A"
             type: text
-        -   name: varB
+        -   name: maVarB
             label: "Var B"
             type: date
-        -   name: varC
+        -   name: maVarC
             type: select
             thesaurusID: 1
 
@@ -144,3 +148,118 @@ configuration de base d'une vue générique
 * label: libellé du champ (titre de la colonne)
 * type: type de donnée
 * thesaurusID: utilisable uniquement sur les champs select - cherche les lignes référent au chiffre fourni dans le lexique et complete le schéma avec les options de la liste déroulante
+
+
+Schema detail
+~~~~~~~~~~~~~
+
+configuration de base d'une vue générique
+
+.. code:: yaml
+
+    dataUrl: "monModule/monObjet/"
+    mapConfig: "fichier_config_map.json"
+    mapData: "monModule/mesDonneesmap"
+    mapSize: large
+    editAccess: 1
+    subEditAccess: 1
+    subSchemaUrl: "monModule/config/monSubObjet/list"
+    subDataUrl: "monModule/monSubObjet/monObjet/"
+
+* dataUrl: url à contacter pour récupérer l'objet à afficher (complétée par l'appli angular avec ID passé en param de l'url)
+* mapConfig: fichier de configuration des fonds carto (si omis, pas d'affichage carto)
+* mapData: url des données carto (contexte de l'objet)
+* mapSize: taille de la carte (large|small)
+* editAccess: droits nécéssaires pour éditer la donnée
+* subEditAccess: droits nécéssaires pour ajouter une sous donnée
+* subSchemaUrl: adresse à contacter pour le schema de la liste des sous données
+* subDataUrl: adresse pour charger les sous données 
+
+liste des champs
+
+.. code:: yaml
+
+    groups:
+        - name: "monGroupe1"
+          glyphicon: glyphicon-info-sign
+          fields:
+            -   name: maVarA
+                label: "Var A"
+                type: string
+            -   name: maVarB
+                label: "Var B"
+                type: date
+        - name: "monGroupe2"
+          fields:
+            -   name: maVarC
+                label: "Var C"
+                type: select
+                thesaurusID: 1
+
+* groups: liste de groupes de données - seront affichés sous forme de boites à onglets.
+* groups.name: nom et libellé du groupe
+* glyphicon: glyphicon décorative pour l'onglet - facultatif
+* fields: liste des champs affiché dans l'onglet
+    * name: nom de la variable (camelCase)
+    * label: libellé
+    * type: type de donnée
+    * thesaurusID: uniquement pour les types select - permet d'afficher le libellé correspondant à la valeur numérique du champ
+
+
+
+schema formulaire
+~~~~~~~~~~~~~~~~~
+
+configuration de base d'une vue générique
+
+.. code:: yaml
+
+    editAccess: 1
+    deleteAccess: 1
+    formTitleCreate: "nouveau monObjet"
+    formTitleUpdate: "edition de "
+    formTitleRef: maVarA
+    createSuccessMessage: "monObjet créé"
+    updateSuccessMessage: "monObjet modifié"
+    deleteSuccessMessage: "monObjet supprimé"
+    formDeleteRedirectUrl: "g/monModule/monObjet/list"
+    formCreateCancelUrl: "g/monModule/monObjet/list"
+
+* editAccess: droits nécéssaires pour éditer, en cas de droits insuffisant l'utilisateur est redirigé
+* deleteAccess: droits nécéssaires pour faire apparaitre le bouton de suppression
+* formTitleCreate: titre du formulaire de création d'un objet
+* formTitleUpdate: titre du formulaire de modification (complété avec le contenu de formTitleRef
+* formTitleRef: variable à utiliser pour compléter le titre du formulaire (cf ci dessus)
+* createSuccessMessage: message affiché lorsqu'un objet est créé
+* updateSuccessMessage: message affiché lorsqu'un objet est modifié
+* deleteSuccessMessage: message affiché lorsqu'un objet est supprimé
+* formDeleteRedirectUrl: url de redirection en cas de suppression de la donnée
+* formCreateCancelUrl: url de redirection en cas d'abandon de création (en modification, l'url de redirection est la vue détaillée de l'objet)
+
+
+.. code:: yaml
+    
+    groups:
+        -   name: monGroupe1
+            fields:
+                -   name: maVarA
+                    label: "Var A"
+                    type: string
+                -   name: maVarB
+                    label: "Var B"
+                    type: date
+        -   name: monGroupe2
+            fields:
+                -   name: maVarC
+                    label: "Var C"
+                    type: select
+                    thesaurusID: 1
+
+* groups: liste des groupes de champs - affiché sous forme de boite à onglets avec sous validation (genre wizard)
+    * name: nom du groupe
+    * fields: liste des champs composant le groupe
+        * name: nom de la donnée (camelCase)
+        * label: libellé du champ
+        * type: type de champ
+
+
