@@ -34,3 +34,4 @@ License
    install
    serveur
    schemas
+   types
