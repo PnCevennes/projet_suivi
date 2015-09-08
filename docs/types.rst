@@ -112,6 +112,12 @@ Options disponibles pour tous les types
 * required: rend le champ obligatoire.
 
 
+Options disponibles pour certains types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* multi: permet de répéter un champ à volonté afin d'obtenir une liste plutot qu'une simple donnée.
+  N'est pas disponible pour les champs de type `text`, `sum`, `geom`, `group` ou `file`
+
 
 hidden
 ~~~~~~
