@@ -125,6 +125,7 @@ string
 affiche un champ de saisie du type `<input type="text">`
 
 options :
+
 * minLength: longueur minimum valide
 * maxLength: longueur maximale autorisée
 
@@ -135,6 +136,7 @@ text
 afficher un champ de saisie du type `<textarea>`
 
 options :
+
 * minLength: longueur minimum valide
 * maxLength: longueur maximale autorisée
 
@@ -145,6 +147,7 @@ num
 affiche un champ de type `<input type="number">`
 
 options :
+
 * min: valeur minimum
 * max: valeur maximum
 * step: pas d'incrément pour l'incrémentation à la souris et pour l'activation des décimales.
@@ -155,6 +158,7 @@ sum
 affiche un champ de type `<input type="number">` dont la valeur est calculée en fontion d'autres champs `num`
 
 options :
+
 * min: valeur minimum
 * max: valeur maximum
 * step: pas d'incrément pour l'incrémentation à la souris et pour l'activation des décimales.
@@ -210,7 +214,8 @@ file
 
 affiche une directive d'upload de fichier
 
-options:
+options requises:
+
 * target: dossier de stockage des fichier uploadés
 * maxSize: "poids" maximum autorisé (en octets)
 * accepted: liste des types d'extensions autorisés
@@ -223,6 +228,7 @@ xhr
 affiche un champ de saisie du type `<input type="text">` pour les références avec autocompletion par appel au serveur
 
 options requises:
+
 * url : url à contacter pour obtenir les données d'autocompletion 
 * reverseurl : url à contacter pour obtenir le libellé lié à une référence
 
@@ -267,6 +273,7 @@ geom
 affiche une carte pour la saisie des données géométriques
 
 options: 
+
 * geometryType (point|linestring|polygon) : type de géométrie traçable
 * dataUrl: url des données de contexte pour l'édition d'une géométrie
 
