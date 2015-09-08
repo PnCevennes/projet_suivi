@@ -57,7 +57,7 @@ integer : qui permet de rechercher un entier avec des comparaisons < = ou >
 
 
 Types de données utilisables dans les listes
---------------------------------------------
+============================================
 
 
 
@@ -103,7 +103,7 @@ Le serveur renvoie des données brutes avec des dates au format YYYY-MM-DD. Les 
 
 
 Types de données utilisables dans les formulaires
--------------------------------------------------
+=================================================
 
 
 Options disponibles pour tous les types
