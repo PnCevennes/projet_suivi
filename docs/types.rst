@@ -296,8 +296,8 @@ Types de données utilisables dans les vues détaillées
 =====================================================
 
 
-Options utilisables pour tous les types de données
---------------------------------------------------
+Options utilisables pour tous les types
+---------------------------------------
 
 * multi: permet d'afficher correctement une liste de données
 
