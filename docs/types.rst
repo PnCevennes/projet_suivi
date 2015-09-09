@@ -107,16 +107,20 @@ Types de données utilisables dans les formulaires
 
 
 Options disponibles pour tous les types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------
 
 * required: rend le champ obligatoire.
 
 
 Options disponibles pour certains types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------
 
 * multi: permet de répéter un champ à volonté afin d'obtenir une liste plutot qu'une simple donnée.
   N'est pas disponible pour les champs de type `text`, `sum`, `geom`, `group` ou `file`
+
+
+Types de champs
+---------------
 
 
 hidden
@@ -286,3 +290,60 @@ options:
 .. note::
 
     Il est préférable que le champ geom soit dans un groupe dédié
+
+
+Types de données utilisables dans les vues détaillées
+=====================================================
+
+
+Options utilisables pour tous les types de données
+--------------------------------------------------
+
+* multi: permet d'afficher correctement une liste de données
+
+
+
+Types de champs
+---------------
+
+
+string
+~~~~~~
+
+Affiche une donnée sans transformation.
+
+
+
+bool
+~~~~
+
+Affiche une donnée booléenne sous la forme Oui/Non
+
+
+
+date
+~~~~
+
+Affiche une date au format YYYY-MM-DD reformatée vers DD/MM/YYYY
+
+
+
+xhr
+~~~
+
+Affiche le libellé d'une donnée par un appel au serveur
+
+options requises:
+
+* url: l'url à contacter pour obtenir le libellé correspondant à la donnée
+
+
+
+select
+~~~~~~
+
+Affiche un libellé sélectionné dans la liste passée en options
+
+.. note::
+
+    Équivalent du type `select` disponible pour les formulaires, et se définit exactement de la même manière
