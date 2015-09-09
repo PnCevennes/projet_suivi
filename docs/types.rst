@@ -5,10 +5,6 @@ Liste des types de données qui peuvent être déclarés dans les différents sc
 
 
 
-
-Options disponibles pour tous les types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Les options sont définies dans la variable "options" du champ
 
 .. code:: yaml
@@ -21,13 +17,15 @@ Les options sont définies dans la variable "options" du champ
     default: "valeur par défaut"
 
 
+.. note::
+    Certaines options peuvent être utilisées quelque soit le type de champ
 
-* visible (bool) : rend la colonne de la liste visible par défaut.
-* style (xl|l|s|xs) : définit la taille de la colonne
+    * l'option **visible (bool)** rend la colonne de la liste visible par défaut.
+    * style (xl|l|s|xs) : définit la taille de la colonne
 
 
 Configuration des filtres
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 Les filtres sont définis dans la variable "filter" du champ
 
@@ -62,7 +60,7 @@ Types de données utilisables dans les listes
 
 
 text
-~~~~
+----
 
 Affiche un texte sans la moindre transformation
 
@@ -76,7 +74,7 @@ Affiche un texte sans la moindre transformation
 
 
 num
-~~~
+---
 
 Affiche une donnée numérique sans transformation. Peut être utilisé avec la fonction de filtrage "integer"
 
@@ -85,7 +83,7 @@ Affiche une donnée numérique sans transformation. Peut être utilisé avec la 
 
 
 select
-~~~~~~
+------
 
 Affiche un libellé correspondant à une valeur numérique sélectionné dans une liste fournie en options
 
@@ -94,7 +92,7 @@ Afin de faciliter l'utilisation de ce genre de type, lorsque la liste des libell
 
 
 date
-~~~~
+----
 
 
 Le serveur renvoie des données brutes avec des dates au format YYYY-MM-DD. Les champs de type date transforment cette date au format DD/MM/YYYY
@@ -106,36 +104,25 @@ Types de données utilisables dans les formulaires
 =================================================
 
 
+.. note::
 
-Options disponibles pour tous les types
----------------------------------------
+    l'option **required** est autorisée pour tous les types de champs afin de rendre la saisie obligatoire.
 
-
-* required: rend le champ obligatoire.
-
-
-
-Options disponibles pour certains types
----------------------------------------
+    l'option **multi** permet de répéter un champ à volonté afin d'obtenir une liste plutot qu'une simple donnée.
+    N'est pas disponible pour les champs de type `text`, `sum`, `geom`, `group` ou `file`
 
 
-* multi: permet de répéter un champ à volonté afin d'obtenir une liste plutot qu'une simple donnée.
-  N'est pas disponible pour les champs de type `text`, `sum`, `geom`, `group` ou `file`
-
-
-
-Types de champs
----------------
-
+.. note::
+    Certaines options sont obligatoires en fonction du type de champ. Ces options sont signalées dans la description du type.
 
 hidden
-~~~~~~
+------
 
 crée un champ de type `<input type="hidden">`. Ce champ accepte l'option "referParent: true" qui permet de faire référence au parametre d'identifiant passé par l'url ou l'option "ref: userId" qui permet de faire référence à l'ID de l'utilisateur. 
 
 
 string
-~~~~~~
+------
 
 affiche un champ de saisie du type `<input type="text">`
 
@@ -146,7 +133,7 @@ options :
 
 
 text
-~~~~
+----
 
 afficher un champ de saisie du type `<textarea>`
 
@@ -157,7 +144,7 @@ options :
 
 
 num
-~~~
+---
 
 affiche un champ de type `<input type="number">`
 
@@ -168,7 +155,7 @@ options :
 * step: pas d'incrément pour l'incrémentation à la souris et pour l'activation des décimales.
 
 sum
-~~~
+---
 
 affiche un champ de type `<input type="number">` dont la valeur est calculée en fontion d'autres champs `num`
 
@@ -182,18 +169,19 @@ options :
 
 
 bool
-~~~~
+----
 
 affiche une case à cocher type `<input type="checkbox">`
 
 
 
 select
-~~~~~~
+------
 
 affiche une liste déroulante dont les éléments sont passés en option
 
-.. code::
+.. code:: yaml
+
     name: varX
     label: "ma selection"
     type: select
@@ -218,14 +206,14 @@ affiche une liste déroulante dont les éléments sont passés en option
 
 
 date
-~~~~
+----
 
 affiche un champ date sous forme de calendrier
 
 
 
 file
-~~~~
+----
 
 affiche une directive d'upload de fichier
 
@@ -238,7 +226,7 @@ options requises:
 
 
 xhr
-~~~
+---
 
 affiche un champ de saisie du type `<input type="text">` pour les références avec autocompletion par appel au serveur
 
@@ -249,12 +237,13 @@ options requises:
 
 
 group
-~~~~~
+-----
 
 Le type group n'est pas un champ à part entière.
 Il permet de regrouper un nombre de champs en tableau de saisie
 
-.. code::
+.. code:: yaml
+
     name: mesVars
     type: group
     titles: 
@@ -283,7 +272,7 @@ Il permet de regrouper un nombre de champs en tableau de saisie
 
 
 geom
-~~~~
+----
 
 affiche une carte pour la saisie des données géométriques
 
@@ -301,43 +290,34 @@ Types de données utilisables dans les vues détaillées
 =====================================================
 
 
-
-Options utilisables pour tous les types
----------------------------------------
-
-
-* multi: permet d'afficher correctement une liste de données
-
-
-
-Types de champs
----------------
+.. note::
+    L'option **multi** est utilisable pour tous les types de données pour afficher une liste
 
 
 
 string
-~~~~~~
+------
 
 Affiche une donnée sans transformation.
 
 
 
 bool
-~~~~
+----
 
 Affiche une donnée booléenne sous la forme Oui/Non
 
 
 
 date
-~~~~
+----
 
 Affiche une date au format YYYY-MM-DD reformatée vers DD/MM/YYYY
 
 
 
 xhr
-~~~
+---
 
 Affiche le libellé d'une donnée par un appel au serveur
 
@@ -348,7 +328,7 @@ options requises:
 
 
 select
-~~~~~~
+------
 
 Affiche un libellé sélectionné dans la liste passée en options
 
