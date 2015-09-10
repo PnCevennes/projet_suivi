@@ -1,5 +1,6 @@
 editAccess: 3
 subEditAccess: 3
+dataUrl: "chiro/obs_taxon/"
 editAccessOverride: metaNumerisateurId
 subSchemaUrl: chiro/config/biometrie/list
 subDataUrl: chiro/biometrie/taxon/
