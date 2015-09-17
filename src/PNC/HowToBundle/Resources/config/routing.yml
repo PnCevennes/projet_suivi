@@ -1,0 +1,20 @@
+howto_list:
+    path: /howto
+    defaults: { _controller: PNCHowToBundle:Default:list }
+    requirements:
+        _method: GET
+
+
+howto_config:
+    path: /config/howto/{view_name}
+    defaults: { _controller: PNCHowToBundle:Default:config}
+    requirements:
+        _method: GET
+
+
+howto_breadcrumb:
+    path: /config/breadcrumb
+    defaults: { _controller: PNCHowToBundle:Default:breadcrumb}
+    requirements:
+        _method: GET
+

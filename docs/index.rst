@@ -29,9 +29,10 @@ License
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    install
    serveur
    schemas
    types
+   howto

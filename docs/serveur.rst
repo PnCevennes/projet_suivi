@@ -163,13 +163,13 @@ Pour les données géométriques, EntityService permet d'organiser facilement le
 
 
 
-récupérer une liste d'objets en utilisant PaginationService
+récupérer une liste d'objets en utilisant le service Pagination
 
 .. code:: php
 
     //GET monModule/monObjet
     function getAllMonObjetAction(Request $request){
-        $ps = $this->get('paginationService');
+        $ps = $this->get('pagination');
         $entite = 'monModule:MonObjet';
         $mapping = '../src/PNC/MonBundle/Resources/config/doctrine/monObjet.orm.yml';
         $results = $ps->filter_request($entite, $request);

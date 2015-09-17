@@ -1,3 +1,7 @@
+pnc_how_to:
+    resource: "@PNCHowToBundle/Resources/config/routing.yml"
+    prefix:   /howto/
+
 commons_users:
     resource: "@CommonsUsersBundle/Resources/config/routing.yml"
     prefix:   /users/

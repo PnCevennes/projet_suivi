@@ -1,0 +1,18 @@
+PNC\HowToBundle\Entity\Howto:
+    type: entity
+    table: howto.t_howto
+    schema: howto
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        ht_nom:
+            type: text
+        ht_valeur:
+            type: integer
+        ht_commentaire:
+            type: text
+

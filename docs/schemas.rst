@@ -120,11 +120,15 @@ filtrage des données
 
 
 * filtering: définit les options de filtrage - le controleur qui renvoie les données doit alors utiliser paginationService plutôt que entityService
-* limit: nombre maximum de données renvoyées par défaut
-* fields: liste des champs qui permettent de filtrer les données
+* limit: nombre maximum de données renvoyées par défaut - null équivaut à aucune limite
+* fields: liste des champs qui permettent de filtrer les données - non obligatoire si aucun filtre n'a besoin d'être appliqué
 * name: nom de l'attribut de l'objet à filtrer (au format mot_mot et non camelCase)
 * label: libellé du filtre
 * type: type de donnée: détermine les différents comparateurs
+
+
+.. note::
+    Pour une utilisation des vues génériques, la directive de filtrage doit obligatoirement être déclarée. 
 
 
 liste des champs
