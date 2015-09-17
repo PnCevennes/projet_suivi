@@ -12,7 +12,8 @@ Répondre yml à la question concernant les choix de configuration
 Répondre oui à toutes les autres questions.
 
 
-correction du fichier app/config/routing.yml::
+correction du fichier *app/config/routing.yml*::
+
     pnc_how_to:
         resource: "@PNCHowToBundle/Resources/config/routing.yml"
         prefix:   /howto/
@@ -23,7 +24,10 @@ correction du fichier app/config/routing.yml::
 Etape 2 - Génération de la BDD
 ------------------------------
 
-.. code:: SQL
+Création d'une table howto et insertions de données de test
+
+.. code:: 
+
     CREATE SCHEMA howto;
     CREATE TABLE howto.t_howto (
         id serial,
@@ -56,7 +60,7 @@ Etape 3 - Création des mappings
 ~~~~~~~~~~~~~~~~~~~~~~
 
 
-fichier PNC/HowToBundle/Resources/config/doctrine/howto.orm.yml::
+fichier *PNC/HowToBundle/Resources/config/doctrine/howto.orm.yml*::
     PNC\HowToBundle\Entity\Howto:
         type: entity
         table: howto.t_howto
@@ -85,8 +89,8 @@ fichier PNC/HowToBundle/Resources/config/doctrine/howto.orm.yml::
 3.2 Génération de l'entité
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Dans une console::
 
-.. code::
     app/console doctrine:generate:entities PNC
 
 .. note::
@@ -98,7 +102,8 @@ fichier PNC/HowToBundle/Resources/config/doctrine/howto.orm.yml::
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-fichier PNC/HowToBundle/Entity/Howto.php (condensé)::
+fichier *PNC/HowToBundle/Entity/Howto.php (condensé)*::
+
     <?php
     namespace PNC\HowToBundle\Entity;
 
@@ -141,6 +146,7 @@ Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
 
 
 Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.php)::
+
     <?php
     namespace PNC\HowToBundle\Controller;
 
