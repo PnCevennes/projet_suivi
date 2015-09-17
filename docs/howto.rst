@@ -61,6 +61,7 @@ Etape 3 - Création des mappings
 
 
 fichier *PNC/HowToBundle/Resources/config/doctrine/howto.orm.yml*::
+
     PNC\HowToBundle\Entity\Howto:
         type: entity
         table: howto.t_howto
@@ -259,19 +260,21 @@ Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howt
                 id: text
             options:
                 visible: false
-        -   name: ht_nom
+        -   name: htNom
             label: "Nom"
             type: text
             filter:
-                ht_nom: text
+                htNom: text
             options:
+                style: xl
                 visible: true
-        -   name: ht_valeur
+        -   name: htValeur
             label: "Valeur"
             type: text
             filter:
-                ht_valeur: text
+                htValeur: text
             options:
+                style: xl
                 visible: true
 
 À cette étape, l'url *appurl/#/g/howto/howto/list* doit afficher un tableau de données 

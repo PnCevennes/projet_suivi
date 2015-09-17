@@ -20,14 +20,16 @@ fields:
         label: "Nom"
         type: text
         filter:
-            ht_nom: text
+            htNom: text
         options:
+            style: xl
             visible: true
     -   name: htValeur
         label: "Valeur"
         type: text
         filter:
-            ht_valeur: text
+            htValeur: text
         options:
+            style: xl
             visible: true
 
