@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use PNC\HowToBundle\Entity\Howto;
+
 class DefaultController extends Controller
 {
     
@@ -18,6 +20,8 @@ class DefaultController extends Controller
     public function configAction($view_name){
         $configs = array(
             'list'=>__DIR__ . '/../Resources/clientConf/howto/list.yml',
+            'detail'=>__DIR__ . '/../Resources/clientConf/howto/detail.yml',
+            'form'=>__DIR__ . '/../Resources/clientConf/howto/form.yml',
         );
 
         // initialisation configservice
@@ -57,5 +61,43 @@ class DefaultController extends Controller
         }
         $result['filtered'] = $out;
         return new JsonResponse($result);
+    }
+
+    public function detailAction(Request $req, $id){
+        // entité
+        $entity = 'PNCHowToBundle:Howto';
+
+        // schéma utilisé pour la normalisation
+        // ici on utilise le fichier de mapping de l'entité puisqu'on 
+        // veut en récupérer toutes les données
+        $schema = '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        // initialisation des services
+        $es = $this->get('entityService');
+        $data = $es->getOne($entity, array('id'=>$id));
+        if($data){
+            return new JsonResponse($es->normalize($data, $schema));
+        }
+        // objet inexistant
+        return new JsonResponse(array(), 404);
+        
+    }
+
+    function createAction(Request $request){
+        $et = $this->get('entityService');
+        $data = json_decode($request->getContent(), true);
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $config = array($mapping => array(
+                'entity' => new Howto(),
+                'data' => $data
+            )
+        );
+        try{
+            $result = $et->create($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
     }
 }

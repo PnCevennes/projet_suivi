@@ -131,11 +131,61 @@ fichier *PNC/HowToBundle/Entity/Howto.php (condensé)*::
 Cette modification permet d'utiliser la classe BaseEntity pour la gestion des erreurs.
 
 
-Etape 4 - Création des contrôleurs
-----------------------------------
+Etape 4 - Création du contrôleurs liste
+------------------------------------------
 
-4.1 Controleur liste
-~~~~~~~~~~~~~~~~~~~~
+4.0 Configuration de l'application cliente
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+En préembule, il est nécéssaire de déclarer le nouveau module à l'application cliente et le contrôleur qui permettra à celle ci de récupérer les fichiers de configuration des vues. 
+
+
+Déclaration du module à l'application cliente::
+
+    -   id: 2
+        name: Howto
+        base_url: "g/howto/howto/list"
+        appId: 1000006
+        menu:
+            -   url: "#g/howto/howto/list"
+                label: "Howto"
+                restrict: 1
+
+
+Déclaration de la route pour le contrôleur dans le fichier PNC/HowToBundle/Resources/config/routing.yml::
+
+    howto_config:
+        path: /config/howto/{view_name}
+        defaults: { _controller: PNCHowToBundle:Default:config }
+        requirements:
+            _method: GET
+
+
+Création du controleur::
+
+    public function configAction($view_name){
+        $configs = array(
+            'list'=>__DIR__ . '../Resources/clientConf/howto/list.yml',
+            'detail'=>__DIR__ . '../Resources/clientConf/howto/detail.yml',
+            'form'=>__DIR__ . '../Resources/clientConf/howto/form.yml',
+        );
+
+        // initialisation configservice
+        $cs = $this->get('configService');
+        
+        if(isset($config[$view_name])){
+            return new JsonResponse($cs->get_config($configs[$view_name]));
+        }
+        else{
+            return new JsonResponse(array(), 404);
+        }
+    }
+
+
+
+4.1 Controleur
+~~~~~~~~~~~~~~
 
 Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
 
@@ -159,7 +209,7 @@ Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.ph
     class DefaultController extends Controller{
         public function listAction(Request $req){
             // entité a charger
-            $entity = 'PNCHowToBundle::Howto';
+            $entity = 'PNCHowToBundle:Howto';
 
             // schéma utilisé pour la normalisation
             $schema = array(
@@ -191,53 +241,9 @@ Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.ph
 
 
 
-4.2 Configuration de l'application cliente
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-Déclaration du module à l'application cliente::
-
-    -   id: 2
-        name: Howto
-        base_url: "g/howto/howto/list"
-        appId: 1000006
-        menu:
-            -   url: "#g/howto/howto/list"
-                label: "Howto"
-                restrict: 1
-
-
-
-4.3 Creation du controleur de configuration
+4.2 Creation du controleur de configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-Déclaration de la route dans le fichier PNC/HowToBundle/Resources/config/routing.yml::
-
-    howto_config:
-        path: /config/{view_name}
-        defaults: { _controller: PNCHowToBundle:Default:config }
-        requirements:
-            _method: GET
-
-
-Création du controleur::
-
-    public function configAction($view_name){
-        $configs = array(
-            'list'=>__DIR__ . '../Resources/clientConf/howto/list.yml',
-        );
-
-        // initialisation configservice
-        $cs = $this->get('configService');
-        
-        if(isset($config[$view_name])){
-            return new JsonResponse($cs->get_config($configs[$view_name]));
-        }
-        else{
-            return new JsonResponse(array(), 404);
-        }
-    }
 
 
 Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howto/list.yml*::
@@ -277,8 +283,157 @@ Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howt
                 style: xl
                 visible: true
 
+
 À cette étape, l'url *appurl/#/g/howto/howto/list* doit afficher un tableau de données 
 
 
 
+Etape 5 - Création du contrôleur détails
+----------------------------------------
 
+
+5.1 Controleur
+~~~~~~~~~~~~~~
+
+Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
+
+    howto_detail:
+        path: /howto/{id}
+        defaults: { _controller: PNCHowToBundle:Default:detail }
+        requirements:
+            _method: GET
+
+
+Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.php)::
+
+    <?php
+    namespace PNC\HowToBundle\Controller;
+
+    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+    
+    use Symfony\Component\HttpFoundation\JsonResponse;
+    use Symfony\Component\HttpFoundation\Request;
+
+    class DefaultController extends Controller{
+        public function listAction(Request $req){
+            //...
+        }
+
+        public function detailAction(Request $req, $id){
+            // entité
+            $entity = 'PNCHowToBundle:Howto';
+
+            // schéma utilisé pour la normalisation
+            // ici on utilise le fichier de mapping de l'entité puisqu'on 
+            // veut en récupérer toutes les données
+            $schema =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+            // initialisation des services
+            $es = $this->get('entityService');
+            $data = $es->getOne($entity, array('id'=>$id));
+            if($data){
+                return new JsonResponse($es->normalize($data, $schema));
+            }
+            // objet inexistant
+            return new JsonResponse(array(), 404);
+            
+        }
+    }
+
+
+5.2 Creation du controleur de configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howto/detail.yml*::
+
+    editAccess: 3
+    dataUrl: "chiro/obs_taxon/"
+    groups:
+        -   name: "Général"
+            fields:
+                -   name: id
+                    type: hidden
+                -   name: htNom
+                    label: "Nom"
+                    type: string
+                -   name: htValeur
+                    label: "Valeur"
+                    type: num
+        -   name: "Commentaires"
+            fields:
+                -   name: htCommentaire
+                    label: "Commentaire"
+                    type: string
+
+
+
+Etape 6 - Création du contrôleur détails
+----------------------------------------
+
+
+6.1 Controleur
+~~~~~~~~~~~~~~
+
+
+Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
+
+    howto_detail:
+        path: /howto
+        defaults: { _controller: PNCHowToBundle:Default:create}
+        requirements:
+            _method: PUT
+
+
+Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.php)::
+
+    //ajouter avant la déclaration de classe
+    //use PNC\HowToBundle\Entity\Howto;
+
+    function createAction(Request $request){
+        $et = $this->get('entityService');
+        $data = json_decode($request->getContent(), true);
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $config = array($mapping => array(
+                'entity' => new Howto(),
+                'data' => $data
+            )
+        );
+        try{
+            $result = $et->create($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
+    }
+
+
+6.2 Creation du controleur de configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howto/detail.yml*::
+
+    editAccess: 3
+    dataUrl: "chiro/obs_taxon/"
+    groups:
+        -   name: "Général"
+            fields:
+                -   name: id
+                    type: hidden
+                -   name: htNom
+                    label: "Nom"
+                    type: string
+                    options:
+                        minLength: 1
+                        maxLength: 100
+                -   name: htValeur
+                    label: "Valeur"
+                    type: num
+        -   name: "Commentaires"
+            fields:
+                -   name: htCommentaire
+                    label: "Commentaire"
+                    type: text
+                        maxLength: 1000

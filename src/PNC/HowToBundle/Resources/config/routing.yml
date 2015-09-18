@@ -5,6 +5,13 @@ howto_list:
         _method: GET
 
 
+howto_detail:
+    path: /howto/{id}
+    defaults: { _controller: PNCHowToBundle:Default:detail }
+    requirements:
+        _method: GET
+
+
 howto_config:
     path: /config/howto/{view_name}
     defaults: { _controller: PNCHowToBundle:Default:config}
