@@ -100,4 +100,46 @@ class DefaultController extends Controller
             return new JsonResponse($e->getErrors());
         }
     }
+
+    function updateAction(Request $request, $id){
+        $et = $this->get('entityService');
+        $data = json_decode($request->getContent(), true);
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $entity = 'PNCHowToBundle:Howto';
+
+        $config = array($mapping => array(
+                'repo' => $entity,
+                'filter'=>array('id'=>$id),
+                'data' => $data
+            )
+        );
+        try{
+            $result = $et->update($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
+    }
+
+    function deleteAction(Request $request, $id){
+        $et = $this->get('entityService');
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $entity = 'PNCHowToBundle:Howto';
+
+        $config = array($mapping => array(
+                'repo' => $entity,
+                'filter'=>array('id'=>$id),
+            )
+        );
+        try{
+            $result = $et->delete($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
+    }
 }

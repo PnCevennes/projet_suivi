@@ -367,7 +367,7 @@ Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howt
 
 
 
-Etape 6 - Création du contrôleur détails
+Etape 6 - Création du contrôleur d'ajout
 ----------------------------------------
 
 
@@ -413,10 +413,16 @@ Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.ph
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howto/detail.yml*::
+Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howto/form.yml*::
 
     editAccess: 3
-    dataUrl: "chiro/obs_taxon/"
+    deleteAccess: 3
+    dataUrl: "howto/howto/"
+    createSuccessMessage: "Création d'un nouvel objet"
+    updateSuccessMessage: "Modification de l'objet réussie"
+    deleteSuccessMessage: "Suppression réussie"
+    formDeleteRedirectUrl: "g/howto/howto/list"
+    formCreateCancelUrl: "g/howto/howto/list"
     groups:
         -   name: "Général"
             fields:
@@ -437,3 +443,89 @@ Création du fichier de configuration *PNC/HowToBundle/Resources/clientConf/howt
                     label: "Commentaire"
                     type: text
                         maxLength: 1000
+
+
+Etape 7 - Création du contrôleur de mise à jour
+-----------------------------------------------
+
+
+7.1 Controleur
+~~~~~~~~~~~~~~
+
+
+Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
+
+    howto_update:
+        path: /howto/{id}
+        defaults: { _controller: PNCHowToBundle:Default:update}
+        requirements:
+            _method: POST
+
+
+Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.php)::
+
+    function updateAction(Request $request, $id){
+        $et = $this->get('entityService');
+        $data = json_decode($request->getContent(), true);
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $entity = 'PNCHowToBundle:Howto';
+
+        $config = array($mapping => array(
+                'repo' => $entity,
+                'filter'=>array('id'=>$id),
+                'data' => $data
+            )
+        );
+        try{
+            $result = $et->update($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
+    }
+
+.. note::
+    L'application cliente utilise le même schéma pour la mise à jour que pour la création.
+
+
+
+Etape 8 - Création du contrôleur de suppression
+-----------------------------------------------
+
+
+8.1 Controleur
+~~~~~~~~~~~~~~
+
+
+Ajout au fichier PNC/HowToBundle/Resources/config/routing.yml::
+
+    howto_update:
+        path: /howto/{id}
+        defaults: { _controller: PNCHowToBundle:Default:delete}
+        requirements:
+            _method: DELETE
+
+
+Création du controleur (fichier PNC/HowToBundle/Controller/DefaultController.php)::
+
+    function deleteAction(Request $request, $id){
+        $et = $this->get('entityService');
+        $mapping =  '../src/PNC/HowToBundle/Resources/config/doctrine/Howto.orm.yml';
+        $entity = 'PNCHowToBundle:Howto';
+
+        $config = array($mapping => array(
+                'repo' => $entity,
+                'filter'=>array('id'=>$id),
+            )
+        );
+        try{
+            $result = $et->delete($config);
+            $howto = $result[$mapping];
+            return new JsonResponse(array('id'=>$howto->getId()));
+        }
+        catch(DataObjectException $e){
+            return new JsonResponse($e->getErrors());
+        }
+    }
