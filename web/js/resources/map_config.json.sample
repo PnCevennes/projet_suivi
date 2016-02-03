@@ -1,9 +1,9 @@
 [
     {
         "order" : 1,
-        "id": "sites_chiro", 
+        "id": "sample", 
         "clustering": false,
-        "name": "Sites chiro", 
+        "name": "Map", 
         "center": {
             "lat": 44.3266459,
             "lng": 3.6072651,
@@ -29,9 +29,6 @@
         }
     }
 ]
-
-
-
 
 
 
