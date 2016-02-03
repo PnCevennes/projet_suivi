@@ -57,7 +57,7 @@ fields:
         filter: 
             cotxObjStatusValidation: select
         options: 
-            visible: false 
+            visible: true
             type: select
             style: l
     -   name: "bsNom"
@@ -104,5 +104,13 @@ fields:
             cotxDateValidation: "text"
         options: 
             visible: false
+            type: "date"
+            style: l
+    -   name: "metaCreateTimestamp"
+        label: "Date de création"
+        filter: 
+            cotxDateValidation: "text"
+        options: 
+            visible: true
             type: "date"
             style: l

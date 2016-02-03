@@ -31,3 +31,5 @@ PNC\ChiroBundle\Entity\ValidationTaxonView:
             type: text
         geom:
             type: json_array
+        meta_create_timestamp:
+            type: date
