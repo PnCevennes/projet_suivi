@@ -416,6 +416,11 @@ app.directive('simpleform', function(){
                     dataServ.get($scope.dataUrl, $scope.setData);
                 }
                 else{
+                    $scope.$watch('dataUrl', function(newval){
+                        if(newval){
+                            dataServ.get(newval, $scope.setData);
+                        }
+                    });
                     if($scope.schema.subSchemaAdd && userServ.checkLevel($scope.schema.subSchemaAdd)){
                         $scope.addSubSchema = true;
                         $scope.isActive.push(false);
