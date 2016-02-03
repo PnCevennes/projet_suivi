@@ -35,7 +35,7 @@ PNC\ChiroBundle\Entity\SiteView:
             type: text
         cis_menace_cmt:
             type: text
-        site_amenagement:
+        site_fichiers:
             type: json_array
         cis_contact_nom:
             type: text
@@ -53,6 +53,8 @@ PNC\ChiroBundle\Entity\SiteView:
             type: text
         cis_contact_commentaire:
             type: text
+        cis_site_actif:
+            type: boolean
         dern_obs:
             type: date
         nb_obs:

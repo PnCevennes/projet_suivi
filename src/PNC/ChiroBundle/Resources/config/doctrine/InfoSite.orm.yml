@@ -12,13 +12,6 @@ PNC\ChiroBundle\Entity\InfoSite:
     fields:
         fk_bs_id:
             type: integer
-        site_description:
-            type: text
-            nullable: true
-        site_schema:
-            type: string
-            length: 255
-            nullable: true
         cis_frequentation:
             type: integer
             nullable: true
@@ -58,6 +51,9 @@ PNC\ChiroBundle\Entity\InfoSite:
             nullable: true
         cis_contact_commentaire:
             type: text
+            nullable: true
+        cis_site_actif:
+            type: boolean
             nullable: true
 
     oneToOne:
