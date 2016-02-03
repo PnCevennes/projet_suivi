@@ -301,6 +301,9 @@ class EntityService{
         $ename = array_keys($yaml)[0];
         $idT = $yaml[$ename]['id'];
         $out = array($this->camelize(array_keys($idT)[0])=>null);
+        if(!isset($yaml[$ename]['fields'])){
+            $yaml[$ename]['fields'] = $yaml[$ename]['id'];
+        }
         foreach($yaml[$ename]['fields'] as $key=>$value){
             $out[$this->camelize($key)] = $value['type'];
         }
