@@ -1,0 +1,10 @@
+PNC\ChiroBundle\Entity\ObstaxonFichiers:
+    type: entity
+    table: chiro.rel_observationtaxon_fichiers
+    schema: chiro
+    id:
+        cotx_id:
+            type: integer
+        fichier_id:
+            type: integer
+

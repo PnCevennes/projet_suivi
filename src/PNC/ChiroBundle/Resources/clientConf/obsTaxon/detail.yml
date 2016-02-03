@@ -50,6 +50,12 @@ groups:
             -   name: cotxEffectifAbs
                 label: "Effectif total"
                 type: num
+            -   name: obsTaxonFichiers
+                label: Photographies
+                type: file
+                help: "Photographies pour identification"
+                options:
+                    target: "chiro/obsTaxon/"
     -   name: "Détail"
         glyphicon: glyphicon-search
         fields:

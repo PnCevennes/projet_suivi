@@ -58,6 +58,17 @@ groups:
                 label: Commentaires
                 type: text
                 help: "Informations complémentaires sur l'observation"
+            -   name: obsTaxonFichiers
+                label: Photographies
+                type: file
+                help: "Photographies pour identification"
+                options:
+                    target: "chiro/obsTaxon"
+                    maxSize: 2048000
+                    accepted:
+                        - "png"
+                        - "jpg"
+            
     -   name: Dénombrement
         fields:
             -   name: "enum"

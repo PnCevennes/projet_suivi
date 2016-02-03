@@ -6,6 +6,8 @@ use Commons\Exceptions\DataObjectException;
 use Commons\Exceptions\CascadeException;
 
 use PNC\ChiroBundle\Entity\ObservationTaxon;
+use PNC\ChiroBundle\Entity\ObstaxonFichiers;
+
 
 class TaxonService{
     // doctrine
@@ -80,14 +82,25 @@ class TaxonService{
 
     public function getOne($id){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
+        $fichiers_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObstaxonFichiers.orm.yml';
         $data = $this->entityService->getOne(
             'PNCChiroBundle:ObservationTaxon', 
             array('id'=>$id)
         );
         if($data){
+            $fichiers = $this->entityService->getAll(
+                'PNCChiroBundle:ObstaxonFichiers',
+                array('cotx_id'=>$id)
+            );
             $out = $this->entityService->normalize($data, $schema);
+            $out['obsTaxonFichiers'] = array();
+            foreach($fichiers as $fich){
+                $out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
+            }
             return $out;
         }
+
+
         return null;
     }
     
@@ -129,6 +142,11 @@ class TaxonService{
             $manager->getConnection()->commit();
         }
 
+        $errors = $this->_record_fichiers($site, $data['obsTaxonFichiers']);
+        if($errors){
+            //print_r($errors);
+        }
+
         return array('id'=>$obsTx->getId());
     }
 
@@ -136,7 +154,7 @@ class TaxonService{
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         $tx = $this->entityService->getOne(
             'PNCBaseAppBundle:Taxons', 
-            array('cd_nom'=>$data['cdNom'])
+            array('cd_nom'=>$data['cotxCdNom'])
         );
         $data['nomComplet'] = $tx->getNomComplet();
 
@@ -151,6 +169,10 @@ class TaxonService{
         );
 
         $obsTx = $result[$schema];
+        $errors = $this->_record_fichiers($obsTx, $data['obsTaxonFichiers']);
+        if($errors){
+            //print_r($errors);
+        }
         return array('id'=>$obsTx->getId());
     }
 
@@ -193,6 +215,34 @@ class TaxonService{
             }
         }
         $manager->getConnection()->commit();
+    }
+
+    private function _record_fichiers($obsTx, $data){
+        $errors = array();
+        // enregistrement des fichiers liés
+
+        $manager = $this->db->getManager();
+
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_observationtaxon_fichiers WHERE cotx_id=:cotxid');
+        $delete->bindValue('cotxid', $obsTx->getId());
+        $delete->execute();
+
+        foreach($data as $fichier){
+            $fich_ = explode('_', $fichier);
+            $fich_id = (int) $fich_[0];
+            try{
+                $fichier = new ObstaxonFichiers();
+                $fichier->setCotxId($obsTx->getId());
+                $fichier->setFichierId($fich_id);
+                $manager->persist($fichier);
+                $manager->flush();
+            }
+            catch(\Exception $e){
+                $errors[] = $e->getMessage();
+            }
+        }
+        return $errors;
     }
 }
 
