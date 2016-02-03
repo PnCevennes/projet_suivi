@@ -91,6 +91,8 @@ class InfoSite extends BaseEntity
     private $cis_contact_commentaire;
 
 
+    private $cis_site_actif;
+
     /**
      * Get id
      *
@@ -455,6 +457,13 @@ class InfoSite extends BaseEntity
      */
     private $site_schema;
 
+    public function setCisSiteActif($v){
+        $this->cis_site_actif = $v;
+    }
+
+    public function getCisSiteActif(){
+        return $this->cis_site_actif;
+    }
 
     /**
      * Set site_description
@@ -529,4 +538,5 @@ class InfoSite extends BaseEntity
     {
         return $this->parent_site;
     }
+
 }

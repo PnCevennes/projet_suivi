@@ -53,17 +53,20 @@ groups:
                 help: "date d'ajout à la base de données"
                 options:
                     required: true
+            -   name: cisSiteActif
+                label: Site actif
+                help: "Détermine si le suivi du site est définitivement abandonné"
+                type: bool
+                default: true
             -   name: bsDescription
                 label: Description
                 type: text
                 options: 
                     maxLength: 1000
-    -   name: Etat
-        fields:
-            -   name: siteAmenagement
-                label: Amenagement
+            -   name: siteFichiers
+                label: "Fichiers joints" 
                 type: file
-                help: "Aménagement du site"
+                help: "Fichiers relatifs au site"
                 options:
                     target: "chiro/site"
                     maxSize: 2048000
@@ -71,6 +74,8 @@ groups:
                         - "png"
                         - "jpg"
                         - "pdf"
+    -   name: Etat
+        fields:
             -   name: cisMenace
                 label: "Types de menace"
                 type: select

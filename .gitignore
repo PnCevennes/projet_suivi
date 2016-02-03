@@ -10,4 +10,5 @@
 /vendor/
 /web/bundles/
 /web/uploads/*
+/web/js/resources/*.json
 *~

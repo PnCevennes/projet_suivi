@@ -87,7 +87,7 @@ class SiteView
     /**
      * @var array
      */
-    private $site_amenagement;
+    private $site_fichiers;
 
     /**
      * @var string
@@ -158,7 +158,6 @@ class SiteView
      * @var array
      */
     private $ref_commune;
-
 
     /**
      * Get id
@@ -498,9 +497,9 @@ class SiteView
      * @param array $siteAmenagement
      * @return SiteView
      */
-    public function setSiteAmenagement($siteAmenagement)
+    public function setSiteFichiers($siteFichiers)
     {
-        $this->site_amenagement = $siteAmenagement;
+        $this->site_fichiers = $siteFichiers;
 
         return $this;
     }
@@ -510,9 +509,9 @@ class SiteView
      *
      * @return array 
      */
-    public function getSiteAmenagement()
+    public function getSiteFichiers()
     {
-        return $this->site_amenagement;
+        return $this->site_fichiers;
     }
 
     /**
@@ -925,6 +924,8 @@ class SiteView
      * @var string
      */
     private $cis_contact_commentaire;
+
+    private $cis_site_actif;
 
     /**
      * @var \DateTime
@@ -1356,6 +1357,13 @@ class SiteView
         return $this->cis_contact_commentaire;
     }
 
+    public function setCisSiteActif($v){
+        $this->cis_site_actif = $v;
+    }
+
+    public function getCisSiteActif(){
+        return $this->cis_site_actif;
+    }
     /**
      * Set meta_create_timestamp
      *

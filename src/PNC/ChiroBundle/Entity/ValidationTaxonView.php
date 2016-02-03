@@ -69,6 +69,7 @@ class ValidationTaxonView
      */
     private $geom;
 
+    private $meta_create_timestamp;
 
     /**
      * Get id
@@ -387,5 +388,14 @@ class ValidationTaxonView
     public function getNumerisateur()
     {
         return $this->numerisateur;
+    }
+
+    public function setMetaCreateTimestamp($ts){
+        $this->meta_create_timestamp = $ts;
+        return $this;
+    }
+
+    public function getMetaCreateTimestamp(){
+        return $this->meta_create_timestamp;
     }
 }
