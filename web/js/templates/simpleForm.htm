@@ -2,17 +2,16 @@
 <form name="Simpleform" novalidate class="css-form">
     <div id="form-container" class="container-fluid">
         <tabset justified="true" ng-if="schema.groups.length>1 || schema.groups.length && addSubSchema">
-            <tab ng-repeat="group in schema.groups" heading="{{group.name}}" active="isActive[$index]" disabled="isDisabled[$index]">
+            <tab ng-repeat="group in schema.groups" active="isActive[$index]">
 
+                <tab-heading>
+                <span ng-show="(sub_{{$index}}.$invalid)" class="glyphicon glyphicon-alert"></span> {{group.name}}
+                </tab-heading>
                 <ng-form name="sub_{{$index}}">
                     <dynform group="group" data="data" errors="errors"></dynform>
                 </ng-form>
                 
                 <div id="formToolbox" class="row">
-                    <div id ="btn-nagigation" class="btn-toolbox float-left">
-                        <button type="button" class="btn btn-primary" ng-click="prevPage()" ng-disabled="!$index>0"><span class="glyphicon glyphicon-chevron-left"></span>Précédent</button>
-                        <button type="button" class="btn btn-primary" ng-click="nextPage()" ng-disabled="(sub_{{$index}}.$invalid) || !hasNext($index)">Suivant<span class="glyphicon glyphicon-chevron-right"></span></button>
-                    </div>
                     <div id ="btn-action" class=" btn-toolbox float-right">
                         <button class="btn btn-danger" type="button" ng-if="data.id && deleteAccess" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
                         <button class="btn btn-warning" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-ban-circle"></span> Annuler</button>
@@ -23,10 +22,6 @@
             <tab ng-if="addSubSchema" heading="{{schema.subTitle}}" disabled="!isFormValid()" active="isActive[isActive.length-1]">
                 <div spreadsheet schemaurl="schema.subSchemaUrl" dataref="schema.subDataRef" data="data" subtitle="schema.subTitle"></div>
                 <div id="formToolbox" class="row">
-                    <div id ="btn-nagigation" class="btn-toolbox float-left">
-                        <button type="button" class="btn btn-primary" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left"></span>Précédent</button>
-                        <button type="button" class="btn btn-primary" ng-click="nextPage()" ng-disabled="(sub_{{$index}}.$invalid) || !hasNext($index)">Suivant<span class="glyphicon glyphicon-chevron-right"></span></button>
-                    </div>
                     <div id ="btn-action" class=" btn-toolbox float-right">
                         <button class="btn btn-danger" type="button" ng-if="data.id && deleteAccess" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Supprimer</button>
                         <button class="btn btn-warning" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-ban-circle"></span> Annuler</button>

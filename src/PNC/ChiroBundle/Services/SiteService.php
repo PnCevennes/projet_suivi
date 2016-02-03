@@ -33,7 +33,8 @@ class SiteService{
             'cisContactVille'=>null,
             'cisContactTelephone'=>null,
             'cisContactPortable'=>null,
-            'cisContactCommentaire'=>null
+            'cisContactCommentaire'=>null,
+            'cisSiteActif'=>null
         );
 
     }
@@ -115,7 +116,7 @@ class SiteService{
         $manager->flush();
         $manager->getConnection()->commit();
         
-        $errors = $this->_record_amenagement($site, $data['siteAmenagement']);
+        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
             //print_r($errors);
         }
@@ -151,7 +152,7 @@ class SiteService{
             throw new DataObjectException($errors);
         }
 
-        $errors = $this->_record_amenagement($site, $data['siteAmenagement']);
+        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
             //print_r($errors);
         }
@@ -159,7 +160,7 @@ class SiteService{
 
     }
 
-    private function _record_amenagement($site, $data){
+    private function _record_fichiers($site, $data){
         $errors = array();
         // enregistrement des fichiers liés
 

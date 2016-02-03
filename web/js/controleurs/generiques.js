@@ -83,7 +83,7 @@ app.controller('genericEditController', function($scope, $routeParams, configSer
 
     if($routeParams.id){
         $scope.saveUrl = $scope._appName + '/' + $routeParams.viewName + '/' + $routeParams.id;
-        $scope.dataUrl = $scope._appName + '/' + $routeParams.viewName + '/' + $routeParams.id;
+        $scope.dataUrl = null;
         $scope.data = {__origin__: {geom: $routeParams.id}};
     }
     else{
@@ -93,10 +93,14 @@ app.controller('genericEditController', function($scope, $routeParams, configSer
     
     $scope.$on('schema:init', function(ev, schema){
         $scope.schema = schema;
+        if($routeParams.id){
+            $scope.dataUrl = schema.dataUrl + $routeParams.id;
+        }
+
         if($routeParams.protocoleReference){
             schema.groups.forEach(function(_group){
                 _group.fields.forEach(function(_field){
-                    if(_field.options && _field.options.referParent){
+                    if(_field.options && (_field.options.referParent || _field.options.ref == 'parent')){
                         $scope.data[_field.name] = $routeParams.idReference;
                     }
                 });

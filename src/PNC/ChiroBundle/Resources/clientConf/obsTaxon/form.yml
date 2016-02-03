@@ -1,4 +1,5 @@
 editAccess: 3
+dataUrl: "chiro/obs_taxon/"
 editAccessOverride: metaNumerisateurId
 deleteAccess: 5
 deleteAccessOverride: metaNumerisateurId 
@@ -14,7 +15,7 @@ groups:
             -   name: fkBvId
                 type: hidden
                 options:
-                    referParent: true
+                    ref: parent
             -   name: metaNumerisateurId
                 label: Numerisateur
                 type: hidden
@@ -22,15 +23,14 @@ groups:
                     ref: userId
             -   name: cotxValidateur
                 type: hidden
-            -   name: cdNom
+            -   name: cotxCdNom
                 label: "Nom taxon"
                 type: xhr
                 options:
                     url: "chiro/taxons"
                     reverseurl: "chiro/taxons/id"
-                    ref: cdNom
-            -   name: cotxInitial
-                label: "Taxon initial"
+            -   name: cotxTxInitial
+                label: "Taxon présumé"
                 type: string
             -   name: cotxObjStatusValidation
                 label: Validation

@@ -31,16 +31,18 @@ groups:
                 options:
                     multi: true
                     url: "commune"
+            -   name: cisSiteActif
+                label: "Site actif"
+                type: bool
     -   name: Détails
         glyphicon: glyphicon-search
         fields:
             -   name: bsDescription
                 label: Description
                 type: string
-            -   name: siteAmenagement
-                label: Aménagement
+            -   name: siteFichiers
+                label: "Fichiers associés"
                 type: file
-                help: "Aménagement du site"
                 options:
                     target: "chiro/site/"
             -   name: cisFrequentation

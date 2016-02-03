@@ -9,6 +9,7 @@ mapConfig: "js/resources/chiro_site.json"
 mapSize: large
 editAccess: 5
 filtering:
+    limit: 200
     fields:
         -   name: "dern_obs"
             label: "Dernière observation"

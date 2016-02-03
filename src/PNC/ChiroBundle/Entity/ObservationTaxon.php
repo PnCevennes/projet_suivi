@@ -23,7 +23,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * @var string
      */
-    private $cotx_initial;
+    private $cotx_tx_initial;
 
     /**
      * @var boolean
@@ -93,12 +93,12 @@ class ObservationTaxon extends BaseEntity
     /**
      * @var integer
      */
-    private $cd_nom;
+    private $cotx_cd_nom;
 
     /**
      * @var string
      */
-    private $nom_complet;
+    private $cotx_nom_complet;
 
     /**
      * @var integer
@@ -185,9 +185,9 @@ class ObservationTaxon extends BaseEntity
      * @param string $cotxInitial
      * @return ObservationTaxon
      */
-    public function setCotxInitial($cotxInitial)
+    public function setCotxTxInitial($cotxInitial)
     {
-        $this->cotx_initial = $cotxInitial;
+        $this->cotx_tx_initial = $cotxInitial;
 
         return $this;
     }
@@ -197,9 +197,9 @@ class ObservationTaxon extends BaseEntity
      *
      * @return string 
      */
-    public function getCotxInitial()
+    public function getCotxTxInitial()
     {
-        return $this->cotx_initial;
+        return $this->cotx_tx_initial;
     }
 
     /**
@@ -510,9 +510,9 @@ class ObservationTaxon extends BaseEntity
      * @param integer $cdNom
      * @return ObservationTaxon
      */
-    public function setCdNom($cdNom)
+    public function setCotxCdNom($cdNom)
     {
-        $this->cd_nom = $cdNom;
+        $this->cotx_cd_nom = $cdNom;
 
         return $this;
     }
@@ -522,9 +522,9 @@ class ObservationTaxon extends BaseEntity
      *
      * @return integer 
      */
-    public function getCdNom()
+    public function getCotxCdNom()
     {
-        return $this->cd_nom;
+        return $this->cotx_cd_nom;
     }
 
     /**
@@ -533,9 +533,9 @@ class ObservationTaxon extends BaseEntity
      * @param string $nomComplet
      * @return ObservationTaxon
      */
-    public function setNomComplet($nomComplet)
+    public function setCotxNomComplet($nomComplet)
     {
-        $this->nom_complet = $nomComplet;
+        $this->cotx_nom_complet = $nomComplet;
 
         return $this;
     }
@@ -545,9 +545,9 @@ class ObservationTaxon extends BaseEntity
      *
      * @return string 
      */
-    public function getNomComplet()
+    public function getCotxNomComplet()
     {
-        return $this->nom_complet;
+        return $this->cotx_nom_complet;
     }
 
     /**
