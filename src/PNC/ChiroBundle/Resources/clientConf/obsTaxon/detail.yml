@@ -14,14 +14,14 @@ groups:
         fields:
             -   name: id
                 type: hidden
-            -   name: cdNom
+            -   name: cotxCdNom
                 label: "Cd nom"
                 type: num
-            -   name: nomComplet
+            -   name: cotxNomComplet
                 label: "Nom taxon"
                 type: string
-            -   name: cotxInitial
-                label: "Taxon initial"
+            -   name: cotxTxInitial
+                label: "Taxon presumé"
                 type: string
             -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"

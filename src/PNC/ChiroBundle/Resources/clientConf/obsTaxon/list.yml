@@ -11,7 +11,7 @@ editAccess: 3
 filtering:
     limit: 200
     fields: 
-        -   name: "cd_nom"
+        -   name: "cotx_cd_nom"
             label: "Taxon"
             type: "xhr"
             options:
@@ -25,10 +25,10 @@ fields:
             id: text
         options:
             visible: false
-    -   name: nomComplet
+    -   name: cotxNomComplet
         label: "Nom taxon"
         filter:
-            nomComplet: text
+            cotxNomComplet: text
         options:
             visible: true
             style: xl 

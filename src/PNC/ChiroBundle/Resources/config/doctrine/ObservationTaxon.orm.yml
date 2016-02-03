@@ -12,7 +12,7 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
     fields:
         fk_bv_id:
             type: integer
-        cotx_initial:
+        cotx_tx_initial:
             type: string
             length: 250
         cotx_espece_incertaine:
@@ -43,9 +43,9 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         cotx_commentaire:
             type: text
-        cd_nom:
+        cotx_cd_nom:
             type: integer
-        nom_complet:
+        cotx_nom_complet:
             type: text
         cotx_validateur:
             type: integer

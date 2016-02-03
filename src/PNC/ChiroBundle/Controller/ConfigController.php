@@ -36,7 +36,7 @@ class ConfigController extends Controller{
                 $id = $res['fk_cotx_id'];
             case 'taxons': 
             case 'taxon':
-                $req = $manager->prepare('SELECT id, nom_complet as label, fk_bv_id FROM chiro.pr_visite_observationtaxon WHERE id=:id');
+                $req = $manager->prepare('SELECT id, cotx_nom_complet as label, fk_bv_id FROM chiro.pr_visite_observationtaxon WHERE id=:id');
                 $req->bindValue('id', $id);
                 $req->execute();
                 $res = $req->fetchAll();
