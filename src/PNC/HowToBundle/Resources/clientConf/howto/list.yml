@@ -1,0 +1,35 @@
+title: "howto"
+emptyMsg: "Aucun howto enregistré"
+dataUrl: "howto/howto"
+editAccess: 6
+createBtnLabel: "Nouveau howto"
+createUrl: "#/g/howto/howto/edit"
+editUrl: "#/g/howto/howto/edit/"
+detailUrl: "#/g/howto/howto/detail/"
+filtering:
+    limit: null
+fields:
+    -   name: id
+        label: ID
+        type: text
+        filter:
+            id: text
+        options:
+            visible: false
+    -   name: htNom
+        label: "Nom"
+        type: text
+        filter:
+            htNom: text
+        options:
+            style: xl
+            visible: true
+    -   name: htValeur
+        label: "Valeur"
+        type: text
+        filter:
+            htValeur: text
+        options:
+            style: xl
+            visible: true
+

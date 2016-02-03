@@ -1,0 +1,44 @@
+howto_list:
+    path: /howto
+    defaults: { _controller: PNCHowToBundle:Default:list }
+    requirements:
+        _method: GET
+
+howto_detail:
+    path: /howto/{id}
+    defaults: { _controller: PNCHowToBundle:Default:detail }
+    requirements:
+        _method: GET
+
+howto_create:
+    path: /howto
+    defaults: { _controller: PNCHowToBundle:Default:create }
+    requirements:
+        _method: PUT
+
+howto_update:
+    path: /howto/{id}
+    defaults: { _controller: PNCHowToBundle:Default:update}
+    requirements:
+        _method: POST
+
+howto_delete:
+    path: /howto/{id}
+    defaults: { _controller: PNCHowToBundle:Default:delete}
+    requirements:
+        _method: DELETE
+
+
+howto_config:
+    path: /config/howto/{view_name}
+    defaults: { _controller: PNCHowToBundle:Default:config}
+    requirements:
+        _method: GET
+
+
+howto_breadcrumb:
+    path: /config/breadcrumb
+    defaults: { _controller: PNCHowToBundle:Default:breadcrumb}
+    requirements:
+        _method: GET
+

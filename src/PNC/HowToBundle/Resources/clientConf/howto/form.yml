@@ -1,0 +1,29 @@
+editAccess: 3
+deleteAccess: 3
+dataUrl: "howto/howto/"
+createSuccessMessage: "Création d'un nouvel objet"
+updateSuccessMessage: "Modification de l'objet réussie"
+deleteSuccessMessage: "Suppression réussie"
+formDeleteRedirectUrl: "g/howto/howto/list"
+formCreateCancelUrl: "g/howto/howto/list"
+groups:
+    -   name: "Général"
+        fields:
+            -   name: id
+                type: hidden
+            -   name: htNom
+                label: "Nom"
+                type: string
+                options:
+                    minLength: 1
+                    maxLength: 100
+            -   name: htValeur
+                label: "Valeur"
+                type: num
+    -   name: "Commentaires"
+        fields:
+            -   name: htCommentaire
+                label: "Commentaire"
+                type: text
+                options:
+                    maxLength: 1000

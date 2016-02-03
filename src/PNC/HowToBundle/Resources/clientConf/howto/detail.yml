@@ -1,0 +1,20 @@
+editAccess: 3
+dataUrl: "howto/howto/"
+groups:
+    -   name: "Général"
+        fields:
+            -   name: id
+                type: hidden
+            -   name: htNom
+                label: "Nom"
+                type: string
+            -   name: htValeur
+                label: "Valeur"
+                type: num
+    -   name: "Commentaires"
+        fields:
+            -   name: htCommentaire
+                label: "Commentaire"
+                type: string
+
+

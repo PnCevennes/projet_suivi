@@ -1,0 +1,4 @@
+services:
+#    pnc_how_to.example:
+#        class: PNC\HowToBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
