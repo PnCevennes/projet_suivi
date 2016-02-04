@@ -38,7 +38,7 @@ app.controller('taxonDetailController', function($scope, $rootScope, $routeParam
     $scope.updateUrl = '#/' + $scope._appName + '/edit/taxons/' + $routeParams.id;
     
     $scope.$on('display:init', function(ev, data){
-        $scope.title = 'Observation du taxon "' + data.nomComplet + '"';
+        $scope.title = 'Observation du taxon "' + data.cotxNomComplet + '"';
     });
 });
 
@@ -60,7 +60,7 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
 
 
     $scope.$on('form:init', function(ev, data){
-        if(data.cdNom){
+        if(data.cotxCdNom){
             $scope.title = "Modification de l'observation du taxon";
         }
         else{
