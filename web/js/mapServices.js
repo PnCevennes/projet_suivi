@@ -109,7 +109,7 @@ app.directive('leafletMap', function(){
                             return this._rectCtrl;
                         }
                         recenterCtrl.update = function(){
-                            this._rectCtrl.innerHTML = '<button type="button" onclick="recenter();"><span class="glyphicon glyphicon-move"></span></button>';
+                            this._rectCtrl.innerHTML = '<button type="button" onclick="recenter();" style="padding-top: 4px; padding-bottom: 2px;"><span class="glyphicon glyphicon-move"></span></button>';
                         };
                         recenterCtrl.addTo(map);
 
@@ -410,7 +410,7 @@ app.directive('maplist', function($rootScope, $timeout, mapService){
             };
 
             var _createFilterCtrl = function(){
-                var filterCtrl = L.control({position: 'topright'});
+                var filterCtrl = L.control({position: 'bottomleft'});
                 filterCtrl.onAdd = function(map){
                     this._filtCtrl = L.DomUtil.create('div', 'filterBtn');
                     this.update();
