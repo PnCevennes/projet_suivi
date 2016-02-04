@@ -82,7 +82,8 @@ class TaxonService{
 
     public function getOne($id){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
-        $fichiers_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObstaxonFichiers.orm.yml';
+        //$fichiers_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObstaxonFichiers.orm.yml';
+        $fichiers_schema = '../src/PNC/BaseAppBundle/Resources/config/doctrine/Fichiers.orm.yml';
         $data = $this->entityService->getOne(
             'PNCChiroBundle:ObservationTaxon', 
             array('id'=>$id)
@@ -94,8 +95,10 @@ class TaxonService{
             );
             $out = $this->entityService->normalize($data, $schema);
             $out['obsTaxonFichiers'] = array();
-            foreach($fichiers as $fich){
-                $out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
+            foreach($fichiers as $idfich){
+                $fich = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$idfich->getFichierId()));
+                //$out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
+                $out['obsTaxonFichiers'][] = sprintf('%s%s', $fich->getId(), $fich->getPath());
             }
             return $out;
         }
