@@ -51,11 +51,6 @@ class Site extends BaseEntity
     private $geom;
 
     /**
-     * @var string
-     */
-    private $ref_commune;
-
-    /**
      * @var \DateTime
      */
     private $meta_create_timestamp;
@@ -240,29 +235,6 @@ class Site extends BaseEntity
     public function getGeom()
     {
         return $this->geom;
-    }
-
-    /**
-     * Set ref_commune
-     *
-     * @param string $refCommune
-     * @return Site
-     */
-    public function setRefCommune($refCommune)
-    {
-        $this->ref_commune = $refCommune;
-
-        return $this;
-    }
-
-    /**
-     * Get ref_commune
-     *
-     * @return string 
-     */
-    public function getRefCommune()
-    {
-        return $this->ref_commune;
     }
 
     /**

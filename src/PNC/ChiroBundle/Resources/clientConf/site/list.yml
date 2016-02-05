@@ -90,6 +90,7 @@ fields:
         label: Type
         type: select
         thesaurusID: 7
+        default: 0
         filter:
             bsTypeId: select 
         options:

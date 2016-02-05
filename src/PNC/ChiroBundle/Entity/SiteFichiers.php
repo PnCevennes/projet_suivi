@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * SiteFichiers
  */
-class SiteFichiers
+class SiteFichiers extends BaseEntity
 {
     /**
      * @var integer

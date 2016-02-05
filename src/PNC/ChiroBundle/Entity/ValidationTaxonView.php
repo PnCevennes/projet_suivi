@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * ValidationTaxonView
  */
-class ValidationTaxonView
+class ValidationTaxonView extends BaseEntity
 {
     /**
      * @var integer
@@ -47,12 +48,12 @@ class ValidationTaxonView
     /**
      * @var string
      */
-    private $cotx_validateur;
+    private $validateur;
 
     /**
      * @var string
      */
-    private $meta_numerisateur_id;
+    private $numerisateur;
 
     /**
      * @var array
@@ -69,7 +70,11 @@ class ValidationTaxonView
      */
     private $geom;
 
+    /**
+     * @var \DateTime
+     */
     private $meta_create_timestamp;
+
 
     /**
      * Get id
@@ -220,49 +225,49 @@ class ValidationTaxonView
     }
 
     /**
-     * Set cotx_validateur
+     * Set validateur
      *
-     * @param string $cotxValidateur
+     * @param string $validateur
      * @return ValidationTaxonView
      */
-    public function setCotxValidateur($cotxValidateur)
+    public function setValidateur($validateur)
     {
-        $this->cotx_validateur = $cotxValidateur;
+        $this->validateur = $validateur;
 
         return $this;
     }
 
     /**
-     * Get cotx_validateur
+     * Get validateur
      *
      * @return string 
      */
-    public function getCotxValidateur()
+    public function getValidateur()
     {
-        return $this->cotx_validateur;
+        return $this->validateur;
     }
 
     /**
-     * Set meta_numerisateur_id
+     * Set numerisateur
      *
-     * @param string $metaNumerisateurId
+     * @param string $numerisateur
      * @return ValidationTaxonView
      */
-    public function setMetaNumerisateurId($metaNumerisateurId)
+    public function setNumerisateur($numerisateur)
     {
-        $this->meta_numerisateur_id = $metaNumerisateurId;
+        $this->numerisateur = $numerisateur;
 
         return $this;
     }
 
     /**
-     * Get meta_numerisateur_id
+     * Get numerisateur
      *
      * @return string 
      */
-    public function getMetaNumerisateurId()
+    public function getNumerisateur()
     {
-        return $this->meta_numerisateur_id;
+        return $this->numerisateur;
     }
 
     /**
@@ -333,69 +338,27 @@ class ValidationTaxonView
     {
         return $this->geom;
     }
-    /**
-     * @var string
-     */
-    private $validateur;
-
 
     /**
-     * Set validateur
+     * Set meta_create_timestamp
      *
-     * @param string $validateur
+     * @param \DateTime $metaCreateTimestamp
      * @return ValidationTaxonView
      */
-    public function setValidateur($validateur)
+    public function setMetaCreateTimestamp($metaCreateTimestamp)
     {
-        $this->validateur = $validateur;
+        $this->meta_create_timestamp = $metaCreateTimestamp;
 
         return $this;
     }
 
     /**
-     * Get validateur
+     * Get meta_create_timestamp
      *
-     * @return string 
+     * @return \DateTime 
      */
-    public function getValidateur()
+    public function getMetaCreateTimestamp()
     {
-        return $this->validateur;
-    }
-    /**
-     * @var string
-     */
-    private $numerisateur;
-
-
-    /**
-     * Set numerisateur
-     *
-     * @param string $numerisateur
-     * @return ValidationTaxonView
-     */
-    public function setNumerisateur($numerisateur)
-    {
-        $this->numerisateur = $numerisateur;
-
-        return $this;
-    }
-
-    /**
-     * Get numerisateur
-     *
-     * @return string 
-     */
-    public function getNumerisateur()
-    {
-        return $this->numerisateur;
-    }
-
-    public function setMetaCreateTimestamp($ts){
-        $this->meta_create_timestamp = $ts;
-        return $this;
-    }
-
-    public function getMetaCreateTimestamp(){
         return $this->meta_create_timestamp;
     }
 }

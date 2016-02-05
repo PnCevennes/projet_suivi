@@ -3,11 +3,11 @@
 namespace PNC\BaseAppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use PNC\Utils\BaseEntity;
 /**
  * Fichiers
  */
-class Fichiers
+class Fichiers extends BaseEntity
 {
     /**
      * @var integer

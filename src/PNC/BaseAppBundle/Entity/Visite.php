@@ -38,7 +38,7 @@ class Visite extends BaseEntity
     /**
      * @var integer
      */
-    private $bv_site_id;
+    private $fk_bs_id;
 
     /**
      * @var geometry
@@ -60,6 +60,18 @@ class Visite extends BaseEntity
      */
     private $meta_update_timestamp;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $observateurs;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->observateurs = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -164,26 +176,26 @@ class Visite extends BaseEntity
     }
 
     /**
-     * Set bv_site_id
+     * Set fk_bs_id
      *
-     * @param integer $bvSiteId
+     * @param integer $fkBsId
      * @return Visite
      */
-    public function setBvSiteId($bvSiteId)
+    public function setFkBsId($fkBsId)
     {
-        $this->bv_site_id = $bvSiteId;
+        $this->fk_bs_id = $fkBsId;
 
         return $this;
     }
 
     /**
-     * Get bv_site_id
+     * Get fk_bs_id
      *
      * @return integer 
      */
-    public function getBvSiteId()
+    public function getFkBsId()
     {
-        return $this->bv_site_id;
+        return $this->fk_bs_id;
     }
 
     /**
@@ -277,18 +289,6 @@ class Visite extends BaseEntity
     {
         return $this->meta_update_timestamp;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $observateurs;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->observateurs = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add observateurs
@@ -321,33 +321,5 @@ class Visite extends BaseEntity
     public function getObservateurs()
     {
         return $this->observateurs;
-    }
-    /**
-     * @var integer
-     */
-    private $fk_bs_id;
-
-
-    /**
-     * Set fk_bs_id
-     *
-     * @param integer $fkBsId
-     * @return Visite
-     */
-    public function setFkBsId($fkBsId)
-    {
-        $this->fk_bs_id = $fkBsId;
-
-        return $this;
-    }
-
-    /**
-     * Get fk_bs_id
-     *
-     * @return integer 
-     */
-    public function getFkBsId()
-    {
-        return $this->fk_bs_id;
     }
 }

@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * ObservationSsSiteView
  */
-class ObservationSsSiteView
+class ObservationSsSiteView extends BaseEntity
 {
     /**
      * @var integer
@@ -27,7 +28,7 @@ class ObservationSsSiteView
     /**
      * @var integer
      */
-    private $numerisateur_id;
+    private $meta_numerisateur_id;
 
     /**
      * @var string
@@ -167,26 +168,26 @@ class ObservationSsSiteView
     }
 
     /**
-     * Set numerisateur_id
+     * Set meta_numerisateur_id
      *
-     * @param integer $numerisateurId
+     * @param integer $metaNumerisateurId
      * @return ObservationSsSiteView
      */
-    public function setNumerisateurId($numerisateurId)
+    public function setMetaNumerisateurId($metaNumerisateurId)
     {
-        $this->numerisateur_id = $numerisateurId;
+        $this->meta_numerisateur_id = $metaNumerisateurId;
 
         return $this;
     }
 
     /**
-     * Get numerisateur_id
+     * Get meta_numerisateur_id
      *
      * @return integer 
      */
-    public function getNumerisateurId()
+    public function getMetaNumerisateurId()
     {
-        return $this->numerisateur_id;
+        return $this->meta_numerisateur_id;
     }
 
     /**
@@ -473,33 +474,5 @@ class ObservationSsSiteView
     public function getObservateurs()
     {
         return $this->observateurs;
-    }
-    /**
-     * @var integer
-     */
-    private $meta_numerisateur_id;
-
-
-    /**
-     * Set meta_numerisateur_id
-     *
-     * @param integer $metaNumerisateurId
-     * @return ObservationSsSiteView
-     */
-    public function setMetaNumerisateurId($metaNumerisateurId)
-    {
-        $this->meta_numerisateur_id = $metaNumerisateurId;
-
-        return $this;
-    }
-
-    /**
-     * Get meta_numerisateur_id
-     *
-     * @return integer 
-     */
-    public function getMetaNumerisateurId()
-    {
-        return $this->meta_numerisateur_id;
     }
 }

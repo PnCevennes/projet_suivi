@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * ObservationView
  */
-class ObservationView
+class ObservationView extends BaseEntity
 {
     /**
      * @var integer

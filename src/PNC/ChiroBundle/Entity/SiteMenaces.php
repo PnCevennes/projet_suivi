@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
- * SiteFichiers
+ * SiteMenaces
  */
-class SiteMenaces
+class SiteMenaces extends BaseEntity
 {
     /**
      * @var integer
@@ -24,7 +25,7 @@ class SiteMenaces
      * Set site_id
      *
      * @param integer $siteId
-     * @return SiteFichiers
+     * @return SiteMenaces
      */
     public function setSiteId($siteId)
     {
@@ -44,20 +45,20 @@ class SiteMenaces
     }
 
     /**
-     * Set fichier_id
+     * Set thesaurus_id
      *
-     * @param integer $fichierId
-     * @return SiteFichiers
+     * @param integer $thesaurusId
+     * @return SiteMenaces
      */
-    public function setThesaurusId($tId)
+    public function setThesaurusId($thesaurusId)
     {
-        $this->thesaurus_id = $tId;
+        $this->thesaurus_id = $thesaurusId;
 
         return $this;
     }
 
     /**
-     * Get fichier_id
+     * Get thesaurus_id
      *
      * @return integer 
      */

@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * Taxons
  */
-class Taxons
+class Taxons extends BaseEntity
 {
     /**
      * @var integer

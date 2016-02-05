@@ -21,16 +21,6 @@ class InfoSite extends BaseEntity
     private $fk_bs_id;
 
     /**
-     * @var string
-     */
-    private $cis_description;
-
-    /**
-     * @var string
-     */
-    private $cis_schema;
-
-    /**
      * @var integer
      */
     private $cis_frequentation;
@@ -44,11 +34,6 @@ class InfoSite extends BaseEntity
      * @var string
      */
     private $cis_menace_cmt;
-
-    /**
-     * @var string
-     */
-    private $cis_commentaire;
 
     /**
      * @var string
@@ -90,8 +75,16 @@ class InfoSite extends BaseEntity
      */
     private $cis_contact_commentaire;
 
-
+    /**
+     * @var boolean
+     */
     private $cis_site_actif;
+
+    /**
+     * @var \PNC\BaseAppBundle\Entity\Site
+     */
+    private $parent_site;
+
 
     /**
      * Get id
@@ -124,52 +117,6 @@ class InfoSite extends BaseEntity
     public function getFkBsId()
     {
         return $this->fk_bs_id;
-    }
-
-    /**
-     * Set cis_description
-     *
-     * @param string $cisDescription
-     * @return InfoSite
-     */
-    public function setCisDescription($cisDescription)
-    {
-        $this->cis_description = $cisDescription;
-
-        return $this;
-    }
-
-    /**
-     * Get cis_description
-     *
-     * @return string 
-     */
-    public function getCisDescription()
-    {
-        return $this->cis_description;
-    }
-
-    /**
-     * Set cis_schema
-     *
-     * @param string $cisSchema
-     * @return InfoSite
-     */
-    public function setCisSchema($cisSchema)
-    {
-        $this->cis_schema = $cisSchema;
-
-        return $this;
-    }
-
-    /**
-     * Get cis_schema
-     *
-     * @return string 
-     */
-    public function getCisSchema()
-    {
-        return $this->cis_schema;
     }
 
     /**
@@ -239,29 +186,6 @@ class InfoSite extends BaseEntity
     public function getCisMenaceCmt()
     {
         return $this->cis_menace_cmt;
-    }
-
-    /**
-     * Set cis_commentaire
-     *
-     * @param string $cisCommentaire
-     * @return InfoSite
-     */
-    public function setCisCommentaire($cisCommentaire)
-    {
-        $this->cis_commentaire = $cisCommentaire;
-
-        return $this;
-    }
-
-    /**
-     * Get cis_commentaire
-     *
-     * @return string 
-     */
-    public function getCisCommentaire()
-    {
-        return $this->cis_commentaire;
     }
 
     /**
@@ -447,74 +371,29 @@ class InfoSite extends BaseEntity
     {
         return $this->cis_contact_commentaire;
     }
-    /**
-     * @var string
-     */
-    private $site_description;
 
     /**
-     * @var string
+     * Set cis_site_actif
+     *
+     * @param boolean $cisSiteActif
+     * @return InfoSite
      */
-    private $site_schema;
+    public function setCisSiteActif($cisSiteActif)
+    {
+        $this->cis_site_actif = $cisSiteActif;
 
-    public function setCisSiteActif($v){
-        $this->cis_site_actif = $v;
+        return $this;
     }
 
-    public function getCisSiteActif(){
+    /**
+     * Get cis_site_actif
+     *
+     * @return boolean 
+     */
+    public function getCisSiteActif()
+    {
         return $this->cis_site_actif;
     }
-
-    /**
-     * Set site_description
-     *
-     * @param string $siteDescription
-     * @return InfoSite
-     */
-    public function setSiteDescription($siteDescription)
-    {
-        $this->site_description = $siteDescription;
-
-        return $this;
-    }
-
-    /**
-     * Get site_description
-     *
-     * @return string 
-     */
-    public function getSiteDescription()
-    {
-        return $this->site_description;
-    }
-
-    /**
-     * Set site_schema
-     *
-     * @param string $siteSchema
-     * @return InfoSite
-     */
-    public function setSiteSchema($siteSchema)
-    {
-        $this->site_schema = $siteSchema;
-
-        return $this;
-    }
-
-    /**
-     * Get site_schema
-     *
-     * @return string 
-     */
-    public function getSiteSchema()
-    {
-        return $this->site_schema;
-    }
-    /**
-     * @var \PNC\BaseAppBundle\Entity\Site
-     */
-    private $parent_site;
-
 
     /**
      * Set parent_site
@@ -538,5 +417,4 @@ class InfoSite extends BaseEntity
     {
         return $this->parent_site;
     }
-
 }

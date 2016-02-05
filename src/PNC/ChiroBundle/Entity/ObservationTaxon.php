@@ -126,6 +126,11 @@ class ObservationTaxon extends BaseEntity
     private $cotx_num_id;
 
     /**
+     * @var integer
+     */
+    private $cotx_mod_id;
+
+    /**
      * @var \DateTime
      */
     private $cotx_date_validation;
@@ -180,20 +185,20 @@ class ObservationTaxon extends BaseEntity
     }
 
     /**
-     * Set cotx_initial
+     * Set cotx_tx_initial
      *
-     * @param string $cotxInitial
+     * @param string $cotxTxInitial
      * @return ObservationTaxon
      */
-    public function setCotxTxInitial($cotxInitial)
+    public function setCotxTxInitial($cotxTxInitial)
     {
-        $this->cotx_tx_initial = $cotxInitial;
+        $this->cotx_tx_initial = $cotxTxInitial;
 
         return $this;
     }
 
     /**
-     * Get cotx_initial
+     * Get cotx_tx_initial
      *
      * @return string 
      */
@@ -233,9 +238,6 @@ class ObservationTaxon extends BaseEntity
      */
     public function setCotxEffectifAbs($cotxEffectifAbs)
     {
-        if($cotxEffectifAbs < 1){
-            $this->add_error('cotxEffectifAbs', "L'effectif total doit être supérieur à 0");
-        }
         $this->cotx_effectif_abs = $cotxEffectifAbs;
 
         return $this;
@@ -505,20 +507,20 @@ class ObservationTaxon extends BaseEntity
     }
 
     /**
-     * Set cd_nom
+     * Set cotx_cd_nom
      *
-     * @param integer $cdNom
+     * @param integer $cotxCdNom
      * @return ObservationTaxon
      */
-    public function setCotxCdNom($cdNom)
+    public function setCotxCdNom($cotxCdNom)
     {
-        $this->cotx_cd_nom = $cdNom;
+        $this->cotx_cd_nom = $cotxCdNom;
 
         return $this;
     }
 
     /**
-     * Get cd_nom
+     * Get cotx_cd_nom
      *
      * @return integer 
      */
@@ -528,20 +530,20 @@ class ObservationTaxon extends BaseEntity
     }
 
     /**
-     * Set nom_complet
+     * Set cotx_nom_complet
      *
-     * @param string $nomComplet
+     * @param string $cotxNomComplet
      * @return ObservationTaxon
      */
-    public function setCotxNomComplet($nomComplet)
+    public function setCotxNomComplet($cotxNomComplet)
     {
-        $this->cotx_nom_complet = $nomComplet;
+        $this->cotx_nom_complet = $cotxNomComplet;
 
         return $this;
     }
 
     /**
-     * Get nom_complet
+     * Get cotx_nom_complet
      *
      * @return string 
      */
@@ -666,6 +668,29 @@ class ObservationTaxon extends BaseEntity
     }
 
     /**
+     * Set cotx_mod_id
+     *
+     * @param integer $cotxModId
+     * @return ObservationTaxon
+     */
+    public function setCotxModId($cotxModId)
+    {
+        $this->cotx_mod_id = $cotxModId;
+
+        return $this;
+    }
+
+    /**
+     * Get cotx_mod_id
+     *
+     * @return integer 
+     */
+    public function getCotxModId()
+    {
+        return $this->cotx_mod_id;
+    }
+
+    /**
      * Set cotx_date_validation
      *
      * @param \DateTime $cotxDateValidation
@@ -755,33 +780,5 @@ class ObservationTaxon extends BaseEntity
     public function getMetaNumerisateurId()
     {
         return $this->meta_numerisateur_id;
-    }
-    /**
-     * @var integer
-     */
-    private $cotx_mod_id;
-
-
-    /**
-     * Set cotx_mod_id
-     *
-     * @param integer $cotxModId
-     * @return ObservationTaxon
-     */
-    public function setCotxModId($cotxModId)
-    {
-        $this->cotx_mod_id = $cotxModId;
-
-        return $this;
-    }
-
-    /**
-     * Get cotx_mod_id
-     *
-     * @return integer 
-     */
-    public function getCotxModId()
-    {
-        return $this->cotx_mod_id;
     }
 }

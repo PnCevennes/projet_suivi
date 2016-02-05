@@ -3,11 +3,12 @@
 namespace PNC\BaseAppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
  * Thesaurus
  */
-class Thesaurus
+class Thesaurus extends BaseEntity
 {
     /**
      * @var integer

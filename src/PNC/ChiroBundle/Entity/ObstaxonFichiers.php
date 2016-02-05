@@ -3,11 +3,12 @@
 namespace PNC\ChiroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PNC\Utils\BaseEntity;
 
 /**
- * SiteFichiers
+ * ObstaxonFichiers
  */
-class ObstaxonFichiers
+class ObstaxonFichiers extends BaseEntity
 {
     /**
      * @var integer
@@ -21,10 +22,10 @@ class ObstaxonFichiers
 
 
     /**
-     * Set site_id
+     * Set cotx_id
      *
-     * @param integer $siteId
-     * @return SiteFichiers
+     * @param integer $cotxId
+     * @return ObstaxonFichiers
      */
     public function setCotxId($cotxId)
     {
@@ -34,7 +35,7 @@ class ObstaxonFichiers
     }
 
     /**
-     * Get site_id
+     * Get cotx_id
      *
      * @return integer 
      */
@@ -47,7 +48,7 @@ class ObstaxonFichiers
      * Set fichier_id
      *
      * @param integer $fichierId
-     * @return SiteFichiers
+     * @return ObstaxonFichiers
      */
     public function setFichierId($fichierId)
     {
@@ -66,4 +67,3 @@ class ObstaxonFichiers
         return $this->fichier_id;
     }
 }
-

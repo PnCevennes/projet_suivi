@@ -3,11 +3,11 @@
 namespace PNC\BaseAppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use PNC\Utils\BaseEntity;
 /**
  * Observateurs
  */
-class Observateurs
+class Observateurs extends BaseEntity
 {
     /**
      * @var integer
