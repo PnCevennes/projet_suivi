@@ -1,0 +1,11 @@
+PNC\ChiroBundle\Entity\ObstaxonIndices:
+    type: entity
+    table: chiro.rel_observationtaxon_thesaurus_indice
+    schema: chiro
+    id:
+        cotx_id:
+            type: integer
+        thesaurus_id:
+            type: integer
+
+

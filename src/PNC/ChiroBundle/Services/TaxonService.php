@@ -7,6 +7,7 @@ use Commons\Exceptions\CascadeException;
 
 use PNC\ChiroBundle\Entity\ObservationTaxon;
 use PNC\ChiroBundle\Entity\ObstaxonFichiers;
+use PNC\ChiroBundle\Entity\ObstaxonIndices;
 
 
 class TaxonService{
@@ -145,7 +146,9 @@ class TaxonService{
             $manager->getConnection()->commit();
         }
 
-        $errors = $this->_record_fichiers($site, $data['obsTaxonFichiers']);
+        $this->_record_indices($obsTx->getId(), $data['indices']);
+
+        $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
         if($errors){
             //print_r($errors);
         }
@@ -170,6 +173,8 @@ class TaxonService{
                 )
             )
         );
+
+        $this->_record_indices($id, $data['indices']);
 
         $obsTx = $result[$schema];
         $errors = $this->_record_fichiers($obsTx, $data['obsTaxonFichiers']);
@@ -200,6 +205,8 @@ class TaxonService{
 
         $manager->remove($obsTx);
         $manager->flush();
+
+        $this->_delete_indices($obsTx);
         return true;
     }
 
@@ -218,6 +225,31 @@ class TaxonService{
             }
         }
         $manager->getConnection()->commit();
+    }
+
+    private function _record_indices($obsTxId, $data){
+        $this->_delete_indices($obsTxId);
+
+        $manager = $this->db->getManager();
+
+        foreach($data['indices'] as $indice_id){
+            $indice = new ObstaxonIndices();
+            $indice->setCotxId($obsTxId);
+            $indice->setThesaurusId($indice_id);
+            $manager->persist($indice);
+            $manager->flush();
+        }
+
+    }
+
+    private function _delete_indices($obsTxId){
+
+        $manager = $this->db->getManager();
+        
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_indice WHERE site_id=:siteid');
+        $delete->bindValue('siteid', $site_id);
+        $delete->execute();
     }
 
     private function _record_fichiers($obsTx, $data){

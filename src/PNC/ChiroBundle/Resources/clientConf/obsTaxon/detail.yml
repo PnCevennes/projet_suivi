@@ -39,6 +39,10 @@ groups:
                 label: "Mode d'observation"
                 type: select
                 thesaurusID: 4
+            -   name: indices
+                label: Indices
+                type: multisel
+                thesaurusID: 12
             -   name: cotxActId
                 label: "Activité"
                 type: select

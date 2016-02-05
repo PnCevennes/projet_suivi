@@ -46,6 +46,10 @@ groups:
                 default: 0
                 options:
                     nullable: true
+            -   name: indices
+                label: Indices
+                type: multisel
+                thesaurusID: 12
             -   name: cotxActId
                 label: "Activité"
                 type: select
@@ -165,4 +169,4 @@ groups:
                         -   cotxNbIndetermineJuvenile   
                         -   cotxNbIndetermineIndetermine
                     modifiable: false
-                    min: 1
+                    min: 0

@@ -227,7 +227,7 @@ class SiteService{
         $manager = $this->db->getManager();
         
         // suppression des liens existants
-        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_menaces WHERE site_id=:siteid');
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_menace WHERE site_id=:siteid');
         $delete->bindValue('siteid', $site_id);
         $delete->execute();
     }
