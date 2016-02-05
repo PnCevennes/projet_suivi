@@ -1,0 +1,10 @@
+PNC\ChiroBundle\Entity\SiteMenaces:
+    type: entity
+    table: chiro.rel_chirosite_thesaurus_menaces
+    schema: chiro
+    id:
+        site_id:
+            type: integer
+        thesaurus_id:
+            type: integer
+

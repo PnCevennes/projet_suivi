@@ -9,6 +9,7 @@ use Commons\Exceptions\CascadeException;
 
 use PNC\ChiroBundle\Entity\InfoSite;
 use PNC\ChiroBundle\Entity\SiteFichiers;
+use PNC\ChiroBundle\Entity\SiteMenaces;
 
 
 class SiteService{
@@ -115,7 +116,11 @@ class SiteService{
         $infoSite->setParentSite($site);
         $manager->persist($infoSite);
         $manager->flush();
+
+        
         $manager->getConnection()->commit();
+        
+        $this->_record_menaces($site->getId(), $data);
         
         $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
@@ -153,12 +158,69 @@ class SiteService{
             throw new DataObjectException($errors);
         }
 
+        $this->_record_menaces($id, $data);
+
         $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
             //print_r($errors);
         }
         return array('id'=>$site->getId());
 
+    }
+
+
+    public function remove($id, $cascade=false){
+        $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
+        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
+        if(!$infoSite){
+            return false;
+        }
+        $observations = $this->obsService->getList($id);
+        if($cascade){
+            foreach($observations as $obs){
+                $this->obsService->remove($obs['id'], $cascade);
+            }
+        }
+        else{
+            if($observations){
+                throw new CascadeException();
+            }
+        }
+        $site = $infoSite->getParentSite();
+
+        $manager = $this->db->getManager();
+        $manager->remove($infoSite);
+        $manager->flush();
+
+        $this->_delete_menaces($id);
+        
+        $this->parentService->remove($this->db, $site);
+        return true;
+    }
+
+    private function _record_menaces($site_id, $data){
+
+        $this->_delete_menaces($site_id);
+
+        $manager = $this->db->getManager();
+
+        foreach($data['cisMenace'] as $menace_id){
+            $menace = new SiteMenaces();
+            $menace->setSiteId($site_id);
+            $menace->setThesaurusId($menace_id);
+            $manager->persist($menace);
+            $manager->flush();
+        }
+
+    }
+
+    private function _delete_menaces($id){
+        $manager = $this->db->getManager();
+        
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_menaces WHERE site_id=:siteid');
+        $delete->bindValue('siteid', $site_id);
+        $delete->execute();
     }
 
     private function _record_fichiers($site, $data){
@@ -187,32 +249,5 @@ class SiteService{
             }
         }
         return $errors;
-    }
-
-    public function remove($id, $cascade=false){
-        $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
-        $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
-        if(!$infoSite){
-            return false;
-        }
-        $observations = $this->obsService->getList($id);
-        if($cascade){
-            foreach($observations as $obs){
-                $this->obsService->remove($obs['id'], $cascade);
-            }
-        }
-        else{
-            if($observations){
-                throw new CascadeException();
-            }
-        }
-        $site = $infoSite->getParentSite();
-
-        $manager = $this->db->getManager();
-        $manager->remove($infoSite);
-        $manager->flush();
-        $this->parentService->remove($this->db, $site);
-        return true;
-
     }
 }
