@@ -1,6 +1,6 @@
 PNC\ChiroBundle\Entity\SiteMenaces:
     type: entity
-    table: chiro.rel_chirosite_thesaurus_menaces
+    table: chiro.rel_chirosite_thesaurus_menace
     schema: chiro
     id:
         site_id:

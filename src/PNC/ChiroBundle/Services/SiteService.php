@@ -85,7 +85,15 @@ class SiteService{
             throw new NotFoundHttpException();
         }
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/SiteView.orm.yml';
+
         $data = $this->entityService->normalize($info, $schema);
+
+        $menaces = $this->entityService->getAll('PNCChiroBundle:SiteMenaces', array('site_id'=>$id));
+
+        $data['cisMenace'] = array();
+        foreach($menaces as $menace){
+            $data['cisMenace'][] = $menace->getThesaurusId();
+        }
 
         $data['geom'] = array($data['geom']['coordinates']);
         return $data;
