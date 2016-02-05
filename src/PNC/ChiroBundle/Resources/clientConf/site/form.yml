@@ -95,6 +95,11 @@ groups:
                 options:
                     nullable: true
                 help: "Estimation de la fréquentation du site"
+            -   name: cisActions
+                label: "Actions"
+                type: text
+                help: "Actions entreprises pour la préservation du site"
+
     -   name: Contact
         fields:
             -   name: cisContactNom

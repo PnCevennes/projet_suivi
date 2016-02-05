@@ -35,7 +35,8 @@ class SiteService{
             'cisContactTelephone'=>null,
             'cisContactPortable'=>null,
             'cisContactCommentaire'=>null,
-            'cisSiteActif'=>null
+            'cisSiteActif'=>null,
+            'cisActions'=>null
         );
 
     }

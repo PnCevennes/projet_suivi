@@ -85,6 +85,11 @@ class SiteView
     private $site_menace_cmt;
 
     /**
+     * @var string
+     */
+    private $site_actions;
+
+    /**
      * @var array
      */
     private $site_fichiers;
@@ -927,6 +932,7 @@ class SiteView
 
     private $cis_site_actif;
 
+    private $cis_actions;
     /**
      * @var \DateTime
      */
@@ -1459,5 +1465,14 @@ class SiteView
     public function getBsDescription()
     {
         return $this->bs_description;
+    }
+
+    public function setCisActions($a){
+        $this->cis_actions = $a;
+        return this;
+    }
+
+    public function getCisActions(){
+        return $this->cis_actions;
     }
 }

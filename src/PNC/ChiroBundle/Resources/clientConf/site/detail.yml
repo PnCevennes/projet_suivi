@@ -52,13 +52,17 @@ groups:
                 help: "Fréquentation du site"
             -   name: cisMenace
                 label: Menaces
-                type: select
+                type: multisel
                 thesaurusID: 11
                 help: "Menaces pesant sur le site"
             -   name: cisMenaceCmt
                 label: "Description menaces"
                 type: string
                 help: "Description des menaces pesant sur le site"
+            -   name: cisActions
+                label: "Actions"
+                type: string
+                help: "Actions entreprises pour la préservation du site"
     -   name: Contact
         glyphicon: glyphicon-phone-alt
         fields:
