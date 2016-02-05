@@ -54,9 +54,11 @@ fields:
             style: l
     -   name: "cotxObjStatusValidation"
         label: "Validation"
+        thesaurusID: 9
         filter: 
             cotxObjStatusValidation: select
         options: 
+            nullable: true
             visible: true
             type: select
             style: l

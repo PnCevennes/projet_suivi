@@ -33,6 +33,11 @@ class ObsTaxonConfigController extends Controller{
     // path : GET chiro/config/obstaxon/validation
     public function getValidationAction(){
 
+        $conf = $this->get('configService');
+        $out = $conf->get_config(__DIR__ . '/../Resources/clientConf/obsTaxon/validation.yml');
+
+        return new JsonResponse($out);
+        /*
         // Statut validation
         $thesaurus = $this->get('thesaurusService');
         $typesVal = $thesaurus->get_list(9);
@@ -60,6 +65,7 @@ class ObsTaxonConfigController extends Controller{
             }
         }
         return new JsonResponse($out);
+         */
     }
 
     // path : GET chiro/config/obstaxon/form
