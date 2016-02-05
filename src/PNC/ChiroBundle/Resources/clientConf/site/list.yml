@@ -44,6 +44,20 @@ fields:
             primary: true
             visible: true
             style: xl
+    -   name: cisSiteActif
+        label: Site actif
+        type: bool
+        filter: 
+            cisSiteActif: select
+        options:
+            type: bool
+            choices: 
+                -   id: true
+                    libelle: OUI
+                -   id: false
+                    libelle: NON
+            visible: true
+            style: l
     -   name: bsCode
         label: Code site
         type: text
@@ -93,6 +107,7 @@ fields:
         filter:
             bsTypeId: select 
         options:
+            nullable: true
             visible: true
             type: select
             style: l
