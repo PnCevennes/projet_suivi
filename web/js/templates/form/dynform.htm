@@ -1,5 +1,5 @@
     <div ng-repeat="field in group.fields" class="form-group" ng-if="!field.options.dismissed">
-        <label for="{{field.name}}" ng-if="field.type!='hidden' && field.type!='group'" tooltip="{{field.help}}" tooltip-placement="right">{{field.label}}</label>
+        <h4><label for="{{field.name}}" ng-if="field.type!='hidden' && field.type!='group'" tooltip="{{field.help}}" tooltip-placement="right">{{field.label}}</label></h4>
         <p style="color: red;" ng-show="errors[field.name]">{{errors[field.name]}}</p>
         <multi refer="data[field.name]" schema="field" ng-if="field.options.multi"></multi>
         <input id="{{field.name}}" type="hidden" ng-if="field.type=='hidden' && !field.options.multi" ng-model="data[field.name]">
@@ -14,6 +14,7 @@
         <fileinput ng-if="field.type=='file' && !field.options.multi" fileids="data[field.name]" options="field.options"></fileinput>
         <div geometry ng-if="field.type=='geom' && !field.options.multi" origin="data['__origin__'][field.name]" geom="data[field.name]" options="field.options"></div>
         <table-fieldset ng-if="field.type=='group'" group="field" data="data" errors="errors"></table-fieldset>
+        <multisel ng-if="field.type=='multisel'" schema="field" data="data[field.name]"></multisel>
     </div>
 
 <pre style='clear:both;' ng-if="debug">{{Simpleform|json}}</pre>
