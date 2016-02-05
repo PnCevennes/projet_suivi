@@ -43,14 +43,23 @@ groups:
                 label: "Mode d'observation"
                 type: select
                 thesaurusID: 4
+                default: 0
+                options:
+                    nullable: true
             -   name: cotxActId
                 label: "Activité"
                 type: select
                 thesaurusID: 5
+                default: 0
+                options:
+                    nullable: true
             -   name: cotxPrvId
                 label: "Preuves de reproduction"
                 type: select
                 thesaurusID: 6
+                default: 0
+                options:
+                    nullable: true
             -   name: cotxEspeceIncertaine
                 label: "Espece incertaine"
                 type: bool

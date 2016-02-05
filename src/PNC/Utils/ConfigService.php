@@ -37,8 +37,8 @@ class ConfigService{
             if(!isset($field['options'])){
                 $field['options'] = array();
             }
-            if($field['type'] == 'select' && isset($field['thesaurusID'])){
-                $field['options']['choices'] = $this->thesaurus->get_list($field['thesaurusID']);
+            if(isset($field['thesaurusID'])){
+                $field['options']['choices'] = $this->thesaurus->get_list($field['thesaurusID'], isset($field['options']['nullable'])?$field['options']['nullable']:false);
                 unset($field['thesaurusID']);
             }
         }

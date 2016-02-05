@@ -78,9 +78,9 @@ groups:
         fields:
             -   name: cisMenace
                 label: "Types de menace"
-                type: select
+                type: multisel
                 thesaurusID: 11
-                default: 64
+                #default: 64
                 help: "Type de menace pesant sur le site"
             -   name: cisMenaceCmt
                 label: "Informations menaces"
@@ -90,7 +90,10 @@ groups:
                 label: Fréquentation
                 type: select
                 thesaurusID: 10
-                default: 59
+                #default: 59
+                default: 0
+                options:
+                    nullable: true
                 help: "Estimation de la fréquentation du site"
     -   name: Contact
         fields:
@@ -132,6 +135,5 @@ groups:
             -   name: cisContactCommentaire
                 label: "Commentaires contact"
                 type: text
-                help: "Insultes et médisances"
                 options:
                     maxLength: 1000

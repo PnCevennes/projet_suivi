@@ -12,7 +12,7 @@ class ThesaurusService{
         $this->norm = $norm;
     }
 
-    public function get_list($type, $nullable=true){
+    public function get_list($type, $nullable=false){
         $repo = $this->db->getRepository('PNCBaseAppBundle:Thesaurus');
         $res = $repo->findBy(array('id_type'=>$type), array('hierarchie'=>'ASC'));
         $data = array();
