@@ -50,6 +50,7 @@ class SiteService{
             'bsCode'=>null,
             'bsTypeId'=>null,
             'geom'=>null,
+            'cisSiteActif'=>null
         );
 
         $entity = 'PNCChiroBundle:SiteView';
