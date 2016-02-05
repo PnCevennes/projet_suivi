@@ -282,7 +282,7 @@ app.filter('tselect', function($filter){
 app.filter('tmultisel', function(){
     return function(input, param){
         if(!param){
-            return 'Aucune';
+            return 'Aucun(e)';
         }
         var out = [];
         try{
