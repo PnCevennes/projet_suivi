@@ -43,6 +43,9 @@ groups:
                 label: Indices
                 type: multisel
                 thesaurusID: 12
+            -   name: cotxIndicesCmt
+                label: "Description indices"
+                type: text
             -   name: cotxActId
                 label: "Activité"
                 type: select

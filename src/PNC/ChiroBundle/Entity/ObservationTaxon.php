@@ -91,6 +91,11 @@ class ObservationTaxon extends BaseEntity
     private $cotx_commentaire;
 
     /**
+     * @var string
+     */
+    private $cotx_indices_cmt;
+
+    /**
      * @var integer
      */
     private $cotx_cd_nom;
@@ -504,6 +509,16 @@ class ObservationTaxon extends BaseEntity
     public function getCotxCommentaire()
     {
         return $this->cotx_commentaire;
+    }
+
+
+    public function setCotxIndicesCmt($cmt){
+        $this->cotx_indices_cmt = $cmt;
+        return $this;
+    }
+
+    public function getCotxIndicesCmt(){
+        return $this->cotx_indices_cmt;
     }
 
     /**

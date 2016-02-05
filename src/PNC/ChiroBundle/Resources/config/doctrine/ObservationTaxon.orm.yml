@@ -43,6 +43,8 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         cotx_commentaire:
             type: text
+        cotx_indices_cmt:
+            type: text
         cotx_cd_nom:
             type: integer
         cotx_nom_complet:
