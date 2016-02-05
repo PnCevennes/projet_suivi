@@ -293,4 +293,4 @@ app.filter('tmultisel', function(){
         });
         return out.join(', ');
     }
-}
+});
