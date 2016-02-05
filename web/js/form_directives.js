@@ -993,12 +993,19 @@ app.directive('multisel', function(){
             if(!$scope.data){
                 $scope.data = [];
             }
+            if(!$scope.data.push){
+                //données anciennes
+                $scope.data = [$scope.data];
+            }
             $scope.tmp_data = {};
 
             $scope.$watch('data', function(nv, ov){
                 if(nv !== undefined){
+                    if(!nv.push){
+                        $scope.data = [nv];
+                    }
                     try{
-                        nv.forEach(function(value){
+                        $scope.data.forEach(function(value){
                             $scope.tmp_data[value] = true;
                         });
                     }
@@ -1009,6 +1016,7 @@ app.directive('multisel', function(){
             });
             $scope.update_values = function(){
                 for(key in $scope.tmp_data){
+                    key = parseInt(key);
                     if($scope.tmp_data[key]){
                         if($scope.data.indexOf(key) === -1){
                             $scope.data.push(key);

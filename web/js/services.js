@@ -285,12 +285,18 @@ app.filter('tmultisel', function(){
             return 'Aucune';
         }
         var out = [];
-        param.forEach(function(elem){
-            var xitem = input.filter(function(item){
-                return item.id==elem;
-            })[0];
-            out.push(xitem.libelle);
-        });
-        return out.join(', ');
+        try{
+            param.forEach(function(elem){
+                var xitem = input.filter(function(item){
+                    return item.id==elem;
+                })[0];
+                out.push(xitem.libelle);
+            });
+            return out.join(', ');
+        }
+        catch(e){
+            //params anciens
+            return 'Valeur incompatible';
+        }
     }
 });
