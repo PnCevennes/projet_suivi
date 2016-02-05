@@ -3,7 +3,7 @@
 <div ng-if="field.type=='date'">{{data|datefr}}</div>
 <div ng-if="field.type=='select'">{{field.options.choices|tselect:data}}</div>
 <div ng-if="field.type=='multisel'">{{field.options.choices|tmultisel:data}}</div>
-<div ng-if="field.type=='bool'">{{data ? 'Oui' : 'Non'}}</div>
+<div ng-if="field.type=='bool'">{{data? 'Oui' : 'Non'}}</div>
 <div xhrdisplay ng-if="field.type=='xhr'" inputid="data" xhrurl="field.options.url"></div>
 <ul ng-if="field.type=='multi'" class="list-unstyled">
     <li ng-repeat="item in data">{{item}}</li>

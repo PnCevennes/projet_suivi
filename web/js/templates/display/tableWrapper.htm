@@ -66,6 +66,7 @@
                         <input type="checkbox" ng-click="checkItem(item)" ng-model="item._checked" ng-if="column.options.type=='checkable'"></input>
                         <span ng-if="column.options.type=='date'">{{item[column.name]|datefr}}</span>
                         <span ng-if="column.options.type=='select'">{{column.options.choices|tselect:item[column.name]}}</span>
+                        <span ng-if="column.options.type=='bool'">{{item[column.name] ? 'Oui' : 'Non'}}</span>
                         <ul ng-if="column.options.type=='list'" class="list list-inline">
                             <li ng-repeat="name in item[column.name]">{{name}}</li>
                         </ul>
