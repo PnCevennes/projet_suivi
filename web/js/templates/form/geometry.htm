@@ -5,7 +5,6 @@
             <tr>
                 <th>Long.</th>
                 <th>Lat.</th>
-                <th>Proj</th>
             </tr>
             <tr ng-repeat="point in geom">
                 <!-- <td>{{point[0]}}</td><td>{{point[1]}}</td> -->
@@ -14,12 +13,6 @@
                 </td>
                 <td>
                     <input type="number" step="0.00001" ng-model="point[1]"></input>
-                </td>
-                <td ng-if="$first">
-                    <select ng-model="proj">
-                        <option value="0">WGS84</option>
-                        <option value="1">Lambert93</option>
-                    </select>
                 </td>
             </tr>
         </table>
