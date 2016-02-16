@@ -223,7 +223,7 @@ class SiteService{
 
     }
 
-    private function _delete_menaces($id){
+    private function _delete_menaces($site_id){
         $manager = $this->db->getManager();
         
         // suppression des liens existants

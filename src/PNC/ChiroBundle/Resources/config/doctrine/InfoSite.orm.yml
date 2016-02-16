@@ -15,9 +15,6 @@ PNC\ChiroBundle\Entity\InfoSite:
         cis_frequentation:
             type: integer
             nullable: true
-        cis_menace:
-            type: integer
-            nullable: true
         cis_menace_cmt:
             type: text
             nullable: true

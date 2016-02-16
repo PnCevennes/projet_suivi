@@ -122,7 +122,7 @@ class TaxonService{
             'PNCBaseAppBundle:Taxons', 
             array('cd_nom'=>$data['cdNom'])
         );
-        $data['nomComplet'] = $tx->getNomComplet();
+        $data['cotxNomComplet'] = $tx->getNomComplet();
 
         $result = $this->entityService->create(
             array(
@@ -162,7 +162,7 @@ class TaxonService{
             'PNCBaseAppBundle:Taxons', 
             array('cd_nom'=>$data['cotxCdNom'])
         );
-        $data['nomComplet'] = $tx->getNomComplet();
+        $data['cotxNomComplet'] = $tx->getNomComplet();
 
         $result = $this->entityService->update(
             array(
@@ -232,7 +232,7 @@ class TaxonService{
 
         $manager = $this->db->getManager();
 
-        foreach($data['indices'] as $indice_id){
+        foreach($data as $indice_id){
             $indice = new ObstaxonIndices();
             $indice->setCotxId($obsTxId);
             $indice->setThesaurusId($indice_id);
@@ -247,8 +247,8 @@ class TaxonService{
         $manager = $this->db->getManager();
         
         // suppression des liens existants
-        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_indice WHERE site_id=:siteid');
-        $delete->bindValue('siteid', $site_id);
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_observationtaxon_thesaurus_indice WHERE cotx_id=:cotxid');
+        $delete->bindValue('cotxid', $obsTxId);
         $delete->execute();
     }
 
