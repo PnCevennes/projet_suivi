@@ -12,8 +12,6 @@ groups:
     -   name: "Général"
         glyphicon: glyphicon-info-sign
         fields:
-            -   name: id
-                type: hidden
             -   name: cotxCdNom
                 label: "Cd nom"
                 type: num

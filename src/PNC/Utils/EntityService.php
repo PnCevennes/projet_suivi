@@ -293,6 +293,24 @@ class EntityService{
     }
 
     /*
+     * Execute une requete native
+     */
+    public function execRawQuery($querystring, $params){
+        $query = $this->getManager()->getConnection()->prepare($querystring);
+        foreach($params as $key=>$value){
+            $query->bindValue($key, $value);
+        }
+        $query->execute();
+    }
+
+    /*
+     * Simplification pour récupérer l'ID d'un fichier contenu dans son nom
+     */
+    public function getFileId($fname){
+        return (int) explode('_', $fname)[0];
+    }
+
+    /*
      * lit un mapping entité et retourne le schéma de données
      */
     private function read_mapping($path){

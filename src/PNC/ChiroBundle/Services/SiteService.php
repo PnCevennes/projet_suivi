@@ -289,18 +289,19 @@ class SiteService{
         $manager = $this->db->getManager();
 
         // suppression des liens existants
-        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid');
-        $delete->bindValue('siteid', $site->getId());
-        $delete->execute();
+        $this->entityService->execRawQuery(
+            'DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid'
+            array('siteid', $site->getId())
+        );
 
-        foreach($data as $fichier){
-            $fich_ = explode('_', $fichier['fname']);
-            $fich_id = (int) $fich_[0];
-            $commentaire = $fichier['commentaire'];
+        foreach($data as $fich_){
+            $commentaire = $fich_['commentaire'];
             try{
                 $fichier = new SiteFichiers();
                 $fichier->setSiteId($site->getId());
-                $fichier->setFichierId($fich_id);
+                $fichier->setFichierId(
+                    $this->entityService->getFileId($fich_['fname'])
+                );
                 $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();

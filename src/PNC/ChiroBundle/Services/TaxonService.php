@@ -265,18 +265,19 @@ class TaxonService{
         $manager = $this->db->getManager();
 
         // suppression des liens existants
-        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_observationtaxon_fichiers WHERE cotx_id=:cotxid');
-        $delete->bindValue('cotxid', $obsTx->getId());
-        $delete->execute();
+        $this->entityService->execRawQuery(
+            'DELETE FROM chiro.rel_observationtaxon_fichiers WHERE cotx_id=:cotxid',
+            array('cotxid'=>$obsTx->getId())
+        );
 
-        foreach($data as $fichier){
-            $fich_ = explode('_', $fichier['fname']);
-            $fich_id = (int) $fich_[0];
-            $commentaire = $fichier['commentaire'];
+        foreach($data as $fich_){
+            $commentaire = $fich_['commentaire'];
             try{
                 $fichier = new ObstaxonFichiers();
                 $fichier->setCotxId($obsTx->getId());
-                $fichier->setFichierId($fich_id);
+                $fichier->setFichierId(
+                    $this->entityService->getFileId($fich_['fname'])
+                );
                 $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();
