@@ -70,7 +70,7 @@ app.controller('observationListController', function($scope, $routeParams, dataS
         $loading.finish('spinner-1');
     });
     
-    $scope.setData = function(resp){
+    $scope.setData = function(resp, deferred){
         $scope.items = resp;
         mapService.initialize('js/resources/chiro_obs.json').then(function(){
             $scope.data = resp.map(function(item){
@@ -80,6 +80,11 @@ app.controller('observationListController', function($scope, $routeParams, dataS
         });
         $scope.geoms = resp;
         dfd.resolve('loading data');
+
+        //reception données filterform
+        if(deferred){
+            deferred.resolve('loading data');
+        }
     };
 
     $scope.setSchema = function(schema){

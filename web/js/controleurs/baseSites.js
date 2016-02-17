@@ -48,7 +48,7 @@ app.controller('siteListController', function($scope, $routeParams, dataServ, ma
         $loading.finish('spinner-1');
     });
     
-    $scope.setData = function(resp){
+    $scope.setData = function(resp, deferred){
         $scope.items = resp;
         mapService.initialize('js/resources/chiro_site.json').then(function(){
             $scope.data = resp.map(function(item){
@@ -58,6 +58,9 @@ app.controller('siteListController', function($scope, $routeParams, dataServ, ma
         });
         $scope.geoms = resp;
         dfd.resolve('loading data');
+        if(deferred){
+            deferred.resolve('loading data');
+        }
     };
 
     $scope.setSchema = function(schema){

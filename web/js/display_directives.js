@@ -175,9 +175,13 @@ app.directive('detailDisplay', function(){
                 //dataServ.get($scope.schema.subDataUrl + $scope.dataId, $scope.setSubData);
             }
 
-            $scope.setSubData = function(resp){
+            $scope.setSubData = function(resp, deferred){
                 $scope.subData = angular.copy(resp);
                 dfd.resolve('loading data');
+
+                if(deferred){
+                    deferred.resolve('loading data');
+                }
             }
 
             $scope.$on('subEdit:dataAdded', function(evt, data){
@@ -550,7 +554,7 @@ app.directive('filterform', function(){
             callback: '=',
         },
         templateUrl: 'js/templates/form/filterForm.htm',
-        controller: function($scope, $timeout, dataServ, configServ){
+        controller: function($scope, $timeout, $q, $loading, dataServ, configServ){
             $scope.filterData = {};
             $scope.counts = {};
             $scope.filters = {};
@@ -621,13 +625,21 @@ app.directive('filterform', function(){
                         url: _url
                     }
                 );
+                // spinner
+                $loading.start('spinner-1');
+                var dfd = $q.defer();
+                var promise = dfd.promise;
+                promise.then(function(result) {
+                    $loading.finish('spinner-1');
+                });
+
                 dataServ.get(_url, function(resp){
                     //envoi des données filtrées à la vue
                     $scope.collapseFilters = false;
                     $scope.counts.total = resp.total;
                     $scope.counts.current = resp.filteredCount;
                     $scope.maxCount = Math.min(($scope.pageNum+1) * $scope.schema.limit, $scope.counts.current);
-                    $scope.callback(resp.filtered);
+                    $scope.callback(resp.filtered, dfd);
                 }, null, true);
             };
 

@@ -8,19 +8,32 @@
                 <span class="glyphicon {{group.glyphicon}}" ng-if="group.glyphicon"></span>
                 {{group.name}}
             </tab-heading>
+            <!--
             <dl class="dl-horizontal"  ng-repeat="field in group.fields">
                 <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
                 <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
                 <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
             </dl>
+            -->
+            <div ng-repeat="field in group.fields" class="panel panel-success">
+                <div class="panel-heading">
+                    <h5 class="panel-title" tooltip="{{field.help}}">{{field.label}}</h5>
+                </div>
+                <div class="panel-content">
+                    <p ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></p>
+                    <p ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></p>
+                </div>
+            </div>
         </tab>
     </tabset>
     <div ng-if="schema.groups.length==1" class="panel panel-default">
-            <dl class="dl-horizontal" ng-repeat="field in schema.groups[0].fields">
-                <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
-                <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
-                <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
-            </dl>
+        <div class="panel-heading">
+            <h5 class="panel-title" tooltip="{{field.help}}">{{field.label}}</h5>
+        </div>
+        <div class="panel-content">
+            <p ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></p>
+            <p ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></p>
+        </div>
     </div>
 <div>
 <div ng-if="subSchema" class="sub-schema">

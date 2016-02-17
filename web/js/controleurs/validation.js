@@ -64,7 +64,7 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         $scope.clear();
     });
    
-    $scope.setData = function(resp){
+    $scope.setData = function(resp, deferred){
         $scope.selection.splice(0);
         checked.splice(0);
 
@@ -97,6 +97,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
             $scope.data = tmp;
 
             dfd.resolve('loading data');
+            //réception données filterForm
+            if(deferred){
+                deferred.resolve('loading data');
+            }
         });
     };
 
