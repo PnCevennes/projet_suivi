@@ -23,7 +23,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * @var string
      */
-    private $cotx_tx_initial;
+    private $cotx_tx_presume;
 
     /**
      * @var boolean
@@ -190,26 +190,26 @@ class ObservationTaxon extends BaseEntity
     }
 
     /**
-     * Set cotx_tx_initial
+     * Set cotx_tx_presume
      *
-     * @param string $cotxTxInitial
+     * @param string $cotxTxPresume
      * @return ObservationTaxon
      */
-    public function setCotxTxInitial($cotxTxInitial)
+    public function setCotxTxPresume($cotxTxPresume)
     {
-        $this->cotx_tx_initial = $cotxTxInitial;
+        $this->cotx_tx_presume = $cotxTxPresume;
 
         return $this;
     }
 
     /**
-     * Get cotx_tx_initial
+     * Get cotx_tx_presume
      *
      * @return string 
      */
-    public function getCotxTxInitial()
+    public function getCotxTxPresume()
     {
-        return $this->cotx_tx_initial;
+        return $this->cotx_tx_presume;
     }
 
     /**
