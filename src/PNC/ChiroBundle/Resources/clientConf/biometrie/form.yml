@@ -5,7 +5,7 @@ groups:
         fields:
             -   name: id
                 type: hidden
-            -   name: cbioTxId
+            -   name: fkCotxId 
                 type: hidden
             -   name: cbioAgeId
                 label: "Âge"
