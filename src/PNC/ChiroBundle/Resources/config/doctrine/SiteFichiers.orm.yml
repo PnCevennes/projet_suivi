@@ -8,5 +8,5 @@ PNC\ChiroBundle\Entity\SiteFichiers:
             type: integer
         fichier_id:
             type: integer
-        legende:
+        commentaire:
             type: text

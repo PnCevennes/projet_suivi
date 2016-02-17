@@ -11,7 +11,7 @@
 <ul ng-if="field.type=='file'" class="list-unstyled">
     <li ng-repeat="item in data">
         <a ng-href="uploads/{{field.options.target||''}}{{item.fname}}" target="blank">{{item.fname.slice(item.fname.indexOf('_')+1)}}</a>
-        <p>{{item.legende||'Pas de description'}}</p>        
+        <p>{{item.commentaire||'Pas de description'}}</p>        
     </li>
 </ul>
 

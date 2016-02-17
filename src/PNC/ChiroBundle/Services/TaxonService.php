@@ -101,7 +101,7 @@ class TaxonService{
                 //$out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
                 $out['obsTaxonFichiers'][] = array(
                     'fname'=>sprintf('%s_%s', $fich->getId(), $fich->getPath()),
-                    'legende'=>$idfich->getLegende()
+                    'commentaire'=>$idfich->getCommentaire()
                 );
             }
             return $out;
@@ -272,12 +272,12 @@ class TaxonService{
         foreach($data as $fichier){
             $fich_ = explode('_', $fichier['fname']);
             $fich_id = (int) $fich_[0];
-            $legende = $fichier['legende'];
+            $commentaire = $fichier['commentaire'];
             try{
                 $fichier = new ObstaxonFichiers();
                 $fichier->setCotxId($obsTx->getId());
                 $fichier->setFichierId($fich_id);
-                $fichier->setLegende($legende);
+                $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();
             }

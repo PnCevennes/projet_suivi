@@ -219,7 +219,7 @@ app.directive('fileinput', function(){
                                     $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
                                 })
                                 .success(function(data){
-                                    $scope.fileids.push({fname: data.path, legende: ''});
+                                    $scope.fileids.push({fname: data.path, commentaire: ''});
                                     $scope.lock = false;
                                 })
                                 .error(function(data){

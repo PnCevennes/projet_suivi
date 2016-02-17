@@ -99,7 +99,7 @@ class SiteService{
             $fObj = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$f->getFichierId()));
             $fichiers[] = array(
                 'fname' => $fObj->getId() . '_' . $fObj->getPath(),
-                'legende' => $f->getLegende()
+                'commentaire' => $f->getCommentaire()
             );
         }
 
@@ -296,12 +296,12 @@ class SiteService{
         foreach($data as $fichier){
             $fich_ = explode('_', $fichier['fname']);
             $fich_id = (int) $fich_[0];
-            $legende = $fichier['legende'];
+            $commentaire = $fichier['commentaire'];
             try{
                 $fichier = new SiteFichiers();
                 $fichier->setSiteId($site->getId());
                 $fichier->setFichierId($fich_id);
-                $fichier->setLegende($legende);
+                $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();
             }

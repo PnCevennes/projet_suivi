@@ -20,7 +20,7 @@ class SiteFichiers extends BaseEntity
      */
     private $fichier_id;
 
-    private $legende;
+    private $commentaire;
 
     /**
      * Set site_id
@@ -68,12 +68,12 @@ class SiteFichiers extends BaseEntity
         return $this->fichier_id;
     }
 
-    public function setLegende($legende){
-        $this->legende = $legende;
+    public function setCommentaire($commentaire){
+        $this->commentaire = $commentaire;
         return $this;
     }
 
-    public function getLegende(){
-        return $this->legende;
+    public function getCommentaire(){
+        return $this->commentaire;
     }
 }
