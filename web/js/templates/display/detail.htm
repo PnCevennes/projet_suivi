@@ -15,7 +15,7 @@
                 <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
             </dl>
             -->
-            <div ng-repeat="field in group.fields" class="panel panel-success">
+            <div ng-repeat="field in group.fields" class="panel panel-info">
                 <div class="panel-heading">
                     <h5 class="panel-title" tooltip="{{field.help}}">{{field.label}}</h5>
                 </div>
