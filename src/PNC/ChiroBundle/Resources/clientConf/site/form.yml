@@ -82,6 +82,12 @@ groups:
                 thesaurusID: 11
                 #default: 64
                 help: "Type de menace pesant sur le site"
+            -   name: cisAmenagement
+                label: "Types d'aménagements"
+                type: multisel
+                thesaurusID: 13
+                #default: 64
+                help: "Type de menace pesant sur le site"
             -   name: cisMenaceCmt
                 label: "Informations menaces"
                 type: text

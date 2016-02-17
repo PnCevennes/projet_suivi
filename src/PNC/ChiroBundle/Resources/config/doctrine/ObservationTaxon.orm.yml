@@ -12,7 +12,7 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
     fields:
         fk_bv_id:
             type: integer
-        cotx_tx_initial:
+        cotx_tx_presume:
             type: string
             length: 250
         cotx_espece_incertaine:

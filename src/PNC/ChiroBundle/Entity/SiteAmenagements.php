@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use PNC\Utils\BaseEntity;
 
 /**
- * SiteFichiers
+ * SiteMenaces
  */
-class SiteFichiers extends BaseEntity
+class SiteAmenagements extends BaseEntity
 {
     /**
      * @var integer
@@ -18,15 +18,14 @@ class SiteFichiers extends BaseEntity
     /**
      * @var integer
      */
-    private $fichier_id;
+    private $thesaurus_id;
 
-    private $legende;
 
     /**
      * Set site_id
      *
      * @param integer $siteId
-     * @return SiteFichiers
+     * @return SiteMenaces
      */
     public function setSiteId($siteId)
     {
@@ -46,34 +45,25 @@ class SiteFichiers extends BaseEntity
     }
 
     /**
-     * Set fichier_id
+     * Set thesaurus_id
      *
-     * @param integer $fichierId
-     * @return SiteFichiers
+     * @param integer $thesaurusId
+     * @return SiteMenaces
      */
-    public function setFichierId($fichierId)
+    public function setThesaurusId($thesaurusId)
     {
-        $this->fichier_id = $fichierId;
+        $this->thesaurus_id = $thesaurusId;
 
         return $this;
     }
 
     /**
-     * Get fichier_id
+     * Get thesaurus_id
      *
      * @return integer 
      */
-    public function getFichierId()
+    public function getThesaurusId()
     {
-        return $this->fichier_id;
-    }
-
-    public function setLegende($legende){
-        $this->legende = $legende;
-        return $this;
-    }
-
-    public function getLegende(){
-        return $this->legende;
+        return $this->thesaurus_id;
     }
 }

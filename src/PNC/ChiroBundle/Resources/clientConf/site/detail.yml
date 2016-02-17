@@ -59,6 +59,11 @@ groups:
                 label: "Description menaces"
                 type: string
                 help: "Description des menaces pesant sur le site"
+            -   name: cisAmenagement
+                label: Aménagements
+                type: multisel
+                thesaurusID: 13
+                help: "Aménagements effectués sur le site"
             -   name: cisActions
                 label: "Actions"
                 type: string

@@ -99,7 +99,10 @@ class TaxonService{
             foreach($fichiers as $idfich){
                 $fich = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$idfich->getFichierId()));
                 //$out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
-                $out['obsTaxonFichiers'][] = sprintf('%s%s', $fich->getId(), $fich->getPath());
+                $out['obsTaxonFichiers'][] = array(
+                    'fname'=>sprintf('%s_%s', $fich->getId(), $fich->getPath()),
+                    'legende'=>$idfich->getLegende()
+                );
             }
             return $out;
         }
@@ -229,6 +232,9 @@ class TaxonService{
 
     private function _record_indices($obsTxId, $data){
         $this->_delete_indices($obsTxId);
+        if(!$data){ 
+            return null;
+        }
 
         $manager = $this->db->getManager();
 
@@ -264,12 +270,14 @@ class TaxonService{
         $delete->execute();
 
         foreach($data as $fichier){
-            $fich_ = explode('_', $fichier);
+            $fich_ = explode('_', $fichier['fname']);
             $fich_id = (int) $fich_[0];
+            $legende = $fichier['legende'];
             try{
                 $fichier = new ObstaxonFichiers();
                 $fichier->setCotxId($obsTx->getId());
                 $fichier->setFichierId($fich_id);
+                $fichier->setLegende($legende);
                 $manager->persist($fichier);
                 $manager->flush();
             }

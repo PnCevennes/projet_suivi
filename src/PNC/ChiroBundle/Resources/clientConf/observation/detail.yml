@@ -11,8 +11,6 @@ groups:
     - name: Observation
       glyphicon: glyphicon-info-sign
       fields:
-          - name: id
-            type: hidden
           - name: bsNom
             label: Site
             type: string

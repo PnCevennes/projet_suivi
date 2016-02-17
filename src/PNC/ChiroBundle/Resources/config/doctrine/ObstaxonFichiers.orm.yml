@@ -7,4 +7,6 @@ PNC\ChiroBundle\Entity\ObstaxonFichiers:
             type: integer
         fichier_id:
             type: integer
+        legende:
+            type: text
 

@@ -20,6 +20,8 @@ filtering:
         -   name: "cotx_obj_status_validation"
             label: "Statut validation"
             type: "select"
+            thesaurusID: 9
+            default: 0
             zeroNull: true
 fields: 
     -   name: "id"

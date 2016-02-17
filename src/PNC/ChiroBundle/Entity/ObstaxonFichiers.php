@@ -20,6 +20,8 @@ class ObstaxonFichiers extends BaseEntity
      */
     private $fichier_id;
 
+    private $legende;
+
 
     /**
      * Set cotx_id
@@ -65,5 +67,14 @@ class ObstaxonFichiers extends BaseEntity
     public function getFichierId()
     {
         return $this->fichier_id;
+    }
+
+    public function setLegende($legende){
+        $this->legende = $legende;
+        return $this;
+    }
+
+    public function getLegende(){
+        return $this->legende;
     }
 }

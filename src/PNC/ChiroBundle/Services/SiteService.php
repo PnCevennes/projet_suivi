@@ -10,6 +10,7 @@ use Commons\Exceptions\CascadeException;
 use PNC\ChiroBundle\Entity\InfoSite;
 use PNC\ChiroBundle\Entity\SiteFichiers;
 use PNC\ChiroBundle\Entity\SiteMenaces;
+use PNC\ChiroBundle\Entity\SiteAmenagements;
 
 
 class SiteService{
@@ -90,9 +91,29 @@ class SiteService{
 
         $menaces = $this->entityService->getAll('PNCChiroBundle:SiteMenaces', array('site_id'=>$id));
 
+        $amenagements = $this->entityService->getAll('PNCChiroBundle:SiteAmenagements', array('site_id'=>$id));
+
+        $l_fichiers = $this->entityService->getAll('PNCChiroBundle:SiteFichiers', array('site_id'=>$id));
+        $fichiers = array();
+        foreach($l_fichiers as $f){
+            $fObj = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$f->getFichierId()));
+            $fichiers[] = array(
+                'fname' => $fObj->getId() . '_' . $fObj->getPath(),
+                'legende' => $f->getLegende()
+            );
+        }
+
+
+        $data['siteFichiers'] = $fichiers;
+
         $data['cisMenace'] = array();
         foreach($menaces as $menace){
             $data['cisMenace'][] = $menace->getThesaurusId();
+        }
+
+        $data['cisAmenagement'] = array();
+        foreach($amenagements as $amenagement){
+            $data['cisAmenagement'][] = $amenagement->getThesaurusId();
         }
 
         $data['geom'] = array($data['geom']['coordinates']);
@@ -130,6 +151,8 @@ class SiteService{
         $manager->getConnection()->commit();
         
         $this->_record_menaces($site->getId(), $data);
+        
+        $this->_record_amenagements($site->getId(), $data);
         
         $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
@@ -169,6 +192,8 @@ class SiteService{
 
         $this->_record_menaces($id, $data);
 
+        $this->_record_amenagements($site->getId(), $data);
+        
         $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
             //print_r($errors);
@@ -232,6 +257,31 @@ class SiteService{
         $delete->execute();
     }
 
+    private function _record_amenagements($site_id, $data){
+
+        $this->_delete_amenagements($site_id);
+
+        $manager = $this->db->getManager();
+
+        foreach($data['cisAmenagement'] as $menace_id){
+            $menace = new SiteAmenagements();
+            $menace->setSiteId($site_id);
+            $menace->setThesaurusId($menace_id);
+            $manager->persist($menace);
+            $manager->flush();
+        }
+
+    }
+
+    private function _delete_amenagements($site_id){
+        $manager = $this->db->getManager();
+        
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_chirosite_thesaurus_amenagement WHERE site_id=:siteid');
+        $delete->bindValue('siteid', $site_id);
+        $delete->execute();
+    }
+
     private function _record_fichiers($site, $data){
         $errors = array();
         // enregistrement des fichiers liés
@@ -244,12 +294,14 @@ class SiteService{
         $delete->execute();
 
         foreach($data as $fichier){
-            $fich_ = explode('_', $fichier);
+            $fich_ = explode('_', $fichier['fname']);
             $fich_id = (int) $fich_[0];
+            $legende = $fichier['legende'];
             try{
                 $fichier = new SiteFichiers();
                 $fichier->setSiteId($site->getId());
                 $fichier->setFichierId($fich_id);
+                $fichier->setLegende($legende);
                 $manager->persist($fichier);
                 $manager->flush();
             }
