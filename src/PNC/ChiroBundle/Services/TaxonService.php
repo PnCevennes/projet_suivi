@@ -271,14 +271,12 @@ class TaxonService{
         );
 
         foreach($data as $fich_){
-            $commentaire = $fich_['commentaire'];
             try{
-                $fichier = new ObstaxonFichiers();
-                $fichier->setCotxId($obsTx->getId());
-                $fichier->setFichierId(
-                    $this->entityService->getFileId($fich_['fname'])
+                $fichier = new ObstaxonFichiers(
+                    $obsTx->getId(),
+                    $this->entityService->getFileId($fich_['fname']),
+                    $fich_['commentaire']
                 );
-                $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();
             }

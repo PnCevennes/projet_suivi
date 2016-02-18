@@ -291,18 +291,16 @@ class SiteService{
         // suppression des liens existants
         $this->entityService->execRawQuery(
             'DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid',
-            array('siteid', $site->getId())
+            array('siteid'=>$site->getId())
         );
 
         foreach($data as $fich_){
-            $commentaire = $fich_['commentaire'];
             try{
-                $fichier = new SiteFichiers();
-                $fichier->setSiteId($site->getId());
-                $fichier->setFichierId(
-                    $this->entityService->getFileId($fich_['fname'])
+                $fichier = new SiteFichiers(
+                    $site->getId(),
+                    $this->entityService->getFileId($fich_['fname']),
+                    $fich_['commentaire']
                 );
-                $fichier->setCommentaire($commentaire);
                 $manager->persist($fichier);
                 $manager->flush();
             }
