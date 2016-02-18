@@ -76,6 +76,11 @@ class InfoSite extends BaseEntity
     private $cis_contact_commentaire;
 
     /**
+     * @var string
+     */
+    private $cis_actions;
+
+    /**
      * @var boolean
      */
     private $cis_site_actif;
@@ -416,5 +421,14 @@ class InfoSite extends BaseEntity
     public function getParentSite()
     {
         return $this->parent_site;
+    }
+
+    public function setCisActions($actions){
+        $this->cis_actions = $actions;
+        return $this;
+    }
+
+    public function getCisActions(){
+        return $this->cis_actions;
     }
 }

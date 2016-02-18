@@ -52,6 +52,9 @@ PNC\ChiroBundle\Entity\InfoSite:
         cis_site_actif:
             type: boolean
             nullable: true
+        cis_actions:
+            type: text
+            nullable: true
 
     oneToOne:
         parent_site:
