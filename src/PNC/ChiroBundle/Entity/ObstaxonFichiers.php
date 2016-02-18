@@ -22,6 +22,11 @@ class ObstaxonFichiers extends BaseEntity
 
     private $commentaire;
 
+    public function __construct($cotx_id=null, $fichier_id=null, $commentaire=null){
+        $this->setCotxId($cotx_id);
+        $this->setFichierId($fichier_id);
+        $this->setCommentaire($commentaire);
+    }
 
     /**
      * Set cotx_id

@@ -22,6 +22,11 @@ class SiteFichiers extends BaseEntity
 
     private $commentaire;
 
+    public function __construct($site_id=null, $fichier_id=null, $commentaire=null){
+        $this->setSiteId($site_id);
+        $this->setFichierId($fichier_id);
+        $this->setCommentaire($commentaire);
+    }
     /**
      * Set site_id
      *
