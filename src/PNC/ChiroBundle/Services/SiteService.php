@@ -290,7 +290,7 @@ class SiteService{
 
         // suppression des liens existants
         $this->entityService->execRawQuery(
-            'DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid'
+            'DELETE FROM chiro.rel_chirosite_fichiers WHERE site_id=:siteid',
             array('siteid', $site->getId())
         );
 
