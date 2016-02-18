@@ -15,11 +15,11 @@
                 <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
             </dl>
             -->
-            <div ng-repeat="field in group.fields" class="panel panel-info">
+            <div ng-repeat="field in group.fields" class="panel panel-default" ng-if="field.type != 'hidden'">
                 <div class="panel-heading">
                     <h5 class="panel-title" tooltip="{{field.help}}">{{field.label}}</h5>
                 </div>
-                <div class="panel-content">
+                <div class="panel-body">
                     <p ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></p>
                     <p ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></p>
                 </div>
