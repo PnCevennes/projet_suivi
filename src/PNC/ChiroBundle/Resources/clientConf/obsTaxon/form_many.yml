@@ -1,5 +1,5 @@
 fields:
-    -   name: cdNom
+    -   name: cotxCdNom
         label: "Nom taxon"
         type: xhr
         options:
@@ -13,7 +13,7 @@ fields:
         type: hidden
         options:
             ref: userId
-    -   name: cotxInitial
+    -   name: cotxTxPresume
         label: "Taxon initial"
         type: string
     -   name: cotxEspeceIncertaine

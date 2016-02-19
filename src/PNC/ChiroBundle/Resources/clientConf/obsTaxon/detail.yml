@@ -18,7 +18,7 @@ groups:
             -   name: cotxNomComplet
                 label: "Nom taxon"
                 type: string
-            -   name: cotxTxInitial
+            -   name: cotxTxPresume
                 label: "Taxon presumé"
                 type: string
             -   name: cotxEspeceIncertaine
@@ -43,7 +43,7 @@ groups:
                 thesaurusID: 12
             -   name: cotxIndicesCmt
                 label: "Description indices"
-                type: text
+                type: string
             -   name: cotxActId
                 label: "Activité"
                 type: select

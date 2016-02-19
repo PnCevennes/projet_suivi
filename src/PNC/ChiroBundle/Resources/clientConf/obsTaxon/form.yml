@@ -29,7 +29,7 @@ groups:
                 options:
                     url: "chiro/taxons"
                     reverseurl: "chiro/taxons/id"
-            -   name: cotxTxInitial
+            -   name: cotxTxPresume
                 label: "Taxon présumé"
                 type: string
             -   name: cotxObjStatusValidation

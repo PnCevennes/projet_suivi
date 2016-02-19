@@ -104,6 +104,16 @@ class TaxonService{
                     'commentaire'=>$idfich->getCommentaire()
                 );
             }
+
+            $out['indices'] = array();
+            $indices = $this->entityService->getAll(
+                'PNCChiroBundle:ObstaxonIndices',
+                array('cotx_id'=>$id)
+            );
+            foreach($indices as $indice){
+                $out['indices'][] = $indice->getThesaurusId();
+            }
+
             return $out;
         }
 
@@ -123,7 +133,7 @@ class TaxonService{
 
         $tx = $this->entityService->getOne(
             'PNCBaseAppBundle:Taxons', 
-            array('cd_nom'=>$data['cdNom'])
+            array('cd_nom'=>$data['cotxCdNom'])
         );
         $data['cotxNomComplet'] = $tx->getNomComplet();
 
@@ -149,11 +159,15 @@ class TaxonService{
             $manager->getConnection()->commit();
         }
 
-        $this->_record_indices($obsTx->getId(), $data['indices']);
+        if(isset($data['indices'])){
+            $this->_record_indices($obsTx->getId(), $data['indices']);
+        }
 
-        $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
-        if($errors){
-            //print_r($errors);
+        if(isset($data['obsTaxonFichiers'])){
+            $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
+            if($errors){
+                //print_r($errors);
+            }
         }
 
         return array('id'=>$obsTx->getId());
@@ -180,7 +194,7 @@ class TaxonService{
         $this->_record_indices($id, $data['indices']);
 
         $obsTx = $result[$schema];
-        $errors = $this->_record_fichiers($obsTx, $data['obsTaxonFichiers']);
+        $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
         if($errors){
             //print_r($errors);
         }
@@ -209,7 +223,7 @@ class TaxonService{
         $manager->remove($obsTx);
         $manager->flush();
 
-        $this->_delete_indices($obsTx);
+        $this->_delete_indices($obsTx->getId());
         return true;
     }
 
@@ -258,7 +272,7 @@ class TaxonService{
         $delete->execute();
     }
 
-    private function _record_fichiers($obsTx, $data){
+    private function _record_fichiers($obsTxId, $data){
         $errors = array();
         // enregistrement des fichiers liés
 
@@ -267,13 +281,13 @@ class TaxonService{
         // suppression des liens existants
         $this->entityService->execRawQuery(
             'DELETE FROM chiro.rel_observationtaxon_fichiers WHERE cotx_id=:cotxid',
-            array('cotxid'=>$obsTx->getId())
+            array('cotxid'=>$obsTxId)
         );
 
         foreach($data as $fich_){
             try{
                 $fichier = new ObstaxonFichiers(
-                    $obsTx->getId(),
+                    $obsTxId,
                     $this->entityService->getFileId($fich_['fname']),
                     $fich_['commentaire']
                 );
