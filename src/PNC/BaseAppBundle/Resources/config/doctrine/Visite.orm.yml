@@ -22,7 +22,7 @@ PNC\BaseAppBundle\Entity\Visite:
             type: integer
         geom:
             type: geometry
-        ref_commune:
+        bv_ref_commune:
             type: string
             nullable: true
         meta_create_timestamp:

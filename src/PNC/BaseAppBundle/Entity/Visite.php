@@ -48,7 +48,7 @@ class Visite extends BaseEntity
     /**
      * @var string
      */
-    private $ref_commune;
+    private $bv_ref_commune;
 
     /**
      * @var \DateTime
@@ -227,9 +227,9 @@ class Visite extends BaseEntity
      * @param string $refCommune
      * @return Visite
      */
-    public function setRefCommune($refCommune)
+    public function setBvRefCommune($refCommune)
     {
-        $this->ref_commune = $refCommune;
+        $this->bv_ref_commune = $refCommune;
 
         return $this;
     }
@@ -239,9 +239,9 @@ class Visite extends BaseEntity
      *
      * @return string 
      */
-    public function getRefCommune()
+    public function getBvRefCommune()
     {
-        return $this->ref_commune;
+        return $this->bv_ref_commune;
     }
 
     /**
