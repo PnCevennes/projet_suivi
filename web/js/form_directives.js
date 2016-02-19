@@ -1000,7 +1000,10 @@ app.directive('multisel', function(){
             $scope.tmp_data = {};
 
             $scope.$watch('data', function(nv, ov){
-                if(nv !== undefined && nv !== null){
+                if(nv !== undefined){
+                    if(nv === null ){
+                        $scope.data = [];
+                    }
                     if(!nv.push){
                         $scope.data = [nv];
                     }
