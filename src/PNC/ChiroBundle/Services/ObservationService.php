@@ -179,7 +179,7 @@ class ObservationService{
                 foreach($data['__taxons__'] as $taxon){
                     $taxon['fkBvId'] = $resObs;
                     $taxon['metaNumerisateurId'] = $data['metaNumerisateurId'];
-                    $taxon['cotxObjStatusValidation'] = 56;
+                    $taxon['cotxObjStatusValidation'] = 55;
                     $taxon['cotxCommentaire'] = '';
                     $taxon['cotxValidateurId'] = null;
 
@@ -220,6 +220,7 @@ class ObservationService{
         }
         try{
             $this->entityService->hydrate($cobs, $schema, $data);
+            $cobs->setFkBvId($id);
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors()); 
