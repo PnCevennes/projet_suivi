@@ -234,10 +234,10 @@ class TaxonService{
         $manager->getConnection()->beginTransaction();
         foreach($data['selection'] as $id){
             $tx = $repo->findOneBy(array('id'=>$id));
-            if($tx->getObsObjStatusValidation() != $valid){
-                $tx->setObsObjStatusValidation($valid);
-                $tx->setDateValidation(new \DateTime());
-                $tx->setObsValidateur($user['id_role']);
+            if($tx->getCotxObjStatusValidation() != $valid){
+                $tx->setCotxObjStatusValidation($valid);
+                $tx->setCotxDateValidation(new \DateTime());
+                $tx->setCotxValidateur($user['id_role']);
                 $manager->flush();
             }
         }
