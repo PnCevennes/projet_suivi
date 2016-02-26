@@ -44,10 +44,10 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         var act = {action: $scope.action, selection: $scope.selection};
         dataServ.post($scope._appName + '/validate_taxon', act, function(resp){
             checked.forEach(function(item){
-                item.obsObjStatusValidation = $scope.action;
-                item.validateur = userServ.getUser().nom_complet;
+                item.cotxObjStatusValidation = $scope.action;
+                item.cotxValidateur = userServ.getUser().nom_complet;
                 var today = new Date();
-                item.dateValidation = today.getFullYear() + '-' + ('00'+(today.getMonth()+1)).slice(-2) + '-' + today.getDate();
+                item.cotxDateValidation = today.getFullYear() + '-' + ('00'+(today.getMonth()+1)).slice(-2) + '-' + today.getDate();
             });
         });
     };
