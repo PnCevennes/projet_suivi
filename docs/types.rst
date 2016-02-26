@@ -205,6 +205,13 @@ affiche une liste déroulante dont les éléments sont passés en option
 
 
 
+multisel
+--------
+
+affiche une liste de choix sous forme de cases à cocher. La syntaxe est la même que celle du *select* hormis le type: *multisel*
+
+
+
 date
 ----
 
@@ -335,3 +342,12 @@ Affiche un libellé sélectionné dans la liste passée en options
 .. note::
 
     Équivalent du type `select` disponible pour les formulaires, et se définit exactement de la même manière
+
+
+
+multisel
+--------
+
+Affiche une liste de libellés sélectionnés d'après la liste passée en options
+
+A l'instar du type *select*, il se définit exactement de la même manière que pour les formulaires.
