@@ -1,8 +1,8 @@
 HOWTO - Créer un nouveau module
 ===============================
 
-Etape 1 - Création du bundle
-----------------------------
+Etape 1 - Création du bundle et déclaration pour l'application cliente
+----------------------------------------------------------------------
 
 .. code:: 
     app/console generate:bundle --namespace=PNC/HowToBundle
@@ -18,6 +18,23 @@ correction du fichier *app/config/routing.yml*::
         resource: "@PNCHowToBundle/Resources/config/routing.yml"
         prefix:   /howto/
 
+
+
+Il est nécéssaire de déclarer le nouveau module à l'application cliente et le contrôleur qui permettra à celle ci de récupérer les fichiers de configuration des vues. 
+
+
+Déclaration du nouveau module à l'application cliente
+
+Modification du fichier *PNC/BaseAppBundle/Resources/clientConf/application.yml*::
+
+    -   id: 2
+        name: Howto
+        base_url: "g/howto/howto/list"
+        appId: 1000006
+        menu:
+            -   url: "#g/howto/howto/list"
+                label: "Howto"
+                restrict: 1
 
 
 
@@ -131,26 +148,11 @@ fichier *PNC/HowToBundle/Entity/Howto.php (condensé)*::
 Cette modification permet d'utiliser la classe BaseEntity pour la gestion des erreurs.
 
 
-Etape 4 - Création du contrôleurs liste
+Etape 4 - Création du contrôleur liste
 ------------------------------------------
 
 4.0 Configuration de l'application cliente
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-En préembule, il est nécéssaire de déclarer le nouveau module à l'application cliente et le contrôleur qui permettra à celle ci de récupérer les fichiers de configuration des vues. 
-
-
-Déclaration du module à l'application cliente::
-
-    -   id: 2
-        name: Howto
-        base_url: "g/howto/howto/list"
-        appId: 1000006
-        menu:
-            -   url: "#g/howto/howto/list"
-                label: "Howto"
-                restrict: 1
 
 
 Déclaration de la route pour le contrôleur dans le fichier PNC/HowToBundle/Resources/config/routing.yml::
