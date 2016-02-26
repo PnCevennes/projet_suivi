@@ -4,8 +4,11 @@ HOWTO - Créer un nouveau module
 Etape 1 - Création du bundle et déclaration pour l'application cliente
 ----------------------------------------------------------------------
 
+Création du nouveau bundle
+
 .. code:: 
     app/console generate:bundle --namespace=PNC/HowToBundle
+
 
 Répondre yml à la question concernant les choix de configuration
 
