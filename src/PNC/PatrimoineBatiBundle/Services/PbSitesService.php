@@ -46,7 +46,7 @@ class PbSitesService{
 
         //definition de la structure de données sous form GeoJson
         $geoLabelConf = array(
-            'label'=>'<h4><a href="#/patrimoineBati/site/%s">%s<a></h4>',
+            'label'=>'<h4><a href="#/patrimoinebati/site/%s">%s<a></h4>',
             'refs'=>array('id', 'bsNom')
         );
 
