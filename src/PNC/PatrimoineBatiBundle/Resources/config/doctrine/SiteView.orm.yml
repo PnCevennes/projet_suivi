@@ -1,0 +1,35 @@
+PNC\PatrimoineBatiBundle\Entity\SiteView:
+    type: entity
+    table: patrimoinebati.vue_pb_site
+    schema: patrimoinebati
+    repositoryClass: PNC\PatrimoineBatiBundle\Repositories\SiteView
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        bs_nom:
+            type: text
+        bs_code:
+            type: text
+        bs_date:
+            type: date
+        denomination:
+            type: text
+        geom:
+            type: json_array
+        nom_observateur:
+            type: text
+        bs_obr_id:
+            type: integer
+        bs_type_id:
+            type: integer
+        type_lieu:
+            type: text
+        bs_description:
+            type: text
+        pb_source:
+            type: integer

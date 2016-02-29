@@ -1,0 +1,59 @@
+title: Sites
+emptyMsg: Aucun site pour le moment
+createBtnLabel: Nouveau site
+createUrl: "#/patrimoinebati/edit/site/"
+editUrl: "#/patrimoinebati/edit/site/"
+detailUrl: "#/patrimoinebati/site/"
+dataUrl: "patrimoinebati/site"
+mapConfig: "js/resources/chiro_site.json"
+mapSize: large
+editAccess: 5
+filtering:
+    limit: 200
+    fields:
+        -   name: "bs_type_id"
+            label: "Dénomination"
+            type: select
+            thesaurusID: 101
+fields:
+    -   name: id
+        label: ID
+        type: text
+        filter:
+            id: text
+        options: 
+            visible: false
+    -   name: bsNom
+        label: Nom
+        type: text
+        filter:
+            bsNom: text
+        options:
+            primary: true
+            visible: true
+            style: xl
+    -   name: typeLieu
+        label: Denomination
+        type: text
+        filter:
+            denomitation: text
+        options:
+            visible: true
+            style: xl
+    -   name: nomObservateur
+        label: Observateur
+        type: text
+        filter:
+            nomObservateur: text
+        option:
+            visible: true
+            style: xl
+    -   name: bsDate
+        label: Date créa.
+        type: date
+        filter:
+            bsDate: text
+        options:
+            type: date
+            visible: false
+            style: l

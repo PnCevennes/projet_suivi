@@ -1,0 +1,30 @@
+#
+# configuration breadcrumb
+#
+suivi_patrimoine_bati_config_breadcrumb:
+    path: breadcrumb
+    defaults: { _controller: PNCPatrimoineBatiBundle:Config:breadcrumb }
+    requirements:
+        _method: GET
+
+
+#
+# configurations site
+#
+suivi_patrimoine_bati_config_site_form:
+    path: site/form
+    defaults: { _controller: PNCPatrimoineBatiBundle:SiteConfig:getForm }
+    requirements:
+        _method: GET
+
+suivi_patrimoine_bati_config_site_detail:
+    path: site/detail
+    defaults: { _controller: PNCPatrimoineBatiBundle:SiteConfig:getDetail }
+    requirements:
+        _method: GET
+
+suivi_patrimoine_bati_config_site_list:
+    path: site/list
+    defaults: { _controller: PNCPatrimoineBatiBundle:SiteConfig:getList }
+    requirements:
+        _method: GET
