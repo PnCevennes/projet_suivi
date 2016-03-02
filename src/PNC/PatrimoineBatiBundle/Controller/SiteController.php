@@ -37,8 +37,7 @@ class SiteController extends Controller{
 
     // path: PUT /chiro/site
     public function createAction(Request $req){
-        return new JsonResponse($e->getErrors(), 400);
-        print 'creart';
+      
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
             throw new AccessDeniedHttpException();

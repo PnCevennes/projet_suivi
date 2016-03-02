@@ -17,8 +17,6 @@ PNC\PatrimoineBatiBundle\Entity\SiteView:
             type: text
         bs_date:
             type: date
-        denomination:
-            type: text
         geom:
             type: json_array
         nom_observateur:

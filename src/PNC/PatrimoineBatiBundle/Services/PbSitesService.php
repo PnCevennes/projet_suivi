@@ -94,13 +94,11 @@ class PbSitesService{
             );
         }
         $data['siteFichiers'] = $fichiers;
-
-        $data['geom'] = $data['geom']->toArray();
+        
         return $data;
     }
 
     public function create($data){
-        print 'creart';
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
         $errors = array();
