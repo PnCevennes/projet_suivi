@@ -618,6 +618,29 @@ app.directive('geometry', function($timeout){
 
             var coordsDisplay = null;
 
+            $scope.update_point = function(pt_index, pt_coord){
+                return function(value){
+                    if(arguments.length){
+                        var _eqs = ['lng', 'lat'];
+                        $scope.geom[pt_index][pt_coord] = value;
+                        var _geom = $scope.editLayer.getLayers()[0];
+                        try{
+                            var _coords = _geom.getLatLngs();
+                            _coords[pt_index][_eqs[pt_coord]] = value;
+                            _geom.setLatLngs(_coords);
+                            _geom.redraw();
+                        }
+                        catch(e){
+                            var _coords = _geom.getLatLng();
+                            _coords[_eqs[pt_coord]] = value;
+                            _geom.setLatLng(_coords);
+                            _geom.update();
+                        }
+                    }
+                    return $scope.geom[pt_index][pt_coord];
+                };
+            };
+
 
             if(!$scope.options.configUrl){
                 $scope.configUrl = 'js/resources/defaults.json';

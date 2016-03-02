@@ -9,10 +9,10 @@
             <tr ng-repeat="point in geom">
                 <!-- <td>{{point[0]}}</td><td>{{point[1]}}</td> -->
                 <td>
-                    <input type="number" step="0.00001" ng-model="point[0]"></input>
+                    <input type="number" step="0.00001" ng-model="update_point($index, 0)" ng-model-options="{ getterSetter: true }"></input>
                 </td>
                 <td>
-                    <input type="number" step="0.00001" ng-model="point[1]"></input>
+                    <input type="number" step="0.00001" ng-model="update_point($index, 1)" ng-model-options="{ getterSetter: true }"></input>
                 </td>
             </tr>
         </table>
