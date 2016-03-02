@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new PNC\ExtBundle\PNCExtBundle(),
             new Commons\UsersBundle\CommonsUsersBundle(),
             new PNC\HowToBundle\PNCHowToBundle(),
+            new PNC\PatrimoineBatiBundle\PNCPatrimoineBatiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
