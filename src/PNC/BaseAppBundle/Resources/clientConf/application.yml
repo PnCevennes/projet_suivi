@@ -21,7 +21,7 @@
         -   url: "#g/howto/howto/list"
             label: "Howto"
             restrict: 1
--   id: 1
+-   id: 3
     name: Patrimoine bati
     base_url: "patrimoinebati/site"
     appId: 100

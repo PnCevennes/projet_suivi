@@ -100,6 +100,7 @@ class PbSitesService{
     }
 
     public function create($data){
+        print 'creart';
         $manager = $this->db->getManager();
         $manager->getConnection()->beginTransaction();
         $errors = array();
