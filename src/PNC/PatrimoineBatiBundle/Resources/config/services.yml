@@ -1,0 +1,7 @@
+services:
+#    pnc_patrimoine_bati.example:
+#        class: PNC\PatrimoineBatiBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+  pbSitesService:
+      class: PNC\PatrimoineBatiBundle\Services\PbSitesService
+      arguments: [@doctrine, @baseSiteService, @entityService, @pagination]

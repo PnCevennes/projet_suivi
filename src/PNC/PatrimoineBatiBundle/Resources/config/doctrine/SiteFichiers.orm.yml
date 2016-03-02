@@ -1,0 +1,12 @@
+PNC\PatrimoineBatiBundle\Entity\SiteFichiers:
+    type: entity
+    table: patrimoinebati.rel_pbsite_fichiers
+    schema: patrimoinebati
+    repositoryClass: PNC\PatrimoineBatiBundle\Repositories\SiteFichiersRepository
+    id:
+        site_id:
+            type: integer
+        fichier_id:
+            type: integer
+        commentaire:
+            type: text

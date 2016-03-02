@@ -1,0 +1,176 @@
+editAccess: 5
+formTitleCreate: "Nouveau site"
+formTitleUpdate: "Modification du site "
+formTitleRef: bsNom
+createSuccessMessage: "Création réussie"
+updateSuccessMessage: "Modification réussie"
+deleteSuccessMessage: "Suppression réussie"
+formDeleteRedirectUrl: "g/patrimoinebati/site/list"
+formCreateCancelUrl: "g/patrimoinebati/site/list"
+deleteAccess: 5
+groups:
+    -   name: Localisation
+        fields:
+            -   name: geom
+                label: Coordonnées GPS
+                type: geom
+                options:
+                    geometryType: point
+                    dataUrl: patrimoinebati/site
+    -   name: Informations
+        fields:
+            -   name: id
+                type: hidden
+            -   name: fkBsId
+                type: hidden
+            -   name: metaNumerisateurId
+                label: Numerisateur
+                type: hidden
+                options:
+                    ref: userId
+            -   name: pbCodeRef
+                label: "Référence"
+                type: string
+                help: Référence du site
+            -   name: bsNom
+                label: Nom
+                type: string
+                help: nom du site
+                options:
+                    minLength: 5
+                    maxLength: 250
+            -   name: pbNomSynononymes
+                label: Synomymes
+                type: string
+                help: synonymes du site
+            -   name: bsTypeId
+                label: Dénomination
+                type: select
+                thesaurusID: 101
+                default: 0
+                help: Type de lieu
+            -   name: bsObrId
+                label: Observateur
+                type: xhr
+                options:
+                    url: users/name/100/2
+                    reverseurl: users/id
+                    required: true
+            -   name: bsDate
+                label: Date créa.
+                type: date
+                help: "date d'ajout à la base de données"
+                options:
+                    required: true
+            -   name: pbCommentaire
+                label: "Commentaire"
+                type: text
+            -   name: siteFichiers
+                label: "Fichiers joints"
+                type: file
+                help: "Fichiers relatifs au site"
+                options:
+                    target: "patrimoinebati/site"
+                    maxSize: 2048000
+                    accepted:
+                        - "png"
+                        - "jpg"
+                        - "pdf"
+    -   name: Situation
+        fields:
+            - name: pbSituation
+              label: Situation
+              type: select
+              thesaurusID: 100
+              default: 0
+            - name: pbVisibilite
+              label: "Visibilité"
+              type: select
+              thesaurusID: 103
+              default: 0
+            - name: pbAccessibilite
+              label: "Accessibilité"
+              type: select
+              thesaurusID: 106
+              default: 0
+            - name: pbOrientation
+              label: "Orientation"
+              type: select
+              thesaurusID: 102
+              default: 0
+            - name: pbStatut
+              label: "Statut"
+              type: select
+              thesaurusID: 107
+              default: 0
+    -   name: Description
+        fields:
+              - name: pbDatationSiecle
+                label: "Datation"
+                type: select
+                thesaurusID: 109
+              - name: pbDatationExacte
+                label: "Datation exacte"
+                type: string
+              - name: pbDimensionsLarg
+                label: "Largeur"
+                type: num
+                options:
+                    min: 0
+                    step: 0.1
+              - name: pbDimensionsLong
+                label: "Longueur"
+                type: num
+                options:
+                    min: 0
+                    step: 0.1
+              - name: pbDimensionsHaut
+                label: "Hauteur"
+                type: num
+                options:
+                    min: 0
+                    step: 0.1
+              - name: pbDimensionsE
+                label: "Epaisseur"
+                type: num
+                options:
+                    min: 0
+                    step: 0.1
+              - name: pbDimensionsD
+                label: "Dimension D"
+                type: num
+                options:
+                    min: 0
+                    step: 0.1
+              - name: pbEnvironnementProche
+                label: "Environnement proche"
+                type: string
+              - name: pbDescriptionMur
+                label: "Mur"
+                type: select
+                thesaurusID: 104
+              - name: pbDescriptionCouv
+                label: "Couverture"
+                type: select
+                thesaurusID: 104
+              - name: pbDescriptionToit
+                label: "Toit"
+                type: select
+                thesaurusID: 104
+              - name: pbDescriptionToitPrecision
+                label: "Toit precisions"
+                type: string
+              - name: pbDescriptionBaie
+                label: "Baie"
+                type: select
+                thesaurusID: 104
+              - name: pbDescriptionBaiePrecision
+                label: "Baie precisions"
+                type: string
+              - name: pbEtat
+                label: "Etat"
+                type: select
+                thesaurusID: 105
+              - name: pbDescriptionComplementaire
+                label: "Description complémentaire"
+                type: text

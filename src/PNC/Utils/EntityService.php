@@ -29,7 +29,7 @@ class EntityService{
 
     /*
      * Retourne une entité
-     * params: 
+     * params:
      *      $entityRepo => repository
      *      $filters => filtres de requête
      */
@@ -41,7 +41,7 @@ class EntityService{
 
     /*
      * Retourne une liste d'entités
-     * params: 
+     * params:
      *      $entityRepo => repository
      *      $filters => filtres de requête
      */
@@ -58,9 +58,9 @@ class EntityService{
 
     /*
      * insere une liste d'entités dans la DB
-     * params: 
+     * params:
      *      $entityList : liste d'entités
-     *      [$manager] : manager d'entités 
+     *      [$manager] : manager d'entités
      *
      * $entityList = array(
      *          "chemin/vers/mapping.yml"=>array(
@@ -121,7 +121,7 @@ class EntityService{
 
     /*
      * met à jour une liste d'entités
-     * params: 
+     * params:
      *      $entityList : liste d'entités
      *      [$manager] : manager d'entités
      *
@@ -184,7 +184,7 @@ class EntityService{
      * retire une liste d'entités de la DB
      * params :
      *      $entityList : liste d'entités
-     *      [$manager] : manager d'entités 
+     *      [$manager] : manager d'entités
      *
      * $entityList = array(
      *          "chemin/vers/mapping.yml"=>array(
@@ -351,7 +351,7 @@ class EntityService{
             return $data;
         }
         switch($method){
-            case 'date': 
+            case 'date':
                 return $data->format('Y-m-d');
             case 'geom':
             case 'geometry':
@@ -365,7 +365,7 @@ class EntityService{
     /*
      * agit sur les données issues d'une requete http
      * retourne la donnée fournie transformée selon la méthode passée en parametre
-     * params: 
+     * params:
      *      method => la méthode de transformation
      *      data => la donnée à transformer
      */
@@ -374,7 +374,7 @@ class EntityService{
             return $data;
         }
         switch($method){
-            case 'date': 
+            case 'date':
                 if($data == null){
                     return new \DateTime();
                 }

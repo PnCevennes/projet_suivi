@@ -1,0 +1,32 @@
+#
+# Vues site
+#
+pnc_patrimoine_bati_site_list:
+    path:     /site
+    defaults: { _controller: PNCPatrimoineBatiBundle:Site:list }
+    requirements:
+        _method: GET
+
+pnc_patrimoine_bati_site_detail:
+    path:     /site/{id}
+    defaults: { _controller: PNCPatrimoineBatiBundle:Site:detail }
+    requirements:
+        _method: GET
+
+pnc_patrimoine_bati_site_save:
+    path:     /site
+    defaults: { _controller: PNCPatrimoineBatiBundle:Site:create, id: null }
+    requirements:
+        _method: PUT
+
+pnc_patrimoine_bati_site_update:
+    path:     /site/{id}
+    defaults: { _controller: PNCPatrimoineBatiBundle:Site:update, id: null }
+    requirements:
+        _method: POST
+
+pnc_patrimoine_bati_site_suppr:
+    path:     /site/{id}
+    defaults: { _controller: PNCPatrimoineBatiBundle:Site:delete }
+    requirements:
+        _method: DELETE

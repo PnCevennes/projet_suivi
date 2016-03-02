@@ -1,0 +1,157 @@
+dataUrl: "patrimoinebati/site/"
+mapConfig: "js/resources/chiro_site.json"
+mapData: "patrimoinebati/site"
+mapSize: large
+editAccess: 3
+subEditAccess: 2
+groups:
+    -   name: Informations
+        glyphicon: glyphicon-info-sign
+        fields:
+            -   name: bsCode
+                label: "Code site"
+                type: string
+            -   name: bsNom
+                label: "Nom"
+                type: string
+            -   name: pbNomSynononymes
+                label: "Synomymes"
+                type: string
+            -   name: pbCodeRef
+                label: "Référence"
+                type: string
+            -   name: bsTypeId
+                label: "Dénomination"
+                type: select
+                thesaurusID: 101
+                help: "Type de lieu"
+            -   name: pbInterpretation
+                label : "Interprétation"
+                type: select
+                thesaurusID: 108
+            -   name: nomObservateur
+                label: "Observateur"
+                type: string
+            -   name: bsDate
+                label: "Date de création"
+                type: date
+                help: "Date d'ajout du site à la base de données"
+            -   name: pbCommentaire
+                label: "Commentaire"
+                type: string
+    -   name: Situation
+        glyphicon: glyphicon-info-sign
+        fields:
+            - name: pbSituation
+              label: "Situation"
+              type: select
+              thesaurusID: 100
+            - name: pbVisibilite
+              label: "Visibilité"
+              type: select
+              thesaurusID: 103
+            - name: pbAccessibilite
+              label: "Accessibilité"
+              type: select
+              thesaurusID: 106
+            - name: pbOrientation
+              label: "Orientation"
+              type: select
+              thesaurusID: 102
+            - name: pbStatut
+              label: "Statut"
+              type: select
+              thesaurusID: 107
+            -   name: refCommune
+                label: "Commune"
+                type: xhr
+                options:
+                    multi: true
+                    url: "commune"
+    -   name: Description
+        glyphicon: glyphicon-info-sign
+        fields:
+            - name: pbDatationSiecle
+              label: "Datation"
+              type: select
+              thesaurusID: 109
+            - name: pbDatationExacte
+              label: "Datation exacte"
+              type: string
+            - name: pbDimensionsLarg
+              label: "Largeur"
+              type: num
+            - name: pbDimensionsLong
+              label: "Longueur"
+              type: num
+            - name: pbDimensionsHaut
+              label: "Hauteur"
+              type: num
+            - name: pbDimensionsE
+              label: "Epaisseur"
+              type: num
+            - name: pbDimensionsD
+              label: "Dimension D"
+              type: num
+            - name: pbEnvironnementProche
+              label: "Environnement proche"
+              type: string
+            - name: pbDescriptionMur
+              label: "Mur"
+              type: select
+              thesaurusID: 104
+            - name: pbDescriptionCouv
+              label: "Couverture"
+              type: select
+              thesaurusID: 104
+            - name: pbDescriptionToit
+              label: "Toit"
+              type: select
+              thesaurusID: 104
+            - name: pbDescriptionToitPrecision
+              label: "Toit precisions"
+              type: string
+            - name: pbDescriptionBaie
+              label: "Baie"
+              type: select
+              thesaurusID: 104
+            - name: pbDescriptionBaiePrecision
+              label: "Baie precisions"
+              type: string
+            - name: pbEtat
+              label: "Etat"
+              type: select
+              thesaurusID: 105
+            - name: pbDescriptionComplementaire
+              label: "Description complémentaire"
+              type: string
+    -   name: "Fichiers"
+        glyphicon: glyphicon-stats
+        fields:
+          -   name: siteFichiers
+              label: "Fichiers associés"
+              type: file
+              options:
+                  target: "patrimoinebati/site/"
+    -   name: "Metadonnées"
+        glyphicon: glyphicon-stats
+        fields:
+            - name: metaNumerisateurId
+              label: Numérisateur
+              type: xhr
+              options:
+                  url: "users/id"
+            - name: metaCreateTimestamp
+              label: "Création donnée"
+              type: date
+            - name: metaUpdateTimestamp
+              label: "Dernière mise à jour"
+              type: date
+            - name: pbTraitementDonnees
+              label: "Traitement des données"
+              type: select
+              thesaurusID: 110
+            - name: pbSource
+              label: "Source de la donnée"
+              type: select
+              thesaurusID: 111

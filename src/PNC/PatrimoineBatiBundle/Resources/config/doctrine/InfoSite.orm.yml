@@ -1,0 +1,107 @@
+PNC\PatrimoineBatiBundle\Entity\InfoSite:
+    type: entity
+    table: patrimoinebati.pr_site_infos
+    schema: patrimoinebati
+    #repositoryClass: PNC\PatrimoineBatiBundle\Repositories\InfoSiteRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        fk_bs_id:
+            type: integer
+        pb_situation:
+            type: integer
+            nullable: true
+        pb_denomination:
+            type: integer
+            nullable: true
+        pb_denomination_autre:
+            type: text
+            nullable: true
+        pb_nom_synononymes:
+            type: text
+            nullable: true
+        pb_code_ref:
+            type: text
+            nullable: true
+        pb_orientation:
+            type: integer
+            nullable: true
+        pb_visibilite:
+            type: integer
+            nullable: true
+        pb_datation_siecle:
+            type: integer
+            nullable: true
+        pb_datation_exacte:
+            type: text
+            nullable: true
+        pb_dimensions_larg:
+            type: float
+            nullable: true
+        pb_dimensions_long:
+            type: float
+            nullable: true
+        pb_dimensions_haut:
+            type: float
+            nullable: true
+        pb_dimensions_e:
+            type: float
+            nullable: true
+        pb_dimensions_d:
+            type: float
+            nullable: true
+        pb_environnement_proche:
+            type: text
+            nullable: true
+        pb_description_mur:
+            type: integer
+            nullable: true
+        pb_description_couv:
+            type: integer
+            nullable: true
+        pb_description_toit:
+            type: integer
+            nullable: true
+        pb_description_toit_precision:
+            type: text
+            nullable: true
+        pb_description_baie:
+            type: integer
+            nullable: true
+        pb_description_baie_precision:
+            type: text
+            nullable: true
+        pb_description_complementaire:
+            type: text
+            nullable: true
+        pb_etat:
+            type: integer
+            nullable: true
+        pb_accessibilite:
+            type: integer
+            nullable: true
+        pb_statut:
+            type: integer
+            nullable: true
+        pb_interpretation:
+            type: integer
+            nullable: true
+        pb_commentaire:
+            type: text
+            nullable: true
+        pb_traitement_donnees:
+            type: integer
+            nullable: true
+        pb_source:
+            type: integer
+            nullable: true
+    oneToOne:
+        parent_site:
+            targetEntity: PNC\BaseAppBundle\Entity\Site
+            joinColumn:
+                name: fk_bs_id
+                referencedColumnName: id
