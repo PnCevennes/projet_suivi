@@ -44,7 +44,7 @@ groups:
                 label: "Fichiers associés"
                 type: file
                 options:
-                    target: "chiro/site/"
+                    target: "uploads/chiro/site/"
             -   name: cisFrequentation
                 label: Fréquentation
                 type: select

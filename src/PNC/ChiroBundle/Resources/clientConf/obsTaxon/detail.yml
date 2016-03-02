@@ -60,42 +60,80 @@ groups:
                 type: file
                 help: "Photographies pour identification"
                 options:
-                    target: "chiro/obsTaxon/"
+                    target: "uploads/chiro/obsTaxon/"
     -   name: "Détail"
         glyphicon: glyphicon-search
         fields:
-            -   name: cotxNbMaleAdulte
-                label: "Mâles adultes"
-                type: num
-            -   name: cotxNbFemelleAdulte
-                label: "Femelles adultes"
-                type: num
-            -   name: cotxNbMaleJuvenile
-                label: "Mâles juvéniles"
-                type: num
-            -   name: cotxNbFemelleJuvenile
-                label: "Femelles juvéniles"
-                type: num
-            -   name: cotxNbMaleIndetermine
-                label: "Mâles indéterminés"
-                help: "Âge indéterminé"
-                type: num
-            -   name: cotxNbFemelleIndetermine
-                label: "Femelles indéterminées"
-                help: "Âge indéterminé"
-                type: num
-            -   name: cotxNbIndetermineAdulte
-                label: "Indéterminés adultes"
-                help: "Sexe indéterminé"
-                type: num
-            -   name: cotxNbIndetermineJuvenile
-                label: "Indéterminés juvéniles"
-                help: "Sexe indéterminé"
-                type: num
-            -   name: cotxNbIndetermineIndetermine
-                label: "Indéterminé indéterminé"
-                help: "Âge et sexe indéterminés"
-                type: num
+            -   name: "Dénombrement"
+                type: group
+                titles:
+                    -   Adultes
+                    -   Juvéniles
+                    -   Indéterminés
+                fields: 
+                    -   name: "males"
+                        label: "Mâles"
+                        fields:
+                            -   name: cotxNbMaleAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbMaleJuvenile
+                                label: "Juveniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbMaleIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                    -   name: "femelles"
+                        label: "Femelles"
+                        fields:
+                            -   name: cotxNbFemelleAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbFemelleJuvenile
+                                label: "Juveniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbFemelleIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                    -   name: "indetermines"
+                        label: "Sexe indéterminé"
+                        fields:
+                            -   name: cotxNbIndetermineAdulte
+                                label: "Adultes"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbIndetermineJuvenile
+                                label: "Juvéniles"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
+                            -   name: cotxNbIndetermineIndetermine
+                                label: "Age indeterminé"
+                                type: num
+                                options:
+                                    min: 0
+                                default: 0
             -   name: cotxCommentaire
                 label: "Commentaires"
                 type: string
