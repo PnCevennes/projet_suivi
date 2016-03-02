@@ -8,11 +8,26 @@
                 <span class="glyphicon {{group.glyphicon}}" ng-if="group.glyphicon"></span>
                 {{group.name}}
             </tab-heading>
-            <dl class="dl-horizontal"  ng-repeat="field in group.fields">
-                <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
-                <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
-                <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
-            </dl>
+            <div ng-repeat="field in group.fields" ng-switch="field.type">
+                <div class="panel panel-default" ng-switch-when="group">
+                    <div class="panel-heading">{{field.name}}</div>
+                    <table class="table">
+                        <tr>
+                            <th>-</th>
+                            <th ng-repeat="title in field.titles">{{title}}</th>
+                        </tr>
+                        <tr ng-repeat="sub in field.fields">
+                            <td>{{sub.label}}</td>
+                            <td ng-repeat="item in sub.fields">{{data[item.name]}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <dl ng-switch-default class="dl-horizontal">
+                    <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
+                    <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
+                    <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
+                </dl>
+            </div>
             <!--
             <div ng-repeat="field in group.fields" class="panel panel-default" ng-if="field.type != 'hidden'">
                 <div class="panel-heading">
@@ -27,13 +42,28 @@
             -->
     </tabset>
     <div ng-if="schema.groups.length==1">
-        <dl class="dl-horizontal"  ng-repeat="field in group.fields">
-            <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
-            <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
-            <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
-        </dl>
+        <div ng-repeat="field in group.fields" ng-switch="field.type">
+            <div class="panel panel-default" ng-switch-when="group">
+                <div class="panel-heading">{{field.name}}</div>
+                <table class="table">
+                    <tr>
+                        <th>-</th>
+                        <th ng-repeat="title in field.titles">{{title}}</th>
+                    </tr>
+                    <tr ng-repeat="sub in field.fields">
+                        <td>{{sub.label}}</td>
+                        <td ng-repeat="item in sub.fields">{{data[item.name]}}</td>
+                    </tr>
+                </table>
+            </div>
+            <dl ng-switch-default class="dl-horizontal">
+                <dt ng-if="field.type != 'hidden'" tooltip="{{field.help}}">{{field.label}}</dt>
+                <dd class="text-info" ng-if="field.type != 'hidden' && !field.options.multi" field-display field="field" data="data[field.name]"></dd>
+                <dd class="text-info" ng-if="field.type != 'hidden' && field.options.multi" field-display field="field" ng-repeat="item in data[field.name] track by $index" data="item"></dd>
+            </dl>
+        </div>
     </div>
-<div>
+</div>
 <div ng-if="subSchema" class="sub-schema">
     <a class="btn btn-success" ng-if="subEditAccess" ng-href="{{subSchema.createUrl}}{{dataId}}">{{subSchema.createBtnLabel}}</a>
     <button type="button" class="btn btn-primary float-right" ng-if="subData.length==0 && subEditAccess && schema.subEditSchemaUrl" ng-click="switchEditing()">{{subSchema.createBtnLabel}} - Rapide</button>
