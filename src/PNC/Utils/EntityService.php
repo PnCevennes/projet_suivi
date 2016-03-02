@@ -251,8 +251,10 @@ class EntityService{
                 $obj->$fn($value);
             }
         }
-        if($obj->errors()){
-            throw new DataObjectException($obj->errors());
+        if(method_exists($obj, 'errors')){
+            if($obj->errors()){
+                throw new DataObjectException($obj->errors());
+            }
         }
     }
 
@@ -351,6 +353,9 @@ class EntityService{
         switch($method){
             case 'date': 
                 return $data->format('Y-m-d');
+            case 'geom':
+            case 'geometry':
+                return $data->toArray();
             default:
                 return $data;
         }
