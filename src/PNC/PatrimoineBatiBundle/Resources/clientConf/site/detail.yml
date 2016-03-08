@@ -5,124 +5,146 @@ mapSize: large
 editAccess: 3
 subEditAccess: 2
 groups:
-    -   name: Informations
+    -   name: Etude
         glyphicon: glyphicon-info-sign
         fields:
             -   name: bsCode
                 label: "Code site"
                 type: string
+            -   name: pbDesCodeRef
+                label: "Référence"
+                type: string
             -   name: bsNom
                 label: "Nom"
                 type: string
-            -   name: pbNomSynononymes
+            -   name: pbDesNomSynononymes
                 label: "Synomymes"
-                type: string
-            -   name: pbCodeRef
-                label: "Référence"
                 type: string
             -   name: bsTypeId
                 label: "Dénomination"
                 type: select
                 thesaurusID: 101
                 help: "Type de lieu"
+            -   name: pbDesDenominationLocale
+                label: "Dénomination(s) locale(s)"
+                type: string
             -   name: pbInterpretation
                 label : "Interprétation"
                 type: select
                 thesaurusID: 108
-            -   name: nomObservateur
+            -   name: bsObrId
                 label: "Observateur"
-                type: string
+                type: xhr
+                options:
+                    url: "users/id"
             -   name: bsDate
-                label: "Date de création"
+                label: "Date d'enquête"
                 type: date
-                help: "Date d'ajout du site à la base de données"
             -   name: pbCommentaire
                 label: "Commentaire"
                 type: string
-    -   name: Situation
+    -   name: Localisation
         glyphicon: glyphicon-info-sign
         fields:
-            - name: pbSituation
+            - name: pbLocLieudit
+              label: "Lieu dit"
+              type: string
+            - name: pbLocSituation
               label: "Situation"
               type: select
               thesaurusID: 100
-            - name: pbVisibilite
+            - name: pbLocVisibilite
               label: "Visibilité"
               type: select
               thesaurusID: 103
-            - name: pbAccessibilite
+            - name: pbLocAccessibilite
               label: "Accessibilité"
               type: select
               thesaurusID: 106
-            - name: pbOrientation
+            - name: pbLocOrientation
               label: "Orientation"
               type: select
               thesaurusID: 102
-            - name: pbStatut
+            - name: pbLocStatut
               label: "Statut"
               type: select
               thesaurusID: 107
-            -   name: refCommune
-                label: "Commune"
-                type: xhr
-                options:
-                    multi: true
-                    url: "commune"
+            - name: refCommune
+              label: "Commune"
+              type: xhr
+              options:
+                  multi: true
+                  url: "commune"
+    -   name: Historique
+        glyphicon: glyphicon-info-sign
+        fields:
+            - name: pbHisDatationType
+              label: "Type de datation"
+              type: select
+              thesaurusID: 109
+            - name: pbHisDatationPeriode
+              label: "Période de datation"
+              type: select
+              thesaurusID: 109
+            - name: pbHisDatationExacte
+              label: "Datation exacte"
+              type: string
     -   name: Description
         glyphicon: glyphicon-info-sign
         fields:
-            - name: pbDatationSiecle
-              label: "Datation"
-              type: select
-              thesaurusID: 109
-            - name: pbDatationExacte
-              label: "Datation exacte"
-              type: string
-            - name: pbDimensionsLarg
+            - name: pbDesDimensionsLarg
               label: "Largeur"
               type: num
-            - name: pbDimensionsLong
+            - name: pbDesDimensionsLong
               label: "Longueur"
               type: num
-            - name: pbDimensionsHaut
+            - name: pbDesDimensionsHaut
               label: "Hauteur"
               type: num
-            - name: pbDimensionsE
+            - name: pbDesDimensionsE
               label: "Epaisseur"
               type: num
-            - name: pbDimensionsD
+            - name: pbDesDimensionsD
               label: "Dimension D"
               type: num
-            - name: pbEnvironnementProche
+            - name: pbDesEnvironnementProche
               label: "Environnement proche"
               type: string
-            - name: pbDescriptionMur
-              label: "Mur"
+            - name: pbDesMurGrosoeuvre
+              label: "Mur gros oeuvre"
               type: select
-              thesaurusID: 104
-            - name: pbDescriptionCouv
-              label: "Couverture"
+              thesaurusID: 112
+            - name: pbDesMurMisenoeuvre
+              label: "Mur mise en oeuvre"
               type: select
-              thesaurusID: 104
-            - name: pbDescriptionToit
+              thesaurusID: 113
+            - name: pbDesMurRevetement
+              label: "Mur mise en oeuvre"
+              type: select
+              thesaurusID: 114
+            - name: pbDesCouvrement
+              label: "Couvrement"
+              type: select
+              thesaurusID: 116
+            - name: pbDesToit
               label: "Toit"
               type: select
-              thesaurusID: 104
-            - name: pbDescriptionToitPrecision
+              thesaurusID: 115
+            - name: pbDesToitPrecision
               label: "Toit precisions"
               type: string
-            - name: pbDescriptionBaie
+            - name: pbDesBaie
               label: "Baie"
               type: select
               thesaurusID: 104
-            - name: pbDescriptionBaiePrecision
+            - name: pbDesBaiePrecision
               label: "Baie precisions"
               type: string
-            - name: pbEtat
+            - name: pbDesEtat
               label: "Etat"
               type: select
               thesaurusID: 105
-            - name: pbDescriptionComplementaire
+            - name: pbDesComplementaire
               label: "Description complémentaire"
               type: string
     -   name: "Fichiers"

@@ -5,10 +5,11 @@ namespace PNC\PatrimoineBatiBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use PNC\Utils\BaseEntity;
 
+
 /**
  * SiteView
  */
-class SiteView   extends BaseEntity
+class SiteView extends BaseEntity
 {
     /**
      * @var integer
@@ -29,11 +30,6 @@ class SiteView   extends BaseEntity
      * @var \DateTime
      */
     private $bs_date;
-
-    /**
-     * @var string
-     */
-    private $denomination;
 
     /**
      * @var array
@@ -148,29 +144,6 @@ class SiteView   extends BaseEntity
     public function getBsDate()
     {
         return $this->bs_date;
-    }
-
-    /**
-     * Set denomination
-     *
-     * @param string $denomination
-     * @return SiteView
-     */
-    public function setDenomination($denomination)
-    {
-        $this->denomination = $denomination;
-
-        return $this;
-    }
-
-    /**
-     * Get denomination
-     *
-     * @return string
-     */
-    public function getDenomination()
-    {
-        return $this->denomination;
     }
 
     /**

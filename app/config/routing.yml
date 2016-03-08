@@ -1,3 +1,11 @@
+pnc_patrimoine_bati:
+    resource: "@PNCPatrimoineBatiBundle/Resources/config/routing.yml"
+    prefix:   /patrimoinebati
+    
+pnc_patrimoine_bati_config:
+    resource: "@PNCPatrimoineBatiBundle/Resources/config/routing_config.yml"
+    prefix:   /patrimoinebati/config
+    
 pnc_how_to:
     resource: "@PNCHowToBundle/Resources/config/routing.yml"
     prefix:   /howto/

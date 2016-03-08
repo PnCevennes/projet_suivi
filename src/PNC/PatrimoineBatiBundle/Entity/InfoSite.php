@@ -1,5 +1,4 @@
 <?php
-
 namespace PNC\PatrimoineBatiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +7,7 @@ use PNC\Utils\BaseEntity;
 /**
  * InfoSite
  */
-class InfoSite  extends BaseEntity
+class InfoSite extends BaseEntity
 {
     /**
      * @var integer
@@ -21,129 +20,144 @@ class InfoSite  extends BaseEntity
     private $fk_bs_id;
 
     /**
-     * @var integer
+     * @var string
      */
-    private $pb_situation;
-
-    /**
-     * @var integer
-     */
-    private $pb_denomination;
+    private $pb_des_code_ref;
 
     /**
      * @var string
      */
-    private $pb_denomination_autre;
+    private $pb_des_denomination_locale;
 
     /**
      * @var string
      */
-    private $pb_nom_synononymes;
+    private $pb_des_nom_synononymes;
 
     /**
      * @var string
      */
-    private $pb_code_ref;
+    private $pb_loc_lieudit;
 
     /**
      * @var integer
      */
-    private $pb_orientation;
+    private $pb_loc_situation;
 
     /**
      * @var integer
      */
-    private $pb_visibilite;
+    private $pb_loc_orientation;
 
     /**
      * @var integer
      */
-    private $pb_datation_siecle;
+    private $pb_loc_visibilite;
+
+    /**
+     * @var integer
+     */
+    private $pb_loc_accessibilite;
+
+    /**
+     * @var integer
+     */
+    private $pb_loc_statut;
+
+    /**
+     * @var integer
+     */
+    private $pb_his_datation_type;
+
+    /**
+     * @var integer
+     */
+    private $pb_his_datation_periode;
 
     /**
      * @var string
      */
-    private $pb_datation_exacte;
+    private $pb_his_datation_exacte;
 
     /**
      * @var float
      */
-    private $pb_dimensions_larg;
+    private $pb_des_dimensions_larg;
 
     /**
      * @var float
      */
-    private $pb_dimensions_long;
+    private $pb_des_dimensions_long;
 
     /**
      * @var float
      */
-    private $pb_dimensions_haut;
+    private $pb_des_dimensions_haut;
 
     /**
      * @var float
      */
-    private $pb_dimensions_e;
+    private $pb_des_dimensions_e;
 
     /**
      * @var float
      */
-    private $pb_dimensions_d;
+    private $pb_des_dimensions_d;
 
     /**
      * @var string
      */
-    private $pb_environnement_proche;
+    private $pb_des_environnement_proche;
 
     /**
      * @var integer
      */
-    private $pb_description_mur;
+    private $pb_des_mur_grosoeuvre;
 
     /**
      * @var integer
      */
-    private $pb_description_couv;
+    private $pb_des_mur_misenoeuvre;
 
     /**
      * @var integer
      */
-    private $pb_description_toit;
+    private $pb_des_mur_revetement;
+
+    /**
+     * @var integer
+     */
+    private $pb_des_toit;
 
     /**
      * @var string
      */
-    private $pb_description_toit_precision;
+    private $pb_des_toit_precision;
 
     /**
      * @var integer
      */
-    private $pb_description_baie;
+    private $pb_des_couvrement;
+
+    /**
+     * @var integer
+     */
+    private $pb_des_baie;
 
     /**
      * @var string
      */
-    private $pb_description_baie_precision;
+    private $pb_des_baie_precision;
 
     /**
      * @var string
      */
-    private $pb_description_complementaire;
+    private $pb_des_complementaire;
 
     /**
      * @var integer
      */
-    private $pb_etat;
-
-    /**
-     * @var integer
-     */
-    private $pb_accessibilite;
-
-    /**
-     * @var integer
-     */
-    private $pb_statut;
+    private $pb_des_etat;
 
     /**
      * @var integer
@@ -205,578 +219,647 @@ class InfoSite  extends BaseEntity
     }
 
     /**
-     * Set pb_situation
+     * Set pb_des_code_ref
      *
-     * @param integer $pbSituation
+     * @param string $pbDesCodeRef
      * @return InfoSite
      */
-    public function setPbSituation($pbSituation)
+    public function setPbDesCodeRef($pbDesCodeRef)
     {
-        $this->pb_situation = $pbSituation;
+        $this->pb_des_code_ref = $pbDesCodeRef;
 
         return $this;
     }
 
     /**
-     * Get pb_situation
-     *
-     * @return integer
-     */
-    public function getPbSituation()
-    {
-        return $this->pb_situation;
-    }
-
-    /**
-     * Set pb_denomination
-     *
-     * @param integer $pbDenomination
-     * @return InfoSite
-     */
-    public function setPbDenomination($pbDenomination)
-    {
-        $this->pb_denomination = $pbDenomination;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_denomination
-     *
-     * @return integer
-     */
-    public function getPbDenomination()
-    {
-        return $this->pb_denomination;
-    }
-
-    /**
-     * Set pb_denomination_autre
-     *
-     * @param string $pbDenominationAutre
-     * @return InfoSite
-     */
-    public function setPbDenominationAutre($pbDenominationAutre)
-    {
-        $this->pb_denomination_autre = $pbDenominationAutre;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_denomination_autre
+     * Get pb_des_code_ref
      *
      * @return string
      */
-    public function getPbDenominationAutre()
+    public function getPbDesCodeRef()
     {
-        return $this->pb_denomination_autre;
+        return $this->pb_des_code_ref;
     }
 
     /**
-     * Set pb_nom_synononymes
+     * Set pb_des_denomination_locale
      *
-     * @param string $pbNomSynononymes
+     * @param string $pbDesDenominationLocale
      * @return InfoSite
      */
-    public function setPbNomSynononymes($pbNomSynononymes)
+    public function setPbDesDenominationLocale($pbDesDenominationLocale)
     {
-        $this->pb_nom_synononymes = $pbNomSynononymes;
+        $this->pb_des_denomination_locale = $pbDesDenominationLocale;
 
         return $this;
     }
 
     /**
-     * Get pb_nom_synononymes
+     * Get pb_des_denomination_locale
      *
      * @return string
      */
-    public function getPbNomSynononymes()
+    public function getPbDesDenominationLocale()
     {
-        return $this->pb_nom_synononymes;
+        return $this->pb_des_denomination_locale;
     }
 
     /**
-     * Set pb_code_ref
+     * Set pb_des_nom_synononymes
      *
-     * @param string $pbCodeRef
+     * @param string $pbDesNomSynononymes
      * @return InfoSite
      */
-    public function setPbCodeRef($pbCodeRef)
+    public function setPbDesNomSynononymes($pbDesNomSynononymes)
     {
-        $this->pb_code_ref = $pbCodeRef;
+        $this->pb_des_nom_synononymes = $pbDesNomSynononymes;
 
         return $this;
     }
 
     /**
-     * Get pb_code_ref
+     * Get pb_des_nom_synononymes
      *
      * @return string
      */
-    public function getPbCodeRef()
+    public function getPbDesNomSynononymes()
     {
-        return $this->pb_code_ref;
+        return $this->pb_des_nom_synononymes;
     }
 
     /**
-     * Set pb_orientation
+     * Set pb_loc_lieudit
      *
-     * @param integer $pbOrientation
+     * @param string $pbLocLieudit
      * @return InfoSite
      */
-    public function setPbOrientation($pbOrientation)
+    public function setPbLocLieudit($pbLocLieudit)
     {
-        $this->pb_orientation = $pbOrientation;
+        $this->pb_loc_lieudit = $pbLocLieudit;
 
         return $this;
     }
 
     /**
-     * Get pb_orientation
-     *
-     * @return integer
-     */
-    public function getPbOrientation()
-    {
-        return $this->pb_orientation;
-    }
-
-    /**
-     * Set pb_visibilite
-     *
-     * @param integer $pbVisibilite
-     * @return InfoSite
-     */
-    public function setPbVisibilite($pbVisibilite)
-    {
-        $this->pb_visibilite = $pbVisibilite;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_visibilite
-     *
-     * @return integer
-     */
-    public function getPbVisibilite()
-    {
-        return $this->pb_visibilite;
-    }
-
-    /**
-     * Set pb_datation_siecle
-     *
-     * @param integer $pbDatationSiecle
-     * @return InfoSite
-     */
-    public function setPbDatationSiecle($pbDatationSiecle)
-    {
-        $this->pb_datation_siecle = $pbDatationSiecle;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_datation_siecle
-     *
-     * @return integer
-     */
-    public function getPbDatationSiecle()
-    {
-        return $this->pb_datation_siecle;
-    }
-
-    /**
-     * Set pb_datation_exacte
-     *
-     * @param string $pbDatationExacte
-     * @return InfoSite
-     */
-    public function setPbDatationExacte($pbDatationExacte)
-    {
-        $this->pb_datation_exacte = $pbDatationExacte;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_datation_exacte
+     * Get pb_loc_lieudit
      *
      * @return string
      */
-    public function getPbDatationExacte()
+    public function getPbLocLieudit()
     {
-        return $this->pb_datation_exacte;
+        return $this->pb_loc_lieudit;
     }
 
     /**
-     * Set pb_dimensions_larg
+     * Set pb_loc_situation
      *
-     * @param float $pbDimensionsLarg
+     * @param integer $pbLocSituation
      * @return InfoSite
      */
-    public function setPbDimensionsLarg($pbDimensionsLarg)
+    public function setPbLocSituation($pbLocSituation)
     {
-        $this->pb_dimensions_larg = $pbDimensionsLarg;
+        $this->pb_loc_situation = $pbLocSituation;
 
         return $this;
     }
 
     /**
-     * Get pb_dimensions_larg
+     * Get pb_loc_situation
+     *
+     * @return integer
+     */
+    public function getPbLocSituation()
+    {
+        return $this->pb_loc_situation;
+    }
+
+    /**
+     * Set pb_loc_orientation
+     *
+     * @param integer $pbLocOrientation
+     * @return InfoSite
+     */
+    public function setPbLocOrientation($pbLocOrientation)
+    {
+        $this->pb_loc_orientation = $pbLocOrientation;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_loc_orientation
+     *
+     * @return integer
+     */
+    public function getPbLocOrientation()
+    {
+        return $this->pb_loc_orientation;
+    }
+
+    /**
+     * Set pb_loc_visibilite
+     *
+     * @param integer $pbLocVisibilite
+     * @return InfoSite
+     */
+    public function setPbLocVisibilite($pbLocVisibilite)
+    {
+        $this->pb_loc_visibilite = $pbLocVisibilite;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_loc_visibilite
+     *
+     * @return integer
+     */
+    public function getPbLocVisibilite()
+    {
+        return $this->pb_loc_visibilite;
+    }
+
+    /**
+     * Set pb_loc_accessibilite
+     *
+     * @param integer $pbLocAccessibilite
+     * @return InfoSite
+     */
+    public function setPbLocAccessibilite($pbLocAccessibilite)
+    {
+        $this->pb_loc_accessibilite = $pbLocAccessibilite;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_loc_accessibilite
+     *
+     * @return integer
+     */
+    public function getPbLocAccessibilite()
+    {
+        return $this->pb_loc_accessibilite;
+    }
+
+    /**
+     * Set pb_loc_statut
+     *
+     * @param integer $pbLocStatut
+     * @return InfoSite
+     */
+    public function setPbLocStatut($pbLocStatut)
+    {
+        $this->pb_loc_statut = $pbLocStatut;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_loc_statut
+     *
+     * @return integer
+     */
+    public function getPbLocStatut()
+    {
+        return $this->pb_loc_statut;
+    }
+
+    /**
+     * Set pb_his_datation_type
+     *
+     * @param integer $pbHisDatationType
+     * @return InfoSite
+     */
+    public function setPbHisDatationType($pbHisDatationType)
+    {
+        $this->pb_his_datation_type = $pbHisDatationType;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_his_datation_type
+     *
+     * @return integer
+     */
+    public function getPbHisDatationType()
+    {
+        return $this->pb_his_datation_type;
+    }
+
+    /**
+     * Set pb_his_datation_periode
+     *
+     * @param integer $pbHisDatationPeriode
+     * @return InfoSite
+     */
+    public function setPbHisDatationPeriode($pbHisDatationPeriode)
+    {
+        $this->pb_his_datation_periode = $pbHisDatationPeriode;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_his_datation_periode
+     *
+     * @return integer
+     */
+    public function getPbHisDatationPeriode()
+    {
+        return $this->pb_his_datation_periode;
+    }
+
+    /**
+     * Set pb_his_datation_exacte
+     *
+     * @param string $pbHisDatationExacte
+     * @return InfoSite
+     */
+    public function setPbHisDatationExacte($pbHisDatationExacte)
+    {
+        $this->pb_his_datation_exacte = $pbHisDatationExacte;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_his_datation_exacte
+     *
+     * @return string
+     */
+    public function getPbHisDatationExacte()
+    {
+        return $this->pb_his_datation_exacte;
+    }
+
+    /**
+     * Set pb_des_dimensions_larg
+     *
+     * @param float $pbDesDimensionsLarg
+     * @return InfoSite
+     */
+    public function setPbDesDimensionsLarg($pbDesDimensionsLarg)
+    {
+        $this->pb_des_dimensions_larg = $pbDesDimensionsLarg;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_dimensions_larg
      *
      * @return float
      */
-    public function getPbDimensionsLarg()
+    public function getPbDesDimensionsLarg()
     {
-        return $this->pb_dimensions_larg;
+        return $this->pb_des_dimensions_larg;
     }
 
     /**
-     * Set pb_dimensions_long
+     * Set pb_des_dimensions_long
      *
-     * @param float $pbDimensionsLong
+     * @param float $pbDesDimensionsLong
      * @return InfoSite
      */
-    public function setPbDimensionsLong($pbDimensionsLong)
+    public function setPbDesDimensionsLong($pbDesDimensionsLong)
     {
-        $this->pb_dimensions_long = $pbDimensionsLong;
+        $this->pb_des_dimensions_long = $pbDesDimensionsLong;
 
         return $this;
     }
 
     /**
-     * Get pb_dimensions_long
+     * Get pb_des_dimensions_long
      *
      * @return float
      */
-    public function getPbDimensionsLong()
+    public function getPbDesDimensionsLong()
     {
-        return $this->pb_dimensions_long;
+        return $this->pb_des_dimensions_long;
     }
 
     /**
-     * Set pb_dimensions_haut
+     * Set pb_des_dimensions_haut
      *
-     * @param float $pbDimensionsHaut
+     * @param float $pbDesDimensionsHaut
      * @return InfoSite
      */
-    public function setPbDimensionsHaut($pbDimensionsHaut)
+    public function setPbDesDimensionsHaut($pbDesDimensionsHaut)
     {
-        $this->pb_dimensions_haut = $pbDimensionsHaut;
+        $this->pb_des_dimensions_haut = $pbDesDimensionsHaut;
 
         return $this;
     }
 
     /**
-     * Get pb_dimensions_haut
+     * Get pb_des_dimensions_haut
      *
      * @return float
      */
-    public function getPbDimensionsHaut()
+    public function getPbDesDimensionsHaut()
     {
-        return $this->pb_dimensions_haut;
+        return $this->pb_des_dimensions_haut;
     }
 
     /**
-     * Set pb_dimensions_e
+     * Set pb_des_dimensions_e
      *
-     * @param float $pbDimensionsE
+     * @param float $pbDesDimensionsE
      * @return InfoSite
      */
-    public function setPbDimensionsE($pbDimensionsE)
+    public function setPbDesDimensionsE($pbDesDimensionsE)
     {
-        $this->pb_dimensions_e = $pbDimensionsE;
+        $this->pb_des_dimensions_e = $pbDesDimensionsE;
 
         return $this;
     }
 
     /**
-     * Get pb_dimensions_e
+     * Get pb_des_dimensions_e
      *
      * @return float
      */
-    public function getPbDimensionsE()
+    public function getPbDesDimensionsE()
     {
-        return $this->pb_dimensions_e;
+        return $this->pb_des_dimensions_e;
     }
 
     /**
-     * Set pb_dimensions_d
+     * Set pb_des_dimensions_d
      *
-     * @param float $pbDimensionsD
+     * @param float $pbDesDimensionsD
      * @return InfoSite
      */
-    public function setPbDimensionsD($pbDimensionsD)
+    public function setPbDesDimensionsD($pbDesDimensionsD)
     {
-        $this->pb_dimensions_d = $pbDimensionsD;
+        $this->pb_des_dimensions_d = $pbDesDimensionsD;
 
         return $this;
     }
 
     /**
-     * Get pb_dimensions_d
+     * Get pb_des_dimensions_d
      *
      * @return float
      */
-    public function getPbDimensionsD()
+    public function getPbDesDimensionsD()
     {
-        return $this->pb_dimensions_d;
+        return $this->pb_des_dimensions_d;
     }
 
     /**
-     * Set pb_environnement_proche
+     * Set pb_des_environnement_proche
      *
-     * @param string $pbEnvironnementProche
+     * @param string $pbDesEnvironnementProche
      * @return InfoSite
      */
-    public function setPbEnvironnementProche($pbEnvironnementProche)
+    public function setPbDesEnvironnementProche($pbDesEnvironnementProche)
     {
-        $this->pb_environnement_proche = $pbEnvironnementProche;
+        $this->pb_des_environnement_proche = $pbDesEnvironnementProche;
 
         return $this;
     }
 
     /**
-     * Get pb_environnement_proche
+     * Get pb_des_environnement_proche
      *
      * @return string
      */
-    public function getPbEnvironnementProche()
+    public function getPbDesEnvironnementProche()
     {
-        return $this->pb_environnement_proche;
+        return $this->pb_des_environnement_proche;
     }
 
     /**
-     * Set pb_description_mur
+     * Set pb_des_mur_grosoeuvre
      *
-     * @param integer $pbDescriptionMur
+     * @param integer $pbDesMurGrosoeuvre
      * @return InfoSite
      */
-    public function setPbDescriptionMur($pbDescriptionMur)
+    public function setPbDesMurGrosoeuvre($pbDesMurGrosoeuvre)
     {
-        $this->pb_description_mur = $pbDescriptionMur;
+        $this->pb_des_mur_grosoeuvre = $pbDesMurGrosoeuvre;
 
         return $this;
     }
 
     /**
-     * Get pb_description_mur
+     * Get pb_des_mur_grosoeuvre
      *
      * @return integer
      */
-    public function getPbDescriptionMur()
+    public function getPbDesMurGrosoeuvre()
     {
-        return $this->pb_description_mur;
+        return $this->pb_des_mur_grosoeuvre;
     }
 
     /**
-     * Set pb_description_couv
+     * Set pb_des_mur_misenoeuvre
      *
-     * @param integer $pbDescriptionCouv
+     * @param integer $pbDesMurMisenoeuvre
      * @return InfoSite
      */
-    public function setPbDescriptionCouv($pbDescriptionCouv)
+    public function setPbDesMurMisenoeuvre($pbDesMurMisenoeuvre)
     {
-        $this->pb_description_couv = $pbDescriptionCouv;
+        $this->pb_des_mur_misenoeuvre = $pbDesMurMisenoeuvre;
 
         return $this;
     }
 
     /**
-     * Get pb_description_couv
+     * Get pb_des_mur_misenoeuvre
      *
      * @return integer
      */
-    public function getPbDescriptionCouv()
+    public function getPbDesMurMisenoeuvre()
     {
-        return $this->pb_description_couv;
+        return $this->pb_des_mur_misenoeuvre;
     }
 
     /**
-     * Set pb_description_toit
+     * Set pb_des_mur_revetement
      *
-     * @param integer $pbDescriptionToit
+     * @param integer $pbDesMurRevetement
      * @return InfoSite
      */
-    public function setPbDescriptionToit($pbDescriptionToit)
+    public function setPbDesMurRevetement($pbDesMurRevetement)
     {
-        $this->pb_description_toit = $pbDescriptionToit;
+        $this->pb_des_mur_revetement = $pbDesMurRevetement;
 
         return $this;
     }
 
     /**
-     * Get pb_description_toit
+     * Get pb_des_mur_revetement
      *
      * @return integer
      */
-    public function getPbDescriptionToit()
+    public function getPbDesMurRevetement()
     {
-        return $this->pb_description_toit;
+        return $this->pb_des_mur_revetement;
     }
 
     /**
-     * Set pb_description_toit_precision
+     * Set pb_des_toit
      *
-     * @param string $pbDescriptionToitPrecision
+     * @param integer $pbDesToit
      * @return InfoSite
      */
-    public function setPbDescriptionToitPrecision($pbDescriptionToitPrecision)
+    public function setPbDesToit($pbDesToit)
     {
-        $this->pb_description_toit_precision = $pbDescriptionToitPrecision;
+        $this->pb_des_toit = $pbDesToit;
 
         return $this;
     }
 
     /**
-     * Get pb_description_toit_precision
+     * Get pb_des_toit
+     *
+     * @return integer
+     */
+    public function getPbDesToit()
+    {
+        return $this->pb_des_toit;
+    }
+
+    /**
+     * Set pb_des_toit_precision
+     *
+     * @param string $pbDesToitPrecision
+     * @return InfoSite
+     */
+    public function setPbDesToitPrecision($pbDesToitPrecision)
+    {
+        $this->pb_des_toit_precision = $pbDesToitPrecision;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_toit_precision
      *
      * @return string
      */
-    public function getPbDescriptionToitPrecision()
+    public function getPbDesToitPrecision()
     {
-        return $this->pb_description_toit_precision;
+        return $this->pb_des_toit_precision;
     }
 
     /**
-     * Set pb_description_baie
+     * Set pb_des_couvrement
      *
-     * @param integer $pbDescriptionBaie
+     * @param integer $pbDesCouvrement
      * @return InfoSite
      */
-    public function setPbDescriptionBaie($pbDescriptionBaie)
+    public function setPbDesCouvrement($pbDesCouvrement)
     {
-        $this->pb_description_baie = $pbDescriptionBaie;
+        $this->pb_des_couvrement = $pbDesCouvrement;
 
         return $this;
     }
 
     /**
-     * Get pb_description_baie
+     * Get pb_des_couvrement
      *
      * @return integer
      */
-    public function getPbDescriptionBaie()
+    public function getPbDesCouvrement()
     {
-        return $this->pb_description_baie;
+        return $this->pb_des_couvrement;
     }
 
     /**
-     * Set pb_description_baie_precision
+     * Set pb_des_baie
      *
-     * @param string $pbDescriptionBaiePrecision
+     * @param integer $pbDesBaie
      * @return InfoSite
      */
-    public function setPbDescriptionBaiePrecision($pbDescriptionBaiePrecision)
+    public function setPbDesBaie($pbDesBaie)
     {
-        $this->pb_description_baie_precision = $pbDescriptionBaiePrecision;
+        $this->pb_des_baie = $pbDesBaie;
 
         return $this;
     }
 
     /**
-     * Get pb_description_baie_precision
+     * Get pb_des_baie
+     *
+     * @return integer
+     */
+    public function getPbDesBaie()
+    {
+        return $this->pb_des_baie;
+    }
+
+    /**
+     * Set pb_des_baie_precision
+     *
+     * @param string $pbDesBaiePrecision
+     * @return InfoSite
+     */
+    public function setPbDesBaiePrecision($pbDesBaiePrecision)
+    {
+        $this->pb_des_baie_precision = $pbDesBaiePrecision;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_baie_precision
      *
      * @return string
      */
-    public function getPbDescriptionBaiePrecision()
+    public function getPbDesBaiePrecision()
     {
-        return $this->pb_description_baie_precision;
+        return $this->pb_des_baie_precision;
     }
 
     /**
-     * Set pb_description_complementaire
+     * Set pb_des_complementaire
      *
-     * @param string $pbDescriptionComplementaire
+     * @param string $pbDesComplementaire
      * @return InfoSite
      */
-    public function setPbDescriptionComplementaire($pbDescriptionComplementaire)
+    public function setPbDesComplementaire($pbDesComplementaire)
     {
-        $this->pb_description_complementaire = $pbDescriptionComplementaire;
+        $this->pb_des_complementaire = $pbDesComplementaire;
 
         return $this;
     }
 
     /**
-     * Get pb_description_complementaire
+     * Get pb_des_complementaire
      *
      * @return string
      */
-    public function getPbDescriptionComplementaire()
+    public function getPbDesComplementaire()
     {
-        return $this->pb_description_complementaire;
+        return $this->pb_des_complementaire;
     }
 
     /**
-     * Set pb_etat
+     * Set pb_des_etat
      *
-     * @param integer $pbEtat
+     * @param integer $pbDesEtat
      * @return InfoSite
      */
-    public function setPbEtat($pbEtat)
+    public function setPbDesEtat($pbDesEtat)
     {
-        $this->pb_etat = $pbEtat;
+        $this->pb_des_etat = $pbDesEtat;
 
         return $this;
     }
 
     /**
-     * Get pb_etat
+     * Get pb_des_etat
      *
      * @return integer
      */
-    public function getPbEtat()
+    public function getPbDesEtat()
     {
-        return $this->pb_etat;
-    }
-
-    /**
-     * Set pb_accessibilite
-     *
-     * @param integer $pbAccessibilite
-     * @return InfoSite
-     */
-    public function setPbAccessibilite($pbAccessibilite)
-    {
-        $this->pb_accessibilite = $pbAccessibilite;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_accessibilite
-     *
-     * @return integer
-     */
-    public function getPbAccessibilite()
-    {
-        return $this->pb_accessibilite;
-    }
-
-    /**
-     * Set pb_statut
-     *
-     * @param integer $pbStatut
-     * @return InfoSite
-     */
-    public function setPbStatut($pbStatut)
-    {
-        $this->pb_statut = $pbStatut;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_statut
-     *
-     * @return integer
-     */
-    public function getPbStatut()
-    {
-        return $this->pb_statut;
+        return $this->pb_des_etat;
     }
 
     /**

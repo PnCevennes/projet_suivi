@@ -20,9 +20,9 @@ fields:
         label: ID
         type: text
         filter:
-            id: text
-        options: 
-            visible: false
+          id: text
+        options:
+          visible: false
     -   name: bsNom
         label: Nom
         type: text
