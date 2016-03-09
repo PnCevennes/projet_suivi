@@ -1,49 +1,4 @@
-var app = angular.module('baseTaxons');
-
-
-/*
- * configuration des routes
- */
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/:appName/taxons', {
-            controller: 'taxonListController',
-            templateUrl: 'js/views/taxon/list.htm'
-        })
-        .when('/:appName/taxons/:id', {
-            controller: 'taxonDetailController',
-            templateUrl: 'js/views/taxon/detail.htm'
-        })
-        .when('/:appName/edit/taxons', {
-            controller: 'taxonEditController',
-            templateUrl: 'js/views/taxon/edit.htm'
-        })
-        .when('/:appName/edit/taxons/observation/:obs_id', {
-            controller: 'taxonEditController',
-            templateUrl: 'js/views/taxon/edit.htm'
-        })
-        .when('/:appName/edit/taxons/:id', {
-            controller: 'taxonEditController',
-            templateUrl: 'js/views/taxon/edit.htm'
-        });
-});
-
-
-app.controller('taxonDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
-
-    $scope._appName = $routeParams.appName;
-    $scope.schemaUrl = $scope._appName + '/config/obstaxon/detail';
-    $scope.dataUrl = $scope._appName + '/obs_taxon/' + $routeParams.id;
-    $scope.dataId = $routeParams.id;
-    $scope.updateUrl = '#/' + $scope._appName + '/edit/taxons/' + $routeParams.id;
-    
-    $scope.$on('display:init', function(ev, data){
-        $scope.title = 'Observation du taxon "' + data.cotxNomComplet + '"';
-    });
-});
-
-
-app.controller('taxonEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
+angular.module('baseTaxons').controller('taxonEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
     $rootScope.$broadcast('map:hide');
     
@@ -98,6 +53,3 @@ app.controller('taxonEditController', function($scope, $rootScope, $routeParams,
     });
 });
 
-app.controller('taxonListController', function(){
-    $scope._appName = $routeParams.appName;
-});

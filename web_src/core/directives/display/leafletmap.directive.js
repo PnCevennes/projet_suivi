@@ -1,43 +1,9 @@
-app = angular.module('SimpleMap');
-
-
-app.factory('LeafletServices', ['$http', function($http) {
-    return {
-      layer : {}, 
-      
-      loadData : function(layerdata) {
-        this.layer = {};
-        this.layer.name = layerdata.name;
-        this.layer.active = layerdata.active;
-        
-        if (layerdata.type == 'xyz' || layerdata.type == 'ign') {
-          if ( layerdata.type == 'ign') {
-            url = 'https://gpp3-wxs.ign.fr/' + layerdata.key + '/geoportail/wmts?LAYER='+layerdata.layer+'&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}'; 
-          }
-          else {
-            url = layerdata.url;
-          }
-          this.layer.map = new L.TileLayer(url,layerdata.options);
-        }
-        else if (layerdata.type == 'wms') {
-          this.layer.map = L.tileLayer.wms(layerdata.url,layerdata.options);
-        }
-        return this.layer;
-      }
-   };
-}]);
-
-app.factory('mapService', function(){
-    return {};
-});
-
-
 /*
  * directive pour l'affichage et l'édition des cartes
  * params:
  *  data [obj] -> Liste des géométries 
  */
-app.directive('leafletMap', function(){
+angular.module('SimpleMap').directive('leafletMap', function(){
     return {
         restrict: 'A',
         scope: {
@@ -45,7 +11,7 @@ app.directive('leafletMap', function(){
         },
         templateUrl: 'js/templates/display/map.htm',
         //template: '<div dw-loading="map-loading" dw-loading-options="{text: \'Chargement des données\'}" ng-options="{ text: \'\', className: \'custom-loading\', spinnerOptions: {radius:30, width:8, length: 16, color: \'#f0f\', direction: -1, speed: 3}}"></div><div id="mapd"></div>',
-        controller: function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout, $loading){
+        controller: ['$scope', '$filter', '$q', '$rootScope', 'LeafletServices', 'mapService', 'configServ', 'dataServ', '$timeout', '$loading', function($scope, $filter, $q, $rootScope, LeafletServices, mapService, configServ, dataServ, $timeout, $loading){
             /*
              */
 
@@ -349,94 +315,7 @@ app.directive('leafletMap', function(){
                     geoms = [];
                 }
             });
-        }
+        }]
     };
 });
 
-app.directive('maplist', function($rootScope, $timeout, mapService){
-    return {
-        restrict: 'A',
-        transclude: true,
-        //templateUrl: 'js/templates/display/mapList.htm',
-        template: '<div><ng-transclude></ng-transclude></div>',
-        link: function(scope, elem, attrs){
-            // récupération de l'identificateur d'événements de la liste
-            var target = attrs['maplist'];
-            var filterTpl = '<div class="mapFilter"><label> filtrer avec la carte <input type="checkbox" onchange="filterWithMap(this);"/></label></div>';
-            scope.mapAsFilter = false;
-            scope.toolBoxOpened = true;
-            var visibleItems = [];
-            /*
-             * initialisation des listeners d'évenements carte 
-             */
-            var connect = function(){
-                // click sur la carte
-                scope.$on('mapService:itemClick', function(ev, item){
-                    mapService.selectItem(item.feature.properties.id);
-                    $rootScope.$broadcast(target + ':select', item.feature.properties);
-                });
-
-                scope.$on('mapService:pan', function(ev){
-                    scope.filter();
-                });
-
-                scope.filter = function(){
-                    visibleItems = mapService.getVisibleItems();
-                    $rootScope.$broadcast(target + ':filterIds', visibleItems, scope.mapAsFilter);
-                }
-
-                // sélection dans la liste
-                scope.$on(target + ':ngTable:ItemSelected', function(ev, item){
-                    $timeout(function(){
-                        try{
-                            var geom = mapService.selectItem(item.id);
-                            geom.openPopup();
-                        }
-                        catch(e){}
-                    }, 0);
-                });
-
-                // filtrage de la liste
-                scope.$on(target + ':ngTable:Filtered', function(ev, data){
-                    ids = [];
-                    data.forEach(function(item){
-                        ids.push(item.id);
-                    });
-                    if(mapService.filterData){
-                        mapService.filterData(ids);
-                    }
-                });
-
-            };
-
-            var _createFilterCtrl = function(){
-                var filterCtrl = L.control({position: 'bottomleft'});
-                filterCtrl.onAdd = function(map){
-                    this._filtCtrl = L.DomUtil.create('div', 'filterBtn');
-                    this.update();
-                    return this._filtCtrl;
-                };
-                filterCtrl.update = function(){
-                    this._filtCtrl.innerHTML = filterTpl;
-                };
-                filterCtrl.addTo(mapService.getMap());
-            }
-
-            scope.$on('map:ready', function(){
-                _createFilterCtrl();
-            });
-
-            document.filterWithMap = function(elem){
-                $rootScope.$apply(function(){
-                    scope.mapAsFilter = elem.checked;
-                    scope.filter();
-                });
-            };
-
-            $timeout(function(){
-                connect();
-            }, 0);
-
-        }
-    };
-});

@@ -1,19 +1,4 @@
-var app = angular.module('baseValidation');
-
-
-/*
- * configuration des routes
- */
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/:appName/validation', {
-            controller: 'validationListController',
-            templateUrl: 'js/views/validation/list.htm'
-        });
-});
-
-
-app.controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, $timeout, dataServ, configServ, userServ, mapService){
+angular.module('baseValidation').controller('validationListController', function($scope, $rootScope, ngTableParams, $routeParams, $loading, $q, $timeout, dataServ, configServ, userServ, mapService){
 
     $scope._appName = $routeParams.appName;
     $scope.geoms = [];
@@ -110,3 +95,4 @@ app.controller('validationListController', function($scope, $rootScope, ngTableP
         });
     }, 0);
 });
+

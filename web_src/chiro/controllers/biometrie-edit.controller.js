@@ -1,37 +1,4 @@
-var app = angular.module('biometrie');
-
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/:appName/biometrie/:id', {
-            controller: 'biometrieDetailController',
-            templateUrl: 'js/views/biometrie/detail.htm'
-        })
-        .when('/:appName/edit/biometrie/taxon/:otx_id', {
-            controller: 'biometrieEditController',
-            templateUrl: 'js/views/biometrie/edit.htm'
-        })
-        .when('/:appName/edit/biometrie/:id', {
-            controller: 'biometrieEditController',
-            templateUrl: 'js/views/biometrie/edit.htm'
-        })
-});
-
-app.controller('biometrieDetailController', function($scope, $rootScope, $routeParams, configServ, dataServ){
-
-    $scope._appName = $routeParams.appName;
-    $scope.schemaUrl = $scope._appName + '/config/biometrie/detail';
-    $scope.dataUrl = $scope._appName + '/biometrie/' + $routeParams.id;
-    $scope.updateUrl = '#/' + $scope._appName + '/edit/biometrie/' + $routeParams.id;
-
-    $scope.dataId = $routeParams.id;
-
-    $scope.$on('display:init', function(ev, data){
-        $scope.title = "Biométrie n°" + data.id;
-    });
-
-});
-
-app.controller('biometrieEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
+angular.module('biometrie').controller('biometrieEditController', function($scope, $rootScope, $routeParams, $location, configServ, dataServ, userMessages){
     $scope._appName = $routeParams.appName;
     $rootScope.$broadcast('map:hide');
     $scope.configUrl = $scope._appName + '/config/biometrie/form';
@@ -78,3 +45,4 @@ app.controller('biometrieEditController', function($scope, $rootScope, $routePar
         $location.url($scope._appName + '/taxons/' + data.fkCotxId);
     });
 });
+
