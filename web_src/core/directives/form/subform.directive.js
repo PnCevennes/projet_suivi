@@ -13,7 +13,7 @@ angular.module('FormDirectives').directive('subform', function(){
             
             $scope.$watch(function(){return $scope.refer}, function(nv, ov){
                 if(nv !== ov){
-                    $scope.refer = nv; 
+                    $scope.refer = nv || [{}]; 
                 }
             });
             

@@ -1722,7 +1722,9 @@ angular.module('FormDirectives').directive('fileinput', function(){
                                 })
                                 .success(function(data){
                                     $scope.fileids.push({fname: data.path, commentaire: ''});
-                                    $scope.lock = false;
+                                    if(!$scope.options.unique){
+                                        $scope.lock = false;
+                                    }
                                 })
                                 .error(function(data){
                                     userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
