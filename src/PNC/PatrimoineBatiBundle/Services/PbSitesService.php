@@ -227,17 +227,18 @@ class PbSitesService{
     }
 
     private function _record_murGrosOeuvre($site_id, $data){
-
         $this->_delete_murGrosOeuvre($site_id);
 
         $manager = $this->db->getManager();
 
         foreach($data['pbDesMurGrosoeuvre'] as $grosoeuvre_id){
+          if ($grosoeuvre_id) {
             $grosoeuvre = new SiteMurGrosOeuvre();
             $grosoeuvre->setSiteId($site_id);
             $grosoeuvre->setThesaurusId($grosoeuvre_id);
             $manager->persist($grosoeuvre);
             $manager->flush();
+          }
         }
     }
 
