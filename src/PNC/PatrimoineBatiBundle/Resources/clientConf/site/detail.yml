@@ -84,7 +84,7 @@ groups:
             - name: pbHisDatationType
               label: "Type de datation"
               type: select
-              thesaurusID: 109
+              thesaurusID: 117
             - name: pbHisDatationPeriode
               label: "Période de datation"
               type: select
