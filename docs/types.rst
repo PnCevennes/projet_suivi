@@ -230,6 +230,10 @@ options requises:
 * maxSize: "poids" maximum autorisé (en octets)
 * accepted: liste des types d'extensions autorisés
 
+autres options:
+
+* unique: permet d'indiquer qu'il n'est possible d'uploader qu'un seul fichier.
+
 
 
 xhr
@@ -291,6 +295,34 @@ options:
 .. note::
 
     Il est préférable que le champ geom soit dans un groupe dédié
+
+
+
+
+subform
+-------
+
+Permet de définir un groupe de champs répétables à la manière de sous formulaires.
+
+.. code:: yaml
+
+    name: subFormTest
+    label: "test subform"
+    type: subform
+    fields:
+        -   name: sftest1
+            label: "champ 1"
+            type: string
+            options:
+                maxLength: 10
+        -   name: sftest2
+            label: "champ 2"
+            type: num
+        -   name: sftest3
+            label: "champ 3"
+            type: text
+
+
 
 
 Types de données utilisables dans les vues détaillées
