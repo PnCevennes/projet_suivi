@@ -15,6 +15,7 @@
         <div geometry ng-if="field.type=='geom' && !field.options.multi" origin="data['__origin__'][field.name]" geom="data[field.name]" options="field.options"></div>
         <table-fieldset ng-if="field.type=='group'" group="field" data="data" errors="errors"></table-fieldset>
         <multisel ng-if="field.type=='multisel'" schema="field" data="data[field.name]"></multisel>
+        <subform ng-if="field.type=='subform'" schema="field.schema" refer="data[field.name]"></subform>
     </div>
 
 <pre style='clear:both;' ng-if="debug">{{Simpleform|json}}</pre>
