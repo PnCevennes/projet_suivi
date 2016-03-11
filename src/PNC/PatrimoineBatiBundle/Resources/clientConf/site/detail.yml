@@ -72,7 +72,7 @@ groups:
               label: "Statut"
               type: select
               thesaurusID: 107
-            - name: refCommune
+            - name: bsRefCommune
               label: "Commune"
               type: xhr
               options:
