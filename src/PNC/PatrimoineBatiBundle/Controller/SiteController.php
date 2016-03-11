@@ -14,10 +14,10 @@ use Commons\Exceptions\CascadeException;
 
 class SiteController extends Controller{
 
-    // path: GET /chiro/site
+    // path: GET /patrimoinebati/site
     public function listAction(Request $request){
         /*
-         * retourne la liste des sites "chiro"
+         * retourne la liste des sites "patrimoinebati"
          */
         $ss = $this->get('pbSitesService');
 
@@ -25,19 +25,19 @@ class SiteController extends Controller{
     }
 
 
-    // path: GET /chiro/site/{id}
+    // path: GET /patrimoinebati/site/{id}
     public function detailAction($id){
         /*
-         * retourne le détail d'un site chiro
+         * retourne le détail d'un site patrimoinebati
          */
         $ss = $this->get('pbSitesService');
 
         return new JsonResponse($ss->getOne($id));
     }
 
-    // path: PUT /chiro/site
+    // path: PUT /patrimoinebati/site
     public function createAction(Request $req){
-      
+
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
             throw new AccessDeniedHttpException();
@@ -59,7 +59,7 @@ class SiteController extends Controller{
     }
 
 
-    // path: POST /chiro/site/{id}
+    // path: POST /patrimoinebati/site/{id}
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');
         if(!$user->checkLevel(3)){
@@ -76,16 +76,14 @@ class SiteController extends Controller{
     }
 
 
-    // path; DELETE /chiro/site/{id}
+    // path; DELETE /patrimoinebati/site/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
         $delete = $user->checkLevel(5);
         if(!$delete){
             throw new AccessDeniedHttpException();
         }
-
         $cascade = true;
-
         $ss = $this->get('pbSitesService');
         try{
             $res = $ss->remove($id, $cascade);

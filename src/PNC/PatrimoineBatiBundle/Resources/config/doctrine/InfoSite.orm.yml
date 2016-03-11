@@ -66,9 +66,6 @@ PNC\PatrimoineBatiBundle\Entity\InfoSite:
         pb_des_environnement_proche:
             type: text
             nullable: true
-        pb_des_mur_grosoeuvre:
-            type: integer
-            nullable: true
         pb_des_mur_misenoeuvre:
             type: integer
             nullable: true
@@ -81,20 +78,8 @@ PNC\PatrimoineBatiBundle\Entity\InfoSite:
         pb_des_toit:
             type: integer
             nullable: true
-        pb_des_toit_precision:
-            type: text
-            nullable: true
         pb_des_couvrement:
             type: integer
-            nullable: true
-        pb_des_baie:
-            type: integer
-            nullable: true
-        pb_des_baie_precision:
-            type: text
-            nullable: true
-        pb_des_baie_precision:
-            type: text
             nullable: true
         pb_des_complementaire:
             type: text
@@ -114,6 +99,9 @@ PNC\PatrimoineBatiBundle\Entity\InfoSite:
         pb_source:
             type: integer
             nullable: true
+        pb_dossiercandidature:
+            type: boolean
+            nullable: false
     oneToOne:
         parent_site:
             targetEntity: PNC\BaseAppBundle\Entity\Site

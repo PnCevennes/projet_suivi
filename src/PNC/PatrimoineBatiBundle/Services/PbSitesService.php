@@ -9,6 +9,7 @@ use Commons\Exceptions\CascadeException;
 
 use PNC\PatrimoineBatiBundle\Entity\InfoSite;
 use PNC\PatrimoineBatiBundle\Entity\SiteFichiers;
+use PNC\PatrimoineBatiBundle\Entity\SiteMurGrosOeuvre;
 
 
 class PbSitesService{
@@ -94,7 +95,13 @@ class PbSitesService{
             );
         }
         $data['siteFichiers'] = $fichiers;
-        
+
+        $murGrosOeuvre = $this->entityService->getAll('PNCPatrimoineBatiBundle:SiteMurGrosOeuvre', array('site_id'=>$id));
+        $data['pbDesMurGrosoeuvre'] = array();
+        foreach($murGrosOeuvre as $murGrosOeuvre){
+            $data['pbDesMurGrosoeuvre'][] = $murGrosOeuvre->getThesaurusId();
+        }
+
         return $data;
     }
 
@@ -132,6 +139,9 @@ class PbSitesService{
             //print_r($errors);
         }
 
+
+        $this->_record_murGrosOeuvre($site->getId(), $data);
+
         return array('id'=>$site->getId());
     }
 
@@ -162,6 +172,8 @@ class PbSitesService{
             throw new DataObjectException($errors);
         }
 
+        $this->_record_murGrosOeuvre($site->getId(), $data);
+
         $errors = $this->_record_fichiers($site, $data['siteFichiers']);
         if($errors){
             //print_r($errors);
@@ -172,21 +184,10 @@ class PbSitesService{
 
 
     public function remove($id, $cascade=false){
-        $repo = $this->db->getRepository('PNCChiroBundle:InfoSite');
+        $repo = $this->db->getRepository('PNCPatrimoineBatiBundle:InfoSite');
         $infoSite = $repo->findOneBy(array('fk_bs_id'=>$id));
         if(!$infoSite){
             return false;
-        }
-        $observations = $this->obsService->getList($id);
-        if($cascade){
-            foreach($observations as $obs){
-                $this->obsService->remove($obs['id'], $cascade);
-            }
-        }
-        else{
-            if($observations){
-                throw new CascadeException();
-            }
         }
         $site = $infoSite->getParentSite();
 
@@ -224,4 +225,29 @@ class PbSitesService{
         }
         return $errors;
     }
+
+    private function _record_murGrosOeuvre($site_id, $data){
+
+        $this->_delete_murGrosOeuvre($site_id);
+
+        $manager = $this->db->getManager();
+
+        foreach($data['pbDesMurGrosoeuvre'] as $grosoeuvre_id){
+            $grosoeuvre = new SiteMurGrosOeuvre();
+            $grosoeuvre->setSiteId($site_id);
+            $grosoeuvre->setThesaurusId($grosoeuvre_id);
+            $manager->persist($grosoeuvre);
+            $manager->flush();
+        }
+    }
+
+    private function _delete_murGrosOeuvre($site_id){
+        $manager = $this->db->getManager();
+
+        // suppression des liens existants
+        $delete = $manager->getConnection()->prepare('DELETE FROM patrimoinebati.rel_pbsite_thesaurus_murgrosoeuvre WHERE site_id=:siteid');
+        $delete->bindValue('siteid', $site_id);
+        $delete->execute();
+    }
+
 }
