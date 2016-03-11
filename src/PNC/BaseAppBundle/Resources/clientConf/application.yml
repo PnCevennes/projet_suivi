@@ -24,11 +24,11 @@
 -   id: 3
     name: Patrimoine bati
     base_url: "patrimoinebati/site"
-    appId: 100
+    appId: 150
     img: "img/bati.png"
     menu:
         -   url: "#/patrimoinebati/site"
-            label: "Suivi"
+            label: "Attributs"
             restrict: 2
 #-   id: 2
 #    name: flore
