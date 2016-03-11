@@ -74,7 +74,7 @@ app.controller('baseController', function($scope, $location, dataServ, configSer
         $scope.data = resp;
 
         // FIXME DEBUG
-        configServ.put('debug', true);
+        configServ.put('debug', false);
         /*
         userServ.login('as_test', 'test');
         */
