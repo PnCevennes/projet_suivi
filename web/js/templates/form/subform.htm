@@ -1,6 +1,6 @@
 <div class="well" ng-repeat="data in refer">
     <ng-form name="subf_{{$index}}">
-        <div ng-repeat="field in schema.fields" class="form-group" ng-if="!field.options.dismissed">
+        <div ng-repeat="field in schema" class="form-group" ng-if="!field.options.dismissed">
             <h4><label for="{{field.name}}" ng-if="field.type!='hidden' && field.type!='group'" tooltip="{{field.help}}" tooltip-placement="right">{{field.label}}</label></h4>
             <p style="color: red;" ng-show="errors[field.name]">{{errors[field.name]}}</p>
             <multi refer="data[field.name]" schema="field" ng-if="field.options.multi"></multi>
