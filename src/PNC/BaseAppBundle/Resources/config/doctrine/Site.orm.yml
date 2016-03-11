@@ -29,6 +29,8 @@ PNC\BaseAppBundle\Entity\Site:
             nullable: true
         geom:
             type: geometry
+        bs_ref_commune:
+            type: textarray
         meta_create_timestamp:
             type: date
             nullable: true
