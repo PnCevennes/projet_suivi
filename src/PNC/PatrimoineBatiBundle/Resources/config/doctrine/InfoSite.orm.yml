@@ -69,9 +69,6 @@ PNC\PatrimoineBatiBundle\Entity\InfoSite:
         pb_des_mur_misenoeuvre:
             type: integer
             nullable: true
-        pb_des_mur_misenoeuvre:
-            type: integer
-            nullable: true
         pb_des_mur_revetement:
             type: integer
             nullable: true
