@@ -5,6 +5,7 @@ cd $DIR
 
 echo "run composer install"
 composer install
+composer update
 
 echo "Configuration des droits des répertoires de l'application..."
 chmod -R 777 app/logs app/cache
