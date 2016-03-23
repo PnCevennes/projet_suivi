@@ -1,0 +1,29 @@
+PNC\BaseAppBundle\Entity\Fichier:
+    type: entity
+    table: suivi.fichiers
+    schema: suivi
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        ftype:
+            type: string
+            length: 50
+        id_objet:
+            type: integer
+        path:
+            type: string
+            length: 250
+        url:
+            type: string
+            length: 250
+        titre:
+            type: string
+            length: 250
+        description:
+            type: string
+            length: 1000
+

@@ -33,7 +33,9 @@ class SiteController extends Controller{
          */
         $ss = $this->get('siteService');
 
-        return new JsonResponse($ss->getOne($id));
+        $data = $ss->getOne($id);
+
+        return new JsonResponse($data);
     }
 
     // path: PUT /chiro/site

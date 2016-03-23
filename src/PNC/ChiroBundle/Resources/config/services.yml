@@ -10,7 +10,7 @@ services:
             
     taxonService:
         class: PNC\ChiroBundle\Services\TaxonService
-        arguments: [@doctrine, @biometrieService, @pagination, @entityService]
+        arguments: [@doctrine, @biometrieService, @pagination, @entityService, @fileService]
             
     observationService:
         class: PNC\ChiroBundle\Services\ObservationService
@@ -18,5 +18,5 @@ services:
             
     siteService:
         class: PNC\ChiroBundle\Services\SiteService
-        arguments: [@doctrine, @observationService, @baseSiteService, @entityService, @pagination]
+        arguments: [@doctrine, @observationService, @baseSiteService, @entityService, @pagination, @fileService]
             

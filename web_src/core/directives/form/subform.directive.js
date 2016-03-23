@@ -10,10 +10,13 @@ angular.module('FormDirectives').directive('subform', function(){
             if($scope.refer == undefined){
                 $scope.refer = [{}];
             }
+
+            $scope.items = angular.copy($scope.refer);
             
             $scope.$watch(function(){return $scope.refer}, function(nv, ov){
                 if(nv !== ov){
                     $scope.refer = nv || [{}]; 
+                    $scope.items = angular.copy($scope.refer);
                 }
             });
             
@@ -24,6 +27,15 @@ angular.module('FormDirectives').directive('subform', function(){
             $scope.remove_item = function(idx){
                 $scope.refer.splice(idx, 1);
             };
+
+            $scope.reset_item = function(idx){
+                if($scope.items[idx]){
+                    $scope.refer[idx] = angular.copy($scope.items[idx]);
+                }
+                else{
+                    $scope.refer[idx] = {};
+                }
+            }
         }]
     };
 });

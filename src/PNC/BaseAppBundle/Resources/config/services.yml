@@ -24,3 +24,6 @@ services:
     configService:
         class: PNC\Utils\ConfigService
         arguments: [@thesaurusService]
+    fileService:
+        class: PNC\Utils\FileService
+        arguments: [@doctrine, @entityService, @kernel]

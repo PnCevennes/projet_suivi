@@ -1,68 +1,79 @@
-/*
- * Directive qui permet d'avoir un champ de formulaire de type fichier et qui l'envoie au serveur
- * envoie un fichier au serveur qui renvoie un identifiant de création.
- * params:
- *  fileids: la valeur source/cible du champ (liste d'identifiants)
- */
 angular.module('FormDirectives').directive('fileinput', function(){
     return {
         restrict: 'E',
         scope: {
-            fileids: '=',
+            refer: '=',
             options: '='
         },
         templateUrl: 'js/templates/form/fileinput.htm',
-        controller: ['$scope', '$rootScope', '$upload', 'dataServ', 'userMessages', function($scope, $rootScope, $upload, dataServ, userMessages){
-            var maxSize = $scope.options.maxSize || 2048000;
-            var getOptions = '';
-            if($scope.options.target){
-                getOptions = '?target=' + $scope.options.target;
+        controller: ['$scope', function($scope){
+
+            $scope.current_upload = null;
+
+            var default_object = {ftype: $scope.options.target};
+
+
+            if($scope.refer == undefined || $scope.refer == null){
+                $scope.refer = [angular.copy(default_object)];
             }
-            if($scope.fileids == undefined){
-                $scope.fileids = [];
+            if(!$scope.refer.length){
+                $scope.refer.push(angular.copy(default_object));
             }
-            $scope.delete_file = function(f_id){
-                dataServ.delete('upload_file/' + f_id + getOptions, function(resp){
-                    $scope.fileids.splice($scope.fileids.indexOf(resp.id), 1);
-                });
-            };
-            $scope.$watch('upload_file', function(){
-                $scope.upload($scope.upload_file);
+
+            $scope.refer.map(function(item){
+                item.ftype = $scope.options.target;
             });
-            $scope.upload = function(files){
-                angular.forEach(files, function(item){
-                    var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length);
-                    if($scope.options.accepted && $scope.options.accepted.indexOf(ext)>-1){
-                        if(item.size < maxSize){
-                            $scope.lock = true;
-                            $upload.upload({
-                                url: 'upload_file' + getOptions,
-                                file: item,
-                                })
-                                .progress(function(evt){
-                                    $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
-                                })
-                                .success(function(data){
-                                    $scope.fileids.push({fname: data.path, commentaire: ''});
-                                    if(!$scope.options.unique){
-                                        $scope.lock = false;
-                                    }
-                                })
-                                .error(function(data){
-                                    userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
-                                    $scope.lock = false;
-                                });
-                        }
-                        else{
-                            userMessages.errorMessage = "La taille du fichier doit être inférieure à " + (maxSize/1024) + " Ko";
-                        }
+
+            $scope.items = angular.copy($scope.refer);
+            
+            $scope.$watch(function(){return $scope.refer}, function(nv, ov){
+                if(nv !== ov){
+                    $scope.refer = nv || [angular.copy(default_object)]; 
+                    if(!$scope.refer.length){
+                        $scope.refer.push(angular.copy(default_object));
                     }
-                    else{
-                        userMessages.errorMessage = "Type d'extension refusé";
-                    }
-                });
+                    $scope.items = angular.copy($scope.refer);
+                    $scope.refer.map(function(item){
+                        item.ftype = $scope.options.target;
+                    });
+                }
+            });
+
+            
+            $scope.add_item = function(){
+                $scope.refer.push(angular.copy(default_object));
             };
+
+            $scope.remove_item = function(idx){
+                $scope.refer.splice(idx, 1);
+                if(!$scope.refer.length){
+                    $scope.refer.push(angular.copy(default_object));
+                }
+            };
+
+            $scope.reset_item = function(idx){
+                if($scope.items[idx]){
+                    $scope.refer[idx] = angular.copy($scope.items[idx]);
+                }
+                else{
+                    $scope.refer[idx] = angular.copy(default_object);
+                }
+            }
+
+            $scope.is_valid = function(form, idx){
+                if(form.$valid){
+                    if(($scope.refer[idx].path && $scope.refer[idx].path.length) ^ ($scope.refer[idx].url && $scope.refer[idx].url.length>0)){
+                        var valid = !!($scope.refer[idx].titre && $scope.refer[idx].titre.length >= 5);
+                        return valid;
+                    }
+                }
+                return false;
+            }
+
+            $scope.is_invalid = function(form, idx){
+                return !$scope.is_valid(form, idx);
+            }
         }]
-    }
+    };
 });
 

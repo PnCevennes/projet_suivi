@@ -17,11 +17,12 @@ class TaxonService{
     // service biometrie
     private $biometrieService;
 
-    public function __construct($db, $biomServ, $pagination, $es){
+    public function __construct($db, $biomServ, $pagination, $es, $fs){
         $this->db = $db;
         $this->biometrieService = $biomServ;
         $this->pagination = $pagination;
         $this->entityService = $es;
+        $this->fileService = $fs;
     }
 
     public function getList($fk_bv_id){
@@ -95,16 +96,7 @@ class TaxonService{
                 array('cotx_id'=>$id)
             );
             $out = $this->entityService->normalize($data, $schema);
-            $out['obsTaxonFichiers'] = array();
-            foreach($fichiers as $idfich){
-                $fich = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$idfich->getFichierId()));
-                //$out['obsTaxonFichiers'][] = $this->entityService->normalize($fich, $fichiers_schema);
-                $out['obsTaxonFichiers'][] = array(
-                    'fname'=>sprintf('%s_%s', $fich->getId(), $fich->getPath()),
-                    'commentaire'=>$idfich->getCommentaire()
-                );
-            }
-
+            $out['obsTaxonFichiers'] = $this->fileService->getFichiers('chiro/obsTaxon', $id); 
             $out['indices'] = array();
             $indices = $this->entityService->getAll(
                 'PNCChiroBundle:ObstaxonIndices',
@@ -155,19 +147,15 @@ class TaxonService{
                 $this->biometrieService->create($biom, $manager);
             }
         }
+
+        $this->fileService->record_files($obsTx->getId(), $data['siteFichiers'], $manager);
+
         if(!$db){
             $manager->getConnection()->commit();
         }
 
         if(isset($data['indices'])){
             $this->_record_indices($obsTx->getId(), $data['indices']);
-        }
-
-        if(isset($data['obsTaxonFichiers'])){
-            $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
-            if($errors){
-                //print_r($errors);
-            }
         }
 
         return array('id'=>$obsTx->getId());
@@ -194,10 +182,7 @@ class TaxonService{
         $this->_record_indices($id, $data['indices']);
 
         $obsTx = $result[$schema];
-        $errors = $this->_record_fichiers($obsTx->getId(), $data['obsTaxonFichiers']);
-        if($errors){
-            //print_r($errors);
-        }
+        $this->fileService->record_files($obsTx->getId(), $data['obsTaxonFichiers']);
         return array('id'=>$obsTx->getId());
     }
 
@@ -222,6 +207,7 @@ class TaxonService{
 
         $manager->remove($obsTx);
         $manager->flush();
+        $this->fileService->delete_all('chiro/obsTaxon', $id);
 
         $this->_delete_indices($obsTx->getId());
         return true;
@@ -270,35 +256,6 @@ class TaxonService{
         $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_observationtaxon_thesaurus_indice WHERE cotx_id=:cotxid');
         $delete->bindValue('cotxid', $obsTxId);
         $delete->execute();
-    }
-
-    private function _record_fichiers($obsTxId, $data){
-        $errors = array();
-        // enregistrement des fichiers liés
-
-        $manager = $this->db->getManager();
-
-        // suppression des liens existants
-        $this->entityService->execRawQuery(
-            'DELETE FROM chiro.rel_observationtaxon_fichiers WHERE cotx_id=:cotxid',
-            array('cotxid'=>$obsTxId)
-        );
-
-        foreach($data as $fich_){
-            try{
-                $fichier = new ObstaxonFichiers(
-                    $obsTxId,
-                    $this->entityService->getFileId($fich_['fname']),
-                    $fich_['commentaire']
-                );
-                $manager->persist($fichier);
-                $manager->flush();
-            }
-            catch(\Exception $e){
-                $errors[] = $e->getMessage();
-            }
-        }
-        return $errors;
     }
 }
 

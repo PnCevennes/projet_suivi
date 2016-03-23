@@ -1,16 +1,15 @@
-<table class="table">
-    <tr ng-repeat="fich in fileids">
-        <td>
-            <div>{{fich.fname.slice(fich.fname.indexOf('_')+1)}}</div>
-            <div class="input-group"><span class="input-group-addon">Description : </span><input type="text" class="form-control" ng-model="fich.commentaire"></div>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger btn-xs" ng-click="delete_file(fich.fname)">
-                <span class="glyphicon glyphicon-minus"></span>
-            </button>
-        </td>
-    </tr>
-</table>
-<button type="button" ng-file-select ng-model="upload_file" class="btn btn-success" ng-disabled="lock">Sélectionner un fichier</button>
-<progressbar ng-if="lock" class="progress-striped active" value="progress">{{progress}}%</progressbar>
-
+<div class="well" ng-repeat="data in refer">
+    <ng-form name="file_{{$index}}">
+        <h4><label for="titre">Titre</label></h4>
+        <input class="form-control" type="text" id="titre" ng-model="data.titre"></input>
+        <h4><label for="fichier">Fichier</label></h4>
+        <fileup fileid="data.id" filepath="data.path" options="options"></fileup>
+        <h4><label for="url">Url</label></h4>
+        <input class="form-control" type="text" id="url" ng-model="data.url"></input>
+        <h4><label for="description">Description</label></h4>
+        <textarea class="form-control" id="description" ng-model="data.description"></textarea>
+        <button type="button" class="btn btn-sm btn-danger" ng-click="remove_item($index)"><span class="glyphicon glyphicon-minus"></span></button>
+        <button type="button" class="btn btn-sm btn-warning" ng-click="reset_item($index)" ng-show="file_{{$index}}.$dirty"><span class="glyphicon glyphicon-erase"></span></button>
+        <button type="button" class="btn btn-sm btn-success" ng-click="add_item()" ng-disabled="is_invalid(file_{{$index}}, $index)" ng-show="$last"><span class="glyphicon glyphicon-plus"></span></button>
+    </ng-form>
+</div>

@@ -16,11 +16,12 @@ class PbSitesService{
     // doctrine
     private $db;
 
-    public function __construct($db, $parentServ, $es, $pg){
+    public function __construct($db, $parentServ, $es, $pg, $fs){
         $this->db = $db;
         $this->parentService = $parentServ;
         $this->entityService = $es;
         $this->pagination = $pg;
+        $this->fileService = $fs;
         $this->schema = '../src/PNC/PatrimoineBatiBundle/Resources/config/doctrine/InfoSite.orm.yml';
     }
 
@@ -84,6 +85,7 @@ class PbSitesService{
         unset($dataBaseSite['id']);
         $data = array_merge($data, $dataBaseSite);
 
+        /*
         $l_fichiers = $this->entityService->getAll('PNCPatrimoineBatiBundle:SiteFichiers', array('site_id'=>$id));
         $fichiers = array();
         foreach($l_fichiers as $f){
@@ -94,7 +96,9 @@ class PbSitesService{
             );
         }
         $data['siteFichiers'] = $fichiers;
-        
+         */
+
+        $data['siteFichiers'] = $this->fileService->getFichiers('patrimoinebati/site', $id);
         return $data;
     }
 
@@ -125,12 +129,9 @@ class PbSitesService{
         $manager->persist($infoSite);
         $manager->flush();
 
-        $manager->getConnection()->commit();
+        $this->fileService->record_files($site->getId(), $data['siteFichiers'], $manager);
 
-        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
-        if($errors){
-            //print_r($errors);
-        }
+        $manager->getConnection()->commit();
 
         return array('id'=>$site->getId());
     }
@@ -151,6 +152,8 @@ class PbSitesService{
         catch(DataObjectException $e){
             $errors = $e->getErrors();
         }
+
+        $this->fileService->record_files($site->getId(), $data['siteFichiers'], $manager);
         try{
             $this->entityService->hydrate($infoSite, $this->schema, $data);
             $manager->flush();
@@ -162,10 +165,6 @@ class PbSitesService{
             throw new DataObjectException($errors);
         }
 
-        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
-        if($errors){
-            //print_r($errors);
-        }
         return array('id'=>$site->getId());
 
     }
@@ -194,34 +193,9 @@ class PbSitesService{
         $manager->remove($infoSite);
         $manager->flush();
 
+        $this->fileService->delete_all('patrimoinebati/site', $id);
+
         $this->parentService->remove($this->db, $site);
         return true;
-    }
-
-    private function _record_fichiers($site, $data){
-        $errors = array();
-        // enregistrement des fichiers liés
-        $manager = $this->db->getManager();
-
-        // suppression des liens existants
-        $this->entityService->execRawQuery(
-            'DELETE FROM patrimoinebati.rel_pbsite_fichiers WHERE site_id=:siteid',
-            array('siteid'=>$site->getId())
-        );
-        foreach($data as $fich_){
-            try{
-                $fichier = new SiteFichiers(
-                    $site->getId(),
-                    $this->entityService->getFileId($fich_['fname']),
-                    $fich_['commentaire']
-                );
-                $manager->persist($fichier);
-                $manager->flush();
-            }
-            catch(\Exception $e){
-                $errors[] = $e->getMessage();
-            }
-        }
-        return $errors;
     }
 }

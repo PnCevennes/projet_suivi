@@ -74,6 +74,7 @@ groups:
                         - "png"
                         - "jpg"
                         - "pdf"
+                    unique: true
     -   name: Etat
         fields:
             -   name: cisMenace

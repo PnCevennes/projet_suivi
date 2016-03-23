@@ -18,12 +18,13 @@ class SiteService{
     // doctrine
     private $db;
 
-    public function __construct($db, $obsServ, $parentServ, $es, $pg){
+    public function __construct($db, $obsServ, $parentServ, $es, $pg, $fs){
         $this->db = $db;
         $this->obsService = $obsServ;
         $this->parentService = $parentServ;
         $this->entityService = $es;
         $this->pagination = $pg;
+        $this->fileService = $fs;
         $this->schema = array(
             'cisFrequentation'=>null,
             'cisMenace'=>null,
@@ -93,16 +94,7 @@ class SiteService{
 
         $amenagements = $this->entityService->getAll('PNCChiroBundle:SiteAmenagements', array('site_id'=>$id));
 
-        $l_fichiers = $this->entityService->getAll('PNCChiroBundle:SiteFichiers', array('site_id'=>$id));
-        $fichiers = array();
-        foreach($l_fichiers as $f){
-            $fObj = $this->entityService->getOne('PNCBaseAppBundle:Fichiers', array('id'=>$f->getFichierId()));
-            $fichiers[] = array(
-                'fname' => $fObj->getId() . '_' . $fObj->getPath(),
-                'commentaire' => $f->getCommentaire()
-            );
-        }
-
+        $fichiers = $this->fileService->getFichiers('chiro/site', $id);
 
         $data['siteFichiers'] = $fichiers;
 
@@ -147,6 +139,8 @@ class SiteService{
         $manager->persist($infoSite);
         $manager->flush();
 
+        $this->fileService->record_files($site->getId(), $data['siteFichiers'], $manager);
+
         
         $manager->getConnection()->commit();
         
@@ -154,10 +148,6 @@ class SiteService{
         
         $this->_record_amenagements($site->getId(), $data);
         
-        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
-        if($errors){
-            //print_r($errors);
-        }
         
         return array('id'=>$site->getId());
     }
@@ -182,7 +172,6 @@ class SiteService{
         try{
             $this->entityService->hydrate($infoSite, $this->schema, $data);
             $manager->flush();
-            $manager->getConnection()->commit();
         }
         catch(DataObjectException $e){
             $errors = array_merge($errors, $e->getErrors());
@@ -194,10 +183,16 @@ class SiteService{
 
         $this->_record_amenagements($site->getId(), $data);
         
-        $errors = $this->_record_fichiers($site, $data['siteFichiers']);
-        if($errors){
-            //print_r($errors);
+        /*
+        foreach($data['siteFichiers'] as $fichier){
+            $this->fileService->record($site->getId(), $fichier, $manager);
         }
+         */
+
+        $this->fileService->record_files($site->getId(), $data['siteFichiers'], $manager);
+
+
+        $manager->getConnection()->commit();
         return array('id'=>$site->getId());
 
     }
@@ -222,7 +217,10 @@ class SiteService{
         }
         $site = $infoSite->getParentSite();
 
+
         $manager = $this->db->getManager();
+
+        $this->fileService->delete_all('chiro/site', $id);
         $manager->remove($infoSite);
         $manager->flush();
 

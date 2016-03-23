@@ -388,7 +388,7 @@ require('./directives/form.js');
 require('./controllers/base.js');
 require('./controllers/generic.js');
 
-},{"./controllers/base.js":3,"./controllers/generic.js":7,"./directives/display.js":11,"./directives/form.js":21,"./services/services.js":40}],11:[function(require,module,exports){
+},{"./controllers/base.js":3,"./controllers/generic.js":7,"./directives/display.js":11,"./directives/form.js":21,"./services/services.js":42}],11:[function(require,module,exports){
 require('./display/breadcrumb.directive.js');
 require('./display/detail-display.directive.js');
 require('./display/field-display.directive.js');
@@ -1498,8 +1498,10 @@ require('./form/spreadsheet.directive.js');
 require('./form/subeditform.directive.js');
 require('./form/subform.directive.js');
 require('./form/table-fieldset.directive.js');
+require('./form/filetype.directive.js');
+require('./form/fileup.directive.js');
 
-},{"./form/angucompletewrapper.directive.js":22,"./form/calculated.directive.js":23,"./form/datepick.directive.js":24,"./form/dynform.directive.js":25,"./form/fileinput.directive.js":26,"./form/geometry.directive.js":27,"./form/multi.directive.js":28,"./form/multisel.directive.js":29,"./form/simpleform.directive.js":30,"./form/spreadsheet.directive.js":31,"./form/subeditform.directive.js":32,"./form/subform.directive.js":33,"./form/table-fieldset.directive.js":34}],22:[function(require,module,exports){
+},{"./form/angucompletewrapper.directive.js":22,"./form/calculated.directive.js":23,"./form/datepick.directive.js":24,"./form/dynform.directive.js":25,"./form/fileinput.directive.js":26,"./form/filetype.directive.js":27,"./form/fileup.directive.js":28,"./form/geometry.directive.js":29,"./form/multi.directive.js":30,"./form/multisel.directive.js":31,"./form/simpleform.directive.js":32,"./form/spreadsheet.directive.js":33,"./form/subeditform.directive.js":34,"./form/subform.directive.js":35,"./form/table-fieldset.directive.js":36}],22:[function(require,module,exports){
 /**
  * wrapper pour la directive typeahead permettant de l'utiliser en édition
  * requete inverse au serveur pour obtenir un label lié à l'ID fourni et passage
@@ -1676,20 +1678,101 @@ angular.module('FormDirectives').directive('dynform', function(){
 
 
 },{}],26:[function(require,module,exports){
+angular.module('FormDirectives').directive('fileinput', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            refer: '=',
+            options: '='
+        },
+        templateUrl: 'js/templates/form/fileinput.htm',
+        controller: ['$scope', function($scope){
+
+            $scope.current_upload = null;
+
+            var default_object = {ftype: $scope.options.target};
+
+
+            if($scope.refer == undefined || $scope.refer == null){
+                $scope.refer = [angular.copy(default_object)];
+            }
+            if(!$scope.refer.length){
+                $scope.refer.push(angular.copy(default_object));
+            }
+
+            $scope.refer.map(function(item){
+                item.ftype = $scope.options.target;
+            });
+
+            $scope.items = angular.copy($scope.refer);
+            
+            $scope.$watch(function(){return $scope.refer}, function(nv, ov){
+                if(nv !== ov){
+                    $scope.refer = nv || [angular.copy(default_object)]; 
+                    if(!$scope.refer.length){
+                        $scope.refer.push(angular.copy(default_object));
+                    }
+                    $scope.items = angular.copy($scope.refer);
+                    $scope.refer.map(function(item){
+                        item.ftype = $scope.options.target;
+                    });
+                }
+            });
+
+            
+            $scope.add_item = function(){
+                $scope.refer.push(angular.copy(default_object));
+            };
+
+            $scope.remove_item = function(idx){
+                $scope.refer.splice(idx, 1);
+                if(!$scope.refer.length){
+                    $scope.refer.push(angular.copy(default_object));
+                }
+            };
+
+            $scope.reset_item = function(idx){
+                if($scope.items[idx]){
+                    $scope.refer[idx] = angular.copy($scope.items[idx]);
+                }
+                else{
+                    $scope.refer[idx] = angular.copy(default_object);
+                }
+            }
+
+            $scope.is_valid = function(form, idx){
+                if(form.$valid){
+                    if(($scope.refer[idx].path && $scope.refer[idx].path.length) ^ ($scope.refer[idx].url && $scope.refer[idx].url.length>0)){
+                        var valid = !!($scope.refer[idx].titre && $scope.refer[idx].titre.length >= 5);
+                        return valid;
+                    }
+                }
+                return false;
+            }
+
+            $scope.is_invalid = function(form, idx){
+                return !$scope.is_valid(form, idx);
+            }
+        }]
+    };
+});
+
+
+},{}],27:[function(require,module,exports){
 /*
  * Directive qui permet d'avoir un champ de formulaire de type fichier et qui l'envoie au serveur
  * envoie un fichier au serveur qui renvoie un identifiant de création.
  * params:
  *  fileids: la valeur source/cible du champ (liste d'identifiants)
  */
-angular.module('FormDirectives').directive('fileinput', function(){
+angular.module('FormDirectives').directive('filetype', function(){
     return {
         restrict: 'E',
         scope: {
             fileids: '=',
             options: '='
         },
-        templateUrl: 'js/templates/form/fileinput.htm',
+        templateUrl: 'js/templates/form/filetype.htm',
         controller: ['$scope', '$rootScope', '$upload', 'dataServ', 'userMessages', function($scope, $rootScope, $upload, dataServ, userMessages){
             var maxSize = $scope.options.maxSize || 2048000;
             var getOptions = '';
@@ -1703,6 +1786,7 @@ angular.module('FormDirectives').directive('fileinput', function(){
                 dataServ.delete('upload_file/' + f_id + getOptions, function(resp){
                     $scope.fileids.splice($scope.fileids.indexOf(resp.id), 1);
                 });
+                $scope.lock = false;
             };
             $scope.$watch('upload_file', function(){
                 $scope.upload($scope.upload_file);
@@ -1721,7 +1805,7 @@ angular.module('FormDirectives').directive('fileinput', function(){
                                     $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
                                 })
                                 .success(function(data){
-                                    $scope.fileids.push({fname: data.path, commentaire: ''});
+                                    $scope.fileids.push(data.path);
                                     if(!$scope.options.unique){
                                         $scope.lock = false;
                                     }
@@ -1745,7 +1829,82 @@ angular.module('FormDirectives').directive('fileinput', function(){
 });
 
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
+angular.module('FormDirectives').directive('fileup', function(){
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            fileid: '=',
+            filepath: '='
+        },
+        templateUrl: 'js/templates/form/fileup.htm',
+        controller: [
+            '$scope',
+            '$upload',
+            'userMessages',
+            'dataServ',
+            function($scope, $upload, userMessages, dataServ){
+                var maxSize = $scope.options.maxSize || 2048000;
+                var getOptions = '';
+
+                $scope.lock = false;
+
+                if($scope.options.target){
+                    getOptions = '?target=' + $scope.options.target;
+                }
+
+                $scope.$watch('upload_file', function(){
+                    $scope.upload($scope.upload_file);
+                });
+
+                $scope.delete = function(){
+                    console.log('delete');
+                    dataServ.delete('/upload_file/'+$scope.fileid+getOptions, function(res){
+                        $scope.filepath = '';
+                        $scope.fileid = null;
+                        $scope.lock = false;
+
+                    });
+                };
+
+                $scope.upload = function(files){
+                    angular.forEach(files, function(item){
+                        var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length);
+                        if($scope.options.accepted && $scope.options.accepted.indexOf(ext)>-1){
+                            if(item.size < maxSize){
+                                $scope.lock = true;
+                                $upload.upload({
+                                    url: 'upload_file' + getOptions,
+                                    file: item,
+                                    })
+                                    .progress(function(evt){
+                                        $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
+                                    })
+                                    .success(function(data){
+                                        $scope.fileid = data.id;
+                                        $scope.filepath = data.path.slice(data.path.indexOf('_')+1);
+                                    })
+                                    .error(function(data){
+                                        userMessages.errorMessage = "Une erreur s'est produite durant l'envoi du fichier.";
+                                        $scope.lock = false;
+                                    });
+                            }
+                            else{
+                                userMessages.errorMessage = "La taille du fichier doit être inférieure à " + (maxSize/1024) + " Ko";
+                            }
+                        }
+                        else{
+                            userMessages.errorMessage = "Type d'extension refusé";
+                        }
+                    });
+                };
+            }
+        ]
+    };
+});
+
+},{}],29:[function(require,module,exports){
 /*
  * directive pour la gestion des données spatiales
  * params:
@@ -1919,7 +2078,7 @@ angular.module('FormDirectives').directive('geometry', function(){
 });
 
 
-},{}],28:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /**
  * génération d'un champ formulaire de type multivalué
  * params:
@@ -1999,7 +2158,7 @@ angular.module('FormDirectives').directive('multi', ['userMessages', '$timeout',
 }]);
 
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 angular.module('FormDirectives').directive('multisel', function(){
     return {
         restrict: 'E',
@@ -2061,7 +2220,7 @@ angular.module('FormDirectives').directive('multisel', function(){
 });
 
 
-},{}],30:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 /*
  * directive pour l'affichage simple d'un formulaire
  * params: 
@@ -2368,7 +2527,7 @@ angular.module('FormDirectives').directive('simpleform', function(){
 });
 
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /**
  * Directive pour l'affichage d'un tableau de saisie rapide style feuille de calcul
  * params : 
@@ -2498,7 +2657,7 @@ angular.module('FormDirectives').directive('spreadsheet', function(){
 });
 
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 angular.module('FormDirectives').directive('subeditform', function(){
     return{
         restrict: 'A',
@@ -2557,7 +2716,7 @@ angular.module('FormDirectives').directive('subeditform', function(){
 });
 
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 angular.module('FormDirectives').directive('subform', function(){
     return {
         restrict: 'E',
@@ -2570,10 +2729,13 @@ angular.module('FormDirectives').directive('subform', function(){
             if($scope.refer == undefined){
                 $scope.refer = [{}];
             }
+
+            $scope.items = angular.copy($scope.refer);
             
             $scope.$watch(function(){return $scope.refer}, function(nv, ov){
                 if(nv !== ov){
                     $scope.refer = nv || [{}]; 
+                    $scope.items = angular.copy($scope.refer);
                 }
             });
             
@@ -2584,12 +2746,21 @@ angular.module('FormDirectives').directive('subform', function(){
             $scope.remove_item = function(idx){
                 $scope.refer.splice(idx, 1);
             };
+
+            $scope.reset_item = function(idx){
+                if($scope.items[idx]){
+                    $scope.refer[idx] = angular.copy($scope.items[idx]);
+                }
+                else{
+                    $scope.refer[idx] = {};
+                }
+            }
         }]
     };
 });
 
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 angular.module('FormDirectives').directive('tableFieldset', function(){
     return {
         restrict: 'E',
@@ -2604,7 +2775,7 @@ angular.module('FormDirectives').directive('tableFieldset', function(){
 });
 
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /**
  * Service de récupération et stockage des configurations
  * Utiliser pour stocker les variables globales ou les éléments de configuration de l'application
@@ -2669,7 +2840,7 @@ angular.module('suiviProtocoleServices').service('configServ', ['dataServ', 'loc
 }]);
 
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
  * Service de gestion des communications avec le serveur
  */
@@ -2768,7 +2939,7 @@ angular.module('suiviProtocoleServices').service('dataServ', ['$http', '$filter'
 }]);
 
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /**
  * filtre basique - transforme une date yyyy-mm-dd en dd/mm/yyyy pour l'affichage
  */
@@ -2784,7 +2955,7 @@ angular.module('suiviProtocoleServices').filter('datefr', function(){
 });
 
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 angular.module('SimpleMap').factory('LeafletServices', ['$http', function($http) {
     return {
       layer : {}, 
@@ -2812,13 +2983,13 @@ angular.module('SimpleMap').factory('LeafletServices', ['$http', function($http)
 }]);
 
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 angular.module('SimpleMap').factory('mapService', function(){
     return {};
 });
 
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 require('./configserv.service.js');
 require('./dataserv.service.js');
 require('./userserv.service.js');
@@ -2830,7 +3001,7 @@ require('./spreadsheet.service.js');
 require('./leafletservice.service.js');
 require('./mapservice.service.js');
 
-},{"./configserv.service.js":35,"./dataserv.service.js":36,"./datefr.filter.js":37,"./leafletservice.service.js":38,"./mapservice.service.js":39,"./spreadsheet.service.js":41,"./tmultisel.filter.js":42,"./tselect.filter.js":43,"./usermessages.service.js":44,"./userserv.service.js":45}],41:[function(require,module,exports){
+},{"./configserv.service.js":37,"./dataserv.service.js":38,"./datefr.filter.js":39,"./leafletservice.service.js":40,"./mapservice.service.js":41,"./spreadsheet.service.js":43,"./tmultisel.filter.js":44,"./tselect.filter.js":45,"./usermessages.service.js":46,"./userserv.service.js":47}],43:[function(require,module,exports){
 angular.module('FormDirectives').factory('SpreadSheet', function(){
     return {
         errorMessage: {},
@@ -2839,7 +3010,7 @@ angular.module('FormDirectives').factory('SpreadSheet', function(){
 });
 
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 angular.module('suiviProtocoleServices').filter('tmultisel', function(){
     return function(input, param){
         if(!param){
@@ -2863,7 +3034,7 @@ angular.module('suiviProtocoleServices').filter('tmultisel', function(){
 });
 
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 /**
  * Affichage du label d'une liste déroulante à partir de son identifiant
  */
@@ -2883,7 +3054,7 @@ angular.module('suiviProtocoleServices').filter('tselect', ['$filter', function(
 }]);
 
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 /*
  * messages utilisateurs
  */
@@ -2904,7 +3075,7 @@ angular.module('DisplayDirectives').service('userMessages', function(){
 });
 
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 /*
  * service utilisateur
  */

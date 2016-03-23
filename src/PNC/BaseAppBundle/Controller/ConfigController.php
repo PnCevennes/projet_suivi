@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
-use PNC\BaseAppBundle\Entity\Fichiers;
+use PNC\BaseAppBundle\Entity\Fichier;
 
 class ConfigController extends Controller{
     
@@ -44,6 +44,17 @@ class ConfigController extends Controller{
 
     // path: POST /upload_file
     public function uploadAction(Request $req){
+        $fs = $this->get('fileService');
+        try{
+            $res = $fs->upload($req);
+            return new JsonResponse($res);
+        }
+        catch(\Exception $e){
+            return new JsonResponse($e->getErrors(), 400);
+        }
+    }
+    /*
+    public function __uploadAction(Request $req){
         $manager = $this->getDoctrine()->getManager();
 
         $upd = $this->get('kernel')->getContainer()->getParameter('upload_directory');
@@ -53,7 +64,7 @@ class ConfigController extends Controller{
         $manager->getConnection()->beginTransaction();
         foreach($req->files as $file){
             try{
-                $fichier = new Fichiers();
+                $fichier = new Fichier();
                 $fichier->setPath($file->getClientOriginalName());
                 $manager->persist($fichier);
                 $manager->flush();
@@ -74,8 +85,15 @@ class ConfigController extends Controller{
         }
         return new JsonResponse(array('err'=>'No files'), 400);
     }
+     */
 
     // path: DELETE /upload_file/{file_id}
+    public function deleteFileAction(Request $req, $file_id){
+        $fs = $this->get('fileService');
+        $res = $fs->delete_file($file_id);
+        return new JsonResponse($res);
+    }
+    /*
     public function deleteFileAction(Request $req, $file_id){
         $upd = $this->get('kernel')->getContainer()->getParameter('upload_directory');
         $target_directory = $req->query->get('target', '');
@@ -83,7 +101,7 @@ class ConfigController extends Controller{
 
         $id = substr($file_id, 0, strpos($file_id, '_'));
         $deleted = false;
-        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Fichiers');
+        $repo = $this->getDoctrine()->getRepository('PNCBaseAppBundle:Fichier');
         $fich = $repo->findOneById($id);
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($fich);
@@ -101,6 +119,7 @@ class ConfigController extends Controller{
             'deleted'=>$deleted
         ));
     }
+    */
 
     // path: GET /commune/{insee}
     public function getCommuneAction(Request $req, $insee){
