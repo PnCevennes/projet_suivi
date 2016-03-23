@@ -3,12 +3,11 @@
 namespace PNC\BaseAppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PNC\Utils\BaseEntity;
 
 /**
  * Site
  */
-class Site extends BaseEntity
+class Site
 {
     /**
      * @var integer
@@ -49,6 +48,11 @@ class Site extends BaseEntity
      * @var geometry
      */
     private $geom;
+
+    /**
+     * @var textarray
+     */
+    private $bs_ref_commune;
 
     /**
      * @var \DateTime
@@ -235,6 +239,29 @@ class Site extends BaseEntity
     public function getGeom()
     {
         return $this->geom;
+    }
+
+    /**
+     * Set bs_ref_commune
+     *
+     * @param textarray $bsRefCommune
+     * @return Site
+     */
+    public function setBsRefCommune($bsRefCommune)
+    {
+        $this->bs_ref_commune = $bsRefCommune;
+
+        return $this;
+    }
+
+    /**
+     * Get bs_ref_commune
+     *
+     * @return textarray 
+     */
+    public function getBsRefCommune()
+    {
+        return $this->bs_ref_commune;
     }
 
     /**

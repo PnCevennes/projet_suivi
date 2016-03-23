@@ -11,6 +11,9 @@ groups:
             -   name: bsCode
                 label: "Code site"
                 type: string
+            -   name: pbDossiercandidature
+                label: "Dossier de candidature"
+                type: bool
             -   name: pbDesCodeRef
                 label: "Référence"
                 type: string
@@ -69,7 +72,7 @@ groups:
               label: "Statut"
               type: select
               thesaurusID: 107
-            - name: refCommune
+            - name: bsRefCommune
               label: "Commune"
               type: xhr
               options:
@@ -81,7 +84,7 @@ groups:
             - name: pbHisDatationType
               label: "Type de datation"
               type: select
-              thesaurusID: 109
+              thesaurusID: 117
             - name: pbHisDatationPeriode
               label: "Période de datation"
               type: select
@@ -112,7 +115,7 @@ groups:
               type: string
             - name: pbDesMurGrosoeuvre
               label: "Mur gros oeuvre"
-              type: select
+              type: multisel
               thesaurusID: 112
             - name: pbDesMurMisenoeuvre
               label: "Mur mise en oeuvre"
@@ -130,16 +133,6 @@ groups:
               label: "Toit"
               type: select
               thesaurusID: 115
-            - name: pbDesToitPrecision
-              label: "Toit precisions"
-              type: string
-            - name: pbDesBaie
-              label: "Baie"
-              type: select
-              thesaurusID: 104
-            - name: pbDesBaiePrecision
-              label: "Baie precisions"
-              type: string
             - name: pbDesEtat
               label: "Etat"
               type: select

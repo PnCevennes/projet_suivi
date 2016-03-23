@@ -1,0 +1,9 @@
+PNC\PatrimoineBatiBundle\Entity\SiteMurGrosOeuvre:
+    type: entity
+    table: patrimoinebati.rel_pbsite_thesaurus_murgrosoeuvre
+    schema: patrimoinebati
+    id:
+        site_id:
+            type: integer
+        thesaurus_id:
+            type: integer

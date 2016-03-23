@@ -61,10 +61,7 @@ doctrine:
         #     path:     "%database_path%"
         types:
             geometry:   CrEOF\Spatial\DBAL\Types\GeometryType
-            #geometry:   PNC\Types\GeometryType
-            #point:      CrEOF\Spatial\DBAL\Types\Geometry\PointType
-            #polygon:    CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
-            #linestring: CrEOF\Spatial\DBAL\Types\Geometry\LineStringType
+            textarray:   PNC\Types\PgArrayTextType
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"

@@ -32,6 +32,11 @@ groups:
                 label: "Référence"
                 type: string
                 help: Référence du site
+            -   name: pbDossiercandidature
+                label: Dossier de candidature
+                help: "L'élément est-il présent dans le dossier de candidature UNESCO"
+                type: bool
+                default: true
             -   name: bsNom
                 label: Nom
                 type: string
@@ -104,7 +109,7 @@ groups:
               - name: pbHisDatationType
                 label: "Type de datation"
                 type: select
-                thesaurusID: 109
+                thesaurusID: 117
               - name: pbHisDatationPeriode
                 label: "Datation période"
                 type: select
@@ -151,6 +156,8 @@ groups:
                 label: "Mur gros oeuvre"
                 type: select
                 thesaurusID: 112
+                options:
+                  multi: true
               - name: pbDesMurRevetement
                 label: "Mur revetement"
                 type: select
@@ -167,16 +174,6 @@ groups:
                 label: "Toit"
                 type: select
                 thesaurusID: 115
-              - name: pbDesToitPrecision
-                label: "Toit precisions"
-                type: string
-              - name: pbDesBaie
-                label: "Baie"
-                type: select
-                thesaurusID: 104
-              - name: pbDesBaiePrecision
-                label: "Baie precisions"
-                type: string
               - name: pbDesEtat
                 label: "Etat"
                 type: select
@@ -202,6 +199,10 @@ groups:
                   label: "Etat de la donnée"
                   type: select
                   thesaurusID: 110
+                - name: pbInterpretation
+                  label : "Interprétation"
+                  type: select
+                  thesaurusID: 108
                 - name: pbSource
                   label: "Source de la données"
                   type: select

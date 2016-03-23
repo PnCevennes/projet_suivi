@@ -1,4 +1,5 @@
 <?php
+
 namespace PNC\PatrimoineBatiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -112,11 +113,6 @@ class InfoSite extends BaseEntity
     /**
      * @var integer
      */
-    private $pb_des_mur_grosoeuvre;
-
-    /**
-     * @var integer
-     */
     private $pb_des_mur_misenoeuvre;
 
     /**
@@ -178,6 +174,11 @@ class InfoSite extends BaseEntity
      * @var integer
      */
     private $pb_source;
+
+    /**
+     * @var boolean
+     */
+    private $pb_dossiercandidature;
 
     /**
      * @var \PNC\BaseAppBundle\Entity\Site
@@ -633,29 +634,6 @@ class InfoSite extends BaseEntity
     }
 
     /**
-     * Set pb_des_mur_grosoeuvre
-     *
-     * @param integer $pbDesMurGrosoeuvre
-     * @return InfoSite
-     */
-    public function setPbDesMurGrosoeuvre($pbDesMurGrosoeuvre)
-    {
-        $this->pb_des_mur_grosoeuvre = $pbDesMurGrosoeuvre;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_des_mur_grosoeuvre
-     *
-     * @return integer
-     */
-    public function getPbDesMurGrosoeuvre()
-    {
-        return $this->pb_des_mur_grosoeuvre;
-    }
-
-    /**
      * Set pb_des_mur_misenoeuvre
      *
      * @param integer $pbDesMurMisenoeuvre
@@ -952,6 +930,29 @@ class InfoSite extends BaseEntity
     public function getPbSource()
     {
         return $this->pb_source;
+    }
+
+    /**
+     * Set pb_dossiercandidature
+     *
+     * @param boolean $pbDossiercandidature
+     * @return InfoSite
+     */
+    public function setPbDossiercandidature($pbDossiercandidature)
+    {
+        $this->pb_dossiercandidature = $pbDossiercandidature;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_dossiercandidature
+     *
+     * @return boolean
+     */
+    public function getPbDossiercandidature()
+    {
+        return $this->pb_dossiercandidature;
     }
 
     /**
