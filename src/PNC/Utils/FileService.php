@@ -100,8 +100,8 @@ class FileService{
         foreach($data as $fichier){
             if(isset($fichier['id'])){
                 $update_ids[] = $fichier['id'];
-                $this->record($obj_id, $fichier, $manager);
             }
+            $this->record($obj_id, $fichier, $manager);
         }
         $a_effacer = array_filter(
             $prev_files, 
