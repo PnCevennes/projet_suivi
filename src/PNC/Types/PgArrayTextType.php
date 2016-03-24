@@ -23,7 +23,7 @@ class PgArrayTextType extends Type{
     public function convertToDatabaseValue($value, AbstractPlatform $platform){
         settype($value, 'array'); // can be called with a scalar or array
         $result = array();
-        foreach ($set as $t) {
+        foreach ($value as $t) {
             if (is_array($t)) {
                 $result[] = to_pg_array($t);
             } else {
