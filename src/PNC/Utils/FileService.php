@@ -91,7 +91,7 @@ class FileService{
     public function record_files($obj_id, $data, $manager=null){
         if(count($data) == 0) return;
         $repo = $this->db->getRepository('PNCBaseAppBundle:Fichier');
-        $prev_files = $repo->findAll(array('ftype'=>$data[0]['ftype'], 'id_objet'=>$obj_id));
+        $prev_files = $repo->findBy(array('ftype'=>$data[0]['ftype'], 'id_objet'=>$obj_id));
         $prev_ids = array();
         $update_ids = array();
         foreach($prev_files as $file){
