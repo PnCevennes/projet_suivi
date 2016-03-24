@@ -61,6 +61,14 @@ angular.module('FormDirectives').directive('fileinput', function(){
             }
 
             $scope.is_valid = function(form, idx){
+                if(!($scope.refer[idx].titre && $scope.refer[idx].titre.length)){
+                    if($scope.refer[idx].path && $scope.refer[idx].path.length){
+                        $scope.refer[idx].titre = $scope.refer[idx].path;
+                    }
+                    else if($scope.refer[idx].url && $scope.refer[idx].url.length){
+                        $scope.refer[idx].titre = $scope.refer[idx].url;
+                    }
+                }
                 if(form.$valid){
                     if(($scope.refer[idx].path && $scope.refer[idx].path.length) ^ ($scope.refer[idx].url && $scope.refer[idx].url.length>0)){
                         var valid = !!($scope.refer[idx].titre && $scope.refer[idx].titre.length >= 5);
