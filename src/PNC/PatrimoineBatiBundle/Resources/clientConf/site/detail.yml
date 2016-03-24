@@ -147,7 +147,7 @@ groups:
               label: "Fichiers associés"
               type: file
               options:
-                  target: "patrimoinebati/site/"
+                  target: "uploads/patrimoinebati/site/"
     -   name: "Metadonnées"
         glyphicon: glyphicon-stats
         fields:
