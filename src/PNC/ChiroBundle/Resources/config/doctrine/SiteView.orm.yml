@@ -37,8 +37,6 @@ PNC\ChiroBundle\Entity\SiteView:
             type: text
         cis_actions:
             type: text
-        site_fichiers:
-            type: json_array
         cis_contact_nom:
             type: text
         cis_contact_prenom:

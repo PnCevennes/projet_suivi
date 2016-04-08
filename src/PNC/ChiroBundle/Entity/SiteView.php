@@ -81,11 +81,6 @@ class SiteView extends BaseEntity
     private $cis_actions;
 
     /**
-     * @var array
-     */
-    private $site_fichiers;
-
-    /**
      * @var string
      */
     private $cis_contact_nom;
@@ -470,28 +465,6 @@ class SiteView extends BaseEntity
         return $this->cis_actions;
     }
 
-    /**
-     * Set site_fichiers
-     *
-     * @param array $siteFichiers
-     * @return SiteView
-     */
-    public function setSiteFichiers($siteFichiers)
-    {
-        $this->site_fichiers = $siteFichiers;
-
-        return $this;
-    }
-
-    /**
-     * Get site_fichiers
-     *
-     * @return array 
-     */
-    public function getSiteFichiers()
-    {
-        return $this->site_fichiers;
-    }
 
     /**
      * Set cis_contact_nom
