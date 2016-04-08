@@ -14,7 +14,7 @@ use Commons\Exceptions\CascadeException;
 
 
 class SiteController extends Controller{
-    
+
     // path: GET /chiro/site
     public function listAction(Request $request){
         /*
@@ -41,7 +41,7 @@ class SiteController extends Controller{
     // path: PUT /chiro/site
     public function createAction(Request $req){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3,100)){
             throw new AccessDeniedHttpException();
         }
         $props = json_decode($req->getContent(), true);
@@ -54,7 +54,7 @@ class SiteController extends Controller{
             return new JsonResponse($e->getErrors(), 400);
         }
 
-        
+
 
 
         return new JsonResponse(array('id'=>$site->getId()));
@@ -64,7 +64,7 @@ class SiteController extends Controller{
     // path: POST /chiro/site/{id}
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             throw new AccessDeniedHttpException();
         }
         $props = json_decode($req->getContent(), true);
@@ -84,13 +84,13 @@ class SiteController extends Controller{
     // path; DELETE /chiro/site/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
-        $delete = $user->checkLevel(5);
+        $delete = $user->checkLevel(5, 100);
         if(!$delete){
             throw new AccessDeniedHttpException();
         }
 
         $cascade = true;
-        
+
         $ss = $this->get('siteService');
         try{
             $res = $ss->remove($id, $cascade);

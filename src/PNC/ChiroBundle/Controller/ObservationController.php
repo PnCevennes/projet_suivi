@@ -39,7 +39,7 @@ class ObservationController extends Controller{
          * retourne la liste des observations associées à un site
          */
         $os = $this->get('observationService');
-        
+
         return new JsonResponse($os->getFilteredList($request, $id));
     }
 
@@ -62,7 +62,7 @@ class ObservationController extends Controller{
 
         // vérification droits utilisateur
         $user = $this->get('userServ');
-        if(!$user->checkLevel(2)){
+        if(!$user->checkLevel(2, 100)){
             throw new AccessDeniedHttpException();
         }
 
@@ -81,7 +81,7 @@ class ObservationController extends Controller{
     public function updateAction(Request $req, $id){
         // vérification droits utilisateur
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             if(!$user->isOwner($obs->getNumerisateurId())){
                 throw new AccessDeniedHttpException();
             }
@@ -111,17 +111,17 @@ class ObservationController extends Controller{
             return new JsonResponse(array('id'=>$id), 404);
         }
 
-        if($user->checkLevel(5)){
+        if($user->checkLevel(5, 100)){
             $delete = true;
             $cascade = true;
         }
-        if($user->checkLevel(3)){
+        if($user->checkLevel(3, 100)){
             $delete = true;
             if(!$user->isOwner($obs['metaNumerisateurId'])){
                 $cascade = true;
             }
         }
-        if($user->checkLevel(2) && $user->isOwner($obs['metaNumerisateurId'])){
+        if($user->checkLevel(2, 100) && $user->isOwner($obs['metaNumerisateurId'])){
             $delete = true;
         }
 

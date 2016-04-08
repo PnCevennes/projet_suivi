@@ -39,7 +39,7 @@ class SiteController extends Controller{
     public function createAction(Request $req){
 
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3,150)){
             throw new AccessDeniedHttpException();
         }
         $props = json_decode($req->getContent(), true);
@@ -62,7 +62,7 @@ class SiteController extends Controller{
     // path: POST /patrimoinebati/site/{id}
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3,150)){
             throw new AccessDeniedHttpException();
         }
         $props = json_decode($req->getContent(), true);
@@ -79,7 +79,7 @@ class SiteController extends Controller{
     // path; DELETE /patrimoinebati/site/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
-        $delete = $user->checkLevel(5);
+        $delete = $user->checkLevel(5,150);
         if(!$delete){
             throw new AccessDeniedHttpException();
         }

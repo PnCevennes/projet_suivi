@@ -48,7 +48,7 @@ class ObsTaxonController extends Controller
 
         // vérification droits utilisateur
         $user = $this->get('userServ');
-        if(!$user->checkLevel(2)){
+        if(!$user->checkLevel(2, 100)){
             throw new AccessDeniedHttpException();
         }
         $data = json_decode($req->getContent(), true);
@@ -68,7 +68,7 @@ class ObsTaxonController extends Controller
         // vérification droits utilisateur
         $user = $this->get('userServ');
         $ts = $this->get('taxonService');
-        if(!$user->checkLevel(2)){
+        if(!$user->checkLevel(2, 100)){
             throw new AccessDeniedHttpException();
         }
         $in_data = json_decode($req->getContent(), true);
@@ -100,7 +100,7 @@ class ObsTaxonController extends Controller
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');
         // vérification droits utilisateur
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             //TODO verification proprio
             throw new AccessDeniedHttpException();
         }
@@ -132,15 +132,15 @@ class ObsTaxonController extends Controller
             return new JsonResponse(array('id'=>$id), 404);
         }
         // vérification droits utilisateur
-        if($user->checkLevel(5)){
+        if($user->checkLevel(5, 100)){
             $delete = true;
             $cascade = true;
         }
-        elseif($user->checkLevel(3) && $user->isOwner($obs['numId'])){
+        elseif($user->checkLevel(3, 100) && $user->isOwner($obs['numId'])){
             $delete = true;
             $cascade = true;
         }
-        elseif($user->checkLevel(2) && $user->isOwner($obs['numId'])){
+        elseif($user->checkLevel(2, 100) && $user->isOwner($obs['numId'])){
             $delete = true;
         }
 
@@ -164,7 +164,7 @@ class ObsTaxonController extends Controller
     public function validateAction(Request $req){
         $user = $this->get('userServ');
         $data = json_decode($req->getContent(), true);
-        if(!$user->checkLevel(5)){
+        if(!$user->checkLevel(5, 100)){
             throw new AccessDeniedHttpException();
         }
         $ts = $this->get('taxonService');
@@ -177,5 +177,3 @@ class ObsTaxonController extends Controller
         }
     }
 }
-
-

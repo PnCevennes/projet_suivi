@@ -17,7 +17,7 @@ class BiometrieController extends Controller
     // path: GET chiro/biometrie/taxon/{otx_id}
     public function listAction(Request $request, $otx_id=null){
         $bs = $this->get('biometrieService');
-        
+
         return new JsonResponse($bs->getFilteredList($request, $otx_id));
     }
 
@@ -35,7 +35,7 @@ class BiometrieController extends Controller
     // path: PUT chiro/biometrie
     public function createAction(Request $req, $id=null){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             throw new AccessDeniedHttpException();
         }
         $bs = $this->get('biometrieService');
@@ -51,7 +51,7 @@ class BiometrieController extends Controller
     // path: PUT chiro/biometrie/many
     public function createManyAction(Request $req){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             throw new AccessDeniedHttpException();
         }
         $bs = $this->get('biometrieService');
@@ -82,7 +82,7 @@ class BiometrieController extends Controller
     // path: POST chiro/biometrie/{id}
     public function updateAction(Request $req, $id=null){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             throw new AccessDeniedHttpException();
         }
         $data = json_decode($req->getContent(), true);
@@ -103,7 +103,7 @@ class BiometrieController extends Controller
     // path: DELETE chiro/biometrie/{id}
     public function deleteAction($id){
         $user = $this->get('userServ');
-        if(!$user->checkLevel(3)){
+        if(!$user->checkLevel(3, 100)){
             throw new AccessDeniedHttpException();
         }
         $bs = $this->get('biometrieService');
@@ -113,5 +113,3 @@ class BiometrieController extends Controller
         return new JsonResponse(array('id'=>$id), 404);
     }
 }
-
-

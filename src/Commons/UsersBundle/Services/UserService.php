@@ -26,7 +26,7 @@ class UserService{
      * params:
      *  le niveau de droits requis (int)
      */
-    public function checkLevel($level, $app=100){
+    public function checkLevel($level, $app){
         //FIXME $app par defaut => contournement moche pour ne pas refaire toutes les vues chiro
         $currentUser = $this->getUser();
         //return $currentUser->getMaxDroit() >= $level;
@@ -34,9 +34,9 @@ class UserService{
     }
 
     /*
-     * vérifie que l'utilisateur courant est propriétaire de 
+     * vérifie que l'utilisateur courant est propriétaire de
      * l'objet concerné
-     * params: 
+     * params:
      *  l'id du propriétaire de l'objet concerné (int)
      */
     public function isOwner($item_owner){
