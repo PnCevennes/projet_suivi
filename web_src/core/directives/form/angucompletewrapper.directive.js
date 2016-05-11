@@ -23,7 +23,7 @@ angular.module('FormDirectives').directive('angucompletewrapper', ['dataServ', '
         templateUrl: 'js/templates/form/autoComplete.htm',
         link: function($scope, elem){
             $scope.localselectedobject = '';
-            $scope.test = function(){
+            $scope.testIsNull = function(){
                 if($('#aw')[0].value == ''){
                     $scope.selectedobject = null;
                 }
@@ -32,7 +32,7 @@ angular.module('FormDirectives').directive('angucompletewrapper', ['dataServ', '
             $scope.find = function(txt){
                 if(txt){
                     return $http.get($scope.url + txt).then(function(resp){
-                        return resp.data;    
+                        return resp.data;
                     });
                 }
             };
@@ -57,4 +57,3 @@ angular.module('FormDirectives').directive('angucompletewrapper', ['dataServ', '
         }
     };
 }]);
-

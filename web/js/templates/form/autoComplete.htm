@@ -2,7 +2,10 @@
     <span ng-if="decorated" class="input-group-addon">
         <span class="glyphicon glyphicon-search"></span>
     </span>
-    <input id="aw" ng-blur="ngBlur" type="text" class="{{inputclass}}" ng-model="localselectedobject" typeahead="item as item.label for item in find($viewValue || null)" typeahead-loading="items" typeahead-editable="false" typeahead-min-length="3" required="ngrequired" ng-change="test()"></input>
+    <input id="aw" ng-blur="ngBlur" type="text" class="{{inputclass}}" ng-model="localselectedobject"
+      typeahead="item as item.label for item in find($viewValue || null)"
+      typeahead-loading="items" typeahead-editable="false"
+      typeahead-min-length="3" ng-required="{{ngrequired}}" ng-change="testIsNull()" autocomplete="off"></input>
     <span ng-if="decorated" class="input-group-btn">
         <ng-transclude></ng-transclude>
     </span>
