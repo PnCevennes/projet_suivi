@@ -305,11 +305,13 @@ class EntityService{
         $query->execute();
     }
 
-    /*
-     * Simplification pour récupérer l'ID d'un fichier contenu dans son nom
-     */
-    public function getFileId($fname){
-        return (int) explode('_', $fname)[0];
+    public function getBcData($queryString, $field, $val){
+        $req = $this->getManager()->getConnection()->prepare($queryString);
+        $req->bindValue($field, $val);
+        $req->execute();
+        $res = $req->fetchAll();
+        if(!isset($res[0])) throw new DataObjectException(null);
+        return array('label'=>$res[0]['label'], 'next'=>$res[0]['next']);
     }
 
     /*

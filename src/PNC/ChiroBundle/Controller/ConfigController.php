@@ -12,20 +12,10 @@ use Commons\Exceptions\DataObjectException;
 
 class ConfigController extends Controller{
 
-    public function getBcData($req, $field, $val){
-
-        $manager = $this->getDoctrine()->getConnection();
-
-        $req = $manager->prepare($req);
-        $req->bindValue($field, $val);
-        $req->execute();
-        $res = $req->fetchAll();
-        if(!isset($res[0])) throw new DataObjectException();
-        return array('label'=>$res[0]['label'], 'next'=>$res[0]['next']);
-    }
 
     //path : chiro/breadcrumb
     public function breadcrumbAction(Request $req){
+        $entityService = $this->get('entityService');
         $view = $req->get('view');
         $id = $req->get('id');
         $generic = $req->get('generic') == "true";
@@ -33,7 +23,7 @@ class ConfigController extends Controller{
         try{
             switch($view){
                 case 'biometrie':
-                    $data = $this->getBcData(
+                    $data = $entityService->getBcData(
                         'SELECT id as label, fk_cotx_id as next FROM chiro.subpr_observationtaxon_biometrie WHERE id=:id',
                         'id',
                         $id);
@@ -45,8 +35,8 @@ class ConfigController extends Controller{
                     $id = $data['next'];
                 case 'taxons':
                 case 'taxon':
-                    $data = $this->getBcData(
-                        'SELECT id, cotx_nom_complet as label, fk_bv_id as next FROM chiro.pr_visite_observationtaxon WHERE id=:id',
+                    $data = $entityService->getBcData(
+                        'SELECT cotx_nom_complet as label, fk_bv_id as next FROM chiro.pr_visite_observationtaxon WHERE id=:id',
                         'id',
                         $id);
                     $out[] = array(
@@ -68,8 +58,8 @@ class ConfigController extends Controller{
                             'link'=> $generic ? '#/g/chiro/inventaire/list' : '#/chiro/inventaire');
                         return new JsonResponse(array_reverse($out));
                     }
-                    $data = $this->getBcData(
-                        'SELECT id, bv_date as label, fk_bs_id as next FROM suivi.pr_base_visite WHERE id=:id',
+                    $data = $entityService->getBcData(
+                        'SELECT bv_date as label, fk_bs_id as next FROM suivi.pr_base_visite WHERE id=:id',
                         'id',
                         $id);
                     if($data['next']==null){
@@ -90,8 +80,8 @@ class ConfigController extends Controller{
                     $id = $data['next'];
                 case 'site':
                     if(isset($id)){
-                        $data = $this->getBcData(
-                            'SELECT id, bs_nom as label, null as next FROM suivi.pr_base_site WHERE id=:id',
+                        $data = $entityService->getBcData(
+                            'SELECT bs_nom as label, null as next FROM suivi.pr_base_site WHERE id=:id',
                             'id',
                             $id);
                         $out[] = array('id'=>$id, 'label'=>$data['label'], 'link'=>$generic ? '#/g/chiro/site/detail/'.$id : '#/chiro/site/'.$id);

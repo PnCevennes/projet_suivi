@@ -296,7 +296,7 @@ class SiteService{
             try{
                 $fichier = new SiteFichiers(
                     $site->getId(),
-                    $this->entityService->getFileId($fich_['fname']),
+                    $this->fileService->getFileId($fich_['fname']),
                     $fich_['commentaire']
                 );
                 $manager->persist($fichier);

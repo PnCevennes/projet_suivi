@@ -216,4 +216,12 @@ class FileService{
         }
         return $out;
     }
+
+    /*
+     * Simplification pour récupérer l'ID d'un fichier contenu dans son nom
+     */
+    public function getFileId($fname){
+        return (int) explode('_', $fname)[0];
+    }
+
 }
