@@ -23,13 +23,13 @@ groups:
             -   name: pbDesNomSynononymes
                 label: "Synomymes"
                 type: string
-            -   name: bsTypeId
-                label: "Dénomination"
+            -   name: pbDesTypeAttributLocal
+                label: "Type de dénomination locale"
                 type: select
                 thesaurusID: 101
                 help: "Type de lieu"
-            -   name: pbDesDenominationLocale
-                label: "Dénomination(s) locale(s)"
+            -   name: pbDesTypeAttributNational
+                label: "Type de dénomination nationale"
                 type: string
             -   name: pbInterpretation
                 label : "Interprétation"

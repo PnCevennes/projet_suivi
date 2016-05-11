@@ -9,7 +9,6 @@ PNC\PatrimoineBatiBundle\Entity\SiteView:
             id: true
             generator:
                 strategy: AUTO
-
     fields:
         bs_nom:
             type: text
@@ -31,3 +30,9 @@ PNC\PatrimoineBatiBundle\Entity\SiteView:
             type: text
         pb_source:
             type: integer
+        pb_des_type_attribut_local:
+            type: integer
+        type_denomination_local:
+            type: text
+        pb_des_type_attribut_national:
+            type: text

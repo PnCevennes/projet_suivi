@@ -23,6 +23,9 @@ groups:
                 type: hidden
             -   name: fkBsId
                 type: hidden
+            -   name: bsTypeId
+                type: hidden
+                default: 0
             -   name: metaNumerisateurId
                 label: Numerisateur
                 type: hidden
@@ -48,29 +51,25 @@ groups:
                 label: Synomymes
                 type: string
                 help: synonymes du site
-            -   name: bsTypeId
-                label: Dénomination
+            -   name:  pbDesTypeAttributLocal
+                label: "Dénomination locale"
                 type: select
                 thesaurusID: 101
-                default: 0
                 help: Type de lieu
                 options:
                     required: true
-            -   name: pbDesDenominationLocale
-                label: Dénomination locale
-                type: string
             -   name: bsObrId
                 label: Observateur
                 type: xhr
                 options:
-                    url: users/name/100/2
+                    required: false
+                    url: users/name/150/2
                     reverseurl: users/id
-                    required: true
             -   name: bsDate
                 label: Date d'enquête
                 type: date
                 options:
-                    required: true
+                    required: false
             -   name: pbCommentaire
                 label: "Commentaire"
                 type: text

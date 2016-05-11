@@ -15,7 +15,10 @@ PNC\PatrimoineBatiBundle\Entity\InfoSite:
         pb_des_code_ref:
             type: text
             nullable: true
-        pb_des_denomination_locale:
+        pb_des_type_attribut_local:
+            type: integer
+            nullable: true
+        pb_des_type_attribut_national:
             type: text
             nullable: true
         pb_des_nom_synononymes:

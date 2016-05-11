@@ -3,12 +3,11 @@
 namespace PNC\PatrimoineBatiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PNC\Utils\BaseEntity;
 
 /**
  * SiteMurGrosOeuvre
  */
-class SiteMurGrosOeuvre extends BaseEntity
+class SiteMurGrosOeuvre
 {
     /**
      * @var integer
@@ -37,7 +36,7 @@ class SiteMurGrosOeuvre extends BaseEntity
     /**
      * Get site_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getSiteId()
     {
@@ -60,7 +59,7 @@ class SiteMurGrosOeuvre extends BaseEntity
     /**
      * Get thesaurus_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getThesaurusId()
     {

@@ -35,6 +35,8 @@ class PbSitesService{
             'nomObservateur'=>null,
             'bsCode'=>null,
             'bsTypeId'=>null,
+            'pbDesTypeAttributNational'=>null,
+            'typeDenominationLocal'=>null,
             'geom'=>null
         );
 

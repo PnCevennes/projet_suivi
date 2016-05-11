@@ -3,13 +3,11 @@
 namespace PNC\PatrimoineBatiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PNC\Utils\BaseEntity;
-
 
 /**
  * SiteView
  */
-class SiteView extends BaseEntity
+class SiteView
 {
     /**
      * @var integer
@@ -66,11 +64,26 @@ class SiteView extends BaseEntity
      */
     private $pb_source;
 
+    /**
+     * @var integer
+     */
+    private $pb_des_type_attribut_local;
+
+    /**
+     * @var string
+     */
+    private $type_denomination_local;
+
+    /**
+     * @var string
+     */
+    private $pb_des_type_attribut_national;
+
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -93,7 +106,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_nom
      *
-     * @return string
+     * @return string 
      */
     public function getBsNom()
     {
@@ -116,7 +129,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_code
      *
-     * @return string
+     * @return string 
      */
     public function getBsCode()
     {
@@ -139,7 +152,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getBsDate()
     {
@@ -162,7 +175,7 @@ class SiteView extends BaseEntity
     /**
      * Get geom
      *
-     * @return array
+     * @return array 
      */
     public function getGeom()
     {
@@ -185,7 +198,7 @@ class SiteView extends BaseEntity
     /**
      * Get nom_observateur
      *
-     * @return string
+     * @return string 
      */
     public function getNomObservateur()
     {
@@ -208,7 +221,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_obr_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getBsObrId()
     {
@@ -231,7 +244,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_type_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getBsTypeId()
     {
@@ -254,7 +267,7 @@ class SiteView extends BaseEntity
     /**
      * Get type_lieu
      *
-     * @return string
+     * @return string 
      */
     public function getTypeLieu()
     {
@@ -277,7 +290,7 @@ class SiteView extends BaseEntity
     /**
      * Get bs_description
      *
-     * @return string
+     * @return string 
      */
     public function getBsDescription()
     {
@@ -300,10 +313,79 @@ class SiteView extends BaseEntity
     /**
      * Get pb_source
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbSource()
     {
         return $this->pb_source;
+    }
+
+    /**
+     * Set pb_des_type_attribut_local
+     *
+     * @param integer $pbDesTypeAttributLocal
+     * @return SiteView
+     */
+    public function setPbDesTypeAttributLocal($pbDesTypeAttributLocal)
+    {
+        $this->pb_des_type_attribut_local = $pbDesTypeAttributLocal;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_type_attribut_local
+     *
+     * @return integer 
+     */
+    public function getPbDesTypeAttributLocal()
+    {
+        return $this->pb_des_type_attribut_local;
+    }
+
+    /**
+     * Set type_denomination_local
+     *
+     * @param string $typeDenominationLocal
+     * @return SiteView
+     */
+    public function setTypeDenominationLocal($typeDenominationLocal)
+    {
+        $this->type_denomination_local = $typeDenominationLocal;
+
+        return $this;
+    }
+
+    /**
+     * Get type_denomination_local
+     *
+     * @return string 
+     */
+    public function getTypeDenominationLocal()
+    {
+        return $this->type_denomination_local;
+    }
+
+    /**
+     * Set pb_des_type_attribut_national
+     *
+     * @param string $pbDesTypeAttributNational
+     * @return SiteView
+     */
+    public function setPbDesTypeAttributNational($pbDesTypeAttributNational)
+    {
+        $this->pb_des_type_attribut_national = $pbDesTypeAttributNational;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_type_attribut_national
+     *
+     * @return string 
+     */
+    public function getPbDesTypeAttributNational()
+    {
+        return $this->pb_des_type_attribut_national;
     }
 }

@@ -3,12 +3,11 @@
 namespace PNC\PatrimoineBatiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PNC\Utils\BaseEntity;
 
 /**
  * InfoSite
  */
-class InfoSite extends BaseEntity
+class InfoSite
 {
     /**
      * @var integer
@@ -26,9 +25,14 @@ class InfoSite extends BaseEntity
     private $pb_des_code_ref;
 
     /**
+     * @var integer
+     */
+    private $pb_des_type_attribut_local;
+
+    /**
      * @var string
      */
-    private $pb_des_denomination_locale;
+    private $pb_des_type_attribut_national;
 
     /**
      * @var string
@@ -126,24 +130,9 @@ class InfoSite extends BaseEntity
     private $pb_des_toit;
 
     /**
-     * @var string
-     */
-    private $pb_des_toit_precision;
-
-    /**
      * @var integer
      */
     private $pb_des_couvrement;
-
-    /**
-     * @var integer
-     */
-    private $pb_des_baie;
-
-    /**
-     * @var string
-     */
-    private $pb_des_baie_precision;
 
     /**
      * @var string
@@ -189,7 +178,7 @@ class InfoSite extends BaseEntity
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -212,7 +201,7 @@ class InfoSite extends BaseEntity
     /**
      * Get fk_bs_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getFkBsId()
     {
@@ -235,7 +224,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_code_ref
      *
-     * @return string
+     * @return string 
      */
     public function getPbDesCodeRef()
     {
@@ -243,26 +232,49 @@ class InfoSite extends BaseEntity
     }
 
     /**
-     * Set pb_des_denomination_locale
+     * Set pb_des_type_attribut_local
      *
-     * @param string $pbDesDenominationLocale
+     * @param integer $pbDesTypeAttributLocal
      * @return InfoSite
      */
-    public function setPbDesDenominationLocale($pbDesDenominationLocale)
+    public function setPbDesTypeAttributLocal($pbDesTypeAttributLocal)
     {
-        $this->pb_des_denomination_locale = $pbDesDenominationLocale;
+        $this->pb_des_type_attribut_local = $pbDesTypeAttributLocal;
 
         return $this;
     }
 
     /**
-     * Get pb_des_denomination_locale
+     * Get pb_des_type_attribut_local
      *
-     * @return string
+     * @return integer 
      */
-    public function getPbDesDenominationLocale()
+    public function getPbDesTypeAttributLocal()
     {
-        return $this->pb_des_denomination_locale;
+        return $this->pb_des_type_attribut_local;
+    }
+
+    /**
+     * Set pb_des_type_attribut_national
+     *
+     * @param string $pbDesTypeAttributNational
+     * @return InfoSite
+     */
+    public function setPbDesTypeAttributNational($pbDesTypeAttributNational)
+    {
+        $this->pb_des_type_attribut_national = $pbDesTypeAttributNational;
+
+        return $this;
+    }
+
+    /**
+     * Get pb_des_type_attribut_national
+     *
+     * @return string 
+     */
+    public function getPbDesTypeAttributNational()
+    {
+        return $this->pb_des_type_attribut_national;
     }
 
     /**
@@ -281,7 +293,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_nom_synononymes
      *
-     * @return string
+     * @return string 
      */
     public function getPbDesNomSynononymes()
     {
@@ -304,7 +316,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_lieudit
      *
-     * @return string
+     * @return string 
      */
     public function getPbLocLieudit()
     {
@@ -327,7 +339,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_situation
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbLocSituation()
     {
@@ -350,7 +362,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_orientation
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbLocOrientation()
     {
@@ -373,7 +385,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_visibilite
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbLocVisibilite()
     {
@@ -396,7 +408,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_accessibilite
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbLocAccessibilite()
     {
@@ -419,7 +431,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_loc_statut
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbLocStatut()
     {
@@ -442,7 +454,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_his_datation_type
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbHisDatationType()
     {
@@ -465,7 +477,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_his_datation_periode
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbHisDatationPeriode()
     {
@@ -488,7 +500,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_his_datation_exacte
      *
-     * @return string
+     * @return string 
      */
     public function getPbHisDatationExacte()
     {
@@ -511,7 +523,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_dimensions_larg
      *
-     * @return float
+     * @return float 
      */
     public function getPbDesDimensionsLarg()
     {
@@ -534,7 +546,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_dimensions_long
      *
-     * @return float
+     * @return float 
      */
     public function getPbDesDimensionsLong()
     {
@@ -557,7 +569,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_dimensions_haut
      *
-     * @return float
+     * @return float 
      */
     public function getPbDesDimensionsHaut()
     {
@@ -580,7 +592,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_dimensions_e
      *
-     * @return float
+     * @return float 
      */
     public function getPbDesDimensionsE()
     {
@@ -603,7 +615,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_dimensions_d
      *
-     * @return float
+     * @return float 
      */
     public function getPbDesDimensionsD()
     {
@@ -626,7 +638,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_environnement_proche
      *
-     * @return string
+     * @return string 
      */
     public function getPbDesEnvironnementProche()
     {
@@ -649,7 +661,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_mur_misenoeuvre
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbDesMurMisenoeuvre()
     {
@@ -672,7 +684,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_mur_revetement
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbDesMurRevetement()
     {
@@ -695,34 +707,11 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_toit
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbDesToit()
     {
         return $this->pb_des_toit;
-    }
-
-    /**
-     * Set pb_des_toit_precision
-     *
-     * @param string $pbDesToitPrecision
-     * @return InfoSite
-     */
-    public function setPbDesToitPrecision($pbDesToitPrecision)
-    {
-        $this->pb_des_toit_precision = $pbDesToitPrecision;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_des_toit_precision
-     *
-     * @return string
-     */
-    public function getPbDesToitPrecision()
-    {
-        return $this->pb_des_toit_precision;
     }
 
     /**
@@ -741,57 +730,11 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_couvrement
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbDesCouvrement()
     {
         return $this->pb_des_couvrement;
-    }
-
-    /**
-     * Set pb_des_baie
-     *
-     * @param integer $pbDesBaie
-     * @return InfoSite
-     */
-    public function setPbDesBaie($pbDesBaie)
-    {
-        $this->pb_des_baie = $pbDesBaie;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_des_baie
-     *
-     * @return integer
-     */
-    public function getPbDesBaie()
-    {
-        return $this->pb_des_baie;
-    }
-
-    /**
-     * Set pb_des_baie_precision
-     *
-     * @param string $pbDesBaiePrecision
-     * @return InfoSite
-     */
-    public function setPbDesBaiePrecision($pbDesBaiePrecision)
-    {
-        $this->pb_des_baie_precision = $pbDesBaiePrecision;
-
-        return $this;
-    }
-
-    /**
-     * Get pb_des_baie_precision
-     *
-     * @return string
-     */
-    public function getPbDesBaiePrecision()
-    {
-        return $this->pb_des_baie_precision;
     }
 
     /**
@@ -810,7 +753,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_complementaire
      *
-     * @return string
+     * @return string 
      */
     public function getPbDesComplementaire()
     {
@@ -833,7 +776,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_des_etat
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbDesEtat()
     {
@@ -856,7 +799,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_interpretation
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbInterpretation()
     {
@@ -879,7 +822,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_commentaire
      *
-     * @return string
+     * @return string 
      */
     public function getPbCommentaire()
     {
@@ -902,7 +845,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_traitement_donnees
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbTraitementDonnees()
     {
@@ -925,7 +868,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_source
      *
-     * @return integer
+     * @return integer 
      */
     public function getPbSource()
     {
@@ -948,7 +891,7 @@ class InfoSite extends BaseEntity
     /**
      * Get pb_dossiercandidature
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getPbDossiercandidature()
     {
@@ -971,7 +914,7 @@ class InfoSite extends BaseEntity
     /**
      * Get parent_site
      *
-     * @return \PNC\BaseAppBundle\Entity\Site
+     * @return \PNC\BaseAppBundle\Entity\Site 
      */
     public function getParentSite()
     {

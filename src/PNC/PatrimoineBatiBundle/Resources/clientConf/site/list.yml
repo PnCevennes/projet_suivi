@@ -11,8 +11,8 @@ editAccess: 5
 filtering:
     limit: 200
     fields:
-        -   name: "bs_type_id"
-            label: "Dénomination"
+        -   name: "pb_des_type_attribut_local"
+            label: "Dénomination locale"
             type: select
             thesaurusID: 101
 fields:
@@ -32,11 +32,19 @@ fields:
             primary: true
             visible: true
             style: xl
-    -   name: typeLieu
-        label: Denomination
+    -   name: typeDenominationLocal
+        label: Dénomination locale
         type: text
         filter:
-            denomitation: text
+            typeDenominationLocal: text
+        options:
+            visible: true
+            style: xl
+    -   name: pbDesTypeAttributNational
+        label: Dénomination nationale
+        type: text
+        filter:
+            pbDesTypeAttributNational: text
         options:
             visible: true
             style: xl
