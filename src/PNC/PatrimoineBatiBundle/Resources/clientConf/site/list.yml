@@ -9,7 +9,7 @@ mapConfig: "js/resources/chiro_site.json"
 mapSize: large
 editAccess: 5
 filtering:
-    limit: 200
+    limit: 2000
     fields:
         -   name: "pb_des_type_attribut_local"
             label: "Dénomination locale"
@@ -46,8 +46,17 @@ fields:
         filter:
             pbDesTypeAttributNational: text
         options:
-            visible: true
+            visible: false
             style: xl
+    -   name: commune
+        label: Commune
+        type: text
+        filter:
+            commune: text
+        options:
+            primary: true
+            visible: true
+            style: xs
     -   name: nomObservateur
         label: Observateur
         type: text

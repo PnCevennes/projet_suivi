@@ -36,3 +36,5 @@ PNC\PatrimoineBatiBundle\Entity\SiteView:
             type: text
         pb_des_type_attribut_national:
             type: text
+        commune:
+            type: text

@@ -37,7 +37,8 @@ class PbSitesService{
             'bsTypeId'=>null,
             'pbDesTypeAttributNational'=>null,
             'typeDenominationLocal'=>null,
-            'geom'=>null
+            'geom'=>null,
+            'commune'=>null
         );
 
         $entity = 'PNCPatrimoineBatiBundle:SiteView';

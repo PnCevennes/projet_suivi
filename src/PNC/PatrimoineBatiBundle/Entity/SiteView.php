@@ -79,6 +79,11 @@ class SiteView
      */
     private $pb_des_type_attribut_national;
 
+    /**
+     * @var string
+     */
+    private $commune;
+
 
     /**
      * Get id
@@ -387,5 +392,28 @@ class SiteView
     public function getPbDesTypeAttributNational()
     {
         return $this->pb_des_type_attribut_national;
+    }
+
+    /**
+     * Set commune
+     *
+     * @param string $commune
+     * @return SiteView
+     */
+    public function setCommune($commune)
+    {
+        $this->commune = $commune;
+
+        return $this;
+    }
+
+    /**
+     * Get commune
+     *
+     * @return string 
+     */
+    public function getCommune()
+    {
+        return $this->commune;
     }
 }
