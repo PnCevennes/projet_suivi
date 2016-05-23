@@ -32,9 +32,9 @@ groups:
                 options:
                     ref: userId
             -   name: pbDesCodeRef
-                label: "Référence"
+                label: "Référence (Mérimée)"
                 type: string
-                help: Référence du site
+                help: Référence du site dans la base mérimée
             -   name: pbDossiercandidature
                 label: Dossier de candidature
                 help: "L'élément est-il présent dans le dossier de candidature UNESCO"
