@@ -62,6 +62,7 @@ INSERT INTO bib_unites (nom_unite, adresse_unite, cp_unite, ville_unite, tel_uni
 -- Data for Name: t_applications; Type: TABLE DATA; Schema: utilisateurs; Owner: geonatuser
 -- 
 INSERT INTO t_applications (id_application, nom_application, desc_application) VALUES (100, 'application chiro', '');
+INSERT INTO t_applications (id_application, nom_application, desc_application) VALUES (150, 'patrimoine bati', '');
 
 -- 
 -- TOC entry 3255 (class 0 OID 17445)
@@ -76,13 +77,16 @@ INSERT INTO t_roles (groupe, id_role, identifiant, nom_role, prenom_role, desc_r
 -- Data for Name: cor_role_droit_application; Type: TABLE DATA; Schema: utilisateurs; Owner: geonatuser
 -- 
 INSERT INTO cor_role_droit_application (id_role, id_droit, id_application) VALUES (1, 6, 100);
+INSERT INTO cor_role_droit_application (id_role, id_droit, id_application) VALUES (1, 6, 150);
 -- 
 -- TOC entry 3279 (class 0 OID 17845)
 -- Dependencies: 263
 -- Data for Name: t_menus; Type: TABLE DATA; Schema: utilisateurs; Owner: geonatuser
 -- 
-INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (1000001, 'chiro - Observateurs', 'listes des observateurs faune', 100);
-INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (1000004, 'chiro - Validateurs', 'Liste des observateurs flore', 100);
+INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (1000001, 'chiro - Observateurs', 'listes des observateurs chiro', 100);
+INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (1000004, 'chiro - Validateurs', 'Liste des observateurs chiro', 100);
+INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (1000006, 'patrimoine bati - observateurs', 'Liste des observateurs', 150);
+-- 
 -- 
 -- TOC entry 3253 (class 0 OID 17437)
 -- Dependencies: 186
@@ -90,6 +94,7 @@ INSERT INTO t_menus (id_menu, nom_menu, desc_menu, id_application) VALUES (10000
 -- 
 INSERT INTO cor_role_menu (id_role, id_menu) VALUES (1, 1000001);
 INSERT INTO cor_role_menu (id_role, id_menu) VALUES (1, 1000004);
+INSERT INTO cor_role_menu (id_role, id_menu) VALUES (1, 1000006);
 -- 
 -- TOC entry 3254 (class 0 OID 17440)
 -- Dependencies: 187
