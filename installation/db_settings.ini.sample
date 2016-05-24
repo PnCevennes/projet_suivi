@@ -20,3 +20,11 @@ user_pg_pass=userpass
 
 #superuser de la base geonaturedb
 admin_pg_pass=adminpass
+
+
+#Base utilisateur
+restaure_user_db=true
+usr_host=localhost
+usr_db_name=usershubdb
+usr_user=usershubadmin
+usr_pass=monpassachanger

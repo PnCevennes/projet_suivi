@@ -42,15 +42,27 @@ then
 	
 	echo "Création de la base..."
 	sudo -n -u postgres -s createdb -O $user_pg $db_name
-
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS POSTGIS;"
+    
+    #Traitement des utilisateurs
+    if $restaure_user_db
+    then
+       	echo "Restauration de la base utilisateur"
+        export PGPASSWORD=$usr_pass;pg_dump --host $usr_host --port 5432 --username $usr_user --format custom --blobs --file "/tmp/backup_utilisateur_schema.custom" --schema "utilisateurs" $usr_db_name
+        export PGPASSWORD=$user_pg_pass;pg_restore -h $host -U $user_pg -d $db_name /tmp/backup_utilisateur_schema.custom &>> log/output_user.log
+    else
+       	echo "Restauration du schéma utilisateur"  
+	    export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/schema_utilisateurs_suivis.sql  &>> log/install_db.log
+	    export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/utilisateurs_projet_suivis.sql  &>> log/install_db.log
+    fi
+    
 	echo "Création de la structure de la base de données..."
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/schema_projet_suivis.sql  &> log/install_db.log
 
 
-	echo "Insertion des données de vocabulaire et des utilisateurs..."
+	echo "Insertion des données de vocabulaire..."
 	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/data_projet_suivis.sql  &>> log/install_db.log
-	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name -f scripts/utilisateurs_projet_suivis.sql  &>> log/install_db.log
-
+	
 
 	echo "Décompression des fichiers du taxref..."
 	cd data/inpn
@@ -60,13 +72,13 @@ then
 	echo "Insertion  des données taxonomiques de l'inpn... (cette opération peut être longue)"
 	DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 	sed -i "s#PATH_TO_DIR#${DIR}#g" scripts/import_data_inpn_v8.sql
-	export PGPASSWORD=$user_pg_pass;psql -h $host -U $user_pg -d $db_name  -f scripts/import_data_inpn_v8.sql &>> log/install_db.log
+	export PGPASSWORD=$admin_pg_pass;psql -h $host -U $admin_pg -d $db_name  -f scripts/import_data_inpn_v8.sql &>> log/install_db.log
 	
 	sed -i "s#${DIR}#PATH_TO_DIR#g" scripts/import_data_inpn_v8.sql
 
 	find data/inpn -type f -not -name '*.zip' | xargs rm
 
 	echo "Insertion  des données géographiques : communes de france"
-	pg_restore -h $host -U $user_pg -d $db_name  data/layers/data_communes_projet_suivis.dump  &>> log/install_db.log
+	export PGPASSWORD=$user_pg_pass;pg_restore -h $host -U $user_pg -d $db_name  data/layers/data_communes_projet_suivis.dump  &>> log/install_db.log
 
 fi
