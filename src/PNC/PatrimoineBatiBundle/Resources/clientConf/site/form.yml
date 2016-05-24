@@ -63,7 +63,7 @@ groups:
                 type: xhr
                 options:
                     required: false
-                    url: users/name/150/2
+                    url: users/menu/1000005
                     reverseurl: users/id
             -   name: bsDate
                 label: Date d'enquête
