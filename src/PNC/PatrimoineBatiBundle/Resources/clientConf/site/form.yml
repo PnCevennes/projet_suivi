@@ -31,15 +31,6 @@ groups:
                 type: hidden
                 options:
                     ref: userId
-            -   name: pbDesCodeRef
-                label: "Référence (Mérimée)"
-                type: string
-                help: Référence du site dans la base mérimée
-            -   name: pbDossiercandidature
-                label: Dossier de candidature
-                help: "L'élément est-il présent dans le dossier de candidature UNESCO"
-                type: bool
-                default: true
             -   name: bsNom
                 label: Nom
                 type: string
@@ -58,6 +49,15 @@ groups:
                 help: Type de lieu
                 options:
                     required: true
+            -   name: pbDesCodeRef
+                label: "Référence (Mérimée)"
+                type: string
+                help: Référence du site dans la base mérimée
+            -   name: pbDossiercandidature
+                label: Dossier de candidature
+                help: "L'élément est-il présent dans le dossier de candidature UNESCO"
+                type: bool
+                default: true
             -   name: bsObrId
                 label: Observateur
                 type: xhr
@@ -119,31 +119,31 @@ groups:
     -   name: Description
         fields:
               - name: pbDesDimensionsLarg
-                label: "Largeur"
+                label: "Largeur (m)"
                 type: num
                 options:
                     min: 0
                     step: 0.1
               - name: pbDesDimensionsLong
-                label: "Longueur"
+                label: "Longueur (m)"
                 type: num
                 options:
                     min: 0
                     step: 0.1
               - name: pbDesDimensionsHaut
-                label: "Hauteur"
+                label: "Hauteur (m)"
                 type: num
                 options:
                     min: 0
                     step: 0.1
               - name: pbDesDimensionsE
-                label: "Epaisseur"
+                label: "Epaisseur (m)"
                 type: num
                 options:
                     min: 0
                     step: 0.1
               - name: pbDesDimensionsD
-                label: "Dimension D"
+                label: "Diamètre (m)"
                 type: num
                 options:
                     min: 0

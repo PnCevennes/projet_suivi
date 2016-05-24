@@ -96,19 +96,19 @@ groups:
         glyphicon: glyphicon-info-sign
         fields:
             - name: pbDesDimensionsLarg
-              label: "Largeur"
+              label: "Largeur (m)"
               type: num
             - name: pbDesDimensionsLong
-              label: "Longueur"
+              label: "Longueur (m)"
               type: num
             - name: pbDesDimensionsHaut
-              label: "Hauteur"
+              label: "Hauteur (m)"
               type: num
             - name: pbDesDimensionsE
-              label: "Epaisseur"
+              label: "Epaisseur (m)"
               type: num
             - name: pbDesDimensionsD
-              label: "Dimension D"
+              label: "Diamètre (m)"
               type: num
             - name: pbDesEnvironnementProche
               label: "Environnement proche"
