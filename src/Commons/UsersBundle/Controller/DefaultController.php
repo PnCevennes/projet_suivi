@@ -16,7 +16,7 @@ class DefaultController extends Controller
     // path: POST /users/login
     public function loginAction(Request $req){
         $userData = json_decode($req->getContent(), true);
-        
+
 
         //FIXME usage d'une requête native : revoir mapping entité
 
@@ -43,7 +43,7 @@ class DefaultController extends Controller
 
         // génération d'un token
         $token = md5(uniqid());
-        
+
         $resp = new JsonResponse($out);
         $resp->headers->setCookie(new Cookie('token', $token));
         $req->getSession()->set('token', $token);
@@ -73,6 +73,29 @@ class DefaultController extends Controller
             $out[] = array('id'=>$user->getIdRole(), 'label'=>$user->getNomComplet());
         }
         return new JsonResponse($out);
+    }
+
+    // path: GET /users/name/{menu}/{droit}/{q}
+    // retourne la liste des utilisateurs filtrée sur le nom et le niveau de droits
+    public function getUserByMenuAction($menu, $q){
+
+        $db = $this->getDoctrine()->getManager()->getConnection();
+        $sql = "SELECT id_role, nom_complet FROM utilisateurs.v_userslist_forall_menu WHERE id_menu=:id AND nom_complet ilike :q";
+        $sql .= " ORDER BY nom_complet LIMIT 40";
+        $qr = $db->prepare($sql);
+        //$qr->bindValue('id', $menu);
+        //$qr->bindValue('menu', $menu);
+        $qr->execute(array(":id" => $menu, ":q" => $q.'%'));
+
+        $users = $qr->fetchAll();
+        foreach($users as $user){
+            $out[] = array(
+                'id'=>$user['id_role'],
+                'label'=>$user['nom_complet']
+            );
+        }
+        if ($out) return new JsonResponse($out);
+        return new JsonResponse(array('id'=>'', 'label'=>''), 404);
     }
 
     // path: GET /users/id/{id}

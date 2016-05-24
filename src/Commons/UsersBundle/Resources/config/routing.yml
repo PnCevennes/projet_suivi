@@ -26,3 +26,9 @@ commons_users_getbyid:
     defaults: { _controller: CommonsUsersBundle:Default:getUserById }
     requirements:
         _method: GET
+
+commons_users_getbymenu:
+    path: /menu/{menu}/{q}
+    defaults: { _controller: CommonsUsersBundle:Default:getUserByMenu }
+    requirements:
+        _method: GET
