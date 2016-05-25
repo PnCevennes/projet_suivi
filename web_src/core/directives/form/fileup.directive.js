@@ -37,8 +37,9 @@ angular.module('FormDirectives').directive('fileup', function(){
                 };
 
                 $scope.upload = function(files){
+                    $scope.options.accepted.map(function(item) { return item.toLowerCase();});
                     angular.forEach(files, function(item){
-                        var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length);
+                        var ext = item.name.slice(item.name.lastIndexOf('.')+1, item.name.length).toLowerCase();
                         if($scope.options.accepted && $scope.options.accepted.indexOf(ext)>-1){
                             if(item.size < maxSize){
                                 $scope.lock = true;
@@ -47,7 +48,7 @@ angular.module('FormDirectives').directive('fileup', function(){
                                     file: item,
                                     })
                                     .progress(function(evt){
-                                        $scope.progress = parseInt(100.0 * evt.loaded / evt.total);    
+                                        $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
                                     })
                                     .success(function(data){
                                         $scope.fileid = data.id;
