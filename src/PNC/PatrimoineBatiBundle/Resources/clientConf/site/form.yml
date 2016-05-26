@@ -36,7 +36,7 @@ groups:
                 type: string
                 help: nom du site
                 options:
-                    minLength: 5
+                    minLength: 1
                     maxLength: 250
             -   name: pbDesNomSynononymes
                 label: Synomymes
