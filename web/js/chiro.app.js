@@ -403,23 +403,30 @@ angular.module('baseSites').controller('siteDetailController', function($scope, 
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        mapService.initialize($scope.schema.mapConfig).then(function(){
-            mapService.loadData($scope._appName + '/site').then(
-                function(){
-                    mapService.selectItem($routeParams.id);
-                }
-                );
-            $scope.title = data.bsNom;
-        });
+        if ($scope.schema) $scope.initDisplay(data);
+        else {
+          configServ.getUrl($scope.schemaUrl, function(schema){
+            $scope.setSchema(schema);
+            $scope.initDisplay(data);
+          });
+        }
     });
 
     $scope.setSchema = function(schema){
         $scope.schema = schema;
     };
 
-    $timeout(function(){
-        configServ.getUrl($scope.schemaUrl, $scope.setSchema);
-    }, 0);
+    $scope.initDisplay = function(data){
+      mapService.initialize($scope.schema.mapConfig).then(function(){
+          mapService.loadData($scope._appName + '/site').then(
+              function(){
+                  mapService.selectItem($routeParams.id);
+              }
+              );
+          $scope.title = data.bsNom;
+      });
+    }
+
 });
 
 },{}],12:[function(require,module,exports){
@@ -478,7 +485,8 @@ angular.module('baseSites').controller('siteEditController', function($scope, $r
 /*
  * controleur pour la carte et la liste des sites
  */
-angular.module('baseSites').controller('siteListController', function($scope, $routeParams, dataServ, mapService, configServ, $loading, userServ, $q, $timeout){
+angular.module('baseSites').controller('siteListController', function($scope, $routeParams, dataServ, mapService, configServ,
+    $loading, userServ, $q, $timeout){
 
     var data = [];
     $scope._appName = $routeParams.appName;

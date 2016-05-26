@@ -12,17 +12,17 @@ angular.module('appSuiviProtocoles').controller('baseController', ['$scope', '$l
         $scope.data = resp;
 
         // FIXME DEBUG
-        configServ.put('debug', true);
+        configServ.put('debug', false);
         /*
         userServ.login('as_test', 'test');
         */
-        
+
         //configServ.put('app', $scope.data[0]);
         //$scope._appName = $scope.data[0].name;
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
-            
+
             var app = userServ.getCurrentApp();
             if(!app){
                 $location.url('apps');
@@ -64,9 +64,8 @@ angular.module('appSuiviProtocoles').controller('baseController', ['$scope', '$l
     };
 
     $scope.check = function(val){
-        return userServ.checkLevel(val); 
+        return userServ.checkLevel(val);
     };
 
     configServ.getUrl('config/apps', $scope.success);
 }]);
-

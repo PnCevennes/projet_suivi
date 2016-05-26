@@ -42,17 +42,17 @@ angular.module('appSuiviProtocoles').controller('baseController', ['$scope', '$l
         $scope.data = resp;
 
         // FIXME DEBUG
-        configServ.put('debug', true);
+        configServ.put('debug', false);
         /*
         userServ.login('as_test', 'test');
         */
-        
+
         //configServ.put('app', $scope.data[0]);
         //$scope._appName = $scope.data[0].name;
 
         $scope.$on('user:login', function(ev, user){
             $scope.user = user;
-            
+
             var app = userServ.getCurrentApp();
             if(!app){
                 $location.url('apps');
@@ -94,12 +94,11 @@ angular.module('appSuiviProtocoles').controller('baseController', ['$scope', '$l
     };
 
     $scope.check = function(val){
-        return userServ.checkLevel(val); 
+        return userServ.checkLevel(val);
     };
 
     configServ.getUrl('config/apps', $scope.success);
 }]);
-
 
 },{}],3:[function(require,module,exports){
 
@@ -1967,11 +1966,11 @@ angular.module('FormDirectives').directive('geometry', function(){
             };
 
 
-            if(!$scope.options.configUrl){
+            if(!$scope.options.mapConfig){
                 $scope.configUrl = 'js/resources/defaults.json';
             }
             else{
-                $scope.configUrl = $scope.options.configUrl;
+                $scope.configUrl = $scope.options.mapConfig;
             }
 
             var _initialize = function(){
@@ -2004,7 +2003,7 @@ angular.module('FormDirectives').directive('geometry', function(){
                     mapService.getMap().addControl($scope.controls);
 
                     /*
-                     * affichage coords curseur en edition 
+                     * affichage coords curseur en edition
                      * TODO confirmer le maintien
                      */
                     coordsDisplay = L.control({position: 'bottomleft'});
@@ -2045,7 +2044,7 @@ angular.module('FormDirectives').directive('geometry', function(){
                     $timeout(function() {
                         mapService.getMap().invalidateSize();
                     }, 0 );
-                
+
                 });
             };
 
@@ -2084,7 +2083,6 @@ angular.module('FormDirectives').directive('geometry', function(){
         }],
     };
 });
-
 
 },{}],30:[function(require,module,exports){
 /**

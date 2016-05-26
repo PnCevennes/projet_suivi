@@ -52,11 +52,11 @@ angular.module('FormDirectives').directive('geometry', function(){
             };
 
 
-            if(!$scope.options.configUrl){
+            if(!$scope.options.mapConfig){
                 $scope.configUrl = 'js/resources/defaults.json';
             }
             else{
-                $scope.configUrl = $scope.options.configUrl;
+                $scope.configUrl = $scope.options.mapConfig;
             }
 
             var _initialize = function(){
@@ -89,7 +89,7 @@ angular.module('FormDirectives').directive('geometry', function(){
                     mapService.getMap().addControl($scope.controls);
 
                     /*
-                     * affichage coords curseur en edition 
+                     * affichage coords curseur en edition
                      * TODO confirmer le maintien
                      */
                     coordsDisplay = L.control({position: 'bottomleft'});
@@ -130,7 +130,7 @@ angular.module('FormDirectives').directive('geometry', function(){
                     $timeout(function() {
                         mapService.getMap().invalidateSize();
                     }, 0 );
-                
+
                 });
             };
 
@@ -169,4 +169,3 @@ angular.module('FormDirectives').directive('geometry', function(){
         }],
     };
 });
-

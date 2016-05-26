@@ -1,7 +1,8 @@
 /*
  * controleur pour la carte et la liste des sites
  */
-angular.module('baseSites').controller('siteListController', function($scope, $routeParams, dataServ, mapService, configServ, $loading, userServ, $q, $timeout){
+angular.module('baseSites').controller('siteListController', function($scope, $routeParams, dataServ, mapService, configServ,
+    $loading, userServ, $q, $timeout){
 
     var data = [];
     $scope._appName = $routeParams.appName;
