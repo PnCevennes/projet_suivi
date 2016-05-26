@@ -2,9 +2,9 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.4.6
--- Dumped by pg_dump version 9.4.6
--- Started on 2016-05-23 17:26:27 CEST
+-- Dumped from database version 9.3.13
+-- Dumped by pg_dump version 9.3.13
+-- Started on 2016-05-26 14:22:41 CEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,8 +16,8 @@ SET client_min_messages = warning;
 SET search_path = lexique, pg_catalog;
 
 --
--- TOC entry 3478 (class 0 OID 0)
--- Dependencies: 214
+-- TOC entry 3462 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: base_application_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
@@ -25,8 +25,8 @@ SELECT pg_catalog.setval('base_application_id_seq', 1, false);
 
 
 --
--- TOC entry 3479 (class 0 OID 0)
--- Dependencies: 215
+-- TOC entry 3463 (class 0 OID 0)
+-- Dependencies: 223
 -- Name: lexique_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
@@ -34,8 +34,8 @@ SELECT pg_catalog.setval('lexique_id_seq', 1, false);
 
 
 --
--- TOC entry 3480 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 3464 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: observateur_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
@@ -43,8 +43,8 @@ SELECT pg_catalog.setval('observateur_id_seq', 1, false);
 
 
 --
--- TOC entry 3466 (class 0 OID 17946)
--- Dependencies: 209
+-- TOC entry 3450 (class 0 OID 35969)
+-- Dependencies: 212
 -- Data for Name: t_thesaurus; Type: TABLE DATA; Schema: lexique; Owner: dbadmin
 --
 
@@ -150,6 +150,10 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 106	102	N	Nord	\N	105	102.001
 83	101	DENOMINATION	Dénomination	\N	0	101
 115	104	TYPE_ROCHE	Type de roche	\N	0	104
+87	101	JAS	Jasse	\N	84	101.001.003
+86	101	CAZ	Cazelle, Capitelle, Chazelle	\N	84	101.001.002
+98	101	CF	Cave à fromages	\N	93	101.002.005
+85	101	FI	Ferme	\N	84	101.001.001
 110	103	VISIBILITE	Visibilité	\N	0	103
 111	103	IV	Intégralement visible (intérieur/extérieur)	\N	110	103.001
 112	103	EVVI	Seul l'exterieur est visible, proximité immédiate	\N	110	103.002
@@ -243,6 +247,10 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 202	114	CREP	Crépi	\N	301	114.002.003.001
 205	114	ROC	Rocaille	\N	198	114.002.004
 148	111	SOURCE_PB	Sources	\N	0	111
+113	103	EVVE	Seul l'exterieur est visible, vue éloignée	\N	110	103.003
+149	111	EICC	EICC	Entente Causse Cévennes	148	111.001
+151	111	PnC	PnC	Parc National des Cévennes	148	111.003
+150	111	PnRGC	PNR GC	PnR des Grands Causses	148	111.002
 235	116	\N	Couvrement	\N	0	116
 207	115	\N	Bitume	\N	206	115.001
 208	115	\N	Ciment en couverture	\N	206	115.002
@@ -300,6 +308,7 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 261	117	TRADORAL	Daté par tradition orale	\N	258	117.003
 262	117	TRAHISTO	Daté par travaux historiques	\N	258	117.004
 263	117	EXACTE	Porte la date	\N	258	117.005
+290	111	FC48	FC48	Fédération de chasse de Lozère	148	111.004
 266	109	ANTIQUITE	Antiquité	\N	143	109.003
 265	109	PROTOH	Protohistoire	\N	143	109.002
 264	109	PREHIS	Préhistoire	\N	143	109.001
@@ -312,7 +321,6 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 273	109	XIX	XIX	\N	269	109.006.004
 274	109	XX	XX	\N	269	109.006.005
 275	109	XXI	XXI	\N	269	109.006.006
-276	101	MONJ	Montjoie	\N	93	101.002.009
 277	101	LAV	Lavogne, Lavagne	\N	93	101.002.010
 278	101	BANC	Bancels, Traversiers	\N	103	101.003.003
 279	101	BEAL	Béal	\N	103	101.003.004
@@ -320,16 +328,9 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 281	101	CALA	Calade	\N	103	101.003.006
 282	101	PLFOI	Place de foire	\N	84	101.001.009
 283	101	PUI	Puit	\N	93	101.002.011
-85	101	FI	Ferme	\N	84	101.001.001
 95	101	BD	Borne de délimitation	\N	93	101.002.002
 99	101	TC	Toit-citerne	\N	93	101.002.006
-87	101	JAS	Jasse	\N	84	101.001.003
-86	101	CAZ	Cazelle, Capitelle, Chazelle	\N	84	101.001.002
-98	101	CF	Cave à fromages	\N	93	101.002.005
-113	103	EVVE	Seul l'exterieur est visible, vue éloignée	\N	110	103.003
-149	111	EICC	EICC	Entente Causse Cévennes	148	111.001
-151	111	PnC	PnC	Parc National des Cévennes	148	111.003
-150	111	PnRGC	PNR GC	PnR des Grands Causses	148	111.002
+276	101	MONJ	Montjoie	\N	93	101.002.009
 284	7	PatrimoineBati	Patrimoine bati	\N	7	007.008
 285	117	OBSERVATION	Daté par observation	\N	258	117.006
 286	109	XIX-1	1ere moitié du XIX	\N	273	109.006.004.001
@@ -340,8 +341,8 @@ COPY t_thesaurus (id, id_type, code, libelle, description, fk_parent, hierarchie
 
 
 --
--- TOC entry 3473 (class 0 OID 18841)
--- Dependencies: 261
+-- TOC entry 3457 (class 0 OID 101035)
+-- Dependencies: 262
 -- Data for Name: patrimoine_bati_synonymes; Type: TABLE DATA; Schema: lexique; Owner: dbadmin
 --
 
@@ -358,7 +359,10 @@ COPY patrimoine_bati_synonymes (id, type, denomination_locale, denomination_nati
 13	Elements spécifiques	Clocher de tourmente	Clocher	101
 26	Zones	Hameau	Hameau	103
 25	Zones	Clapas	Amoncellement de pierres lié à l'épierrage	104
-17	Elements spécifiques	Montjoie	Borne de délimitation	276
+7	Elements communs	Jasse	Bergerie	87
+2	Elements communs	Cazelle, Capitelle, Chazelle	Cabane	86
+11	Elements spécifiques	Cave à fromages	Séchoir à fromage 	98
+5	Elements communs	Ferme	Ferme	85
 16	Elements spécifiques	Lavogne, Lavagne	Abreuvoir	277
 21	Zones	Bancels, Traversiers	Terrasses agricoles	278
 22	Zones	Béal	Canal	279
@@ -366,18 +370,15 @@ COPY patrimoine_bati_synonymes (id, type, denomination_locale, denomination_nati
 24	Zones	Calade	Pavage	281
 9	Elements communs	Place de foire	Place de foire	282
 20	Elements spécifiques	Puit	Puit	283
-5	Elements communs	Ferme	Ferme	85
-10	Elements spécifiques	Borne de délimitation	Borne de délimitation	95
+10	Elements spécifiques	Borne de délimitation 	Borne de délimitation	95
 19	Elements spécifiques	Toit-citerne	Réservoir	99
-7	Elements communs	Jasse	Bergerie	87
-2	Elements communs	Cazelle, Capitelle, Chazelle	Cabane	86
-11	Elements spécifiques	Cave à fromages	Séchoir à fromage 	98
+17	Elements spécifiques	Montjoie	Borne de délimitation	276
 \.
 
 
 --
--- TOC entry 3481 (class 0 OID 0)
--- Dependencies: 260
+-- TOC entry 3465 (class 0 OID 0)
+-- Dependencies: 261
 -- Name: patrimoine_bati_synonymes_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
@@ -385,24 +386,24 @@ SELECT pg_catalog.setval('patrimoine_bati_synonymes_id_seq', 26, true);
 
 
 --
--- TOC entry 3482 (class 0 OID 0)
--- Dependencies: 217
+-- TOC entry 3466 (class 0 OID 0)
+-- Dependencies: 225
 -- Name: t_thesaurus_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
-SELECT pg_catalog.setval('t_thesaurus_id_seq', 289, true);
+SELECT pg_catalog.setval('t_thesaurus_id_seq', 290, true);
 
 
 --
--- TOC entry 3483 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 3467 (class 0 OID 0)
+-- Dependencies: 226
 -- Name: taxonomie_id_seq; Type: SEQUENCE SET; Schema: lexique; Owner: dbadmin
 --
 
 SELECT pg_catalog.setval('taxonomie_id_seq', 1, false);
 
 
--- Completed on 2016-05-23 17:28:42 CEST
+-- Completed on 2016-05-26 14:22:42 CEST
 
 --
 -- PostgreSQL database dump complete
