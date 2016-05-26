@@ -9,23 +9,23 @@ angular.module('baseSites').controller('siteListController', function($scope, $r
     $scope.data_url = $routeParams.appName + '/site';
     $scope.data = [];
 
-    
+
     /*
      * Spinner
      * */
-    
+
     $loading.start('spinner-1');
     var dfd = $q.defer();
     var promise = dfd.promise;
     promise.then(function(result) {
         $loading.finish('spinner-1');
     });
-    
+
     $scope.setData = function(resp, deferred){
         $scope.items = resp;
-        mapService.initialize('js/resources/chiro_site.json').then(function(){
+        mapService.initialize($scope.schema.mapConfig).then(function(){
             $scope.data = resp.map(function(item){
-                mapService.addGeom(item); 
+                mapService.addGeom(item);
                 return item.properties;
             });
         });
@@ -46,4 +46,3 @@ angular.module('baseSites').controller('siteListController', function($scope, $r
     }, 0);
 
 });
-

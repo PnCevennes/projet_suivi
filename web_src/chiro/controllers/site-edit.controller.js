@@ -1,7 +1,8 @@
 /*
  * controleur pour l'édition d'un site
  */
-angular.module('baseSites').controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
+angular.module('baseSites').controller('siteEditController', function($scope, $rootScope, $routeParams, $location,
+    $filter, dataServ, mapService, configServ, userMessages, $timeout){
 
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/site/form';
@@ -47,4 +48,3 @@ angular.module('baseSites').controller('siteEditController', function($scope, $r
         $location.url($scope._appName + '/site/');
     });
 });
-

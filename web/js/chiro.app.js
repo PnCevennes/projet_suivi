@@ -394,7 +394,7 @@ require('./inventaire-edit.controller.js');
 /*
  * controleur pour l'affichage basique des détails d'un site
  */
-angular.module('baseSites').controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ, mapService){
+angular.module('baseSites').controller('siteDetailController', function($scope, $rootScope, $routeParams, configServ, userServ, mapService, $timeout){
 
     $scope._appName = $routeParams.appName;
     $scope.schemaUrl = $scope._appName + '/config/site/detail';
@@ -403,7 +403,7 @@ angular.module('baseSites').controller('siteDetailController', function($scope, 
     $scope.updateUrl = '#/' + $scope._appName + '/edit/site/' + $routeParams.id;
 
     $scope.$on('display:init', function(ev, data){
-        mapService.initialize('js/resources/chiro_site.json').then(function(){
+        mapService.initialize($scope.schema.mapConfig).then(function(){
             mapService.loadData($scope._appName + '/site').then(
                 function(){
                     mapService.selectItem($routeParams.id);
@@ -413,14 +413,21 @@ angular.module('baseSites').controller('siteDetailController', function($scope, 
         });
     });
 
-});
+    $scope.setSchema = function(schema){
+        $scope.schema = schema;
+    };
 
+    $timeout(function(){
+        configServ.getUrl($scope.schemaUrl, $scope.setSchema);
+    }, 0);
+});
 
 },{}],12:[function(require,module,exports){
 /*
  * controleur pour l'édition d'un site
  */
-angular.module('baseSites').controller('siteEditController', function($scope, $rootScope, $routeParams, $location, $filter, dataServ, mapService, configServ, userMessages){
+angular.module('baseSites').controller('siteEditController', function($scope, $rootScope, $routeParams, $location,
+    $filter, dataServ, mapService, configServ, userMessages, $timeout){
 
     $scope._appName = $routeParams.appName;
     $scope.configUrl = $scope._appName + '/config/site/form';
@@ -467,7 +474,6 @@ angular.module('baseSites').controller('siteEditController', function($scope, $r
     });
 });
 
-
 },{}],13:[function(require,module,exports){
 /*
  * controleur pour la carte et la liste des sites
@@ -480,23 +486,23 @@ angular.module('baseSites').controller('siteListController', function($scope, $r
     $scope.data_url = $routeParams.appName + '/site';
     $scope.data = [];
 
-    
+
     /*
      * Spinner
      * */
-    
+
     $loading.start('spinner-1');
     var dfd = $q.defer();
     var promise = dfd.promise;
     promise.then(function(result) {
         $loading.finish('spinner-1');
     });
-    
+
     $scope.setData = function(resp, deferred){
         $scope.items = resp;
-        mapService.initialize('js/resources/chiro_site.json').then(function(){
+        mapService.initialize($scope.schema.mapConfig).then(function(){
             $scope.data = resp.map(function(item){
-                mapService.addGeom(item); 
+                mapService.addGeom(item);
                 return item.properties;
             });
         });
@@ -517,7 +523,6 @@ angular.module('baseSites').controller('siteListController', function($scope, $r
     }, 0);
 
 });
-
 
 },{}],14:[function(require,module,exports){
 /*

@@ -5,7 +5,7 @@ createUrl: "#/patrimoinebati/edit/site/"
 editUrl: "#/patrimoinebati/edit/site/"
 detailUrl: "#/patrimoinebati/site/"
 dataUrl: "patrimoinebati/site"
-mapConfig: "js/resources/chiro_site.json"
+mapConfig: "js/resources/patrimoinebati_site.json"
 mapSize: large
 editAccess: 5
 filtering:

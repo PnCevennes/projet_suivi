@@ -8,6 +8,7 @@ deleteSuccessMessage: "Suppression réussie"
 formDeleteRedirectUrl: "g/patrimoinebati/site/list"
 formCreateCancelUrl: "g/patrimoinebati/site/list"
 deleteAccess: 5
+mapConfig: "js/resources/patrimoinebati_site.json"
 groups:
     -   name: Localisation
         fields:

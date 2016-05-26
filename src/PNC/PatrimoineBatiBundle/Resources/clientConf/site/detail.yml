@@ -1,5 +1,5 @@
 dataUrl: "patrimoinebati/site/"
-mapConfig: "js/resources/chiro_site.json"
+mapConfig: "js/resources/patrimoinebati_site.json"
 mapData: "patrimoinebati/site"
 mapSize: large
 editAccess: 3
