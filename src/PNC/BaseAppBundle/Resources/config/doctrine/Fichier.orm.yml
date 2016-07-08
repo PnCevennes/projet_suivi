@@ -26,4 +26,5 @@ PNC\BaseAppBundle\Entity\Fichier:
         description:
             type: string
             length: 1000
-
+        deleted:
+            type: boolean

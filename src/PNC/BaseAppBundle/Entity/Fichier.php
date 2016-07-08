@@ -5,7 +5,7 @@ namespace PNC\BaseAppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Fichiers
+ * Fichier
  */
 class Fichier
 {
@@ -44,6 +44,11 @@ class Fichier
      */
     private $description;
 
+    /**
+     * @var boolean
+     */
+    private $deleted;
+
 
     /**
      * Get id
@@ -59,7 +64,7 @@ class Fichier
      * Set ftype
      *
      * @param string $ftype
-     * @return Fichiers
+     * @return Fichier
      */
     public function setFtype($ftype)
     {
@@ -82,7 +87,7 @@ class Fichier
      * Set id_objet
      *
      * @param integer $idObjet
-     * @return Fichiers
+     * @return Fichier
      */
     public function setIdObjet($idObjet)
     {
@@ -105,7 +110,7 @@ class Fichier
      * Set path
      *
      * @param string $path
-     * @return Fichiers
+     * @return Fichier
      */
     public function setPath($path)
     {
@@ -128,7 +133,7 @@ class Fichier
      * Set url
      *
      * @param string $url
-     * @return Fichiers
+     * @return Fichier
      */
     public function setUrl($url)
     {
@@ -151,7 +156,7 @@ class Fichier
      * Set titre
      *
      * @param string $titre
-     * @return Fichiers
+     * @return Fichier
      */
     public function setTitre($titre)
     {
@@ -174,7 +179,7 @@ class Fichier
      * Set description
      *
      * @param string $description
-     * @return Fichiers
+     * @return Fichier
      */
     public function setDescription($description)
     {
@@ -191,5 +196,28 @@ class Fichier
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Fichier
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }

@@ -80,7 +80,7 @@ class FileService{
             $deleted = true;
         }
         return array(
-            'id'=>$file_id, 
+            'id'=>$file_id,
             'fichier'=>$fich,
             'fdir'=>$fdir,
             'deleted'=>$deleted
@@ -104,7 +104,7 @@ class FileService{
             $this->record($obj_id, $fichier, $manager);
         }
         $a_effacer = array_filter(
-            $prev_files, 
+            $prev_files,
             function($x) use ($update_ids){
                 return !in_array($x->getId(), $update_ids);
             });
@@ -117,7 +117,7 @@ class FileService{
         $_manager = $manager;
 
         $repo = $this->db->getRepository('PNCBaseAppBundle:Fichier');
-        $fich = $repo->findOneById($id);
+        $fichier = $repo->findOneById($id);
 
         if(!$manager){
             $_manager = $this->db->getManager();
@@ -127,15 +127,15 @@ class FileService{
         $filename = sprintf(
             '%s/%s/%s_%s',
             $this->upload_basedir,
-            $fich->getFtype(),
-            $fich->getId(),
-            $fich->getPath()
+            $fichier->getFtype(),
+            $fichier->getId(),
+            $fichier->getPath()
         );
+        $fichier->setDeleted(true);
+        $manager->persist($fichier);
+        $manager->flush();
 
-        $_manager->remove($fich);
-        $_manager->flush();
-
-        unlink($filename);
+        #unlink($filename);
 
         if(!$manager){
             $_manager->getConnection()->commit();
@@ -159,10 +159,9 @@ class FileService{
         if(!$manager){
             $_manager->getConnection()->commit();
         }
-
     }
 
-    
+
     public function record($obj_id, $data, $manager=null){
         //fourniture ou non du manager pour une transaction globale
         $_manager = $manager;
@@ -204,10 +203,11 @@ class FileService{
         $mapping = 'PNCBaseAppBundle:Fichier';
         $schema = '../src/PNC/BaseAppBundle/Resources/config/doctrine/Fichier.orm.yml';
         $fichiers = $this->entityService->getAll(
-            $mapping, 
+            $mapping,
             array(
-                'ftype'=>$type, 
-                'id_objet'=>$obj_id
+                'ftype'=>$type,
+                'id_objet'=>$obj_id,
+                'deleted'=>false
             )
         );
         $out = array();
