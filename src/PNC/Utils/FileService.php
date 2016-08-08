@@ -145,7 +145,7 @@ class FileService{
     public function delete_all($type, $obj_id, $manager=null){
         $_manager = $manager;
         $repo = $this->db->getRepository('PNCBaseAppBundle:Fichier');
-        $files = $repo->findAll(array('id_objet'=>$obj_id, 'ftype'=>$type));
+        $files = $repo->findBy(array('id_objet'=>$obj_id, 'ftype'=>$type));
 
         if(!$manager){
             $_manager = $this->db->getManager();
@@ -195,8 +195,8 @@ class FileService{
         if(!$manager){
             $_manager->getConnection()->commit();
         }
-        return $fich->getId();
 
+        return $fich->getId();
     }
 
     public function getFichiers($type, $obj_id){
