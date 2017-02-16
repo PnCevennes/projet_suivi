@@ -84,17 +84,12 @@ class TaxonService{
 
     public function getOne($id){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
-        //$fichiers_schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObstaxonFichiers.orm.yml';
         $fichiers_schema = '../src/PNC/BaseAppBundle/Resources/config/doctrine/Fichiers.orm.yml';
         $data = $this->entityService->getOne(
             'PNCChiroBundle:ObservationTaxon', 
             array('id'=>$id)
         );
         if($data){
-            $fichiers = $this->entityService->getAll(
-                'PNCChiroBundle:ObstaxonFichiers',
-                array('cotx_id'=>$id)
-            );
             $out = $this->entityService->normalize($data, $schema);
             $out['obsTaxonFichiers'] = $this->fileService->getFichiers('chiro/obsTaxon', $id); 
             $out['indices'] = array();
