@@ -15,7 +15,7 @@ class TaxonsRepository extends EntityRepository
     public function getLike($like){
         $mgr = $this->getEntityManager();
         $like = strtolower(str_replace(' ', '% ', $like)) . '%';
-        $qr = $mgr->createQuery("SELECT o FROM PNCChiroBundle:Taxons o WHERE o.nom_complet LIKE ?1");
+        $qr = $mgr->createQuery("SELECT o FROM PNCChiroBundle:Taxons o WHERE lower(o.nom_complet) LIKE ?1");
         $qr->setParameter(1, $like);
         return $qr->getResult();
     }
