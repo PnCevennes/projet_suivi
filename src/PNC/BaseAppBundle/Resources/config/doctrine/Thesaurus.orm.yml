@@ -2,7 +2,7 @@ PNC\BaseAppBundle\Entity\Thesaurus:
     type: entity
     table: lexique.t_thesaurus
     schema: lexique
-    #repositoryClass: PNC\BaseAppBundle\Repositories\ThesaurusRepository
+    repositoryClass: PNC\BaseAppBundle\Repositories\ThesaurusRepository
     id:
         id:
             type: integer

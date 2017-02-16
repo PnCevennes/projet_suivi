@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThesaurusRepository extends EntityRepository
 {
+    public function getByHierarchy($hierarchy_id){
+        $mgr = $this->getEntityManager();
+        $qr = $mgr->createQuery("SELECT o FROM PNCBaseAppBundle:Thesaurus o WHERE o.hierarchie LIKE '".$hierarchy_id.".%' order by o.hierarchie ASC");
+        return $qr->getResult();
+    }
 }

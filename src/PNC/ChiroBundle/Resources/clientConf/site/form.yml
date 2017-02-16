@@ -37,7 +37,7 @@ groups:
             -   name: bsTypeId
                 label: Type
                 type: select
-                thesaurusID: 7
+                thesaurusHierarchyID: "007.001"
                 default: 37
                 help: Type de lieu
             -   name: bsObrId

@@ -28,4 +28,22 @@ class ThesaurusService{
         }
         return $data;
     }
+
+
+    public function get_by_hierarchy($hierarchy_id, $nullable=false){
+        $repo = $this->db->getRepository('PNCBaseAppBundle:Thesaurus');
+        $res = $repo->getByHierarchy($hierarchy_id);
+        $data = array();
+        if($nullable){
+            $data[] = array('id'=>0, 'libelle'=>'');
+        }
+        foreach($res as $elem){
+            if($elem->getFkParent() != 0){
+                $data[] = array(
+                    'id'=>$elem->getId(),
+                    'libelle'=>$elem->getLibelle());
+            }
+        }
+        return $data;
+    }
 }

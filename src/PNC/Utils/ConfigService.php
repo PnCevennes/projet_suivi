@@ -41,6 +41,10 @@ class ConfigService{
                 $field['options']['choices'] = $this->thesaurus->get_list($field['thesaurusID'], isset($field['options']['nullable'])?$field['options']['nullable']:false);
                 unset($field['thesaurusID']);
             }
+            if(isset($field['thesaurusHierarchyID'])){
+                $field['options']['choices'] = $this->thesaurus->get_by_hierarchy($field['thesaurusHierarchyID'], isset($field['options']['nullable'])?$field['options']['nullable']:false);
+                unset($field['thesaurusHierarchyID']);
+            }
         }
     }
 }
