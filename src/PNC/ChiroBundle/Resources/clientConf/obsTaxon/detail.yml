@@ -33,10 +33,6 @@ groups:
                 type: xhr
                 options:
                     url: "users/id"
-            -   name: cotxModId
-                label: "Mode d'observation"
-                type: select
-                thesaurusID: 4
             -   name: indices
                 label: Indices
                 type: multisel
@@ -70,7 +66,7 @@ groups:
                     -   Adultes
                     -   Juvéniles
                     -   Indéterminés
-                fields: 
+                fields:
                     -   name: "males"
                         label: "Mâles"
                         fields:

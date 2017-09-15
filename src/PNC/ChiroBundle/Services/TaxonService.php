@@ -63,7 +63,7 @@ class TaxonService{
 
         $res = $this->pagination->filter_request($entity, $request, $cpl);
         $data = $res['filtered'];
-        
+
         if($obsId){
             foreach($data as $item){
                 $out[] = $this->entityService->normalize($item, $schema);
@@ -72,7 +72,7 @@ class TaxonService{
         else{
             foreach($data as $item){
                 $out_item = array(
-                    'type'=>'Feature', 
+                    'type'=>'Feature',
                     'properties'=>$this->entityService->normalize($item, $schema),
                     'geometry'=>$item->getGeom()
                     );
@@ -86,12 +86,12 @@ class TaxonService{
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         $fichiers_schema = '../src/PNC/BaseAppBundle/Resources/config/doctrine/Fichiers.orm.yml';
         $data = $this->entityService->getOne(
-            'PNCChiroBundle:ObservationTaxon', 
+            'PNCChiroBundle:ObservationTaxon',
             array('id'=>$id)
         );
         if($data){
             $out = $this->entityService->normalize($data, $schema);
-            $out['obsTaxonFichiers'] = $this->fileService->getFichiers('chiro/obsTaxon', $id); 
+            $out['obsTaxonFichiers'] = $this->fileService->getFichiers('chiro/obsTaxon', $id);
             $out['indices'] = array();
             $indices = $this->entityService->getAll(
                 'PNCChiroBundle:ObstaxonIndices',
@@ -107,7 +107,7 @@ class TaxonService{
 
         return null;
     }
-    
+
     public function create($data, $db=null, $commit=true){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         if($db){
@@ -119,7 +119,7 @@ class TaxonService{
         }
 
         $tx = $this->entityService->getOne(
-            'PNCBaseAppBundle:Taxons', 
+            'PNCBaseAppBundle:Taxons',
             array('cd_nom'=>$data['cotxCdNom'])
         );
         $data['cotxNomComplet'] = $tx->getNomComplet();
@@ -142,9 +142,10 @@ class TaxonService{
                 $this->biometrieService->create($biom, $manager);
             }
         }
-
-        $this->fileService->record_files($obsTx->getId(), $data['siteFichiers'], $manager);
-
+        if (isset($data['siteFichiers'])){
+          $this->fileService->record_files($obsTx->getId(), $data['siteFichiers'], $manager);
+        }
+        
         if(!$db){
             $manager->getConnection()->commit();
         }
@@ -159,7 +160,7 @@ class TaxonService{
     public function update($id, $data){
         $schema = '../src/PNC/ChiroBundle/Resources/config/doctrine/ObservationTaxon.orm.yml';
         $tx = $this->entityService->getOne(
-            'PNCBaseAppBundle:Taxons', 
+            'PNCBaseAppBundle:Taxons',
             array('cd_nom'=>$data['cotxCdNom'])
         );
         $data['cotxNomComplet'] = $tx->getNomComplet();
@@ -227,7 +228,7 @@ class TaxonService{
 
     private function _record_indices($obsTxId, $data){
         $this->_delete_indices($obsTxId);
-        if(!$data){ 
+        if(!$data){
             return null;
         }
 
@@ -246,12 +247,10 @@ class TaxonService{
     private function _delete_indices($obsTxId){
 
         $manager = $this->db->getManager();
-        
+
         // suppression des liens existants
         $delete = $manager->getConnection()->prepare('DELETE FROM chiro.rel_observationtaxon_thesaurus_indice WHERE cotx_id=:cotxid');
         $delete->bindValue('cotxid', $obsTxId);
         $delete->execute();
     }
 }
-
-

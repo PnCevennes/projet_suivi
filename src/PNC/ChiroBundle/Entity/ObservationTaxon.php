@@ -131,11 +131,6 @@ class ObservationTaxon extends BaseEntity
     private $cotx_num_id;
 
     /**
-     * @var integer
-     */
-    private $cotx_mod_id;
-
-    /**
      * @var \DateTime
      */
     private $cotx_date_validation;
@@ -159,7 +154,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -182,7 +177,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get fk_bv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getFkBvId()
     {
@@ -205,7 +200,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_tx_presume
      *
-     * @return string 
+     * @return string
      */
     public function getCotxTxPresume()
     {
@@ -228,7 +223,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_espece_incertaine
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getCotxEspeceIncertaine()
     {
@@ -251,7 +246,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_effectif_abs
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxEffectifAbs()
     {
@@ -274,7 +269,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_male_adulte
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbMaleAdulte()
     {
@@ -297,7 +292,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_femelle_adulte
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbFemelleAdulte()
     {
@@ -320,7 +315,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_male_juvenile
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbMaleJuvenile()
     {
@@ -343,7 +338,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_femelle_juvenile
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbFemelleJuvenile()
     {
@@ -366,7 +361,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_male_indetermine
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbMaleIndetermine()
     {
@@ -389,7 +384,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_femelle_indetermine
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbFemelleIndetermine()
     {
@@ -412,7 +407,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_indetermine_adulte
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbIndetermineAdulte()
     {
@@ -435,7 +430,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_indetermine_juvenile
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbIndetermineJuvenile()
     {
@@ -458,7 +453,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nb_indetermine_indetermine
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNbIndetermineIndetermine()
     {
@@ -481,7 +476,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_obj_status_validation
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxObjStatusValidation()
     {
@@ -504,7 +499,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_commentaire
      *
-     * @return string 
+     * @return string
      */
     public function getCotxCommentaire()
     {
@@ -537,7 +532,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_cd_nom
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxCdNom()
     {
@@ -560,7 +555,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_nom_complet
      *
-     * @return string 
+     * @return string
      */
     public function getCotxNomComplet()
     {
@@ -583,7 +578,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_validateur
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxValidateur()
     {
@@ -606,7 +601,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_act_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxActId()
     {
@@ -629,7 +624,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_eff_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxEffId()
     {
@@ -652,7 +647,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_prv_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxPrvId()
     {
@@ -675,35 +670,13 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_num_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCotxNumId()
     {
         return $this->cotx_num_id;
     }
 
-    /**
-     * Set cotx_mod_id
-     *
-     * @param integer $cotxModId
-     * @return ObservationTaxon
-     */
-    public function setCotxModId($cotxModId)
-    {
-        $this->cotx_mod_id = $cotxModId;
-
-        return $this;
-    }
-
-    /**
-     * Get cotx_mod_id
-     *
-     * @return integer 
-     */
-    public function getCotxModId()
-    {
-        return $this->cotx_mod_id;
-    }
 
     /**
      * Set cotx_date_validation
@@ -721,7 +694,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get cotx_date_validation
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCotxDateValidation()
     {
@@ -744,7 +717,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get meta_create_timestamp
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getMetaCreateTimestamp()
     {
@@ -767,7 +740,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get meta_update_timestamp
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getMetaUpdateTimestamp()
     {
@@ -790,7 +763,7 @@ class ObservationTaxon extends BaseEntity
     /**
      * Get meta_numerisateur_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getMetaNumerisateurId()
     {

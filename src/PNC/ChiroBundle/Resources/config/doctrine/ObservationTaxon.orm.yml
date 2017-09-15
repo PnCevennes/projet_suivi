@@ -51,19 +51,17 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: text
         cotx_validateur:
             type: integer
-        cotx_act_id: 
+        cotx_act_id:
             type: integer
-        cotx_eff_id: 
+        cotx_eff_id:
             type: integer
-        cotx_prv_id: 
+        cotx_prv_id:
             type: integer
         cotx_num_id:
             type: integer
-        cotx_mod_id:
-            type: integer
         cotx_date_validation:
             type: date
-        meta_create_timestamp: 
+        meta_create_timestamp:
             type: date
         meta_update_timestamp:
             type: date

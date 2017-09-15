@@ -76,7 +76,7 @@ class ObsTaxonConfigController extends Controller{
 
         return new JsonResponse($out);
     }
-    
+
     // path : GET chiro/config/obstaxon/form/many
     public function getFormManyAction(){
 
@@ -115,5 +115,3 @@ class ObsTaxonConfigController extends Controller{
         return new JsonResponse($out);
     }
 }
-
-

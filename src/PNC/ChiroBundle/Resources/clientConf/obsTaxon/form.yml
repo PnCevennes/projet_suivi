@@ -2,7 +2,7 @@ editAccess: 3
 dataUrl: "chiro/obs_taxon/"
 editAccessOverride: metaNumerisateurId
 deleteAccess: 5
-deleteAccessOverride: metaNumerisateurId 
+deleteAccessOverride: metaNumerisateurId
 subSchemaAdd: 3
 subSchemaUrl: chiro/config/biometrie/form/many
 subDataRef: __biometries__
@@ -39,13 +39,6 @@ groups:
                 options:
                     editLevel: 5
                 default: 55
-            -   name: cotxModId
-                label: "Mode d'observation"
-                type: select
-                thesaurusID: 4
-                default: 0
-                options:
-                    nullable: true
             -   name: indices
                 label: Indices
                 type: multisel
@@ -84,7 +77,7 @@ groups:
                     accepted:
                         - "png"
                         - "jpg"
-            
+
     -   name: Dénombrement
         fields:
             -   name: "enum"
@@ -93,7 +86,7 @@ groups:
                     -   Adultes
                     -   Juvéniles
                     -   Indéterminés
-                fields: 
+                fields:
                     -   name: "males"
                         label: "Mâles"
                         fields:
@@ -169,7 +162,7 @@ groups:
                         -   cotxNbMaleIndetermine
                         -   cotxNbFemelleIndetermine
                         -   cotxNbIndetermineAdulte
-                        -   cotxNbIndetermineJuvenile   
+                        -   cotxNbIndetermineJuvenile
                         -   cotxNbIndetermineIndetermine
                     modifiable: false
                     min: 0
