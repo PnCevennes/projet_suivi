@@ -120,7 +120,7 @@ begin
 			NEW.bs_ref_commune = array(select a.insee_com from ref_geographique.l_communes a where st_intersects(st_transform(NEW.geom, 2154), a.geom) order by a.insee_com);
 		ELSIF(TG_TABLE_NAME = 'pr_base_visite') THEN
 			NEW.bv_ref_commune = array(select a.insee_com from ref_geographique.l_communes a where st_intersects(st_transform(NEW.geom, 2154), a.geom) order by a.insee_com);
-		END IF;	
+		END IF;
 	elsif(TG_TABLE_NAME = 'pr_base_visite') THEN
 		NEW.bv_ref_commune = (select bs_ref_commune from suivi.pr_base_site where id=NEW.site_id);
 	END IF;
@@ -169,7 +169,7 @@ BEGIN
 		) a
 		ON a.commune =c.unique_code
 		WHERE  st_intersects(geom ,st_transform(NEW.geom, 2154)));
-	
+
 	IF (TG_OP = 'INSERT') THEN
 		NEW.bs_code := new_bs_code;
 	ELSIF(TG_OP = 'UPDATE') THEN
@@ -306,7 +306,6 @@ CREATE TABLE pr_visite_observationtaxon (
     cotx_validateur integer,
     cotx_cd_nom integer,
     cotx_nom_complet character varying(255),
-    cotx_mod_id integer,
     cotx_act_id integer,
     cotx_eff_id integer,
     cotx_prv_id integer,
@@ -1883,4 +1882,3 @@ ALTER TABLE ONLY taxref_protection_especes
 --
 -- PostgreSQL database dump complete
 --
-
