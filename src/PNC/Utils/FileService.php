@@ -174,6 +174,7 @@ class FileService{
             $fich = new Fichier();
         }
 
+        if ((! $fich->getPath()) && (! isset($data['url']))) return null;
         // manager non fourni -> transaction locale
         if(!$_manager){
             $_manager = $this->db->getManager();
