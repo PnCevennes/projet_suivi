@@ -25,10 +25,10 @@ angular.module('appSuiviProtocoles').config(['$routeProvider', function($routePr
 
 angular.module('appSuiviProtocoles').config(['localStorageServiceProvider', function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('projetSuivis');
+    localStorageServiceProvider.setStorageType('sessionStorage');
 }])
 
 require('./base.controller.js');
 require('./login.controller.js');
 require('./logout.controller.js');
 require('./apps.controller.js');
-

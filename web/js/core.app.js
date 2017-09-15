@@ -128,13 +128,13 @@ angular.module('appSuiviProtocoles').config(['$routeProvider', function($routePr
 
 angular.module('appSuiviProtocoles').config(['localStorageServiceProvider', function (localStorageServiceProvider) {
     localStorageServiceProvider.setPrefix('projetSuivis');
+    localStorageServiceProvider.setStorageType('sessionStorage');
 }])
 
 require('./base.controller.js');
 require('./login.controller.js');
 require('./logout.controller.js');
 require('./apps.controller.js');
-
 
 },{"./apps.controller.js":1,"./base.controller.js":2,"./login.controller.js":8,"./logout.controller.js":9}],4:[function(require,module,exports){
 angular.module('generiques').controller('genericDetailController', [ '$scope', '$routeParams', 'configServ', 'dataServ', 'userServ', '$loading', 'mapService', '$q', '$timeout', function($scope, $routeParams, configServ, dataServ, userServ, $loading, mapService, $q, $timeout){
