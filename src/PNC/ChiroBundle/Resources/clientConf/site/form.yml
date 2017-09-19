@@ -37,7 +37,7 @@ groups:
             -   name: bsTypeId
                 label: Type
                 type: select
-                thesaurusHierarchyID: "007.001"
+                thesaurusID: 7
                 default: 37
                 help: Type de lieu
             -   name: bsObrId
@@ -61,10 +61,10 @@ groups:
             -   name: bsDescription
                 label: Description
                 type: text
-                options: 
+                options:
                     maxLength: 1000
             -   name: siteFichiers
-                label: "Fichiers joints" 
+                label: "Fichiers joints"
                 type: file
                 help: "Fichiers relatifs au site"
                 options:

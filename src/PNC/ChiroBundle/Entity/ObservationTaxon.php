@@ -126,11 +126,6 @@ class ObservationTaxon extends BaseEntity
     private $cotx_prv_id;
 
     /**
-     * @var integer
-     */
-    private $cotx_num_id;
-
-    /**
      * @var \DateTime
      */
     private $cotx_date_validation;
@@ -653,30 +648,6 @@ class ObservationTaxon extends BaseEntity
     {
         return $this->cotx_prv_id;
     }
-
-    /**
-     * Set cotx_num_id
-     *
-     * @param integer $cotxNumId
-     * @return ObservationTaxon
-     */
-    public function setCotxNumId($cotxNumId)
-    {
-        $this->cotx_num_id = $cotxNumId;
-
-        return $this;
-    }
-
-    /**
-     * Get cotx_num_id
-     *
-     * @return integer
-     */
-    public function getCotxNumId()
-    {
-        return $this->cotx_num_id;
-    }
-
 
     /**
      * Set cotx_date_validation

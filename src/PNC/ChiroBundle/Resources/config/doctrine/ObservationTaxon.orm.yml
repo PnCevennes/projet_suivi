@@ -57,8 +57,6 @@ PNC\ChiroBundle\Entity\ObservationTaxon:
             type: integer
         cotx_prv_id:
             type: integer
-        cotx_num_id:
-            type: integer
         cotx_date_validation:
             type: date
         meta_create_timestamp:
