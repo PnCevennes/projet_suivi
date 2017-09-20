@@ -4,12 +4,12 @@ createBtnLabel: Nouveau site
 createUrl: "#/chiro/edit/site/"
 editUrl: "#/chiro/edit/site/"
 detailUrl: "#/chiro/site/"
-dataUrl: "chiro/site" 
+dataUrl: "chiro/site"
 mapConfig: "js/resources/chiro_site.json"
 mapSize: large
 editAccess: 5
 filtering:
-    limit: 200
+    limit: 2000
     fields:
         -   name: "dern_obs"
             label: "Dernière observation"
@@ -26,11 +26,11 @@ filtering:
         -   name: bs_date
             label: "Création du site"
             type: date
-fields: 
-    -   name: id 
+fields:
+    -   name: id
         label: ID
         type: text
-        filter: 
+        filter:
             id: text
         options: 
             visible: false
@@ -38,7 +38,7 @@ fields:
     -   name: bsNom
         label: Nom
         type: text
-        filter: 
+        filter:
             bsNom: text
         options:
             primary: true
@@ -47,7 +47,7 @@ fields:
     -   name: bsCode
         label: Code site
         type: text
-        filter: 
+        filter:
             bsCode: text
         options:
             visible: false
@@ -76,7 +76,7 @@ fields:
             dernObs: text
         options:
             type: date
-            visible: true 
+            visible: true
             style: xs
     -   name: nbObs
         label: "Nb visites"
@@ -92,7 +92,7 @@ fields:
         thesaurusID: 7
         default: 0
         filter:
-            bsTypeId: select 
+            bsTypeId: select
         options:
             nullable: true
             visible: true
@@ -105,6 +105,3 @@ fields:
             type: bool
             visible: false
             style: l
-
-
-
