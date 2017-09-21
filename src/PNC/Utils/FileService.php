@@ -51,43 +51,6 @@ class FileService{
         }
     }
 
-    /*
-    public function remove($req, $file_id, $manager){
-        $_manager = $manager;
-        $updir = $this->upload_basedir . '/' . $req->query->get('target', '');
-        $id = substr($file_id, 0, strpos($file_id, '_'));
-        $deleted = false;
-        $repo = $this->db->getRepository('PNCBaseAppBundle:Fichier');
-        $fich = $repo->findOneById($id);
-
-        if(!$manager){
-            $_manager = $this->db->getManager();
-            $_manager->getConnection()->beginTransaction();
-        }
-
-
-        $_manager->remove($fich);
-        $_manager->flush();
-
-        if(!$manager){
-            $_manager->getConnection()->commit();
-        }
-
-        $target_directory = $req->query->get('target', '');
-        $fdir = $updir . '/' . $file_id;
-        if(file_exists($fdir)){
-            unlink($fdir);
-            $deleted = true;
-        }
-        return array(
-            'id'=>$file_id,
-            'fichier'=>$fich,
-            'fdir'=>$fdir,
-            'deleted'=>$deleted
-        );
-    }
-     */
-
     public function record_files($obj_id, $data, $manager=null){
         if(count($data) == 0) return;
         $repo = $this->db->getRepository('PNCBaseAppBundle:Fichier');
@@ -131,11 +94,18 @@ class FileService{
             $fichier->getId(),
             $fichier->getPath()
         );
-        $fichier->setDeleted(true);
-        $manager->persist($fichier);
-        $manager->flush();
+        $move_deleted = sprintf(
+          '%s/deleted/%s_%s',
+          $this->upload_basedir,
+          $fichier->getId(),
+          $fichier->getPath()
+        );
 
-        #unlink($filename);
+
+        $fichier->setDeleted(true);
+        $_manager->persist($fichier);
+        $_manager->flush();
+        copy($filename, $move_deleted);
 
         if(!$manager){
             $_manager->getConnection()->commit();
