@@ -56,6 +56,7 @@ angular.module('FormDirectives').directive('geometry', function(){
                 $scope.configUrl = 'js/resources/defaults.json';
             }
             else{
+              // $scope.configUrl = $scope.options.configUrl; A voir s'il ne faut pas mieu utiliser configUrl
                 $scope.configUrl = $scope.options.mapConfig;
             }
 
