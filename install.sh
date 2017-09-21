@@ -3,7 +3,13 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 echo $DIR
 cd $DIR
 
-cp app/config/parameters.yml.dist app/config/parameters.yml
+
+if [ ! -f "app/config/parameters.yml" ]
+then
+	echo 'file not exist'
+	cp app/config/parameters.yml.dist app/config/parameters.yml
+fi
+
 echo "run composer install"
 curl -s https://getcomposer.org/installer | php
 php composer.phar update
