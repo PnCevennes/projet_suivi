@@ -75,7 +75,7 @@ class DefaultController extends Controller
         return new JsonResponse($out);
     }
 
-    // path: GET /users/name/{menu}/{droit}/{q}
+    // path: GET /menu/{menu}/{q}
     // retourne la liste des utilisateurs filtrée sur le nom et le niveau de droits
     public function getUserByMenuAction($menu, $q){
 
@@ -83,11 +83,9 @@ class DefaultController extends Controller
         $sql = "SELECT id_role, nom_complet FROM utilisateurs.v_userslist_forall_menu WHERE id_menu=:id AND nom_complet ilike :q";
         $sql .= " ORDER BY nom_complet LIMIT 40";
         $qr = $db->prepare($sql);
-        //$qr->bindValue('id', $menu);
-        //$qr->bindValue('menu', $menu);
         $qr->execute(array(":id" => $menu, ":q" => $q.'%'));
-
         $users = $qr->fetchAll();
+        $out = [];
         foreach($users as $user){
             $out[] = array(
                 'id'=>$user['id_role'],
