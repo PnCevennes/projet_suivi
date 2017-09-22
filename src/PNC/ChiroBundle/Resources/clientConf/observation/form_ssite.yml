@@ -33,7 +33,7 @@ groups:
                 type: xhr
                 options:
                     multi: true
-                    url: "users/name/100/2"
+                    url: users/menu/1000001
                     reverseurl: "users/id"
                     ref: nomComplet
             -   name: bvDate
@@ -61,4 +61,3 @@ groups:
                 options:
                     max: 100
                     step: 0.1
-
