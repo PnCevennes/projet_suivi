@@ -17,6 +17,7 @@ groups:
                 options:
                     geometryType: point
                     dataUrl: chiro/site
+                    mapConfig: "js/resources/chiro_site.json"
     -   name: Informations
         fields:
             -   name: id

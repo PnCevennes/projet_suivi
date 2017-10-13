@@ -15,6 +15,7 @@ groups:
                 options:
                     geometryType: point
                     dataUrl: "chiro/observation"
+                    mapConfig: "js/resources/chiro_obs.json"
     -   name: Observation
         fields:
             -   name: id
