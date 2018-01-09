@@ -25,6 +25,54 @@ class SiteController extends Controller{
         return new JsonResponse($ss->getFilteredList($request));
     }
 
+    // path: GET /chiro/sitelist/{q}
+    // retourne la liste des sites filtrés sur le nom
+    public function listSimpleAction($q) {
+      /*
+       * Retourne la liste simplifiée des sites
+       */
+
+      $db = $this->getDoctrine()->getManager()->getConnection();
+      $sql = "SELECT id, bs_nom FROM chiro.vue_chiro_site WHERE bs_nom ilike :q";
+      $sql .= " ORDER BY bs_nom LIMIT 40";
+      $qr = $db->prepare($sql);
+      $qr->execute(array(":q" => '%'.$q.'%'));
+      $sites = $qr->fetchAll();
+      $out = [];
+      foreach($sites as $site){
+          $out[] = array(
+              'id'=>$site['id'],
+              'label'=>$site['bs_nom']
+          );
+      }
+      if ($out) return new JsonResponse($out);
+
+      return new JsonResponse(array('id'=>'', 'label'=>''), 404);
+    }
+
+    // path: GET /chiro/sitelist/{id}
+    // retourne la liste des sites filtrés sur le nom
+    public function getSimpleDetailAction($id) {
+      /*
+       * Retourne la liste simplifiée des sites
+       */
+
+      $db = $this->getDoctrine()->getManager()->getConnection();
+      $sql = "SELECT id, bs_nom FROM chiro.vue_chiro_site WHERE id = :id";
+      $qr = $db->prepare($sql);
+      $qr->execute(array(":id" => $id));
+      $sites = $qr->fetchAll();
+      $out = [];
+      foreach($sites as $site){
+          $out = array(
+              'id'=>$site['id'],
+              'label'=>$site['bs_nom']
+          );
+      }
+      if ($out) return new JsonResponse($out);
+
+      return new JsonResponse(array('id'=>'', 'label'=>''), 404);
+    }
 
     // path: GET /chiro/site/{id}
     public function detailAction($id){

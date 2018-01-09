@@ -14,7 +14,12 @@ groups:
             type: hidden
           - name: fkBsId
             label: Site
-            type: hidden
+            type: xhr
+            options:
+                url: "chiro/sitelist"
+                reverseurl: "chiro/sitexhr"
+                ref: fkBsId
+                restrictLevel: 5
           - name: metaNumerisateurId
             label: Numerisateur
             type: hidden

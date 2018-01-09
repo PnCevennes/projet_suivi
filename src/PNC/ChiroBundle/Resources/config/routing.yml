@@ -7,6 +7,19 @@ pnc_chiro_site_list:
     requirements:
         _method: GET
 
+pnc_chiro_site_list_simple:
+    path:     /sitelist/{q}
+    defaults: { _controller: PNCChiroBundle:Site:listSimple }
+    requirements:
+        _method: GET
+
+pnc_chiro_site_list_detail:
+    path:     /sitexhr/{id}
+    defaults: { _controller: PNCChiroBundle:Site:getSimpleDetail }
+    requirements:
+        _method: GET
+        page: '\d+'
+
 pnc_chiro_site_detail:
     path:     /site/{id}
     defaults: { _controller: PNCChiroBundle:Site:detail }
@@ -165,7 +178,7 @@ pnc_biometrie_suppr:
 
 
 
-            
+
 #
 # Vues autocomplete
 #
